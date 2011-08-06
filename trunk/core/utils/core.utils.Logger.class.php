@@ -100,7 +100,7 @@ class Logger {
    
    public static function struct( $obj, $msg = "" )
    {
-      $log = self::getInstance();
+      $log = Logger::getInstance();
       if ($log->file !== NULL)
       {
          $txt = "<pre> $msg<br/>";
@@ -118,12 +118,14 @@ class Logger {
    
    public static function show( $msg, $tag = NULL )
    {
-      $log = self::getInstance();
+      $log = Logger::getInstance();
       if ($log->active)
       {
          if ($log->file !== NULL)
          {
-            $txt = (($tag)?"<$tag>":"") . $msg . (($tag)?"</$tag>":"");
+            //$txt = (($tag!=NULL)?"<$tag>":"") . $msg . (($tag!=NULL)?"</$tag>":"");
+            
+            $txt = $msg;
             FileSystem::appendLine($log->file, $txt);
             return;
          }

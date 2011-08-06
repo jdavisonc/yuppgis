@@ -31,8 +31,7 @@ class DatabaseMySQL {
       // Asi, las conexiones de distintas apps son manejadas de forma independiente, aun si usan la misma BD.
       $this->connection = mysql_connect($dbhost, $dbuser, $dbpass, true);
 
-      //echo "SE CONECTA<br/>";
-      //print_r( $this->connection );
+      Logger::getInstance()->log("DatabaseMySQL::connect ". $this->connection);
 
       if ( !$this->connection )
       {
@@ -56,7 +55,7 @@ class DatabaseMySQL {
 
    public function disconnect ()
    {
-      //Logger::getInstance()->log("DatabaseMySQL::disconnect");
+      Logger::getInstance()->log("DatabaseMySQL::disconnect " . $this->connection);
 
       if ($this->connection !== NULL)
       {
@@ -392,7 +391,7 @@ class DatabaseMySQL {
             $where = $this->evaluateENEQCondition( $condition );
          break;
          case Condition::TYPE_LIKE:
-            $where .= $this->evaluateLIKECondition( $condition );
+            $where = $this->evaluateLIKECondition( $condition );
          break;
          case Condition::TYPE_ILIKE:
             $where = $this->evaluateILIKECondition( $condition );
@@ -446,6 +445,7 @@ class DatabaseMySQL {
       // Si es 0 me devuelve null...
       if ( is_null($refVal) ) return 'NULL'; // Ver si se sigue necesitando por la correccion de IS NULL e IS NOT NULL
       if ( $refVal === 0 ) return "0";
+      if ( is_bool($refVal) ) return (($refVal)?'1':'0');
       if ( is_numeric($refVal) ) return $refVal; // Si busca por un numero, aunque el tipo fuera TEXT no encuentra si no se le sacan las comillas.
       
       return (is_string($refVal)) ? "'" . $refVal . "'" : $refVal;

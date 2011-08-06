@@ -1,5 +1,8 @@
 <?php
 
+YuppLoader :: load('core.mvc.webflow', 'State');
+YuppLoader :: load('core.mvc.webflow', 'Transition');
+
 /**
  *
    $flow = WebFlow::create("ASDFG1234456564")

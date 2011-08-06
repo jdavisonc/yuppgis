@@ -41,10 +41,10 @@ class Helpers {
 
         $ctx = YuppContext::getInstance();
 
-        if ( array_key_exists('component', $paramsMap) ) // Si no me lo pasan, tengo que poner el actual.
-           $component  = $paramsMap['component'];
+        if ( array_key_exists('app', $paramsMap) ) // Si no me lo pasan, tengo que poner el actual.
+           $app = $paramsMap['app'];
         else
-           $component = $ctx->getComponent();
+           $app = $ctx->getApp();
            
         if ( array_key_exists('controller', $paramsMap) ) // Si no me lo pasan, tengo que poner el actual.
            $controller = $paramsMap['controller'];
@@ -57,16 +57,30 @@ class Helpers {
            throw new Exception("El parametro 'action' es obligatorio y no esta presente. " . __FILE__ . " " . __LINE__);
 
         // Saco los que ya use...
-        $paramsMap['component']  = NULL;
+        $paramsMap['app']  = NULL;
         $paramsMap['controller'] = NULL;
         $paramsMap['action']     = NULL;
+        
+        // Parametros para la url
+        $params_url = "";
+        
+        // Si viene un array de params explicito, tambien va para la url
+        if (isset($paramsMap['params']) && is_array($paramsMap['params']))
+        {
+           foreach ($paramsMap['params'] as $key => $value) // FIXME: hay una funcion de PHP que ya hace esto...
+           {
+              $params_url .= $key ."=". $value ."&";
+           }
+           
+           $paramsMap['params'] = NULL; // Para que filtre
+        }
+        
         
         $params = array_filter($paramsMap, "notNull"); // Saca nulls // ['params']; // opcional, es un mapa.
                                                        // FIXED: si tengo un 0 que es un valor valido par un param, me lo saca tambien!
                                                        // Ahora con callback notNull, el valor 0 se queda en el array. 
 
         // debe ser un array!
-        $params_url = "";
         $params_in_url = array();
         foreach ($params as $key => $value) // FIXME: hay una funcion de PHP que ya hace esto...
         {
@@ -75,6 +89,8 @@ class Helpers {
            if ( String::startsWith($key, "_param_") ) $params_in_url[ substr($key, 7) ] = $value; // agrega los _param_x en orden.
            else $params_url .= $key ."=". $value ."&";
         }
+        
+        // Saco el & sobrante de los params
         $params_url = substr($params_url, 0, -1);
 
         $params_in_url_str = "";
@@ -82,10 +98,8 @@ class Helpers {
         {
            $params_in_url_str .= "/" . $value;
         }
-        
-        //echo "xxx ".$params_url . " xxx";
 
-        return $_base_dir ."/". $component ."/". $controller ."/". $action . $params_in_url_str . ((strcmp($params_url,"") != 0)? ("?". $params_url) : "");
+        return $_base_dir ."/". $app ."/". $controller ."/". $action . $params_in_url_str . ((strcmp($params_url,"") != 0)? ("?". $params_url) : "");
     }
 
     /**
@@ -93,7 +107,7 @@ class Helpers {
      */
     public static function link($paramsMap)
     {
-       // Deberia chekear nomnbre de componente, controller, action. (se hace en url)
+       // Deberia chekear nombre de la app, controller, action. (se hace en url)
        $body = $paramsMap['body'];
        $paramsMap['body'] = NULL;
        
@@ -126,8 +140,12 @@ class Helpers {
        $bodyNext = (isset($paramsMap['bodyNext'])) ? $paramsMap['bodyNext'] : "Siguiente";
        $paramsMap['bodyNext'] = NULL;
        
-       $offset = (isset($paramsMap['offset'])) ? $paramsMap['offset'] : '0';
-       $max    = (isset($paramsMap['max']))    ? $paramsMap['max'] : '10';
+       // Las reglas para filtrar offset y max estan en PersistentObject::filtrarParams
+       //$offset = (isset($paramsMap['offset'])) ? $paramsMap['offset'] : '0';
+       //$max    = (isset($paramsMap['max']))    ? $paramsMap['max'] : '50';
+       $filteredParams = PersistentObject::filtrarParams(new ArrayObject($paramsMap));
+       $offset = $filteredParams['offset'];
+       $max = $filteredParams['max'];
        
        if (!isset($paramsMap['count'])) throw new Exception("El parametro 'count' es obligatorio y no aparece en la lista de parametros");
        $count  = $paramsMap['count'];
@@ -222,7 +240,7 @@ function $func {
        /**
         * Depende de prototype, con esto me aseguro que se incluye en LayoutManager.
         */
-       self::js( array("name" => "jquery/jquery-1.5.min") );
+       self::js( array("name" => "jquery/jquery-1.5.1.min") );
        
        $func = "ajax_link_". self::getCounter()."()";
         
@@ -300,10 +318,10 @@ function $func {
        {
           $ctx = YuppContext::getInstance();
 
-          if ( array_key_exists('component', $params) ) // Si no me lo pasan, tengo que poner el actual.
-             $component  = $params['component'];
+          if ( array_key_exists('app', $params) ) // Si no me lo pasan, tengo que poner el actual.
+             $app  = $params['app'];
           else
-             $component = $ctx->getComponent();
+             $app = $ctx->getApp();
               
           if ( array_key_exists('controller', $params) ) // Si no me lo pasan, tengo que poner el actual.
              $controller = $params['controller'];
@@ -316,12 +334,12 @@ function $func {
              $path = $params['path'] . '/';
 
           // Saco los que ya use...
-          $params['component']  = NULL;
+          $params['app']  = NULL;
           $params['controller'] = NULL;
           $params = array_filter($params); // Saca nulls // ['params']; // opcional, es un mapa.
 
-          //$url = $_base_dir .'/apps/'. $component .'/views/'. $controller;
-          $url = './apps/'. $component .'/views/'. $controller;
+          //$url = $_base_dir .'/apps/'. $app .'/views/'. $controller;
+          $url = './apps/'. $app .'/views/'. $controller;
           
        } // template
 
@@ -339,8 +357,8 @@ function $func {
      * Se utiliza para mostrar la tag img para una imagen local, resolviendo su src de forma automatica.
      * 
      * @param params array de argumentos:
-     *   component: nombre del componente donde se encuentra la imagen.
-     *   src: path de la imagen a partir del directorio del imagenes del componente (si viene "component")
+     *   app: nombre de la app donde se encuentra la imagen.
+     *   src: path de la imagen a partir del directorio del imagenes de la app (si viene "app")
      *        o desde el directorio /images, incluye el nombre de la imagen. Es obligatorio.
      *   w: ancho de la imagen en pixels.
      *   h: alto de la imagen en pixels.
@@ -355,13 +373,13 @@ function $func {
        
        $src = NULL;
        
-       // Busca la ubicacion en un componente particular
-       if ( array_key_exists('component', $params) ) 
-          $src = '/apps/'. $params['component'] .'/images/'. $params['src'];
+       // Busca la ubicacion en una app particular
+       if ( array_key_exists('app', $params) ) 
+          $src = '/apps/'. $params['app'] .'/images/'. $params['src'];
        else // Ubicacion por defecto de todos los javascripts de todos los modulos
           $src = '/images/'. $params['src'];
        
-       unset($params['component']);
+       unset($params['app']);
        unset($params['src']);
        
        // FIXME: retornar una imagen por defecto
@@ -396,7 +414,7 @@ function $func {
     
     /**
      * @param params array asociativo con los valores
-     *  - component (opcional) nombre del componente donde esta la libreria
+     *  - app (opcional) nombre de la app donde esta la libreria
      *  - name (obligatorio) nombre de la libreria JS 
      */
     public static function js( $params )
@@ -405,9 +423,9 @@ function $func {
        LayoutManager::getInstance()->addJSLibReference( $params );
        
        /*
-       // Busca la ubicacion en un componente particular
-       if ( array_key_exists('component', $params) ) 
-          $res = '<script type="text/javascript" src="'. $_base_dir .'/apps/'. $params['component'] .'/javascript/'. $params['name'] .'.js"></script>';
+       // Busca la ubicacion en una app particular
+       if ( array_key_exists('app', $params) ) 
+          $res = '<script type="text/javascript" src="'. $_base_dir .'/apps/'. $params['app'] .'/javascript/'. $params['name'] .'.js"></script>';
        else // Ubicacion por defecto de todos los javascripts de todos los modulos
           $res = '<script type="text/javascript" src="' . $_base_dir . '/js/' . $params['name'] . '.js"></script>';
        
@@ -420,8 +438,8 @@ function $func {
     {
        global $_base_dir;
        
-       if ( array_key_exists('component', $params) ) 
-          $res = '<link type="text/css" rel="stylesheet" href="'. $_base_dir .'/apps/'. $params['component'] .'/css/'. $params['name'] .'.css" />';
+       if ( array_key_exists('app', $params) ) 
+          $res = '<link type="text/css" rel="stylesheet" href="'. $_base_dir .'/apps/'. $params['app'] .'/css/'. $params['name'] .'.css" />';
        else
           $res = '<link type="text/css" rel="stylesheet" href="'. $_base_dir .'/css/'. $params['name'] .'.css" />';
        
@@ -434,7 +452,7 @@ function $func {
        
        $config = YuppConfig::getInstance();
       
-       $url = self::url( array('component' => 'core', 'controller' => 'core', 'action' => 'changeLocale') );
+       $url = self::url( array('app' => 'core', 'controller' => 'core', 'action' => 'changeLocale') );
        $res = '<form action="'. $url .'" style="width:270px; margin:0px; padding:0px;">';
        $res .= '<select name="locale">';
        
@@ -444,9 +462,9 @@ function $func {
        }
        
        $res .= '</select>';
-       $res .= '<input type="hidden" name="back_component"  value="'. $ctx->getComponent() .'" />';
+       $res .= '<input type="hidden" name="back_app" value="'. $ctx->getApp() .'" />';
        $res .= '<input type="hidden" name="back_controller" value="'. $ctx->getController() .'" />';
-       $res .= '<input type="hidden" name="back_action"     value="'. $ctx->getAction() .'" />';
+       $res .= '<input type="hidden" name="back_action" value="'. $ctx->getAction() .'" />';
        $res .= '<input type="submit" value="Cambiar" />';
        $res .= '</form>';
        
@@ -462,7 +480,7 @@ function $func {
        $ctx    = YuppContext::getInstance();
        $config = YuppConfig::getInstance();
       
-       $url = self::url( array('component' => 'core', 'controller' => 'core', 'action' => 'changeMode') );
+       $url = self::url( array('app' => 'core', 'controller' => 'core', 'action' => 'changeMode') );
        $res = '<form action="'. $url .'" style="width:270px; margin:0px; padding:0px;">';
        $res .= '<select name="mode">';
        
@@ -471,7 +489,7 @@ function $func {
           $res .= '<option value="' . $mode . '" '. (($mode === $ctx->getMode())?'selected="true"':'') .'>'. $mode . '</option>';
        }
        
-       $res .= '<input type="hidden" name="back_component"  value="'. $ctx->getComponent() .'" />';
+       $res .= '<input type="hidden" name="back_app"  value="'. $ctx->getApp() .'" />';
        $res .= '<input type="hidden" name="back_controller" value="'. $ctx->getController() .'" />';
        $res .= '<input type="hidden" name="back_action"     value="'. $ctx->getAction() .'" />';
        

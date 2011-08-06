@@ -5,64 +5,14 @@
  */
 
 class YuppConventions {
-
-   function YuppConventions() {
-   }
-    
-   // FIXME: Esta deberia ir en DatabaseNormalization
-   /**
-    * @return nombre de la columna de la tabla que va a hacer referencia a una
-    *  tabla de una superclase, sirve para MTI donde se inyectan atributos
-    *  para hacer dichas referencias.
-    * @param $superclassName nombre de la clase a la que se quiere hacer referencia.
-    */
-   public static function superclassRefName( $superclassName )
-   {
-      //return "super_id_" . $superclassName; //strtolower($superclassName);
-      // TODO: si lo paso a lower, luego puedo no obtener el nombre exacto.
-      return "super_id_" . strtolower($superclassName);
-   }
-   
-   /**
-    * Operacion inversa de superclassRefName, para obtener el nombre de la clase.
-    */
-   public static function superclassFromRefName( $ref )
-   {
-      // FIXME: hay que buscar la clase con la que matchea, porque puede ser
-      //       super_id_clase y deberia encontrar 'Clase' con mayuscula.
-      
-      // Es underscore por la transformacion que hace superclassRefName()
-      $classname_underscore = substr($ref, 9); // le saco el "super_id_"
-      
-      $classes = YuppLoader::getLoadedModelClasses();
-      foreach ($classes as $class)
-      {
-         if ( $classname_underscore == strtolower($class) ) return $class;
-      }
-      
-      // Si no se encuentra en las clases cargadas devuelvo lo mas parecido a
-      // un nombre de clase: lo que obtengo con la primer letra en mayuscula.
-      
-      return String::firstToUpper( $classname_underscore );
-      
-      //return substr($ref, 9); // le saco el "super_id_"
-   }
-   
-   /**
-    * Verifica si un nombre de un atributo es un nombre de referencia.
-    */
-   public static function isRefName( $ref )
-   {
-      return String::startsWith($ref, "super_id_");
-   }
    
    /**
     * @pre: isModelPackage($package)
     */
    public static function getModelPath( $package )
    {
-      //return "./apps/$component/model";
-      //return "./apps/" . strtr($package, ".", "/"); // Correccion para poder poner subdirectorios en /model.
+      //return "./apps/$app/model";
+      //return "./apps/". strtr($package, ".", "/"); // Correccion para poder poner subdirectorios en /model.
       return "apps/" . strtr($package, ".", "/"); // Correccion para poder poner subdirectorios en /model.
    }
    
@@ -76,8 +26,8 @@ class YuppConventions {
    {
       $ins = $instance_or_class;
       if ( !is_object($ins) ) $ins = new $instance_or_class(array(), true); // Si no es instancia, es clase, creo una instancia de esa clase.
-      //if ( !is_a($ins, 'PersistentObject') ) throw new Exception("La instancia debe ser de PO y es " . gettype($ins));
       if ( !($ins instanceof PersistentObject) ) throw new Exception("La instancia debe ser de PO y es " . gettype($ins));
+      
       // FIXME: en pila de lados tengo que crear una instancia para poder llamar a este metodo, 
       // porque no mejor hacer que pueda recibir tambien el nombre de la clase, y en ese caso, 
       // resuelve la tabla como nombre de clase, sin considerar withTable, o directamente crea 
@@ -90,8 +40,6 @@ class YuppConventions {
       // Si no tiene withTable, quiere decir que en ninguna superclase de ella se define, entonces tengo que
       // obtener la superclase de nivel 1 y el nombre de la tabla se saca de el nombre de esa clase.
 
-//echo "wTABLe: " . $ins->getWithTable() . "<br/>"; 
-
       if ( $ins->getWithTable() != NULL && strcmp($ins->getWithTable(), "") != 0 ) // Me aseguro que haya algo.
       {
          $tableName = $ins->getWithTable();
@@ -103,15 +51,11 @@ class YuppConventions {
          {
             $superclaseNivel1 = $parent;
          }
-         
          $tableName = $superclaseNivel1;
-         
-         //echo "Clase nivel 1: $superclaseNivel1 <br />";
       }
 
       // Filtro...
       $tableName = DatabaseNormalization::table( $tableName ); // TODO: La funcion de normalizacion esta deberia estar en un core.basic.String.
-
       return $tableName;
       
    } // tableName
@@ -185,6 +129,5 @@ class YuppConventions {
 
       return $tableName1 . "_" . $inst1Attr . "_" . $tableName2; // owner_child
    }
-   
 }
 ?>

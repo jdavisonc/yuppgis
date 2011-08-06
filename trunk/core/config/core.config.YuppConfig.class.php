@@ -59,7 +59,7 @@ class YuppConfig {
                                self::DB_MYSQL =>
                                   array( 'url' => 'localhost',
                                          'user' => 'root',
-                                         'pass' => 'yuppgis',
+                                         'pass' => '',
                                          'database' => 'yupp_dev'),
                                self::DB_SQLITE =>
                                   array( 'url'  => '',
@@ -74,7 +74,7 @@ class YuppConfig {
                              );
    
    private $default_datasource = array(
-                                   self::MODE_DEV  => array(
+                                  self::MODE_DEV  => array(
                                      'type'     => self::DB_POSTGRES,
                                      'url'      => 'localhost',
                                      'user'     => 'yuppgis',
@@ -105,7 +105,6 @@ class YuppConfig {
     * Devuelve la informacion de conexion a la base de datos.
     * @param mode dev, prod, test.
     */
-   //public function getDatasource( $mode = self::MODE_DEV )
    public function getDatasource( $appName = NULL )
    {
       // Si viene appName y no tengo la configuracion cargada
@@ -114,20 +113,20 @@ class YuppConfig {
          if (!array_key_exists($appName, $this->app_datasources))
          {
             //echo 'Inclusion config'.$appName.'<br/>';
-            $appConfigFile = './apps/'.$appName.'/db_config.php';
+            $appConfigFile = './apps/'.$appName.'/config/db_config.php';
              
             // Trato de cargarla, puede ser que no tenga archivo de configuracion.
             if (file_exists($appConfigFile))
             {
-               include_once($appConfigFile);
+               include_once($appConfigFile); // Tiene definida la variable $db
           
-               $this->app_datasources[$appName] = $db; // $db se define en el archivo de configuracion.
+               $this->app_datasources[$appName] = $db[$this->currentMode]; // $db se define en el archivo de configuracion.
                
                // TODO: al igual que el datasource por defecto, el de cada app deberia depender del modo de ejecucion.
                return $this->app_datasources[$appName];
             }
              
-             // No hay config para la app, devuelve la configuracion por defecto.
+            // No hay config para la app, devuelve la configuracion por defecto.
          }
          else // Si existe la config cargada para esa app
          {
@@ -148,7 +147,6 @@ class YuppConfig {
     */
    public function getDatabaseType()
    {
-      //return $this->database_type;
       return $this->default_datasource[$this->currentMode]['type'];
    }
    
@@ -175,25 +173,25 @@ class YuppConfig {
    private $modeDefaultMapping = array(
                                    self::MODE_DEV => // Si se desea acceder al administrador de Yupp no se deben modificar los valores.
                                      array(
-                                      'component'  => 'core',
+                                      'app'        => 'core',
                                       'controller' => 'core',
                                       'action'     => 'index',
                                       'params'     => array()
                                      ),
                                    self::MODE_PROD => // Modificar los valores al poner la aplucacion en produccion.
                                      array(
-                                      'component'  => 'portal',
+                                      'app'        => 'portal',
                                       'controller' => 'page',
                                       'action'     => 'display',
                                       'params'     => array('_param_1'=>'index')
                                      ),
                                    self::MODE_TEST => // Todavia no utilizado.
                                      array(
-                                      'component'  => 'core',
+                                      'app'        => 'core',
                                       'controller' => 'core',
                                       'action'     => 'index',
                                       'params'     => array()
-                                     )
+                                     ),
                                  );
    
    
@@ -216,7 +214,7 @@ class YuppConfig {
    }
    
    /**
-    * Retorna el mapping (array de component, controller y accion) para el modo actual.
+    * Retorna el mapping (array de app, controller y accion) para el modo actual.
     */
    public function getModeDefaultMapping()
    {

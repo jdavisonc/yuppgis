@@ -19,7 +19,6 @@ class ValidationMessage {
 
    public static function getMessage( $constraint, $attr, $value )
    {
-      //eval ('$list = ' . $clazz . '::listAll( $this->params );');
       eval ('$msg = self::'.get_class($constraint).'( $constraint, $attr, $value );');
       return $msg;
    }
@@ -121,7 +120,15 @@ class ValidationMessage {
       $msg = DisplayHelper::message( self::MSG_INLIST );
       $msg = str_replace('{0}', $value, $msg);
       $msg = str_replace('{1}', $attr, $msg);
-      return str_replace('{2}', print_r($constraint->getList(), true), $msg);
+      
+      $values = '';
+      foreach ($constraint->getList() as $value)
+      {
+         $values .= $value .', ';
+      }
+      $values = substr($values, 0, -2);
+      
+      return str_replace('{2}', $values, $msg);
    }
 }
 ?>
