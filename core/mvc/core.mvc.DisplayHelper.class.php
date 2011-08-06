@@ -27,15 +27,15 @@ class DisplayHelper {
     }
 
 /*
-    public static function template( $component, $viewDir, $template, $params )
+    public static function template( $app, $viewDir, $template, $params )
     {
-        // Necesito buscar el template en /apps/$component/view/$viewDir/$template.template.php
+        // Necesito buscar el template en /apps/$app/view/$viewDir/$template.template.php
        // Con los params que se me pasan, tengo que dejarlos accesibles para el script en ese template.
        
        // El primero lo cargaria con el class loader.
        // El pasaje de parametros creo que con solo declarar las variables funciona, pero hay q ver. tal vez con variables variables.
        
-       // Talvez quisiera no pasarle component ni viewDir, component lo saco del request y viewDir seria el nombre del controller (por defecto).
+       // Talvez quisiera no pasarle app ni viewDir, app lo saco del request y viewDir seria el nombre del controller (por defecto).
     }
 */
 
@@ -81,13 +81,16 @@ class DisplayHelper {
        }
     }
 
-
     private static function display_list( $pos, $clazz )
     {
        $ins = new $clazz(); // Instancia para saber nombres de columnas...
        $attrs = $ins->getAttributeTypes();
-
        $res = '<table>';
+
+       $ctx = YuppContext::getInstance();
+       $m = Model::getInstance();
+       $app = $m->get('app'); // Cuando se genera por la ap "core", viene "app" como parametro.
+       if ( !isset($app) ) $app = $ctx->getApp(); // Cuando se genera por una app que no es "core"
 
        // Cabezal
        $res .= '<tr>';
@@ -97,52 +100,45 @@ class DisplayHelper {
            if ( $attr === 'deleted') continue;
            
            $res .= '<th>';
-
-           // FIXME: Problema, necesito los params actuales para saber que clase estoy mostrando, pero no tengo acceso. NO, ME PASAN LA CLASE!
-           //$res .= '<a href="'. Helpers::params2url( $ ) .'">'; // TODO: no tengo acceso a los params desde helpers.
-           // TODO: el order deberia ser toggleado, si ahora muestro ordenado por una columna, al hacer click en ella debo mostrar el orden inverso.
-           //       pero como no tengo acceso a los params no se realmente por cual columna se ordena ni la direccion actual.
-
-/*
-           $model = Model::getInstance();
-           $sort = $model->get('sort');
-           $dir = 'asc';
-
-           if ( $sort == $attr && $model->get('dir') == 'asc' ) $dir = 'desc'; // Cambia la direccion del atributo por el que esta ordenado ahora.
-*/
-
-           //$res .= '<a href="'. Helpers::params2url( array('class'=>$clazz, 'sort'=>$attr, 'dir'=>$dir) ) .'">'; // TODO: no tengo acceso a los params desde helpers.
-           //$res .= $attr; // TODO: Habria que ver si esto es i18n, deberia haber algun "display name" asociado al nombre del campo.
-           //$res .= '</a>';
-           
-           $ctx = YuppContext::getInstance();
-           
-           $res .= h('orderBy', array('attr'=>$attr, 'action'=>$ctx->getAction(), 'body'=>$attr));
-           
+           $res .= h('orderBy', array('attr'=>$attr, 'action'=>$ctx->getAction(), 'body'=>$attr, 'params'=>array('app'=>$app,'class'=>$m->get('class'))));
            $res .= '</th>';
        }
        $res .= '</tr>';
-
-
+       
+       
+       YuppLoader::load('core.app', 'App');
+       $theApp = new App($app);
+       
        // Filas
        foreach ($pos as $po) // pos puede ser vacio...
        {
           $res .= '<tr>';
-
-          //$attrs = $po->getAttributeTypes();
           foreach ( $attrs as $attr => $type )
           {
              // No quiero mostrar la columna 'deleted'
              if ( $attr === 'deleted') continue;
            
              $res .= '<td>';
-
              if ($attr == "id")
              {
-                //$res .= '<a href="show?class='. $po->aGet('class') .'&id='. $po->aGet($attr) .'">';
-                $res .= '<a href="'. h('url', array('action'=>'show', 'class'=>$po->aGet('class'), 'id'=>$po->aGet($attr))) .'">';
-                $res .= $po->aGet($attr);
-                $res .= '</a>';
+                // Si en la aplicacion actual existe el controlador para esta clase de dominio, que vaya a la aplicacion actual y a ese controller.
+                // Si no, va a la app y controller "core".
+                if ($theApp->hasController($po->aGet('class')))
+                   $res .= '<a href="'. h('url',
+                                          array('app'    => $app,
+                                                'controller' => String::firstToLower( $po->aGet('class') ),
+                                                'action' => 'show',
+                                                'class'  => $po->aGet('class'),
+                                                'id'     => $po->aGet($attr),
+                                                'params' => array('app'=>$app))) .'">'. $po->aGet($attr) .'</a>';
+                else
+                   $res .= '<a href="'. h('url',
+                                          array('app'    => 'core',
+                                                'controller' => 'core',
+                                                'action' => 'show',
+                                                'class'  => $po->aGet('class'),
+                                                'id'     => $po->aGet($attr),
+                                                'params' => array('app'=>$app))) .'">'. $po->aGet($attr) .'</a>';
              }
              else
              {
@@ -225,15 +221,19 @@ class DisplayHelper {
            
            if ($relObj == NULL) continue;
            
+           $ctx = YuppContext::getInstance();
+           $app = $m->get('app');
+           if ( !isset($app) ) $app = $ctx->getApp();
+           
            // Link a vista de scaffolding del objeto relacionado con hasOne
            $res .= h('link', array(
-                     'component'  => 'core',
+                     'app'        => 'core', //$app, //( ($ctx->getApp()=='core') ? $m->get('app') : $ctx->getApp() ),
                      'controller' => 'core',
                      'action'     => 'show',
-                     'app'        => ( ($ctx->getComponent()=='core')?$m->get('app'):$ctx->getComponent()),
                      'class'      => $relObj->getClass(),
                      'id'         => $relObj->getId(),
-                     'body'       => $relObj->getClass() . ' ['. $relObj->getId() .']'
+                     'body'       => $relObj->getClass() . ' ['. $relObj->getId() .']',
+                     'params'     => array('app'=>$app)
                    ));
            
            $res .= '</td></tr>';
@@ -275,10 +275,10 @@ class DisplayHelper {
              $res = '<input type="text" value="'. $value .'" name="'. $fieldName .'" />';
           break;
           case Datatypes::TIME: // Pueden ser 2 selects par hora y minutos.
-                   $res = '<input type="text" value="'. $value .'" name="'. $fieldName .'" />';
+             $res = '<input type="text" value="'. $value .'" name="'. $fieldName .'" />';
           break;
           case Datatypes::DATETIME: // podria ser los selects de date y time juntos...
-               $res = '<input type="text" value="'. $value .'" name="'. $fieldName .'" />';
+             $res = '<input type="text" value="'. $value .'" name="'. $fieldName .'" />';
           break;
        }
 
@@ -299,11 +299,11 @@ class DisplayHelper {
           case Datatypes::FLOAT_NUMBER: $res = '<span>'. $value .'</span>';
           break;
           case Datatypes::BOOLEAN:
-                //$res = '<input type="text" value="'. $value .'" name="'. $fieldName .'" />';
-                 // TODO I18n
-                //$res = '<select><option '. (($value)?'selected="true"':'') .'>TRUE</option><option '. ((!$value)?'selected="true"':'') .'>FALSE</option></select>';
+             //$res = '<input type="text" value="'. $value .'" name="'. $fieldName .'" />';
+             // TODO I18n
+             //$res = '<select><option '. (($value)?'selected="true"':'') .'>TRUE</option><option '. ((!$value)?'selected="true"':'') .'>FALSE</option></select>';
 
-                $res = '<input type="checkbox" '. (($value)?'checked="true"':'') .' disabled="true" />';
+             $res = '<input type="checkbox" '. (($value)?'checked="true"':'') .' disabled="true" />';
           break;
           case Datatypes::DATE: // podrian ser 3 selects para anio mes y dia, los cuales obtienen sus valores maximos y minimos de algun tipo de configuracion.
              $res = '<span>'. $value .'</span>';
@@ -534,14 +534,37 @@ class DisplayHelper {
        
        echo h('js', array('name'=>'tiny_mce/tiny_mce')); // js/tiny_mce/tiny_mce.js
        echo '<script type="text/javascript">
+                 if (!htmlinit) // Si el usuario no define la funcion
+                 {
+                   var htmlinit = function() {
+                     //alert("htmlinit por defecto");
+                     // Dummy para que no de error la carga de TinyMCE, donde se
+                     // configura htmlinit como funcion de callback al cargar el editor.
+                     // A ser sobre escrita por el usuario...
+                   }
+                 }
                  tinyMCE.init({
                      mode:     "exact", //"textareas"
                      theme:    "advanced",
                      elements: "'. $name .'", // ids de los elementos a aplicar el wysiwyg
-                     language: "es",
+                     language: "en",
                      
+                     // para evitar que ponga la tag P al ppio y final
+                     // http://stackoverflow.com/questions/5211687/tinymce-problem-extra-paragraphs
+                     // http://tinymce.moxiecode.com/forum/viewtopic.php?id=9887
+                     forced_root_block : false,
                      force_br_newlines : false,
                      cleanup_on_startup : true,
+                     
+                     // Setear el tamanio inicial del editor
+                     // http://tinymce.moxiecode.com/forum/viewtopic.php?id=9817
+                     width : "100%",
+                     height : "400",
+                     
+                     // Callback para cuando carga el editor, esta deberia ser implementada por el usuario
+                     // http://tinymce.moxiecode.com/wiki.php/Configuration:oninit
+                     oninit: htmlinit,
+                     
                      
                      plugins : "safari,style,layer,table,advhr,advimage,advlink,emotions,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template", //,imagemanager,filemanager",
                      //pagebreak,save,

@@ -25,12 +25,6 @@ YuppLoader :: load('core.db', 'DAL'); // declara tambien DatabaseNormalization
 YuppLoader :: load('core.db', 'Datatypes');
 YuppLoader :: load('core.persistent', 'PersistentManager');
 
-/*
-TODOS:
-  - Si la relacion es 1..* y el * no tiene belongsTo, IGUAL SE DEBERIA CONSIDERAR
-    COMO QUE EL * tiene belongsTo el 1 !!!!!!!!!!!!!!!!!!!!! (afecta el PM.get_many_assocs)
-*/
-
 /**
  * Esta clase implementa toda la logica necesaria para modelar objetos persistentes.
  * @package core.persistent
@@ -41,7 +35,7 @@ class PersistentObject {
    const NOT_LOADED_ASSOC = -1; // Codigo de asociacion no cargada, util para lazy loading.
 
    // Tipos de hasMany
-   const HASMANY_COLECTION = "collection"; // FIXME: collection es con 2 LLs
+   const HASMANY_COLLECTION = "collection";
    const HASMANY_SET       = "set";
    const HASMANY_LIST      = "list";
    
@@ -82,11 +76,13 @@ class PersistentObject {
    // /Optimizaciones para save y update
 
 
+   /* No es mas necesarios por cambio de identificacion de MTI
    protected $multipleTableIds = array(); // Array asociativo por Nombre-de-superclas, y valor el id en la tabla correspondiente.
                                           // Este atributo sirve para realizar las operaciones del save (update) sin tener que 
                                           // consultar los ids de las instancias parciales en sus respecivas tablas, asi ya 
                                           // cuando carga la instancia se cargan los ids de las instancias parciales (en cada tabla) 
                                           // en este array.
+   */
 
    /**
     * Apaga las banderas de dirty, se usa para luego de cargar de la base,
@@ -122,67 +118,6 @@ class PersistentObject {
    {
       return $this->dirtyMany;
    }
-
-   public function getMultipleTableIds()
-   {
-      return $this->multipleTableIds;
-   }
-   
-   public function getMultipleTableId( $superClass )
-   {
-      // FIXME: chek key
-      return $this->multipleTableIds[$superClass];
-   }
-   
-   public function addMultipleTableId( $superClass, $id )
-   {
-      $this->multipleTableIds[$superClass] = $id;
-   }
-   
-   /**
-    * Setea los atributos super_id_SuperClase desde la estructura de MTIds.
-    */
-   public function updateSuperIds()
-   {
-      foreach ( $this->multipleTableIds as $class => $id )
-      {
-         $attr = YuppConventions::superclassRefName( $class ); // super_id_SuperClase
-         $this->aSet($attr, $id);
-      }
-   }
-   
-   /**
-    * Actualiza la estructura de MTIds con los valores de los super_id_XXX.
-    */
-   public function updateMultipleTableIds()
-   {
-      foreach ( $this->attributeValues as $attr => $value )
-      {
-         if ( YuppConventions::isRefName($attr) )
-         {
-            $class = YuppConventions::superclassFromRefName( $attr );
-            $this->multipleTableIds[$class] = $value;
-         }
-      }
-   }
-   
-   /**
-    * Devuelve los atributos inyectados para referenciar instancias parciales de superclases,
-    * que son atributos de la forma: super_id_UnaClase, super_id_OtraClase, etc.
-    */
-   public function getMTIAttributes()
-   {
-      $res = array();
-      foreach ( $this->attributeValues as $attr => $value ) // No interesa el valor.
-      {
-         if ( YuppConventions::isRefName($attr) )
-         {
-            $res[] = $attr; // ref name
-         }
-      }
-      return $res;
-   }
-   
 
    /**
     * Agrega una lista de restricciones a un atributo de la clase, 
@@ -241,8 +176,6 @@ class PersistentObject {
     */
    public function attributeDeclaredOnThisClass( $attr )
    {
-      //echo "<h1>xx" . get_parent_class( $this ) ."xx</h1>";
-      
       // Si la instancia ni siquiera tiene el atributo, retorna false.
       if ( $this->getType( $attr ) === NULL ) return false;
       
@@ -271,7 +204,6 @@ class PersistentObject {
       foreach ($superClasses as $superClass)
       {
          $superInstance = new $superClass(NULL, true);
-         
          if ( $superInstance->attributeDeclaredOnThisClass( $attr ) ) return $superClass;
       }
       
@@ -319,7 +251,7 @@ class PersistentObject {
     * @param String class clase de los elementos contenidos en la coleccion de elementos
     * @param String type tipo del atributo hasMany, dice si se comporta como una coleccion, un conjunto o una lista
     */
-   public function addHasMany( $name, $clazz, $type = self::HASMANY_COLECTION )
+   public function addHasMany( $name, $clazz, $type = self::HASMANY_COLLECTION )
    {
       $this->hasMany[$name]     = $clazz;
       $this->hasManyType[$name] = $type;
@@ -398,6 +330,7 @@ class PersistentObject {
    {
         $this->afterSave[] = $cb;
    }
+   
    public function registerBeforeSaveCallback( Callback $cb )
    {
       $this->beforeSave[] = $cb;
@@ -413,9 +346,10 @@ class PersistentObject {
       // Una vez que termino de ejecutar, reseteo los cb's registrados.
       $this->afterSave = array();
    }
+   
    private function executeBeforeSave()
    {
-      Logger::getInstance()->po_log("Excecute before save ". get_class($this));
+      //Logger::getInstance()->po_log("Excecute before save ". get_class($this));
 
       foreach ( $this->beforeSave as $cb ) $cb->execute();
 
@@ -498,24 +432,7 @@ class PersistentObject {
       $this->attributeTypes[ "id" ]  = Datatypes::INT_NUMBER; // Los tipos de los ids son int.
       $this->attributeValues[ "id" ] = NULL; // No tengo ningun objeto asociado.
 
-      // super_id_XXX
-      $superclasses = ModelUtils::getAllAncestorsOf( $this->attributeValues[ "class" ] );
-       
-      /*
-       * FIXME: Debe hacerse como se inyectan los super_ids en PM->generateAll (1844)
-       * Para: A <- A1 <- C <- C1 <- G <- G1, en G genera super_id_A, super_id_A1, super_id_C, super_id_C1.
-       * No deberia generar super_id_A1 y super_id_C1 porque son los mismos ids que super_id_A y super_id_C 
-       * respectivamente, porque A y A1, C y C1 se mapean cada par a la misma tabla.
-       */
-
-      $superclassesWithTable = MultipleTableInheritanceSupport::superclassesThatGenerateTables( $this->attributeValues[ "class" ] );
-      foreach ( $superclassesWithTable as $scwt )
-      {
-         $attr_scid = YuppConventions::superclassRefName( $scwt );
-         $this->attributeTypes [ $attr_scid ] = Datatypes::INT_NUMBER; // Los tipos de los ids son int.
-         $this->attributeValues[ $attr_scid ] = NULL;
-      }
-
+      
       // Me fijo si en args viene algun valor de atributo
       // FIXME: no deberia poder modificar valor de atributos inyectados, el comportamiento posterior es impredecible.
       foreach ( $args as $attr => $value )
@@ -531,14 +448,14 @@ class PersistentObject {
             // Si es una instancia nueva, siempre estara dirty si le pongo valores simples.
             $this->dirty = true;
          }
-         if ( array_key_exists($attr, $this->hasOne) )
+         else if ( array_key_exists($attr, $this->hasOne) )
          {
             $this->attributeValues[$attr] = $value;
              
             // Si es una instancia nueva, siempre estara dirty si le pongo valores simples.
             $this->dirtyOne = true;
          }
-         if ( array_key_exists($attr, $this->hasMany) )
+         else if ( array_key_exists($attr, $this->hasMany) )
          {
             $this->attributeValues[$attr] = $value;
              
@@ -564,10 +481,9 @@ class PersistentObject {
    // Consulta sobre el tipo de atributo: inyectado/no inyectado
    public static function isInyectedAttribute( $attr )
    {
-      if ( strcmp($attr, "id")       == 0 ) return true;
-      if ( strcmp($attr, "deleted")  == 0 ) return true;
-      if ( strcmp($attr, "class")    == 0 ) return true;
-      if ( String::startsWith($attr, "super_id_") ) return true; // No va mas este atrib
+      if ( strcmp($attr, "id")      == 0 ) return true;
+      if ( strcmp($attr, "deleted") == 0 ) return true;
+      if ( strcmp($attr, "class")   == 0 ) return true;
       return false;
    }
 
@@ -578,10 +494,10 @@ class PersistentObject {
       $type = $this->hasOne[ $attr ];
       if (!$type) return false; // Ni siquiera le pase un attributo valido...
 
-      // TODO (T#6): Esto es una verificacion de correctitud del modelo creado... no se si va aca... deberia ser algo previo, por ejemplo hacerse cuando se instala un componente.
+      // TODO (T#6): Esto es una verificacion de correctitud del modelo creado... no se si va aca... deberia ser algo previo, por ejemplo hacerse cuando se instala una app.
       if ( is_subclass_of($type, 'PersistentObject') )
       {
-         // Chek 1: Fijarsse si es una lsita persistente (todavia no hecho), return false.
+         // Check 1: Fijarsse si es una lista persistente (todavia no hecho), return false.
          // else
          return true;
       }
@@ -700,7 +616,6 @@ class PersistentObject {
    public function getFieldErrors( $attr )
    {
       if (array_key_exists($attr, $this->errors)) return $this->errors[$attr];
-
       return NULL;
    }
    
@@ -765,7 +680,7 @@ class PersistentObject {
          if ( $value !== NULL ) // FIXME: xq no retorno los valores null? null es un valor tambien...
          {                      // EL TEMA ES QUE SI RETORNO NULL EL TIPO VA A QUERER GUARDAR NULL... O SEA SI ES NULL NO GUARDO NADA.
                                 // TAMBIEN PASA QUE SI SE PONE EN NULL UN ATRIBUTO, DEBERIA PONERSE EN NULL DICHO ATRIBUTO EN LA BASE.. (ESTO ES UN FIXME!)
-             $res[$attr] = $value;
+            $res[$attr] = $value;
          }
       }
       
@@ -778,7 +693,6 @@ class PersistentObject {
    {
       $res = array();
       foreach ( $this->hasMany as $attr => $type ) $res[] = $attr;
-
       return $res;
    }
 
@@ -793,8 +707,7 @@ class PersistentObject {
          if ( $objectList == self::NOT_LOADED_ASSOC ) $res[$attr] = array();
          else
          {
-            // Saco nulls del array
-            $res[$attr] = array_filter( $objectList ); // La forma PHP de hacerlo... array sin NULLs...
+            $res[$attr] = array_filter( $objectList ); // Saco nulls del array
          }
       }
       
@@ -872,40 +785,36 @@ class PersistentObject {
       $this->errors = NULL; // Reset
 
       // FIXME: el primer foreach deberia hacerse sobre $attrs
-
       if ($this->constraints)
       {
-        foreach ( $this->constraints as $attr => $constraintArray ) // Para cada campo
-        {
-           if ( in_array($attr, $attrs) )
-           {
-              foreach ( $constraintArray as $constraint )
-              {
-                 if ( !$constraint->evaluate( $this->aGet($attr) ) )
-                 {
-                    $valid = false;
+         foreach ( $this->constraints as $attr => $constraintArray ) // Para cada campo
+         {
+            if ( in_array($attr, $attrs) )
+            {
+               foreach ( $constraintArray as $constraint )
+               {
+                  if ( !$constraint->evaluate( $this->aGet($attr) ) )
+                  {
+                     $valid = false;
    
-                    // TODO: Validar asociaciones hasOne !!!  (*****)
+                     // TODO: Validar asociaciones hasOne !!!  (*****)
    
-                    // Agrego el error a "errors"
-   
-                    // Si no esta inicializada // NO ES NECESARIO, AHORA LO INICIALIZO CON UN ARRAY.
-                    //if (!$this->errors) $this->errors = array();
-   
-                    // Si no hay un vector de mensajes para este campo
-                    if (!isset($this->errors[ $attr ])) $this->errors[$attr] = array();
-   
-                    // ====================================================================
-                    YuppLoader::load('core.validation','ValidationMessage');
-                    $err = ValidationMessage::getMessage( $constraint, $attr, $this->aGet($attr) );
-                    // ====================================================================
+                     // Agrego el error a "errors"
 
-                    // Agrego mensaje
-                    $this->errors[$attr][] = $err;
-                 }
-              }
-           }
-        }
+                     // Si no hay un vector de mensajes para este campo
+                     if (!isset($this->errors[ $attr ])) $this->errors[$attr] = array();
+   
+                     // ====================================================================
+                     YuppLoader::load('core.validation','ValidationMessage');
+                     $err = ValidationMessage::getMessage( $constraint, $attr, $this->aGet($attr) );
+                     // ====================================================================
+
+                     // Agrego mensaje
+                     $this->errors[$attr][] = $err;
+                  }
+               }
+            }
+         }
       }
 
       return $valid;
@@ -927,12 +836,10 @@ class PersistentObject {
    {
       Logger::getInstance()->po_log("PO:validate " . get_class($this));
       
-      
       // Preprocesamiento para validar
       // http://code.google.com/p/yupp/issues/detail?id=72
       $this->preValidate();
       
-
       // TODO: Verificar restricciones sobre asociaciones (p.ej. NotNull)  (*****)
 
       // Si tiene restriccion nullable(true) o blank(true) y el valor es nulo o vacio,
@@ -1021,13 +928,12 @@ class PersistentObject {
                   $err = ValidationMessage::getMessage( $constraint, $attr, $value );
                   // ====================================================================
 
-                  Logger::getInstance()->po_log("PO:validate error msg: ". $err);
+                  //Logger::getInstance()->po_log("PO:validate error msg: ". $err);
 
                   // Agrego el error a "errors"
 
                   // Si no hay un vector de mensajes para este campo
                   if (!isset($this->errors[ $attr ])) $this->errors[$attr] = array();
-
                   $this->errors[$attr][] = $err;
                }
             }
@@ -1049,6 +955,9 @@ class PersistentObject {
                {
                   $valid = false;
                   // TODO: puedo pedirle los errores y adjuntarlos a los mios ($this->errors)
+                  //       puede ser con un prefijo del nombre del atributo, y estos errores
+                  //       pueden ir en cascada hasta el objeto original que se esta validando
+                  //       asi se puede saber si hubo un error en el objeto o en uno relacionado.
                }
             }
          }
@@ -1159,7 +1068,6 @@ class PersistentObject {
          // Esto se ve afectado por el lazy load?
          // Si porque la busqueda actualmente se hace en memoria
          // Para hacerlo bien robusto, deberia cargar todo, buscar, eliminar en memoria y eliminar en la base (eliminar a relacion no el objeto!)
-         //
 
          $attr = String::firstToLower($attr);
          $this->aRemoveFrom( $attr, $args[0] );
@@ -1192,22 +1100,8 @@ class PersistentObject {
             $refAttrName = DatabaseNormalization::simpleAssoc( $attr );
             if ($obj)
             {
-               // Tengo que encontrar el id de la clase declarada en el atributo, porque
-               // obj puede ser una subclase de la clase del atributo, pero para cargar
-               // correctamente de la base, debo guardarme el id de la superclase de $obj
-               // que es la clase del atributo hasOne $attr.
+               // Si es MTI, el id de cualquier clase parcial será el mismo.
                $refId = $obj->getId();
-               
-               // Si el tipo del atributo declarado no es el del objeto relacionado
-               // (el de el objeto debe ser una subclase del declarado).
-               // Y si se mapean en distintas tablas (si se mapean en la misma, el id
-               // del objeto y el de su superclase es el mismo).
-               if ( $type !== $obj->getClass() &&
-                    !PersistentManager::isMappedOnSameTable( $type, $obj->getClass() )
-                  )
-               {
-                  $refId = $obj->getMultipleTableId( $type ); // $obj->super_id_SuperClass
-               }
                
                // seteo "email_id"
                $this->attributeValues[ $refAttrName ] = $refId;
@@ -1272,19 +1166,9 @@ class PersistentObject {
    //
    public static function listAll( ArrayObject $params )
    {
-      Logger::getInstance()->po_log("ListAll ". self::$thisClass);
-
-//      $offset = 0;
-//      if (isset( $params['offset'] )) $offset = $params['offset'];
-//
-//      $max = 0; // Con max en 0
-//      if (isset( $params['max'] )) $max = $params['max'];
-
       // FIXME: PM no necesita una instancia, le puedo pasar la clase derecho.
       $ins = new self::$thisClass();
-
-      // FIXME: Pasarle params con where.
-      return PersistentManager::getInstance()->listAll($ins, $params);
+      return PersistentManager::getInstance()->listAll($ins, self::filtrarParams($params));
    }
 
 
@@ -1295,23 +1179,35 @@ class PersistentObject {
     */
    public static function findBy( Condition $condition, ArrayObject $params )
    {
-      // Para que al agregarle atributos no modifique a $params
-      $_params = new ArrayObject( $params->getArrayCopy() );
-      
-      // Verifica argumentos por defecto.
-      if (!isset($params['offset'])) $_params['offset'] = 0;
-      if (!isset($params['max']))    $_params['max']    = 10; // Numero por defecto, hardcoded.
-      if (!isset($params['sort']))   $_params['sort']   = 'id';
-      if (!isset($params['dir']))    $_params['dir']    = 'asc';
-
-      // TODO:
-      // Tengo que modificar la API de listAll para que acepte Conditions,
-      // sobre todo hay que ver como le paso sort, dir, offset y max, ver como armo la Condition adentro de PM.listall()
-      $pm = PersistentManager::getInstance();
-
       $ins = new self::$thisClass();
-
-      return $pm->findBy( $ins, $condition, $_params );
+      return PersistentManager::getInstance()->findBy( $ins, $condition, self::filtrarParams($params) );
+   }
+   
+   /**
+    * Verifica los parametros max, offset, sort y dir, que pueden venir en un
+    * request incluyendo errores, y devuelve un array de parametros correctos.
+    */
+   public static function filtrarParams( ArrayObject $params )
+   {
+      $ret = new ArrayObject( $params->getArrayCopy() );
+      
+      // 1. Si no hay algun parametro, agregarlo con valor por defecto.
+      // 2. Si los parametros enteros vienen con un valor invalido, poner el valor por defecto.
+      // 3. Si el parametro dir viene con un valor distinto de asc o desc, poner el valor por defecto (incluye que no venga o que venga con valor vacio).
+      
+      // Si es vacio, o si no es numerico, o si no es entero
+      if (!isset($ret['offset']) || !is_numeric($ret['offset']) || (int)$ret['offset'] != $ret['offset']) $ret['offset'] = 0;
+      
+      // Si es vacio, o si no es numerico, o si no es entero, o si max es mas que 500 (ver http://code.google.com/p/yupp/issues/detail?id=91)
+      if (!isset($ret['max']) || !is_numeric($ret['max']) || (int)$ret['max'] != $ret['max'] || $ret['max'] > 500) $ret['max'] = 50; // Numero por defecto, hardcoded.
+      
+      // Si no viene sort, se hace por el atributo id
+      if (!isset($ret['sort'])) $ret['sort'] = 'id';
+      
+      // Si no viene dir o si tiene un valor invalido
+      if (!isset($ret['dir']) || ($ret['dir'] != 'asc' && $ret['dir'] != 'desc')) $ret['dir'] = 'asc';
+      
+      return $ret;
    }
 
    public static function countBy( Condition $condition )
@@ -1320,13 +1216,6 @@ class PersistentObject {
       $ins = new self::$thisClass();
       return $pm->countBy( $ins, $condition );
    }
-
-   // TODO
-   /* Fijarse que listAll recibe una Condition, esto es mas por si armo toda una consulta complicada, no se si el lugar sea PO o deba ir derecho a PM.
-   public static function findAllWithQuery( Query $q )
-   {
-   }
-   */
 
    public static function count()
    {
@@ -1350,14 +1239,11 @@ class PersistentObject {
     */
    public function hasManyAttributesOfClass( $clazz )
    {
-      //echo get_class($this) . " hasManyAttributesOfClass $clazz " . gettype($clazz) ." - ";
       $res = array();
       foreach ($this->hasMany as $attrname => $hmclazz)
       {
-         //echo " hmclazz: $hmclazz " . gettype($hmclazz) ." - ";
          if ($clazz === $hmclazz)
          {
-            //echo " COINCIDE: $clazz, $hmclazz ";
             $res[] = $attrname;
          }
       }
@@ -1374,7 +1260,6 @@ class PersistentObject {
    {
       $res = array();
       foreach ($this->hasOne as $attrname => $hmclazz) if ($clazz == $hmclazz) $res[] = $attrname;
-
       return $res;
    }
 
@@ -1387,7 +1272,6 @@ class PersistentObject {
    public static function attributesOfSameRelationship( $aAttr, $bAttr )
    {
       // Si los nombres de lso atributos tienen la asociacion codificada (luego de "__"), se fija si estas son iguales.
-      //echo "<h1>--- attributesOfSameRelationship( $aAttr $bAttr ) ---".strrpos($aAttr, "__")."</h1>";
       $suf1 = substr( $aAttr, strrpos($aAttr, "__") );
       $suf2 = substr( $bAttr, strrpos($bAttr, "__") );
 
@@ -1402,7 +1286,6 @@ class PersistentObject {
    {
       $pos = strrpos($attributeRawName, "__");
       if ( $pos === false ) return $attributeRawName;
-      
       return substr( $attributeRawName, -$pos);
    }
 
@@ -1487,12 +1370,12 @@ class PersistentObject {
    {
       // SOL TICKET #2
       // Dependiendo del tipo de relacion se si un objeto es duenio de otro:
-      // - 1)  Si la relacion es A (1)->(1) B entonces B belongsTo A.
+      // - 1)  Si la relacion es A (1)->(1) B entonces se necesita belongsTo explicito para no salvar en cascada relaciones que en realidad son blandas (p.e. modelado de *->1 donde el lado * en realidad es blando). (desde el modelo, esto es igual a (*)->(1))
       // - 2)  Si la relacion es A (1)<->(1) B entonces se necesita belongsTo para saber cual es el lado fuerte.
       // - 3)  Si la relacion es A (1)->(*) B entonces B belongsTo A.
       // - 4)  Si la relacion es A (1)<->(*) B entonces B belongsTo A.
-      // - 5)  Si la relacion es A (*)->(*) B entonces B belongsTo A.
-      // - 6)  Si la relacion es A (*)<->(*) B entonces se necesita belongsTo en alg�n lado.
+      // - 5)  Si la relacion es A (*)->(*) B entonces B belongsTo A. (desde el modelo, es lo mismo que (1)->(*))
+      // - 6)  Si la relacion es A (*)<->(*) B entonces se necesita belongsTo en algun lado.
       //
       // La clase actual es A, el obj es de clase B.
 
@@ -1525,7 +1408,7 @@ class PersistentObject {
          }
          else
          {
-            //if ($obj->hasManyOfThis( get_class($this) )) // 6) bidireccional *..*
+            // 6) bidireccional *..*
             if ($obj->hasManyOfThis( $_thisClass  ))
             {
                return $obj->belonsToClass( $_thisClass ); // problema: get_class(this) tira PO...
@@ -1612,8 +1495,11 @@ class PersistentObject {
                else
                {
                   // TODO: otro valor posible podria ser "true" o "false" como strings.
-                  if ( $value === "0" || $value === 0 ) $this->attributeValues[ $attribute ] = false;
-                  else if ( $value === "1" || $value === 1 ) $this->attributeValues[ $attribute ] = true;
+                  // TODO: ademas depende del DBMS
+                  //  - "0"/"1" para MySQL funciona
+                  //  - "f"/"t" para Postgres funciona
+                  if ( $value === "0" || $value === 0 || $value === "f" ) $this->attributeValues[ $attribute ] = false;
+                  else if ( $value === "1" || $value === 1 || $value === "t" ) $this->attributeValues[ $attribute ] = true;
                }
             }
             else
@@ -1979,7 +1865,7 @@ class PersistentObject {
          
          switch ( $this->hasManyType[$attribute] )
          {
-            case self::HASMANY_COLECTION:
+            case self::HASMANY_COLLECTION:
             
                $this->attributeValues[ $attr_with_assoc_name ][] = $value; // TODO: Verificar que args0 es un PersistentObject y es simple!
                                                                            // FIXME: bool is_subclass_of ( mixed $object, string $class_name )
@@ -2079,19 +1965,15 @@ class PersistentObject {
             if ( $id != -1 )
             {
                // Busco en atributos hasMany attr y si encuentro elimino.
-               $hmList = $this->attributeValues[$attr];
-               foreach ( $hmList as $i => $obj )
+               foreach ( $this->attributeValues[$attr] as $i => $obj )
                {
                   // Busco por id.
                   // FIXME: el objeto DEBE tener id! (si lo cargue lazy tiene id, si no, tengo que guardarlo antes de preguntar por id!...)
-                  if ( $obj->getId() == $id ) // FIXME: OJO COMPARACION DE OBJETOS... DEBERIA COMPARAR ids?
+                  if ( $obj->getId() == $id )
                   {
-                     // TODO: debe actualiza la tabla de relacion, eliminando la relacion persistida!
+                     // Saca de la relacion el objeto con id=$id
                      $this->attributeValues[$attr][$i] = null;
                      $this->attributeValues[$attr] = array_filter($this->attributeValues[$attr]); // La forma PHP de hacerlo... array sin NULLs...
-
-                     // Actualizo la base:
-                     //remove_assoc( $obj1, $obj2, $attr1, $attr2, $logical = false );
 
                      // TODO: Verificar si el nombre de este atributo es el correcto!
                      // Dado el otro objeto y mi atributo, quiero el atributo del otro objeto que corresponda a la relacion con mi atributo.
@@ -2106,7 +1988,8 @@ class PersistentObject {
 //                     echo '<h1 style="color:red;">OBJ2:  '. get_class($obj)   .'</h1>';
 //                     echo '<h1 style="color:red;">ATTR1: '. $attr  .'</h1>';
 //                     echo '<h1 style="color:red;">ATTR2: '. $attr2 .'</h1>';
-
+                     
+                     //remove_assoc( $obj1, $obj2, $attr1, $attr2, $logical = false );
                      // Por defecto la asociacion se borra fisicamente.
                      $pm->remove_assoc( $this, $obj, $attr, $attr2, $logical ); // TODOL: Ok ahora falta hacer que el get considere asociaciones solo con daleted false cuando carga.
 

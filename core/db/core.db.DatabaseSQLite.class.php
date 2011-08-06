@@ -363,7 +363,7 @@ class DatabaseSQLite {
             $where = $this->evaluateENEQCondition( $condition );
          break;
          case Condition::TYPE_LIKE:
-            $where .= $this->evaluateLIKECondition( $condition );
+            $where = $this->evaluateLIKECondition( $condition );
          break;
          case Condition::TYPE_ILIKE:
             $where = $this->evaluateILIKECondition( $condition );
@@ -416,6 +416,7 @@ class DatabaseSQLite {
    {
       // Si es 0 me devuelve null...
       if ( $refVal === 0 ) return "0";
+      if ( is_bool($refVal) ) return (($refVal)?'1':'0');
       return (is_string($refVal)) ? "'" . $refVal . "'" : $refVal;
    }
    
@@ -610,7 +611,6 @@ class DatabaseSQLite {
    }
    //
    // /EVALUACION DE CONSULTAS ======================================================
-   
 }
 
 ?>

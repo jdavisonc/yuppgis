@@ -18,7 +18,7 @@ class YuppForm2
    private $fields = array (); // Lista de campos o grupos del form.
 
    // Destino del form en partes.
-   private $component;
+   private $app;
    private $controller;
    private $action;
    
@@ -40,7 +40,7 @@ class YuppForm2
     * @param array $params lista de parametros con nombre, los parametros posibles son:
     * 
     *   - string  actionUrl: direccion de destino del formulario.
-    *   - string  component: 
+    *   - string  app: 
     *   - string  controller: 
     *   - string  action: 
     *   - boolean isAjax: indica si al enviar el formulario se utiliza ajax o no.
@@ -49,7 +49,7 @@ class YuppForm2
     *                           sentido darle un valor si $isAjax es true.
     *
     */
-   //public function __construct($component, $controller, $action, $isAjax = false, $ajaxCallback = '')
+   //public function __construct($app, $controller, $action, $isAjax = false, $ajaxCallback = '')
    public function __construct( $params )
    {
       if (!is_array($params)) throw new Exception("Error: 'params' debe ser un array. " . __FILE__ ." ". __LINE__);
@@ -64,10 +64,10 @@ class YuppForm2
          // http://code.google.com/p/yupp/issues/detail?id=28
          
          $ctx = YuppContext::getInstance();
-         if (isset($params['component']))
-            $this->component = $params['component'];
+         if (isset($params['app']))
+            $this->app = $params['app'];
          else
-            $this->component = $ctx->getComponent();
+            $this->app = $ctx->getApp();
          
          if (isset($params['controller']))
             $this->controller = $params['controller'];
@@ -113,7 +113,7 @@ class YuppForm2
       if ( is_null($this->action_url) )
       {
          return Helpers :: url(array (
-            "component" => $this->component,
+            "app" => $this->app,
             "controller" => $this->controller,
             "action" => $this->action
          ));
@@ -291,7 +291,7 @@ class YuppFormField2
    
    public static function date($params)
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::DATE, $label);
       $f->set( $params );
@@ -300,7 +300,7 @@ class YuppFormField2
    
    public static function password($params)
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::PASSWORD, $label);
       $f->set( $params );
@@ -309,7 +309,7 @@ class YuppFormField2
 
    public static function select( $params ) //($name, $action, $label = "")
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::SELECT, $label);
       $f->set( $params );
@@ -318,7 +318,7 @@ class YuppFormField2
 
    public static function submit($params)
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::SUBMIT, $label);
       $f->set( $params );
@@ -327,7 +327,7 @@ class YuppFormField2
 
    public static function text($params)
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::TEXT, $label);
       $f->set( $params );
@@ -336,7 +336,7 @@ class YuppFormField2
    
    public static function radio($params)
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::RADIO, $label);
       $f->set( $params );
@@ -345,7 +345,7 @@ class YuppFormField2
    
    public static function check($params)
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::CHECK, $label);
       $f->set( $params );
@@ -354,7 +354,7 @@ class YuppFormField2
    
    public static function bigtext($params)
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::BIGTEXT, $label);
       $f->set( $params );
@@ -370,7 +370,7 @@ class YuppFormField2
    
    public static function file($params)
    {
-      $label = $params['label'];
+      $label = ( (isset($params['label'])) ? $params['label'] : '' );
       unset($params['label']); // para que label no aparezca en la lista de params.
       $f = new YuppFormField2(self::FILE, $label);
       $f->set( $params );
@@ -557,7 +557,6 @@ class YuppFormDisplay2
 //echo "VALUE: $value<br/>";
 //echo gettype($value);
 
-
             $fieldHTML .= '<div class="label check"><label for="checkbox_'. $fieldNumber .'">' . $field->getLabel() . '</label></div>';
             $fieldHTML .= '<div class="field check"><input type="checkbox" id="checkbox_'. $fieldNumber .'" name="'. $name .'" value="'. $value .'" '. (($field->get("on"))?'checked="true"':'') . $field->getTagParams() .' /></div>';
          
@@ -641,8 +640,7 @@ class YuppFormDisplay2
    private static function display_ajax_form_jquery($form)
    {
       $html = '';
-      //$html .= h('js', array('name'=>'jquery/jquery-1.3.1.min'));
-      $html .= h('js', array('name'=>'jquery/jquery-1.5.min'));
+      $html .= h('js', array('name'=>'jquery/jquery-1.5.1.min'));
       $html .= h('js', array('name'=>'jquery/jquery.form.2_43'));
    
       // TODO: llamar a una funcion JS antes de hacer el request AJAX.
