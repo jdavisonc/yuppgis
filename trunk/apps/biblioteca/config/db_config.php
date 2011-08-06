@@ -1,11 +1,13 @@
 <?php
 
 $db = array(
-	'type'     => 'mysql',
-	'url'  	   => 'localhost',
-	'user'     => 'root',
-	'pass'     => '',
-	'database' => 'yupp_biblioteca'
+	self::MODE_DEV  => array(
+       'type'     => 'postgres',
+       'url'      => 'localhost',
+       'user'     => 'yuppgis',
+       'pass'     => 'yuppgis',
+       'database' => 'yupp_dev'
+    )
 );
 
 ?>
