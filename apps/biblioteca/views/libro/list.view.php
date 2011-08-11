@@ -1,4 +1,5 @@
 <?php
+
  // Modelo pasado desde el controlador
  $m = Model::getInstance();
 ?>
@@ -46,11 +47,15 @@
                                       "body"       => "Obtener datos por Ajax",
                                       "after"      => "after_function",
                                       "before"     => "before_function" )  ); ?>
+                                      
 			
 		</td>
        </tr>
      <?php endforeach; ?>
+     
    </table>
+  
+ 
    
    <?php /*
    <?php foreach( $m->get('libros') as $libro) : ?>
