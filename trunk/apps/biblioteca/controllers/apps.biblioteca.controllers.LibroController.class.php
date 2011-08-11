@@ -16,11 +16,11 @@ class LibroController extends YuppController {
 	  
 	  sleep( 1 );
 	  
-      $id = $this->params['id'];        // Obtiene el parámetro id
+      $id = $this->params['id'];        // Obtiene el parï¿½metro id
       $libro = Libro::get( $id );       // Carga el libro con ese id
-      $json = JSONPO::toJSON( $libro ); // Genera la serialización a json
+      $json = JSONPO::toJSON( $libro ); // Genera la serializaciï¿½n a json
 
-      // Lo que se devolverá en el response HTTP será de tipo json
+      // Lo que se devolverï¿½ en el response HTTP serï¿½ de tipo json
       header('Content-type: application/json');
 
       // Escribe el string json en la respuesta al usuario
