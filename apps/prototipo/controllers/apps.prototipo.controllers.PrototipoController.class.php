@@ -6,6 +6,10 @@ class PrototipoController extends YuppController {
 	{
       return $this->renderString("Bienvenido a su nueva aplicacion!");
 	}
+	
+	public function mapAction(){
+		return;
+	}
 }
 
 ?>
