@@ -49,8 +49,9 @@ date_default_timezone_set( 'America/Montevideo' );
 YuppLoader :: load('core.web', 'RequestManager');
 YuppLoader :: load('core.mvc', 'YuppController'); // Se usa en cada controlador que lo extiende.
 YuppLoader :: load('core.mvc', 'Helpers'); // Usado para acceder a la funcion h()
-YuppLoader :: load('core.gis', 'GISHelpers'); 
-YuppLoader :: load('core.gis', 'MapParams'); 
+YuppLoader :: load('yuppgis.core.layout', 'GISLayoutManager'); 
+YuppLoader :: load('yuppgis.core.gis', 'GISHelpers'); 
+YuppLoader :: load('yuppgis.core.gis', 'MapParams'); 
 YuppLoader :: load('core.utils', 'Logger');
 
 
