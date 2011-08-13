@@ -8,7 +8,7 @@ class GISHelpers{
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
 		
-		LayoutManager::getInstance()->addJSLibReference( array("name" => "gis/OpenLayers"));
+		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 		
 	$html =	'
 	
