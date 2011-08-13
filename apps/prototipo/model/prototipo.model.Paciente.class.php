@@ -21,6 +21,26 @@ class Paciente extends PersistentObject {
 		self :: $thisClass = __CLASS__;
 		return PersistentObject :: listAll($params);
 	}
+	
+	/*Acciones*/
+		
+	public static function averageAgeAction(){
+		
+	}
+	
+	public static function maleAction(){
+		
+	}
+	
+	/*Filtros*/
+	
+	public static function byNameFilter($param){
+		
+	}
+	
+	public static function byLastNameFilter($param){
+		
+	}
 
 }
 
