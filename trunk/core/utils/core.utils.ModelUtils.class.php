@@ -16,6 +16,9 @@ include_once('./core/core.FileSystem.class.php');
 include_once('./core/config/core.config.PackageNames.class.php');
 include_once('./core/persistent/core.persistent.PersistentObject.class.php');
 
+// Se incluye @GISPersistentObject de YuppGis
+include_once('./yuppgis/core/persistent/yuppgis.core.persistent.GISPersistentObject.class.php');
+
 class ModelUtils {
 
    /**
