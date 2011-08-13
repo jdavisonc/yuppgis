@@ -1,16 +1,44 @@
 <?php
 class GISHelpers{
+	
+	
+	/*Menu*/
+	
+	public static function AvailableActions($model){
+	
+		if ($model == null || $model == ""){
+			throw new Exception("La clase no puede ser nula");
+		}
+		$path = YuppConventions::getModelPath($model);
+		if (!file_exists($path)){
+			throw new Exception("La clase $path no existe");
+		}else{
+			/*Recorro la clase y busco los metodos que terminan en filter*/
+			$methods = get_class_methods($model);
+			$actions =  array();
+			foreach ($methods as $method){
+				if (String::endsWith($method, "Action")){
+				 	array_push($actions, $method); 
+				}
+			}
+		}
+	} 
+	
+	
+	
+	/*Mapa*/
+	
 	public static function Map($params=null){
-		
-		$id = MapParams::getValueOrDefault($params, MapParams::ID); 
+
+		$id = MapParams::getValueOrDefault($params, MapParams::ID);
 		$url = MapParams::getValueOrDefault($params, MapParams::URL);
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
-		
+
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
-		
-	$html =	'
+
+		$html =	'
 	
 		<script src="'.$url.'" type="text/javascript"></script>			
 		<script type="text/javascript">
@@ -50,9 +78,9 @@ class GISHelpers{
 	
 	<script>init();</script>
 		';
-		
+
 		return  $html;
-		
+
 	}
 }
 
