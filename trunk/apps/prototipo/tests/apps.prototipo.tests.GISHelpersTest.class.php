@@ -1,21 +1,31 @@
 <?php
 
 YuppLoader::load('core.testing', 'TestCase');
-
+YuppLoader::load('prototipo.model', 'Paciente');
 
 class GISHelpersTest extends TestCase {
 
 	public function run()
 	{
-		$this->test1();
+		$this->testGetActions();
+		$this->testGetFilters();
 	}
 	
-	public function test1()
+	public function testGetActions()
 	{
-		$actions = GISHelpers::AvailableActions("apps.prototipo.model.tests.TestModel");
+		$result = GISHelpers::AvailableActions("Paciente");
+		$count = count($result);
 		
-		$this->assert(array_count_values($actions) == 2, 'Test acciones disponibles');
+		$this->assert($count == 2, 'Test acciones disponibles:'.$count);		
 		
+	}
+	
+public function testGetFilters()
+	{
+		$result = GISHelpers::AvailableFilters("Paciente");
+		$count = count($result);
+		
+		$this->assert($count == 2, 'Test filtros disponibles:'.$count);		
 		
 	}
 }

@@ -1,33 +1,42 @@
 <?php
 class GISHelpers{
-	
-	
+
+
 	/*Menu*/
-	
-	public static function AvailableActions($model){
-	
-		if ($model == null || $model == ""){
-			throw new Exception("La clase no puede ser nula");
-		}
-		$path = YuppConventions::getModelPath($model);
-		if (!file_exists($path)){
-			throw new Exception("La clase $path no existe");
+	private static function ReflectMethods($class, $token, $issuffix=true){
+		if (!class_exists($class)){
+			throw new Exception("La clase $class no existe o no está cargada");
 		}else{
 			/*Recorro la clase y busco los metodos que terminan en filter*/
-			$methods = get_class_methods($model);
+			$methods = get_class_methods($class);
 			$actions =  array();
 			foreach ($methods as $method){
-				if (String::endsWith($method, "Action")){
-				 	array_push($actions, $method); 
+				if (String::endsWith($method, $token) && $issuffix){
+					array_push($actions, $method);
+				}else{
+					if (String::startsWith($method, $token) && !$issuffix){
+						array_push($actions, $method);
+					}
 				}
 			}
+			return $actions;
 		}
-	} 
-	
-	
-	
+	}
+
+	public static function AvailableActions($class){
+
+		return self::ReflectMethods($class, 'Action', true);
+	}
+
+	public static function AvailableFilters($class){
+
+		return self::ReflectMethods($class, 'Filter', true);
+	}
+
+
+
 	/*Mapa*/
-	
+
 	public static function Map($params=null){
 
 		$id = MapParams::getValueOrDefault($params, MapParams::ID);
