@@ -34,6 +34,18 @@ class GISHelpers{
 	}
 
 
+	public static function ActionsMenu($class, $id){
+		$html = '<select id="'.$id.'">';
+		$html .= '<option value="nothing"></option>';
+		
+		foreach (self::AvailableActions($class) as $option){
+			$html .= '<option value="'.$option.'">'.$option.'</option>';			 
+		}
+		
+		$html .= '</select>';
+		
+		return $html;
+	}
 
 	/*Mapa*/
 
