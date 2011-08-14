@@ -66,5 +66,7 @@
    <?php endforeach; ?>
    */ ?>
    
+   <?php echo GISHelpers::Map('ejemplo'); ?>
+   
  </body>
 </html>
