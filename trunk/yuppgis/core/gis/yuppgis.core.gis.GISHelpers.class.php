@@ -23,17 +23,35 @@ class GISHelpers{
 		}
 	}
 
+	
+	/**
+	 * Obtiene las acciones declaradas en la clase
+	 * @param nombre de la clase
+	 * @return array con nombre de las acciones
+	 */
 	public static function AvailableActions($class){
 
 		return self::ReflectMethods($class, 'Action', true);
 	}
 
+	
+	/**
+	 * Obtiene los filtros declarados en la clase
+	 * @param nombre de la clase
+	 * @return array con nombre de los filtros
+	 */
 	public static function AvailableFilters($class){
 
 		return self::ReflectMethods($class, 'Filter', true);
 	}
 
 
+	/**
+	 * Genera el html para un combo de selección
+	 * @param nombre de la clase
+	 * @param id del elemento
+	 * @return html generado para el menú
+	 */
 	public static function ActionsMenu($class, $id){
 		$html = '<select id="'.$id.'">';
 		$html .= '<option value="nothing"></option>';
@@ -49,6 +67,11 @@ class GISHelpers{
 
 	/*Mapa*/
 
+	/**
+	 * Genera el html para desplegar un mapa en pantalla
+	 * @param lista de parámetros de tipo enumerado MapParams
+	 * @return html generado para el mapa
+	 */
 	public static function Map($params=null){
 
 		$id = MapParams::getValueOrDefault($params, MapParams::ID);
