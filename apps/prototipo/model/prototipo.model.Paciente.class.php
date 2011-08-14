@@ -1,12 +1,13 @@
-<?php
+<?php 
 
-class Paciente extends PersistentObject {
+class Paciente extends GISPersistentObject {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
 		
 		$this->setWithTable("prototipo_paciente");
 
 		$this->addAttribute("nombre", Datatypes :: TEXT);
+		$this->addAttribute("ubicacion", GISDatatypes :: POINT);
 
 	 	// Restricciones
 		$this->addConstraints("nombre", array(
