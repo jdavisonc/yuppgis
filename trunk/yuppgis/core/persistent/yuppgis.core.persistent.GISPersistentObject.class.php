@@ -13,15 +13,16 @@ class GISPersistentObject extends PersistentObject {
 		
 		switch($type) {
 		    case GISDatatypes::POINT:
+		        parent::addHasOne($name, Point::getClassName());
+		    	break;
 		    case GISDatatypes::LINE:
 		    case GISDatatypes::LINERING:
 		    case GISDatatypes::LINESTRING:
 		    case GISDatatypes::POLYGON:
-		        parent::addHasOne($name, Point::getClassName());
 		    	break;
 		    default;
 		        parent::addAttribute($name, $type);
-		    break;
+		    	break;
 		}
 	}
 	
