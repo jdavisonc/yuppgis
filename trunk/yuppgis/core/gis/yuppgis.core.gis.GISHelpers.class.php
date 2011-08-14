@@ -79,17 +79,17 @@ class GISHelpers{
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
-
+		
+		$pin_map = "/yuppgis/yuppgis/js/gis/img/marker-blue.png";
+		
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 
 		$html =	'
-	
 		<script src="'.$url.'" type="text/javascript"></script>			
 		<script type="text/javascript">
 			function setHTML(response) {
-
 				document.getElementById("nodeList").innerHTML = response.responseText;
-				}
+			}
 			
 			function init(){
  				var google = new OpenLayers.Layer.Google( "Google", { type: G_HYBRID_MAP } );
@@ -103,10 +103,36 @@ class GISHelpers{
 				var map = new OpenLayers.Map("'.$id.'", options );
 
  			 	map.addLayer(google);
-				map.zoomToMaxExtent();
+				map.zoomToMaxExtent();				
+				
+								
+                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});                  
+                var styleMap = new OpenLayers.StyleMap({pointRadius: 10, externalGraphic: "'.$pin_map.'"});                         
+                vectorLayer = new OpenLayers.Layer.Vector("Points", {styleMap: styleMap});
+ 
+                map.addLayers([wms, vectorLayer]);
+                map.addControl(new OpenLayers.Control.LayerSwitcher());
+                map.addControl(new OpenLayers.Control.MousePosition());
+ 
+                drawPoint=new OpenLayers.Control.DrawFeature(vectorLayer,OpenLayers.Handler.Point);
+				drawPoint.featureAdded = featAdded;
+				map.addControl(drawPoint);
+				
+                map.setCenter(new OpenLayers.LonLat(0, 0), 3);
 				
 			}
 
+			function featAdded() {
+				var el = document.getElementById("text");
+				el.value=drawPoint.handler.point.geometry.x+", "+drawPoint.handler.point.geometry.y;
+            }
+            function dibujar() {
+            	drawPoint.activate();
+            }
+            function parar() {
+				drawPoint.deactivate();
+            }
+            
 		</script>
 	
 		<style type="text/css">
@@ -118,10 +144,14 @@ class GISHelpers{
 		</style>
 		
 		<div id="'.$id.'"></div>
-	<div id="nodeList"></div>
+		<div id="nodeList"></div>
 	
-	<script>init();</script>
-		';
+	
+		<body onload="init()">        	
+        	<input type="button" value="Dibujar" onclick="dibujar()"/> 
+        	<input type="button" value="Parar" onclick="parar()"/> 
+        	Último punto: <input type="text" value="no set" id="text" width="30"/> 
+    	</body> ';
 
 		return  $html;
 
