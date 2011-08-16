@@ -1,6 +1,6 @@
 <?php
 
-abstract class Geometry {
+abstract class Geometry extends GISPersistentObject {
 	
 	/**
 	 * Retorna nombre de clase

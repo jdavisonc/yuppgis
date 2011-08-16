@@ -7,6 +7,8 @@ YuppLoader :: load('yuppgis.core.db', 'GISDatatypes');
 YuppLoader :: load('yuppgis.core.basic', 'Geometry');
 YuppLoader :: load('yuppgis.core.basic', 'Point');
 
+YuppLoader :: load('yuppgis.core.persistent', 'GISPersistentManager');
+
 class GISPersistentObject extends PersistentObject {
 	
 	public function addAttribute($name, $type) {
@@ -23,6 +25,14 @@ class GISPersistentObject extends PersistentObject {
 		    default;
 		        parent::addAttribute($name, $type);
 		    	break;
+		}
+	}
+
+	public function aGetObject( $attr, $id ) {
+		if (is_subclass_of($this->hasOne[$attr], Geometry :: getClassName())) {
+			return GISPersistentManager::get_gis_object( $this->thisClass , $attr, $this->hasOne[$attr], $id );
+		} else {
+			return parent::aGetObject($attr, $id);
 		}
 	}
 	

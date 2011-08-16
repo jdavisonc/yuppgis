@@ -590,7 +590,7 @@ class PersistentManager {
     * @param array $attrValues array asociativo resultante de cargar una fila de una tabla por su id, es exactamente lo que devuelve $dal->get( $tableName, $id ).
     * @return PersistentObject objeto referenciado por los datos, si es MTI devuelve el objeto completo de la clase correcta.
     */
-   private function get_mti_object_byData( $classLoaded, $attrValues )
+   protected function get_mti_object_byData( $classLoaded, $attrValues )
    {
       Logger::getInstance()->pm_log("PM.get_mti_object_byData: CLASS LOADED: ". $classLoaded ." ". print_r($attrValues, true));
 

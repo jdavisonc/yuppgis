@@ -1704,7 +1704,7 @@ class PersistentObject {
                $assocId = $this->attributeValues[ $assocAttr ];
                if ( $assocId != NULL )
                {
-                  $this->attributeValues[ $attr ] = PersistentManager::getInstance()->get_object( $this->hasOne[$attr], $assocId );
+                  $this->attributeValues[ $attr ] = aGetObject( $attr , $assocId );
                   
                   // Se marca el dirtyOne al pedir hasOne porque no se tiene control
                   // sobre como se va a modificar la instancia solicitada.
@@ -1750,6 +1750,16 @@ class PersistentObject {
       return NULL;
 
    } // aGet
+   
+   /**
+    * 
+    * TODO_GIS: Docuemntar
+    * @param unknown_type $attr
+    * @param unknown_type $id
+    */
+   public function aGetObject( $attr, $id ) {
+   		return PersistentManager::getInstance()->get_object( $this->hasOne[$attr], $id );
+   }
 
    public function aContains( $attribute, $value )
    {
