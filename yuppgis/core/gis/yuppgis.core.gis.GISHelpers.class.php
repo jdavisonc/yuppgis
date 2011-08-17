@@ -75,17 +75,17 @@ class GISHelpers{
 	public static function Map($params=null){
 
 		$id = MapParams::getValueOrDefault($params, MapParams::ID);
-		$url = MapParams::getValueOrDefault($params, MapParams::URL);
+		$olurl = MapParams::getValueOrDefault($params, MapParams::OpenLayerJS_URL);
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
+		$kmlurl = MapParams::getValueOrDefault($params, MapParams::KML_URL);
 		
-		$pin_map = "/yuppgis/yuppgis/js/gis/img/marker-blue.png";
 		
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 
 		$html =	'
-		<script src="'.$url.'" type="text/javascript"></script>			
+		<script src="'.$olurl.'" type="text/javascript"></script>			
 		<script type="text/javascript">
 			function setHTML(response) {
 				document.getElementById("nodeList").innerHTML = response.responseText;
@@ -106,33 +106,28 @@ class GISHelpers{
 				map.zoomToMaxExtent();				
 				
 								
-                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});                  
-                var styleMap = new OpenLayers.StyleMap({pointRadius: 10, externalGraphic: "'.$pin_map.'"});                         
-                vectorLayer = new OpenLayers.Layer.Vector("Points", {styleMap: styleMap});
- 
-                map.addLayers([wms, vectorLayer]);
-                map.addControl(new OpenLayers.Control.LayerSwitcher());
-                map.addControl(new OpenLayers.Control.MousePosition());
- 
-                drawPoint=new OpenLayers.Control.DrawFeature(vectorLayer,OpenLayers.Handler.Point);
-				drawPoint.featureAdded = featAdded;
-				map.addControl(drawPoint);
-				
-                map.setCenter(new OpenLayers.LonLat(0, 0), 3);
+                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});               
+                                        
+                
+ 				var kml = new OpenLayers.Layer.Vector("KML", {
+					            strategies: [new OpenLayers.Strategy.Fixed()],
+					            protocol: new OpenLayers.Protocol.HTTP({
+					                url: "'.$kmlurl.'",
+					                format: new OpenLayers.Format.KML({
+					                    extractStyles: true, 
+					                    extractAttributes: true,
+					                    maxDepth: 2
+					                })
+					            })
+					        });
+					        
+                map.addLayers([wms, kml]);
+                				
+                map.setCenter(new OpenLayers.LonLat(-112.169, 36.099), 11);
+                 
 				
 			}
 
-			function featAdded() {
-				var el = document.getElementById("text");
-				el.value=drawPoint.handler.point.geometry.x+", "+drawPoint.handler.point.geometry.y;
-            }
-            function dibujar() {
-            	drawPoint.activate();
-            }
-            function parar() {
-				drawPoint.deactivate();
-            }
-            
 		</script>
 	
 		<style type="text/css">
@@ -148,9 +143,7 @@ class GISHelpers{
 	
 	
 		<body onload="init()">        	
-        	<input type="button" value="Dibujar" onclick="dibujar()"/> 
-        	<input type="button" value="Parar" onclick="parar()"/> 
-        	Último punto: <input type="text" value="no set" id="text" width="30"/> 
+        
     	</body> ';
 
 		return  $html;

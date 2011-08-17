@@ -1,10 +1,11 @@
 <?php
 class MapParams{
 	const ID = "Id";
-	const URL = "Url";
+	const OpenLayerJS_URL = "OLUrl";
 	const WIDTH = "Width";
 	const HEIGHT = "height";
 	const BORDER = "border";
+	const KML_URL = "kmlurl";
 	
 	public static function getValueOrDefault($array, $key)
 	{
@@ -14,14 +15,16 @@ class MapParams{
 			switch ($key){
 				case MapParams::ID:
 					return 'map_'.uniqid();
-				case MapParams::URL:
+				case MapParams::OpenLayerJS_URL:
 					return "http://maps.google.com/maps?file=api&v=2&key=your_key_here";
 				case MapParams::WIDTH:
 					return "500px";
 				case MapParams::HEIGHT:
 					return "250px";
 				case MapParams::BORDER:
-					return "1px solid black"; 
+					return "1px solid black";
+				case MapParams::KML_URL:
+					return "/Home/KML";  
 			}
 			
 		}			
