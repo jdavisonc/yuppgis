@@ -20,7 +20,7 @@ class Paciente extends GISPersistentObject {
 
 	public static function listAll(ArrayObject $params) {
 		self :: $thisClass = __CLASS__;
-		return PersistentObject :: listAll($params);
+		return GISPersistentObject :: listAll($params);
 	}
 	
 	/*Acciones*/
@@ -31,6 +31,11 @@ class Paciente extends GISPersistentObject {
 	
 	public static function maleAction(){
 		
+	}
+
+	public static function get($id) {
+		self :: $thisClass = __CLASS__;
+		return GISPersistentObject :: get($id);
 	}
 	
 	/*Filtros*/
