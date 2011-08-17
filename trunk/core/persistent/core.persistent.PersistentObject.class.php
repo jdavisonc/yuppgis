@@ -1752,10 +1752,9 @@ class PersistentObject {
    } // aGet
    
    /**
-    * 
-    * TODO_GIS: Docuemntar
-    * @param unknown_type $attr
-    * @param unknown_type $id
+    * Retorna atributo objeto segun su identificador
+    * @param nombre del atributo
+    * @param identificacion del atributo
     */
    public function aGetObject( $attr, $id ) {
    		return PersistentManager::getInstance()->get_object( $this->hasOne[$attr], $id );
