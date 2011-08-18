@@ -400,10 +400,19 @@ Array
       $objToIterate = $obj;
       while (!$found)
       {
-         $parentClass = get_parent_class($objToIterate);
-         $pcIns = new $parentClass(array(), true);
          
-         if ($parentClass !== 'PersistentObject')
+      	 $parentClass = get_parent_class($objToIterate);
+         
+         //TODO_GIS Geometry es abstracta, explota al crear su padre, cambiar chequeo en otro lado
+         $class = new ReflectionClass($parentClass);
+		 if($class->isAbstract()) {
+		 	break; //TODO_GIS, que hacemos si aprece una abstarcta, seguimos probando por los abuelos?
+		 }
+		 	
+         
+         $pcIns = new $parentClass(array(), true);
+         //TODO_GIS 
+         if ($parentClass !== 'PersistentObject' && $parentClass !== 'GISPersistentObject')
          {
             //Logger::getInstance()->pm_log("Caso1: padre no es PO, padre $parentClass " . __FILE__ ." ". __LINE__);
             if ($obj->getWithTable() !== $pcIns->getWithTable()) $found = true;

@@ -251,7 +251,8 @@ class ModelUtils {
    {
       $res = array();
       $parent = get_parent_class( $clazz ); // tiene solo un parent...
-      while ( $parent != NULL && $parent != "" && $parent !== 'PersistentObject' )
+      //TODO_GIS se excluye GISPersistentObject como posible super clase de objeto a ir a buscar en la base
+      while ( $parent != NULL && $parent != "" && $parent !== 'PersistentObject' && $parent !== 'GISPersistentObject')
       {
          //$res[] = $parent; // agrega al final
          array_unshift( $res, $parent ); // agrega al principio, asi sale la superclase de todos en el primer lugar. (*)

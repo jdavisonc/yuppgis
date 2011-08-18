@@ -11,7 +11,7 @@ YuppLoader::load('prototipo.model', 'Paciente');
 class GISPersistentObjectTest extends TestCase {
 
 	public function run() {
-		$this->testPoint();
+		//$this->testPoint();
 		$this->testGetPoint();
 	}
 

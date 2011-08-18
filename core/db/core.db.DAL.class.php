@@ -16,6 +16,7 @@ class DatabaseNormalization {
 
    public static function simpleAssoc( $colName )
    {
+   	//TODO_GIS en los geograficos va a ser _geo??
       return $colName . "_id";
    }
 
