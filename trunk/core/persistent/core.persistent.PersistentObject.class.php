@@ -1704,7 +1704,7 @@ class PersistentObject {
                $assocId = $this->attributeValues[ $assocAttr ];
                if ( $assocId != NULL )
                {
-                  $this->attributeValues[ $attr ] = aGetObject( $attr , $assocId );
+                  $this->attributeValues[ $attr ] = $this->aGetObject( $attr , $assocId );
                   
                   // Se marca el dirtyOne al pedir hasOne porque no se tiene control
                   // sobre como se va a modificar la instancia solicitada.
