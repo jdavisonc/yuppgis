@@ -59,6 +59,14 @@ class DataLayer extends GISPersistentObject {
 	function getId(){
 		return $this->id;
 	}
+	
+/**
+	 * 
+	 * Enter description here ...
+	 */
+	function getName(){
+		return $this->name;
+	}
 }
 
 ?>
