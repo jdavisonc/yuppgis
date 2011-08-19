@@ -80,8 +80,8 @@ class PersistentManager {
             break;
          }
          // /Definicion de estrategia de carga.
-
-         self::$instance = new PersistentManager( $po_loader );
+		self::$instance = new PersistentManager( $po_loader );
+		
       }
       
       return self::$instance;
@@ -98,7 +98,12 @@ class PersistentManager {
       
       Logger::getInstance()->pm_log("PM::__construct appName: " . $appName);
       
-      $this->dal = new DAL($appName); // FIXME: de donde saco el nombre de la app actual???
+      $this->init_dal( $appName );
+   }
+   
+   public function init_dal( $appName ) {
+   	
+   		$this->dal = new DAL($appName); // FIXME: de donde saco el nombre de la app actual???
    }
 
    /**
@@ -999,21 +1004,7 @@ class PersistentManager {
       return $obj;
    }
 
-   /**
-    * 
-    * 
-    * @param unknown_type $tableName
-    * @param unknown_type $id
-    */
-   //TODO_GIS tengo que llamar acá por que el get_object crea una instancia ficticia para sacar el nombre de la tabla
-   // ver si es mejor pasar un parametro mas a la anterior
-   public function getGeometry( $persistentClass, $tableName, $id ) {
-   		Logger::getInstance()->pm_log("PM.get_object " . $persistentClass . " " . $id);
-   		$attrValues = $this->dal->get( $tableName, $id );
-   		$attrValues["class"] = $persistentClass; //TODO_GIS lo seteamos aca??
-   		return $attrValues; 
-   }
-
+   
    /**
     * Fixme, deberia recibir solo la clase, no una instancia.
     * @return Devuelve todos los elementos de la clase dada, que no estan aliminados,
