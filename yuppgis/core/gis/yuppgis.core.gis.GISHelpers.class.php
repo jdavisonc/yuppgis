@@ -85,6 +85,7 @@ class GISHelpers{
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 
 		$html =	'
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script> 
 		<script src="'.$olurl.'" type="text/javascript"></script>			
 		<script type="text/javascript">
 			function setHTML(response) {
@@ -106,13 +107,16 @@ class GISHelpers{
 				map.zoomToMaxExtent();				
 				
 								
-                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});               
-                                        
+                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});';
+
+			$layerId = 1;
+
                 
- 				var kml = new OpenLayers.Layer.Vector("KML", {
+                
+ 			$html .=	'var kml = new OpenLayers.Layer.Vector("KML", {
 					            strategies: [new OpenLayers.Strategy.Fixed()],
 					            protocol: new OpenLayers.Protocol.HTTP({
-					                url: "'.$kmlurl.'",
+					                url: "/yuppgis/prototipo/Home/mapLayer?layerId=1",					                
 					                format: new OpenLayers.Format.KML({
 					                    extractStyles: true, 
 					                    extractAttributes: true,
