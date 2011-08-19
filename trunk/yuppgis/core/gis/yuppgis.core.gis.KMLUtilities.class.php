@@ -42,7 +42,7 @@ class KMLUtilities{
 		</Placemark>";
 		
 		return $kml;
-	}
+	}	
 }
 
 
