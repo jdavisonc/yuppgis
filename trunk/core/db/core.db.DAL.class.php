@@ -50,7 +50,7 @@ class DatabaseNormalization {
 
 class DAL {
 
-   private $db;
+   protected $db;
 
    // TODO: POR AHORA LOS DATOS PARA ACCEDER A LA BD SE CONFIGURAR AQUI...
    private $appName; // Aplicacion para la que se configura la DAL

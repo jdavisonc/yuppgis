@@ -51,7 +51,7 @@ TODOs GRANDEs
 class PersistentManager {
 
    private $po_loader; // POLoader Interface instance
-   private $dal;
+   protected $dal;
    
    const CASCADE_LOAD_ESTRATEGY = 1;
    const LAZY_LOAD_ESTRATEGY    = 2;
@@ -80,7 +80,7 @@ class PersistentManager {
             break;
          }
          // /Definicion de estrategia de carga.
-		self::$instance = new PersistentManager( $po_loader );
+		self::$instance = new GISPersistentManager( $po_loader );
 		
       }
       
@@ -102,7 +102,6 @@ class PersistentManager {
    }
    
    public function init_dal( $appName ) {
-   	
    		$this->dal = new DAL($appName); // FIXME: de donde saco el nombre de la app actual???
    }
 

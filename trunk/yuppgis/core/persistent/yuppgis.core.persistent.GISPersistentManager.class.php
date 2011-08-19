@@ -10,7 +10,7 @@ class GISPersistentManager extends PersistentManager {
 	}
 	
 	// Trae un objeto simple sin asociaciones hasMany y solo los ids de hasOne.
-	public static function get_gis_object( $tableNameOwner, $attr, $persistentClass, $id ) {
+	public function get_gis_object( $tableNameOwner, $attr, $persistentClass, $id ) {
 		
 		Logger::getInstance()->pm_log("GISPM.get_gis_object " . $persistentClass . " " . $id);
 
@@ -21,7 +21,7 @@ class GISPersistentManager extends PersistentManager {
 		
    		// Se crea el objeto directamente ya que no se va a contar con herencia en tablas distintas para
    		// elementos geograficos.
-   		return $this->createGISObjectFromData( $realClass, $attrValues );
+   		return $this->createGISObjectFromData( $persistentClass, $attrValues );
 	}
 	
 	// TODO_GIS: Parsear GML que viene en $data
