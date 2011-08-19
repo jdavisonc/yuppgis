@@ -1,4 +1,7 @@
 <?php
+YuppLoader::load('yuppgis.core.basic', 'DataLayer');
+YuppLoader::load('prototipo.model', 'Paciente');
+YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
 
 class HomeController extends YuppController {
 
@@ -10,6 +13,22 @@ class HomeController extends YuppController {
 	public function mapAction(){
 		return;
 	}
+
+	public function mapLayerAction($params){
+		
+		$layerId = uniqid();
+		$name = 'capanga';
+		
+		$layer =  new DataLayer($layerId, $name, 'nombre');
+		
+		$paciente = new Paciente();				
+		$paciente->setUbicacion(new Point(-112.169, 36.099));
+				
+		$layer->addElement($paciente);
+		
+		return $this->renderString( KMLUtilities::LayerToKml($layer));
+	}
+
 	
 	public function KmlAction(){
 		$kml = '<?xml version="1.0" encoding="UTF-8"?>
