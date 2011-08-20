@@ -6,7 +6,7 @@ class GISDAL extends DAL {
 	public function get_geometry( $tableName, $id ) {
 		if ( $id === NULL ) throw new Exception("GISDAL.get: id no puede ser null");
 
-		$q = "SELECT id, AsGML(geom) as gml FROM " . $tableName . " WHERE id=" . $id;
+		$q = "SELECT id, AsText(geom) as text FROM " . $tableName . " WHERE id=" . $id;
 
 		$this->db->query( $q );
 

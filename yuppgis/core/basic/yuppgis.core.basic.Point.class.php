@@ -2,29 +2,12 @@
 
 class Point extends Geometry {
 	
-	private $x;
-	private $y;
-	
-	
-	public function __construct($x = 0, $y = 0){
-		$this->x = $x;
-		$this->y = $y;
-	}
-	
-	public function getX() {
-		return $this->x;
-	}
-	
-	public function getY() {
-		return $this->y;
-	}
-	
-	public function setY($y) {
-		$this->y = $y;
-	}
-	
-	public function setX($x) {
-		$this->x = $x;
+	function __construct($args = array (), $isSimpleInstance = false) {
+		
+		$this->addAttribute("x", Datatypes :: LONG_NUMBER);
+		$this->addAttribute("y", Datatypes :: LONG_NUMBER);
+		
+		parent :: __construct($args, $isSimpleInstance);
 	}
 	
 }

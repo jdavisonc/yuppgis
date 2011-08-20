@@ -32,13 +32,12 @@ YuppLoader :: load('yuppgis.core.config', 'YuppGISConventions');
 
 	public function aGetObject( $attr, $id ) {
 		if (is_subclass_of($this->hasOne[$attr], Geometry :: getClassName())) {
-			return GISPersistentManager::getInstance()->get_gis_object( $this->getWithTable()  , $attr, $this->hasOne[$attr], $id );
+			return GISPersistentManager::getInstance()->get_gis_object( $this->getWithTable() , $attr, $this->hasOne[$attr], $id );
 		} else {
 			return parent::aGetObject($attr, $id);
 		}
 	}
-	
-	
+		
 }
 
 ?>
