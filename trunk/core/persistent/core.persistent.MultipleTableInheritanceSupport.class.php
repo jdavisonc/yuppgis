@@ -276,7 +276,8 @@ Array
          }
          
          $parent_class = get_parent_class($c_ins);
-         if ( $parent_class !== 'PersistentObject' )
+         //TODO_GIS: Ver Tema de clase abstracta que hereda de PersistentObject (GISPersistentObject) 
+         if ( $parent_class !== 'PersistentObject' && $parent_class !== 'GISPersistentObject' )
          {
             // La superclase de c_ins se mapea en otra tabla, saco esos atributos...
             $suc_ins = new $parent_class();

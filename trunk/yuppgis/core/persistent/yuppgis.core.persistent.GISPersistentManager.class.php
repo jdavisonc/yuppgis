@@ -8,8 +8,15 @@ class GISPersistentManager extends PersistentManager {
 	public function init_dal( $appName ) {
 		$this->dal = new GISDAL( $appName );
 	}
-	
-	// Trae un objeto simple sin asociaciones hasMany y solo los ids de hasOne.
+
+	/**
+	 * 
+	 * Obtiene un objeto geografico desde la base de datos.
+	 * @param unknown_type $tableNameOwner
+	 * @param unknown_type $attr
+	 * @param unknown_type $persistentClass
+	 * @param unknown_type $id
+	 */
 	public function get_gis_object( $tableNameOwner, $attr, $persistentClass, $id ) {
 		
 		Logger::getInstance()->pm_log("GISPM.get_gis_object " . $persistentClass . " " . $id);
@@ -17,18 +24,63 @@ class GISPersistentManager extends PersistentManager {
 		$tableName = YuppGISConventions::gisTableName($tableNameOwner, $attr); 
 
 		$attrValues = $this->dal->get_geometry( $tableName, $id );
-   		$attrValues["class"] = $persistentClass;
 		
    		// Se crea el objeto directamente ya que no se va a contar con herencia en tablas distintas para
    		// elementos geograficos.
    		return $this->createGISObjectFromData( $persistentClass, $attrValues );
 	}
 	
-	// TODO_GIS: Parsear GML que viene en $data
+	/**
+	 * 
+	 * Crea un objeto geografico desde datos retornados por la base de datos.
+	 * @param unknown_type $class
+	 * @param unknown_type $data
+	 */
 	private function createGISObjectFromData( $class, $data ) {
-		return new Point(23, 32);
+		$attrsValues = array( 'id' => $data['id'], 'class' => $class );
+		$attrsValues = array_merge( $attrsValues , TextGEO::fromText($class, $data['text']));
+		
+		return $this->createObjectFromData($class, $attrsValues);
 	}
-	 
+	
+	/**
+	 * 
+	 * Se salva en cascada con el dueño y su nombre de atributo.
+	 * @see PersistentManager::save_cascade_owner()
+	 */
+   public function save_cascade_owner( PersistentObject $owner, $attrNameAssoc, PersistentObject $obj, $sessId ) {
+   		if (is_subclass_of($obj, Geometry :: getClassName())) {
+   			$ownerTableName = YuppConventions::tableName( $owner );
+   			return $this->save_gis_object($ownerTableName, $attrNameAssoc, $obj, $sessId);
+   		} else {
+   			return parent::save_cascade_owner( $owner, $attrNameAssoc, $obj, $sessId ) ;
+   		}
+   }
+   
+   /**
+    * 
+    * Se salva el objeto geografico en la base de datos.
+    * @param unknown_type $ownerTableName
+    * @param unknown_type $attrNameAssoc
+    * @param PersistentObject $obj
+    * @param unknown_type $sessId
+    */
+   private function save_gis_object( $ownerTableName, $attrNameAssoc, PersistentObject $obj, $sessId ) {
+	   	Logger::getInstance()->pm_log("GISPM.save_object " . get_class($obj) );
+	
+	   	$tableName = YuppGISConventions::gisTableName($ownerTableName, $attrNameAssoc);
+	
+	   	if ( !$obj->getId() ) {
+	   		// TODO_GIS: INSERT
+	   		//$this->dal->insert( $tableName, $obj );
+	   		throw new Exception("No soportado"); 
+	   	} else {
+			// TODO_GIS: UPDATE
+	   		throw new Exception("No soportado");
+	   	}
+   }
+   
+   
 }
 
 ?>

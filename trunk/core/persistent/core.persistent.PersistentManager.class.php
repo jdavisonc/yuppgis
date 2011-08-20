@@ -345,7 +345,7 @@ class PersistentManager {
                          
                          // hasOne no necesita tablas intermedias (salvar la referencia)
                          // salva objeto y sus asociaciones.
-                         $this->save_cascade( $assocObj, $sessId );
+                         $this->save_cascade_owner( $obj, $attrName, $assocObj, $sessId );
                       }
                    }
                 } // si esta cargado
@@ -412,7 +412,7 @@ class PersistentManager {
                    {
                       Logger::getInstance()->pm_log("PM::save_assoc ". $obj->getClass()." !isOwnerOf $attrName. " .__LINE__);
                    }
-                   
+                    
                    $ord++;
                 } // para cada objeto dentro de una relacion hasMany
              } // para cada relacion hasMany
@@ -423,6 +423,19 @@ class PersistentManager {
       $obj->resetDirty();
       
    } // save_cascade
+   
+   /**
+    * 
+    * Redirecciona a save_cascade se puede legar a utilizar cuando el objeto a salvar depende de atributos del que lo tiene.
+    * Ejemplo: El nombre ela talbla del objeto $obj es la concatenacion de su nombre de objeto mas el nombre de la tabla de quien
+    * 		   lo contiene.
+    * @param PersistentObject $owner
+    * @param PersistentObject $obj
+    * @param unknown_type $sessId
+    */
+   public function save_cascade_owner( PersistentObject $owner, $attrNameObj, PersistentObject $obj, $sessId ) {
+   		return $this->save_cascade( $obj, $sessId );
+   }
 
   /**
    * save solo sirve para arrancar la session, la que hace el trabajo de salvar realmente es save_cascade, que salva todo el modelo.
@@ -707,7 +720,7 @@ class PersistentManager {
     * FIXME: $class viene en data['class'].
     * Crea una instancia del objeto a partir de informacion dada por DAL.
     */
-   private function createObjectFromData( $class, $data )
+   protected function createObjectFromData( $class, $data )
    {
       Logger::getInstance()->pm_log("PersistentManager.createObjectFromData " . $class );
       
