@@ -72,8 +72,14 @@ class GISPersistentManager extends PersistentManager {
 	
 	   	if ( !$obj->getId() ) {
 	   		// TODO_GIS: INSERT
-	   		//$this->dal->insert( $tableName, $obj );
-	   		throw new Exception("No soportado"); 
+	   		
+	   		$attrGeo = TextGEO::toText( $obj );
+	   		$id = $this->dal->generateNewId($tableName);
+	   		
+	   		//TODO_GIS, vamos a dejar el atributo class en esta tabla??
+	   		$attrs = array( 'id' => $id, 'geom' => $attrGeo, 'class' => get_class($obj));
+	   		$this->dal->insert_geometry($tableName, $attrs);
+	   		$obj->setId($id);
 	   	} else {
 			// TODO_GIS: UPDATE
 	   		throw new Exception("No soportado");
