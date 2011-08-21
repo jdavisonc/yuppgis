@@ -7,11 +7,11 @@ YuppLoader :: load('yuppgis.core.db', 'GISDatatypes');
 YuppLoader :: load('yuppgis.core.basic', 'Geometry');
 YuppLoader :: load('yuppgis.core.basic', 'Point');
 
+// Se importan dependencias de persistencia
 YuppLoader :: load('yuppgis.core.persistent', 'GISPersistentManager');
-
 YuppLoader :: load('yuppgis.core.config', 'YuppGISConventions');
 
- abstract  class GISPersistentObject extends PersistentObject {
+ abstract class GISPersistentObject extends PersistentObject {
 	
 	public function addAttribute($name, $type) {
 		
@@ -37,7 +37,7 @@ YuppLoader :: load('yuppgis.core.config', 'YuppGISConventions');
 			return parent::aGetObject($attr, $id);
 		}
 	}
-		
+	
 }
 
 ?>

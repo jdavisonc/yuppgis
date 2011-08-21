@@ -766,6 +766,25 @@ class DatabasePostgreSQL {
    }
    //
    // /EVALUACION DE CONSULTAS ======================================================
+   
+   /**
+    * Retorna el ultimo ID insertado en la tabla-columna dado
+    * @param $tableName Nombre de tabla
+    * @param $column Nombre de columna
+    */
+   public function getLastInsertedID($tableName, $column) {
+   		Logger::getInstance()->dbmysql_log("DatabasePostgreSQL::lastInsertedID");
+
+   		$query = 'SELECT currval(\'' . $tableName . '_' . $column . '_seq\');';
+   		$this->query($query);
+   		$res = $this->nextRow();
+   		if ( $res ) {
+   			return $res['currval'];
+   		} else {
+   			return null;
+   		}
+   }
+   
 }
 
 ?>
