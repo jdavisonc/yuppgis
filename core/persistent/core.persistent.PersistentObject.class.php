@@ -1737,7 +1737,15 @@ class PersistentObject {
                
                throw new Exception("El atributo ". $attr ." no existe en la clase (" . get_class($this) . ")");
             }
-         } // si no esta cargada
+            // si no esta cargada
+         } else {
+         	// Si esta cargado hay setear igual el dirtyOne o dirtyMany, porque pueden modificarlos
+            if ( array_key_exists($attr, $this->hasMany) ) {
+                $this->dirtyMany = true;
+            } else if ( array_key_exists($attr, $this->hasOne) ) {
+            	$this->dirtyOne = true;
+            }
+         }
       } // si no es simple
 
       // Devuelve atributo hasOne o hasMany (la devolucion de atributos simples se hace arriba).

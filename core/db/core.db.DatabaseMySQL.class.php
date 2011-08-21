@@ -641,6 +641,18 @@ class DatabaseMySQL {
    //
    // /EVALUACION DE CONSULTAS ======================================================
    
+   /**
+    * Retorna el ultimo ID insertado en la tabla-columna dado
+    * @param $tableName Nombre de tabla
+    * @param $column Nombre de columna
+    */
+   public function getLastInsertedID($tableName, $column) {
+   		Logger::getInstance()->dbmysql_log("DatabaseMySQ::lastInsertedID");
+
+   		return mysql_insert_id();
+   }
+   
+   
 }
 
 ?>

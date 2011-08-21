@@ -10,7 +10,6 @@ class GISPersistentManager extends PersistentManager {
 	}
 
 	/**
-	 * 
 	 * Obtiene un objeto geografico desde la base de datos.
 	 * @param unknown_type $tableNameOwner
 	 * @param unknown_type $attr
@@ -31,20 +30,18 @@ class GISPersistentManager extends PersistentManager {
 	}
 	
 	/**
-	 * 
 	 * Crea un objeto geografico desde datos retornados por la base de datos.
 	 * @param unknown_type $class
 	 * @param unknown_type $data
 	 */
 	private function createGISObjectFromData( $class, $data ) {
 		$attrsValues = array( 'id' => $data['id'], 'class' => $class );
-		$attrsValues = array_merge( $attrsValues , TextGEO::fromText($class, $data['text']));
+		$attrsValues = array_merge( $attrsValues , WKTGEO::fromText($class, $data['text']));
 		
 		return $this->createObjectFromData($class, $attrsValues);
 	}
 	
 	/**
-	 * 
 	 * Se salva en cascada con el dueño y su nombre de atributo.
 	 * @see PersistentManager::save_cascade_owner()
 	 */
@@ -58,7 +55,6 @@ class GISPersistentManager extends PersistentManager {
    }
    
    /**
-    * 
     * Se salva el objeto geografico en la base de datos.
     * @param unknown_type $ownerTableName
     * @param unknown_type $attrNameAssoc
@@ -69,24 +65,23 @@ class GISPersistentManager extends PersistentManager {
 	   	Logger::getInstance()->pm_log("GISPM.save_object " . get_class($obj) );
 	
 	   	$tableName = YuppGISConventions::gisTableName($ownerTableName, $attrNameAssoc);
-	
-	   	if ( !$obj->getId() ) {
-	   		// TODO_GIS: INSERT
-	   		
-	   		$attrGeo = TextGEO::toText( $obj );
-	   		$id = $this->dal->generateNewId($tableName);
-	   		
-	   		//TODO_GIS, vamos a dejar el atributo class en esta tabla??
-	   		$attrs = array( 'id' => $id, 'geom' => $attrGeo, 'class' => get_class($obj));
-	   		$this->dal->insert_geometry($tableName, $attrs);
+		$attrGeo = WKTGEO::toText( $obj );
+	   	
+		if ( !$obj->getId() ) {
+	   		$attrs = array( 'geom' => $attrGeo );
+	   		$id = $this->dal->insert_geometry($tableName, $attrs);
 	   		$obj->setId($id);
 	   	} else {
-			// TODO_GIS: UPDATE
-	   		throw new Exception("No soportado");
+	   		$attrs = array( 'id' => $obj->getId(), 'geom' => $attrGeo );
+	   		$this->dal->update_geometry($tableName, $attrs);
 	   	}
    }
    
-   
+	// TODO_GIS: No esta implemntado la elimincion en cascada, que se hace? Implementamos solo para nuestras clases o para todo?
+	public function delete( $persistentInstance, $id, $logical ) {
+		parent::delete($persistentInstance, $id, $logical);
+	}
+	
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-class TextGEO {
+class WKTGEO {
 	
 	private static $regex  = array (
 		'point' => '/^(\w+)\((.*)\)/'

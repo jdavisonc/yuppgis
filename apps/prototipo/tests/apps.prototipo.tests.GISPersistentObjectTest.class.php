@@ -2,22 +2,24 @@
 
 YuppLoader::load('core.testing', 'TestCase');
 YuppLoader::load('prototipo.model', 'Paciente');
-
-YuppLoader::load('yuppgis.core.persistent.serialize', 'TextGEO');
+YuppLoader::load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
 /**
- *
  * Test para probar configuracion de objetos geograficos con modelo de datos
  * @author harley
  */
 class GISPersistentObjectTest extends TestCase {
 
+	private $paciente = null;
+	
 	public function run() {
 		//$this->testPoint();
 		//$this->testGetPoint();
 		//$this->testTextParserPoint();
 		//$this->testListAllPoint();
 		$this->testSavePoint();
+		$this->testUpdatePoint();
+		$this->testRemovePaciente();
 	}
 
 	/**
@@ -51,7 +53,7 @@ class GISPersistentObjectTest extends TestCase {
 	
 	public function testTextParserPoint() {
 		$text = 'POINT(23 32)';
-		$point = TextGEO::fromText(Point::getClassName(), $text);
+		$point = WKTGEO::fromText(Point::getClassName(), $text);
 		
 		$this->assert($point == array('x' => 23, 'y' => 32), 'Test parseo punto');
 	}
@@ -59,10 +61,31 @@ class GISPersistentObjectTest extends TestCase {
 	function testSavePoint() {
 		$paciente = new Paciente();
 		$paciente->setNombre('Ernestino');
-		$paciente->setUbicacion(new Point(array('x' => 23, 'y' => 32)));
+		$point = new Point(array('x' => 23, 'y' => 32));
+		$paciente->setUbicacion($point);
 		$paciente->save();
 		
+		$this->assert($paciente != null && $paciente->getUbicacion()->getId() != null, 
+			'Test de persistencia de Paciente (id = '.$paciente->getId().') con Punto (id = '.$point->getId().
+			', X = '.$point->getX().', Y = '.$point->getY().') ');
+		
+		$this->paciente = $paciente;
 	}
+	
+	function testUpdatePoint() {
+		$point = $this->paciente->getUbicacion();
+		$point->setX(456);
+		$this->paciente->save();
+		
+		$this->assert($this->paciente != null && $point->getId() != null, 
+			'Test de actualizacion de Paciente (id = '.$this->paciente->getId().') con Punto (id = '.$point->getId().
+			', X = '.$point->getX().', Y = '.$point->getY().') ');
+	}
+	
+	function testRemovePaciente() {
+		$this->paciente->delete();
+	}
+	
 
 }
 
