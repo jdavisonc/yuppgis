@@ -13,10 +13,10 @@ YuppLoader::load('yuppgis.core.persistent.serialize', 'TextGEO');
 class GISPersistentObjectTest extends TestCase {
 
 	public function run() {
-		$this->testPoint();
-		$this->testGetPoint();
-		$this->testTextParserPoint();
-		$this->testListAllPoint();
+		//$this->testPoint();
+		//$this->testGetPoint();
+		//$this->testTextParserPoint();
+		//$this->testListAllPoint();
 		$this->testSavePoint();
 	}
 

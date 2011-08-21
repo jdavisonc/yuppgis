@@ -20,8 +20,19 @@ class TextGEO {
 	}
 	
 	// TODO_GIS: Hacer
-	public static function toText(Geometry $geo) {
-		throw new Exception("Not implemented yet");
+	public static function toText( Geometry $geo ) {
+		$class = get_class( $geo );
+		switch ( $class ) {
+			case Point::getClassName():
+				$res = Point::getClassName() . '(' . $geo->getX() . ' ' . $geo->getY() . ')';
+				return $res;
+			break;
+			
+			default:
+				throw new Exception("Not implemented yet");;
+			break;
+		}
+		
 	}
 	
 }
