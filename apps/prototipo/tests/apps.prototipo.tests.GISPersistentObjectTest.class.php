@@ -83,9 +83,17 @@ class GISPersistentObjectTest extends TestCase {
 	}
 	
 	function testRemovePaciente() {
+		$id = $this->paciente->getId();
 		$this->paciente->delete();
+		
+		$deleted = false;
+		try {
+			$paciente = Paciente::get($id);
+		} catch (Exception $e) {
+			$deleted = true;
+		}
+		$this->assert($deleted, 'Test de borrado de Paciente');
 	}
-	
 
 }
 
