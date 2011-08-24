@@ -1,9 +1,10 @@
 <?php
 
+YuppLoader :: load('yuppgis.core.config', 'YuppGISConfig');
+
 class GISDAL extends DAL {
 
-	//TODO_GIS Hacer poder configurar el SRID por applicacion, Hacer un YuppGISConfig para obtener configuracion desde archivo
-	private $srid = 32721;
+	private $srid;
 	
 	public function __construct($appName) {
 		Logger::getInstance()->log("GISDAL::construct");
@@ -16,6 +17,8 @@ class GISDAL extends DAL {
 		if ( $type != YuppConfig::DB_MYSQL && $type != YuppConfig::DB_POSTGRES ) {
 			throw new Exception('datasource type no soportado para operaciones geograficas: '.$datasource['type']);
 		}
+		
+		$this->srid = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::$PROP_SRID);
 
 		parent::__construct($appName);
 	}
