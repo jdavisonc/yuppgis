@@ -1,6 +1,6 @@
 <?php
 
-YuppLoader::load('core.testing', 'TestCase');
+YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('prototipo.model', 'Paciente');
 YuppLoader::load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
@@ -8,19 +8,9 @@ YuppLoader::load('yuppgis.core.persistent.serialize', 'WKTGEO');
  * Test para probar configuracion de objetos geograficos con modelo de datos
  * @author harley
  */
-class GISPersistentObjectTest extends TestCase {
+class GISPersistentObjectTest extends YuppGISTestCase {
 
 	private $paciente = null;
-	
-	public function run() {
-		//$this->testPoint();
-		//$this->testGetPoint();
-		//$this->testTextParserPoint();
-		//$this->testListAllPoint();
-		$this->testSavePoint();
-		$this->testUpdatePoint();
-		$this->testRemovePaciente();
-	}
 
 	/**
 	 * Prueba para probar configuracion de Punto
@@ -35,7 +25,7 @@ class GISPersistentObjectTest extends TestCase {
 		$this->assert($point->getY() == 32, 'Test punto Y:'.$point->getY());
 	}
 
-	public function testGetPoint() {
+	/*public function testGetPoint() {
 		$paciente = Paciente::get(1);
 
 		$point = $paciente->getUbicacion();
@@ -49,7 +39,7 @@ class GISPersistentObjectTest extends TestCase {
 		$point = $pacientes[0]->getUbicacion();
 		
 		$this->assert($pacientes != null, 'Test list all', $pacientes);
-	}
+	}*/
 	
 	public function testTextParserPoint() {
 		$text = 'POINT(23 32)';

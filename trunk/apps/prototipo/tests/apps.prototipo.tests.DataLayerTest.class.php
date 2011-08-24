@@ -1,19 +1,11 @@
 <?php
 
-YuppLoader::load('core.testing', 'TestCase');
+YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 
-class DataLayerTest extends TestCase {
-
-	public function run()
-	{
-		$this->testInitialize();
-		$this->testAddElements();
-		$this->testRemoveElements();
-	}
+class DataLayerTest extends YuppGISTestCase {
 	
-	public function testInitialize()
-	{
+	public function testInitialize() {
 		$id = uniqid();
 		$name = 'Prueba';
 		$layer = new DataLayer($id, $name,'nombre');
@@ -23,8 +15,7 @@ class DataLayerTest extends TestCase {
 		
 	}
 	
-	public function testAddElements()
-	{
+	public function testAddElements() {
 		$id = uniqid();$name = 'Prueba';
 		$layer = new DataLayer($id, $name,'nombre');
 		$p1 = new Paciente();
@@ -43,8 +34,7 @@ class DataLayerTest extends TestCase {
 		
 	}
 	
-	public function testRemoveElements()
-	{
+	public function testRemoveElements() {
 		$id = 1;
 		$name = 'Prueba';
 		$layer = new DataLayer($id, $name,'nombre');

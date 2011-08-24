@@ -1,18 +1,11 @@
 <?php
 
-YuppLoader::load('core.testing', 'TestCase');
+YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('prototipo.model', 'Paciente');
 
-class GISHelpersTest extends TestCase {
-
-	public function run()
-	{
-		$this->testGetActions();
-		$this->testGetFilters();
-	}
+class GISHelpersTest extends YuppGISTestCase {
 	
-	public function testGetActions()
-	{
+	public function testGetActions() {
 		$result = GISHelpers::AvailableActions("Paciente");
 		$count = count($result);
 		
@@ -20,8 +13,7 @@ class GISHelpersTest extends TestCase {
 		
 	}
 	
-public function testGetFilters()
-	{
+	public function testGetFilters() {
 		$result = GISHelpers::AvailableFilters("Paciente");
 		$count = count($result);
 		

@@ -1,28 +1,8 @@
 <?php
+
+YuppLoader::load('yuppgis.core.utils', 'ReflectionUtils');
+
 class GISHelpers{
-
-
-	/*Menu*/
-	private static function ReflectMethods($class, $token, $issuffix=true){
-		if (!class_exists($class)){
-			throw new Exception("La clase $class no existe o no está cargada");
-		}else{
-			/*Recorro la clase y busco los metodos que terminan en filter*/
-			$methods = get_class_methods($class);
-			$actions =  array();
-			foreach ($methods as $method){
-				if (String::endsWith($method, $token) && $issuffix){
-					array_push($actions, $method);
-				}else{
-					if (String::startsWith($method, $token) && !$issuffix){
-						array_push($actions, $method);
-					}
-				}
-			}
-			return $actions;
-		}
-	}
-
 	
 	/**
 	 * Obtiene las acciones declaradas en la clase
@@ -31,7 +11,7 @@ class GISHelpers{
 	 */
 	public static function AvailableActions($class){
 
-		return self::ReflectMethods($class, 'Action', true);
+		return ReflectionUtils::ReflectMethods($class, 'Action', true);
 	}
 
 	
@@ -42,7 +22,7 @@ class GISHelpers{
 	 */
 	public static function AvailableFilters($class){
 
-		return self::ReflectMethods($class, 'Filter', true);
+		return ReflectionUtils::ReflectMethods($class, 'Filter', true);
 	}
 
 
