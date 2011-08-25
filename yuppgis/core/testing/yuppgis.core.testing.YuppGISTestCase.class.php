@@ -3,6 +3,7 @@
 YuppLoader::load('core.testing', 'TestCase');
 
 YuppLoader::load('yuppgis.core.utils', 'ReflectionUtils');
+YuppLoader::load('yuppgis.core.utils', 'XMLUtils');
 
 /**
  * Clase que facilita los test unitarios, por defecto ejecuta todos los metodos que 
@@ -38,16 +39,23 @@ abstract class YuppGISTestCase extends TestCase {
 		$this->assert($actual != null, $msg);
 	}
 	
+	/**
+	 * Compara dos XML segun contenido y estructura
+	 * @param $xmlExpected
+	 * @param $xmlActual
+	 * @param $msg
+	 */
 	public function assertXMLEquals($xmlExpected, $xmlActual, $msg) {
-		$expected = new DOMDocument;
-        $expected->preserveWhiteSpace = FALSE;
-        $expected->loadXML($xmlExpected);
-
-        $actual = new DOMDocument;
-        $actual->preserveWhiteSpace = FALSE;
-        $actual->loadXML($xmlActual);
-        
-        $this->assert($expected == $actual, $msg);
+		
+		$expected = simplexml_load_string($xmlExpected);
+		$actual = simplexml_load_string($xmlActual);
+		
+		$result = XMLUtils::xml_is_equal($expected, $actual, true);
+		if ($result === true) {
+			$this->assert(true, $msg);
+		} else {
+			$this->assert(false, $msg ." - ". "XML documents are different: $result");
+		}
 	}
 	
 }
