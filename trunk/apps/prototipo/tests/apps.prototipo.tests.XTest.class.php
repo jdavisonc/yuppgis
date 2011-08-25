@@ -17,7 +17,7 @@ class XTest extends YuppGISTestCase {
 	
 	public function testY() {
 		
-		$this->assert(true, 'camina');
+		$this->assertXMLEquals('<test><hola id="1"/></test>', '<test><hola /></test>', 'test XML');
 		
 	}
 	
