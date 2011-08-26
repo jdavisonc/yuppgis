@@ -50,7 +50,7 @@ abstract class YuppGISTestCase extends TestCase {
 		$expected = simplexml_load_string($xmlExpected);
 		$actual = simplexml_load_string($xmlActual);
 		
-		$result = XMLUtils::xml_is_equal($expected, $actual, true);
+		$result = XMLUtils::xml_is_equal($expected, $actual);
 		if ($result === true) {
 			$this->assert(true, $msg);
 		} else {
