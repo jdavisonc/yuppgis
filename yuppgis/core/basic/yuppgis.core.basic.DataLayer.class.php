@@ -1,4 +1,5 @@
 <?php
+YuppLoader::load('yuppgis.core.basic', 'Tag');
 
 class DataLayer extends GISPersistentObject {
 
@@ -9,17 +10,20 @@ class DataLayer extends GISPersistentObject {
 	 * @param unknown_type $name
 	 * @param unknown_type $indexAttribute
 	 */
-	function __construct($id,$name, $indexAttribute='id'){		
+	
+	function __construct($layerId,$name, $indexAttribute='layerId'){		
 		
 		$this->setWithTable("data_layer");
 		
+		$this->addAttribute("layerId", Datatypes::TEXT);
 		$this->addAttribute("name", Datatypes::TEXT);		
 		$this->addAttribute("indexAttribute", Datatypes::TEXT);
 		
-		$this->addHasMany("elements",  "GISPersistentObject");		
-		$this->addHasMany("tags", Datatypes::TEXT);
+		$this->addHasMany("elements", "GISPersistentObject");		
+		$this->addHasMany("tags", "Tag");
 		
-		$this->setElements(array());
+		$args = array('layerId'=> $layerId, 'name' =>$name, 'indexAttribute' => $indexAttribute);
+		parent :: __construct($args, false);
 	}	
 
 	function addElement($element){		
