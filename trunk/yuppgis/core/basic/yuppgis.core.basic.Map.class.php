@@ -1,5 +1,7 @@
 <?php
 
+YuppLoader::load('yuppgis.core.basic', 'Layer');
+
 class Map  extends GISPersistentObject {
 
 	private  $id;
@@ -14,10 +16,14 @@ class Map  extends GISPersistentObject {
 	 * @param unknown_type $indexAttribute
 	 */
 	function __construct($id,$name){
-		$this->id=isset($id) ? uniqid() :$id;
-		$this->name = isset($name) ? "".$this->id :$name;
-		$this->layers = array();
-				
+		
+		$this->setWithTable("map");
+		
+		$this->addAttribute("name", Datatypes::TEXT);
+		$this->addHasMany("layers", "Layer");
+		
+		$args = array('id'=> $id, 'name' =>$name, 'layers' => array());
+		parent :: __construct($args, false);				
 	}
 
 	/**
