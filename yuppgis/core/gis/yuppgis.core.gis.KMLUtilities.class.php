@@ -10,12 +10,10 @@ class KMLUtilities{
     			<name>KML Samples</name>
     			<open>1</open>
     			<description>Unleash your creativity with the help of these examples!</description>
-    			<Folder id="'.$layer->getId().'">
+    			<Folder id="'.$layer->getLayerId().'">
 			      <name>'.$layer->getName().'</name>
 			      <visibility>0</visibility>
-			      <description>Examples of paths. Note that the tessellate tag is by default
-			        set to 0. If you want to create tessellated lines, they must be authored
-			        (or edited) directly in KML.</description>';		
+			      <description>Examples of paths. Note that the tessellate tag is by default set to 0. If you want to create tessellated lines, they must be authored (or edited) directly in KML.</description>';		
 
 		$elements = $layer->getElements();
 		
@@ -31,7 +29,7 @@ class KMLUtilities{
 	}
 
 
-	private static function ElementToKml($element){
+	private static function ElementToKml($element){		
 		$kml = "		
 		<Placemark>
 			<name>Blue Icon</name>
