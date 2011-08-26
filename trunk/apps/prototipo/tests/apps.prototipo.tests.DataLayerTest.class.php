@@ -6,9 +6,9 @@ YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 class DataLayerTest extends YuppGISTestCase {
 	
 	public function testInitialize() {
-		$id = uniqid();
+		$layerId = uniqid();
 		$name = 'Prueba';
-		$layer = new DataLayer($id, $name,'nombre');
+		$layer = new DataLayer($layerId, $name,'nombre');
 		$layer->setElements(array());		
 		$count = count($layer->getElements());		
 		$this->assert($count == 0, 'Test inicializar capa:'.$count);		
@@ -16,8 +16,10 @@ class DataLayerTest extends YuppGISTestCase {
 	}
 	
 	public function testAddElements() {
-		$id = uniqid();$name = 'Prueba';
-		$layer = new DataLayer($id, $name,'nombre');
+		$layerId = uniqid();
+		$name = 'Prueba';
+		$layer = new DataLayer($layerId, $name,'nombre');
+		
 		$p1 = new Paciente();
 		$p1->setNombre('chocolate');		
 		$p2 = new Paciente();
@@ -35,9 +37,9 @@ class DataLayerTest extends YuppGISTestCase {
 	}
 	
 	public function testRemoveElements() {
-		$id = 1;
+		$layerId = uniqid();
 		$name = 'Prueba';
-		$layer = new DataLayer($id, $name,'nombre');
+		$layer = new DataLayer($layerId, $name,'nombre');
 		
 		$p1 = new Paciente();
 		$p1->setNombre('chocolate');
@@ -56,7 +58,7 @@ class DataLayerTest extends YuppGISTestCase {
 		$layer->addElement($p3);
 				
 		$layer->removeElement($p2->getId());
-		
+				
 		$count = count($layer->getElements());		
 		$this->assert($count == 2, 'Test quitar elemento de capa:'.$count);		
 		
