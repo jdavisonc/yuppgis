@@ -29,8 +29,8 @@ class DataLayer extends GISPersistentObject {
 		$this->addToElements($element);
 	}
 	
-	function removeElement($id){
-		$this->removeFromElements(array($id));
+	function removeElement($element){
+		$this->removeFromElements($element);
 	}
 }
 
