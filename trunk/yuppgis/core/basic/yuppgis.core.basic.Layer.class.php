@@ -1,6 +1,6 @@
 <?php
 
-class Layer extends GISPersistentObject {
+class Layer extends PersistentObject {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
 						
