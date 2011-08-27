@@ -1,5 +1,7 @@
 <?php 
 
+YuppLoader::load( "yuppgis.core.persistent",   "GISPersistentObject" );
+
 class Paciente extends GISPersistentObject {
 
 	function __construct($args = array (), $isSimpleInstance = false) {

@@ -40,7 +40,7 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 		$layer =  new DataLayer('layerName', 'nombre');
 		
 		$paciente = new Paciente();
-		$paciente->setUbicacion(new Point(array('x' => 10, 'y' => 10)));
+		$paciente->setUbicacion(new Point(10, 10));
 				
 		$layer->addElement($paciente);
 		$layer->save();

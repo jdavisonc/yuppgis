@@ -11,7 +11,25 @@ YuppLoader :: load('yuppgis.core.basic', 'Point');
 YuppLoader :: load('yuppgis.core.persistent', 'GISPersistentManager');
 YuppLoader :: load('yuppgis.core.config', 'YuppGISConventions');
 
- abstract class GISPersistentObject extends PersistentObject {
+class GISPersistentObject extends PersistentObject {
+	
+	public function __construct($args = array (), $isSimpleInstance = false) {
+		
+		$this->setWithTable('gis_persistent_object');
+		
+		$this->addAttribute("app", Datatypes::TEXT);
+		
+		$ctx = YuppContext::getInstance();
+		$appName = null;
+		if ($ctx->isAnotherApp()) {
+			$appName = $ctx->getRealApp();
+		} else {
+			$appName = $ctx->getApp();
+		}
+		$args['app'] = $appName;
+		
+		parent :: __construct($args, $isSimpleInstance);
+	}
 	
 	public function addAttribute($name, $type) {
 		

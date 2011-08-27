@@ -16,9 +16,6 @@ include_once('./core/core.FileSystem.class.php');
 include_once('./core/config/core.config.PackageNames.class.php');
 include_once('./core/persistent/core.persistent.PersistentObject.class.php');
 
-// Se incluye @GISPersistentObject de YuppGis
-include_once('./yuppgis/core/persistent/yuppgis.core.persistent.GISPersistentObject.class.php');
-
 class ModelUtils {
 
    /**
@@ -251,8 +248,7 @@ class ModelUtils {
    {
       $res = array();
       $parent = get_parent_class( $clazz ); // tiene solo un parent...
-      //TODO_GIS se excluye GISPersistentObject como posible super clase de objeto a ir a buscar en la base
-      while ( $parent != NULL && $parent != "" && $parent !== 'PersistentObject' && $parent !== 'GISPersistentObject')
+      while ( $parent != NULL && $parent != "" && $parent !== 'PersistentObject')
       {
          //$res[] = $parent; // agrega al final
          array_unshift( $res, $parent ); // agrega al principio, asi sale la superclase de todos en el primer lugar. (*)
