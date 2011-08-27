@@ -40,15 +40,15 @@ class DataLayerTest extends YuppGISTestCase {
 		
 		$p1 = new Paciente();
 		$p1->setNombre('chocolate');
-		$p1->setUbicacion(new Point(array('x' => 10, 'y' => 10)));
+		$p1->setUbicacion(new Point(10, 10));
 						
 		$p2 = new Paciente();		
 		$p2->setNombre('crema');
-		$p2->setUbicacion(new Point(array('x' => 10, 'y' => 10)));	
+		$p2->setUbicacion(new Point( 10, 10));	
 				
 		$p3 = new Paciente();
 		$p3->setNombre('limon');
-		$p3->setUbicacion(new Point(array('x' => 10, 'y' => 10)));				
+		$p3->setUbicacion(new Point(10, 10));				
 		
 		$layer->addElement($p1);
 		$layer->addElement($p2);
