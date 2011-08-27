@@ -2,7 +2,7 @@
 
 YuppLoader::load('yuppgis.core.basic', 'Layer');
 
-class Map  extends GISPersistentObject {
+class Map  extends PersistentObject {
 
 	private  $id;
 	private  $name;

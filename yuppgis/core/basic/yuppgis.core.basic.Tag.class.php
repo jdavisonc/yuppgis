@@ -1,6 +1,6 @@
 <?php
 
-class Tag extends GISPersistentObject {
+class Tag extends PersistentObject {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
 		

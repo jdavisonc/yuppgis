@@ -1,7 +1,7 @@
 <?php
 YuppLoader::load('yuppgis.core.basic', 'Tag');
 
-class DataLayer extends GISPersistentObject {
+class DataLayer extends PersistentObject {
 
 	/**
 	 * 
