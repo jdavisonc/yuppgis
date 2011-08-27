@@ -24,7 +24,6 @@ YuppLoader :: load('core.basic', 'String');
 YuppLoader :: load('core.db', 'DAL'); // declara tambien DatabaseNormalization
 YuppLoader :: load('core.db', 'Datatypes');
 YuppLoader :: load('core.persistent', 'PersistentManager');
-YuppLoader :: load('yuppgis.core.persistent', 'GISPersistentObject');
 
 /**
  * Esta clase implementa toda la logica necesaria para modelar objetos persistentes.

@@ -1,6 +1,6 @@
 <?php 
 
-YuppLoader::load( "yuppgis.core.persistent",   "GISPersistentObject" );
+YuppLoader::load( "yuppgis.core.persistent", "GISPersistentObject" );
 
 class Paciente extends GISPersistentObject {
 
