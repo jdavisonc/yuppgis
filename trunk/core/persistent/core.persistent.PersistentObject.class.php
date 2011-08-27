@@ -24,6 +24,7 @@ YuppLoader :: load('core.basic', 'String');
 YuppLoader :: load('core.db', 'DAL'); // declara tambien DatabaseNormalization
 YuppLoader :: load('core.db', 'Datatypes');
 YuppLoader :: load('core.persistent', 'PersistentManager');
+YuppLoader :: load('yuppgis.core.persistent', 'GISPersistentObject');
 
 /**
  * Esta clase implementa toda la logica necesaria para modelar objetos persistentes.
@@ -1973,7 +1974,7 @@ class PersistentObject {
                $id = $value;
             }
 
-            if ( is_subclass_of($value, 'PersistentObject') ) // Busca por id del PO
+            if ( is_subclass_of($value, 'PersistentObject') || is_subclass_of($value, 'GISPersistentObject') ) // Busca por id del PO
             {
                $id = $value->getId(); // TODO CHECK: debe tener id seteado!
             }
