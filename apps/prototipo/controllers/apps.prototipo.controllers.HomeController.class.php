@@ -22,7 +22,7 @@ class HomeController extends YuppController {
 		$layer =  new DataLayer($layerId, $name, 'nombre');
 		
 		$paciente = new Paciente();
-		$paciente->setUbicacion(new Point(array('x' => -112.169, 'y' => 36.099)));
+		$paciente->setUbicacion(new Point(-112.169, 36.099));
 				
 		$layer->addElement($paciente);
 		
