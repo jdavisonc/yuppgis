@@ -17,7 +17,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	 */
 	public function testPoint() {
 		$paciente = new Paciente();
-		$paciente->setUbicacion(new Point(array('x' => 23, 'y' => 32)));
+		$paciente->setUbicacion(new Point(23, 32));
 
 		$point = $paciente->getUbicacion();
 
@@ -51,7 +51,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	function testSavePoint() {
 		$paciente = new Paciente();
 		$paciente->setNombre('Ernestino');
-		$point = new Point(array('x' => 23, 'y' => 32));
+		$point = new Point(23, 32);
 		$paciente->setUbicacion($point);
 		$paciente->save();
 		
