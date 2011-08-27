@@ -11,18 +11,17 @@ class DataLayer extends GISPersistentObject {
 	 * @param unknown_type $indexAttribute
 	 */
 	
-	function __construct($layerId,$name, $indexAttribute='layerId'){		
+	function __construct($name, $indexAttribute='id'){		
 		
 		$this->setWithTable("data_layer");
 		
-		$this->addAttribute("layerId", Datatypes::TEXT);
 		$this->addAttribute("name", Datatypes::TEXT);		
 		$this->addAttribute("indexAttribute", Datatypes::TEXT);
 		
 		$this->addHasMany("elements", "GISPersistentObject");		
 		$this->addHasMany("tags", "Tag");
 		
-		$args = array('layerId'=> $layerId, 'name' =>$name, 'indexAttribute' => $indexAttribute);
+		$args = array('name' =>$name, 'indexAttribute' => $indexAttribute);
 		parent :: __construct($args, false);
 	}	
 
