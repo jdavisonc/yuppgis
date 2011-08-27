@@ -11,7 +11,7 @@ class DataLayer extends GISPersistentObject {
 	 * @param unknown_type $indexAttribute
 	 */
 	
-	function __construct($name, $indexAttribute='id'){		
+	function __construct($name = '', $indexAttribute='id'){		
 		
 		$this->setWithTable("data_layer");
 		
