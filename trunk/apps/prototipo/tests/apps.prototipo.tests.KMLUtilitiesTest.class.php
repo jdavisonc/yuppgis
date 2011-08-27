@@ -46,7 +46,7 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 		$layer->addElement($paciente);
 		$layer->save();
 		
-		$kml = getKml($layer->getId(), $layer->getNombre(), $paciente->getUbicacion()->getX(), $paciente->getUbicacion()->getY());
+		$kml = $this->getKml($layer->getId(), $layer->getName(), $paciente->getUbicacion()->getX(), $paciente->getUbicacion()->getY());
 		
 		$result = KMLUtilities::LayerToKml($layer);		
 				
