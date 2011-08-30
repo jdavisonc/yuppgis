@@ -84,6 +84,17 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		}
 		$this->assert($deleted, 'Test de borrado de Paciente');
 	}
+	
+	/*function testFindBy() {
+		
+		$condition = YuppGISCondition::CONTAINS(
+			YuppGISConventions::tableName(Paciente::getClassName()), 
+			'ubicacion', Circulo(X, Y));
+		
+		
+		Paciente::findBy($condition, new ArrayObject());
+		
+	}*/
 
 }
 
