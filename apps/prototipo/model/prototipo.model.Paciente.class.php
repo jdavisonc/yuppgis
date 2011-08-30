@@ -22,7 +22,12 @@ class Paciente extends GISPersistentObject {
 
 	public static function listAll(ArrayObject $params) {
 		self :: $thisClass = __CLASS__;
-		return GISPersistentObject :: listAll($params);
+		return GISPersistentObject::listAll($params);
+	}
+	
+	public static function findBy(Condition $condition, ArrayObject $params) {
+		self :: $thisClass = __CLASS__;
+		return GISPersistentObject::findBy($condition, $params);
 	}
 	
 	/*Acciones*/
