@@ -94,35 +94,24 @@ class GISHelpers{
 				map.zoomToMaxExtent();				
 				
 								
-                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});';
+                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});
 
-			               
-                
- 			$html .=	'var kml = new OpenLayers.Layer.Vector("KML", {
-					            strategies: [new OpenLayers.Strategy.Fixed()],
-					            protocol: new OpenLayers.Protocol.HTTP({
-					                url: "/yuppgis/prototipo/Home/mapLayer?layerId=1",					                
-					                format: new OpenLayers.Format.KML({
-					                    extractStyles: true, 
-					                    extractAttributes: true,
-					                    maxDepth: 2
-					                })
-					            })
-					        });					        
-                map.addLayers([wms, kml]);
-                
-                kml = new OpenLayers.Layer.Vector("KML", {
-					            strategies: [new OpenLayers.Strategy.Fixed()],
-					            protocol: new OpenLayers.Protocol.HTTP({
-					                url: "/yuppgis/prototipo/Home/mapLayer?layerId=2",					                
-					                format: new OpenLayers.Format.KML({
-					                    extractStyles: true, 
-					                    extractAttributes: true,
-					                    maxDepth: 2
-					                })
-					            })
-					        });					        
-                map.addLayers([wms, kml]);
+			    $.each(data, function(i, item){
+                	var layerurl =  "/yuppgis/prototipo/Home/mapLayer?layerId=" + item.id;
+		 			var kml = new OpenLayers.Layer.Vector("KML", {
+							            strategies: [new OpenLayers.Strategy.Fixed()],
+							            protocol: new OpenLayers.Protocol.HTTP({
+							                url: layerurl,					                
+							                format: new OpenLayers.Format.KML({
+							                    extractStyles: true, 
+							                    extractAttributes: true,
+							                    maxDepth: 2
+							                })
+							            })
+							        });					        
+		             map.addLayers([wms, kml]);
+	                
+                });
                 
               
                 

@@ -32,6 +32,21 @@ class DataLayer extends PersistentObject {
 	function removeElement($element){
 		$this->removeFromElements($element);
 	}
+	
+	public static function listAll(ArrayObject $params) {
+		self :: $thisClass = __CLASS__;
+		return GISPersistentObject::listAll($params);
+	}
+	
+	public static function findBy(Condition $condition, ArrayObject $params) {
+		self :: $thisClass = __CLASS__;
+		return GISPersistentObject::findBy($condition, $params);
+	}
+	
+	public static function get($id) {
+		self :: $thisClass = __CLASS__;
+		return GISPersistentObject :: get($id);
+	}
 }
 
 ?>
