@@ -14,23 +14,35 @@ class HomeController extends YuppController {
 		return;
 	}
 
-	public function mapLayerAction($params){
+	public function mapLayerAction(){
 		
-		$layerId = uniqid();
-		$name = 'capanga';
+		$layerId = $this->params['layerId'];
+		$name = 'Capa_';
 		
-		$layer =  new DataLayer($layerId, $name, 'nombre');
+		$layer =  new DataLayer($name, 'name');
 		
 		$paciente = new Paciente();
-		$paciente->setUbicacion(new Point(-112.169, 36.099));
+		$paciente->setNombre('crema');
+		if ($layerId == 1){
+		$paciente->setUbicacion(new Point(-56.181944, -34.883611));
+		}		else {
+			$paciente->setUbicacion(new Point(-56.181944, -34.884611));
+		}
 				
 		$layer->addElement($paciente);
+		
+		$layer->save();
 		
 		return $this->renderString( KMLUtilities::LayerToKml($layer));
 	}
 
+	public function getLayersAction(){
+		
+		$layers = DataLayer::listAll($this->params);
+		return JSONPO::toJSON($layers);
+	}
 	
-	public function KmlAction(){
+	public function KmlOriginal(){
 		$kml = '<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://earth.google.com/kml/2.0">
   <Document>

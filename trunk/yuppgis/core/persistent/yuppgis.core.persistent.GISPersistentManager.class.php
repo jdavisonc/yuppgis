@@ -2,6 +2,7 @@
 
 // Se importa DAL geografico
 YuppLoader :: load('yuppgis.core.db', 'GISDAL');
+YuppLoader :: load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
 class GISPersistentManager extends PersistentManager {
 

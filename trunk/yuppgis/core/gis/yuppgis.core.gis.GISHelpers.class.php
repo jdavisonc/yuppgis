@@ -73,6 +73,13 @@ class GISHelpers{
 			}
 			
 			function init(){
+				
+				 $.ajax({
+			      url:"/yuppgis/prototipo/Home/getLayersAction" ,			      
+			      success: function(data){
+				
+			
+			
  				var google = new OpenLayers.Layer.Google( "Google", { type: G_HYBRID_MAP } );
 		
 				var options = {
@@ -89,9 +96,7 @@ class GISHelpers{
 								
                 var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});';
 
-			$layerId = 1;
-
-                
+			               
                 
  			$html .=	'var kml = new OpenLayers.Layer.Vector("KML", {
 					            strategies: [new OpenLayers.Strategy.Fixed()],
@@ -103,13 +108,28 @@ class GISHelpers{
 					                    maxDepth: 2
 					                })
 					            })
-					        });
-					        
+					        });					        
                 map.addLayers([wms, kml]);
-                				
-                map.setCenter(new OpenLayers.LonLat(-112.169, 36.099), 11);
+                
+                kml = new OpenLayers.Layer.Vector("KML", {
+					            strategies: [new OpenLayers.Strategy.Fixed()],
+					            protocol: new OpenLayers.Protocol.HTTP({
+					                url: "/yuppgis/prototipo/Home/mapLayer?layerId=2",					                
+					                format: new OpenLayers.Format.KML({
+					                    extractStyles: true, 
+					                    extractAttributes: true,
+					                    maxDepth: 2
+					                })
+					            })
+					        });					        
+                map.addLayers([wms, kml]);
+                
+              
+                
+               	map.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
                  
-				
+				}
+			   });
 			}
 
 		</script>
