@@ -2,46 +2,46 @@
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 YuppLoader::load('prototipo.model', 'Paciente');
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
+YuppLoader::load('core.persistent.serialize', 'JSONPO');
 
 class HomeController extends YuppController {
 
 	public function indexAction()
 	{
-      return $this->redirect(array ("action" => "map"));
+		return $this->redirect(array ("action" => "map"));
 	}
-	
+
 	public function mapAction(){
 		return;
 	}
 
 	public function mapLayerAction(){
-		
+
 		$layerId = $this->params['layerId'];
-		$name = 'Capa_';
-		
-		$layer =  new DataLayer($name, 'name');
-		
-		$paciente = new Paciente();
-		$paciente->setNombre('crema');
-		if ($layerId == 1){
-		$paciente->setUbicacion(new Point(-56.181944, -34.883611));
-		}		else {
-			$paciente->setUbicacion(new Point(-56.181944, -34.884611));
-		}
-				
-		$layer->addElement($paciente);
-		
-		$layer->save();
-		
+		$layer = DataLayer::get($layerId);
+
 		return $this->renderString( KMLUtilities::LayerToKml($layer));
 	}
 
 	public function getLayersAction(){
-		
+
 		$layers = DataLayer::listAll($this->params);
-		return JSONPO::toJSON($layers);
+
+		header('Content-type: application/json');
+		$json = '[';
+		$count = sizeof($layers);
+		for ($i = 0; $i < $count-1; $i++) {
+			$json .= JSONPO::toJSON($layers[$i]).',' ;
+		}
+		if ($count > 0){
+			$json .= JSONPO::toJSON($layers[$count-1]) ;
+		}
+		 
+		$json .= ']';
+
+		return  $this->renderString($json);
 	}
-	
+
 	public function KmlOriginal(){
 		$kml = '<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://earth.google.com/kml/2.0">
@@ -319,10 +319,10 @@ class HomeController extends YuppController {
   </Document>
 </kml>
 		';
-		
+
 		return $this->renderString($kml);
 	}
-	
+
 }
 
 ?>
