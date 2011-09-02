@@ -53,11 +53,12 @@ class DAL {
    protected $db;
 
    // TODO: POR AHORA LOS DATOS PARA ACCEDER A LA BD SE CONFIGURAR AQUI...
-   private $appName; // Aplicacion para la que se configura la DAL
-   private $url;
-   private $user;
-   private $pass;
-   private $database;
+   protected $appName; // Aplicacion para la que se configura la DAL
+   protected $url;
+   protected $user;
+   protected $pass;
+   protected $database;
+   protected $type;
 
    /*
    private static $instance = NULL;
@@ -72,8 +73,38 @@ class DAL {
    public function __construct($appName)
    {
       Logger::getInstance()->log("DAL::construct");
+      $this->init($appName);
       
-      // ===============================================
+      // Constructor por configuracion del dbms
+      // OBS: cada vez que agregue un soporte nuevo tengo que agregar la opcion al switch.
+      
+      // TODO: deberia tener una fabrica con esto adentro, y la fabrica tal vez deberia cargar
+      // las clases automaticamente en lugar de ir agregando cada tipo de conector en el switch.
+      //switch( $cfg->getDatabaseType() )
+      switch( $this->type )
+      {
+         case YuppConfig::DB_MYSQL:
+            YuppLoader::load( "core.db", "DatabaseMySQL" );
+            $this->db = new DatabaseMySQL();
+         break;
+         case YuppConfig::DB_SQLITE:
+            YuppLoader::load( "core.db", "DatabaseSQLite" );
+            $this->db = new DatabaseSQLite();
+         break;
+         case YuppConfig::DB_POSTGRES:
+            YuppLoader::load( "core.db", "DatabasePostgreSQL" );
+            $this->db = new DatabasePostgreSQL();
+         break;
+         default:
+            throw new Exception('datasource type no soportado: '.$datasource['type']);
+      }
+      
+      // TODO: que dmbs desde config, perfecto para factory pattern.
+      $this->db->connect( $this->url, $this->user, $this->pass, $this->database ); // TODO: POR AHORA LOS DATOS PARA ACCEDER A LA BD SE CONFIGURAR AQUI...
+   }
+   
+   protected function init($appName) {
+   	  // ===============================================
       $cfg = YuppConfig::getInstance();
       
       // TODO: pasarle el nombre de la app actual.
@@ -99,35 +130,9 @@ class DAL {
       $this->user     = $datasource['user'];
       $this->pass     = $datasource['pass'];
       $this->database = $datasource['database'];
+      $this->type	  = $datasource['type'];
       // ===============================================
-      
-      // Constructor por configuracion del dbms
-      // OBS: cada vez que agregue un soporte nuevo tengo que agregar la opcion al switch.
-      
-      // TODO: deberia tener una fabrica con esto adentro, y la fabrica tal vez deberia cargar
-      // las clases automaticamente en lugar de ir agregando cada tipo de conector en el switch.
-      //switch( $cfg->getDatabaseType() )
-      switch( $datasource['type'] )
-      {
-         case YuppConfig::DB_MYSQL:
-            YuppLoader::load( "core.db", "DatabaseMySQL" );
-            $this->db = new DatabaseMySQL();
-         break;
-         case YuppConfig::DB_SQLITE:
-            YuppLoader::load( "core.db", "DatabaseSQLite" );
-            $this->db = new DatabaseSQLite();
-         break;
-         case YuppConfig::DB_POSTGRES:
-            YuppLoader::load( "core.db", "DatabasePostgreSQL" );
-            $this->db = new DatabasePostgreSQL();
-         break;
-         default:
-            throw new Exception('datasource type no soportado: '.$datasource['type']);
-      }
-      
-      // TODO: que dmbs desde config, perfecto para factory pattern.
-      $this->db->connect( $this->url, $this->user, $this->pass, $this->database ); // TODO: POR AHORA LOS DATOS PARA ACCEDER A LA BD SE CONFIGURAR AQUI...
-   }
+   } 
 
    public function __destruct()
    {

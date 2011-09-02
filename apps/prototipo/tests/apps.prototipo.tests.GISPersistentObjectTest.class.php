@@ -2,7 +2,6 @@
 
 YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('prototipo.model', 'Paciente');
-YuppLoader::load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
 /**
  * Test para probar configuracion de objetos geograficos con modelo de datos

@@ -23,7 +23,7 @@ YuppLoader :: load('core.config', 'YuppConventions');
 YuppLoader :: load('core.basic', 'String');
 YuppLoader :: load('core.db', 'DAL'); // declara tambien DatabaseNormalization
 YuppLoader :: load('core.db', 'Datatypes');
-YuppLoader :: load('core.persistent', 'PersistentManager');
+YuppLoader :: load('core.persistent', 'PersistentManagerFactory');
 
 /**
  * Esta clase implementa toda la logica necesaria para modelar objetos persistentes.
@@ -1132,7 +1132,7 @@ class PersistentObject {
       // Para esto se llama a "getInheritanceStructurePersistentObject".
       // CAMBIO: NO ESTO NO VA ACA!!!
 
-      PersistentManager::getInstance()->save($this);
+      PersistentManagerFactory::getManager()->save($this);
 
       $this->executeAfterSave();
       
@@ -1146,7 +1146,7 @@ class PersistentObject {
    {
       Logger::getInstance()->po_log("PO:single_save " . get_class($this));
 
-      PersistentManager::getInstance()->save_object( $this, 0 );
+      PersistentManagerFactory::getManager()->save_object( $this, 0 );
    }
 
    /**
@@ -1157,7 +1157,7 @@ class PersistentObject {
    {
       Logger::getInstance()->po_log("PersistentObject.get " . self::$thisClass . " " . $id);
 
-      $obj = PersistentManager::getInstance()->get( self::$thisClass, $id );
+      $obj = PersistentManagerFactory::getManager()->get( self::$thisClass, $id );
       return $obj;
    }
 
@@ -1168,7 +1168,7 @@ class PersistentObject {
    {
       // FIXME: PM no necesita una instancia, le puedo pasar la clase derecho.
       $ins = new self::$thisClass();
-      return PersistentManager::getInstance()->listAll($ins, self::filtrarParams($params));
+      return PersistentManagerFactory::getManager()->listAll($ins, self::filtrarParams($params));
    }
 
 
@@ -1180,7 +1180,7 @@ class PersistentObject {
    public static function findBy( Condition $condition, ArrayObject $params )
    {
       $ins = new self::$thisClass();
-      return PersistentManager::getInstance()->findBy( $ins, $condition, self::filtrarParams($params) );
+      return PersistentManagerFactory::getManager()->findBy( $ins, $condition, self::filtrarParams($params) );
    }
    
    /**
@@ -1212,7 +1212,7 @@ class PersistentObject {
 
    public static function countBy( Condition $condition )
    {
-      $pm = PersistentManager::getInstance();
+      $pm = PersistentManagerFactory::getManager();
       $ins = new self::$thisClass();
       return $pm->countBy( $ins, $condition );
    }
@@ -1220,7 +1220,7 @@ class PersistentObject {
    public static function count()
    {
       $ins = new self::$thisClass();
-      return PersistentManager::getInstance()->count( $ins );
+      return PersistentManagerFactory::getManager()->count( $ins );
    }
 
 
@@ -1689,7 +1689,7 @@ class PersistentObject {
                // if ( $this->getId() && $pm->exists( get_class($this), $this->getId() ) )
                // ver si es necesario...
 
-               PersistentManager::getInstance()->get_many_assoc_lazy($this, $attr); // El atributo se carga, no tengo que setearlo...
+               PersistentManagerFactory::getManager()->get_many_assoc_lazy($this, $attr); // El atributo se carga, no tengo que setearlo...
                
                // Se marca el dirtyMany al pedir hasMany porque no se tiene control
                // sobre como se van a modificar las instancias de la relacion solicitadas,
@@ -1765,7 +1765,7 @@ class PersistentObject {
     * @param identificacion del atributo
     */
    public function aGetObject( $attr, $id ) {
-   		return PersistentManager::getInstance()->get_object( $this->hasOne[$attr], $id );
+   		return PersistentManagerFactory::getManager()->get_object( $this->hasOne[$attr], $id );
    }
 
    public function aContains( $attribute, $value )
@@ -1781,7 +1781,7 @@ class PersistentObject {
          // Soporte lazy load...
          if ( $this->attributeValues[ $attr_w_assoc_name ] == self::NOT_LOADED_ASSOC )
          {
-            $pm = PersistentManager::getInstance();
+            $pm = PersistentManagerFactory::getManager();
 
             // Si el objeto esta guardado, trae las clases ya asociadas, si no, inicializa el vector.
 
@@ -1860,7 +1860,7 @@ class PersistentObject {
 
          if ( $this->attributeValues[ $attr_with_assoc_name ] === self::NOT_LOADED_ASSOC )
          {
-            $pm = PersistentManager::getInstance();
+            $pm = PersistentManagerFactory::getManager();
             // Si el objeto esta guardado, entonces trae las clases ya asociadas...
             if ( $this->getId() && $pm->exists( get_class($this), $this->getId() ) )
             {
@@ -1940,7 +1940,7 @@ class PersistentObject {
       // CHECK 1: El atributo esta en la lista de atributos hasMany
       if ( array_key_exists($attr, $this->hasMany) )
       {
-         $pm = PersistentManager::getInstance();
+         $pm = PersistentManagerFactory::getManager();
 
          // FIXME: Este codigo se repite en otras operaciones que trabajan sobre atributos hasMany... 
          // deberia reusar el codigo y hacer una funcion.
@@ -2036,7 +2036,7 @@ class PersistentObject {
       Logger::add( Logger::LEVEL_PO, "PO::delete " . __LINE__ );
       // FIXME: devolver algo que indique si se pudo o no eliminar.
       // FIXME: si no esta salvado (no tiene id), no se puede hacer delete.
-      $pm = PersistentManager::getInstance();
+      $pm = PersistentManagerFactory::getManager();
       $pm->delete( $this, $this->getId(), $logical ); // FIXME: no necesita pasarle el id, el objeto ya lo tiene...
    }
    

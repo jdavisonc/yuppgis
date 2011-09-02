@@ -139,7 +139,7 @@ class ModelM010Test {
 	 
 	private function test1()
 	{
-      PersistentManager::getInstance()->generateAll();
+      PersistentManagerFactory::getManager()->generateAll();
       
       echo YuppConventions::tableName('M010_Persona') . "<br/>";
       

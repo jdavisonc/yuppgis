@@ -6,21 +6,57 @@ class GISDAL extends DAL {
 
 	private $srid;
 	
+	private $gisdb;
+	private $gisurl;
+	private $gisuser;
+	private $gispass;
+	private $gisdatabase;
+	private $gistype;
+	
 	public function __construct($appName) {
 		Logger::getInstance()->log("GISDAL::construct");
+		
+		$this->init($appName);
 
-		$cfg = YuppConfig::getInstance();
-
-		$datasource = $cfg->getDatasource($appName);
-		$type = $datasource['type'];
-
-		if ( $type != YuppConfig::DB_MYSQL && $type != YuppConfig::DB_POSTGRES ) {
-			throw new Exception('datasource type no soportado para operaciones geograficas: '.$datasource['type']);
+		if ($this->gisurl !== $this->url && $this->gistype !== $this->type) {
+			
+			// Se setea el db
+			parent::__construct($appName);
+			
+			// Se seteea el gisdb
+			$this->gisdb = $this->initGISDatasource($this->gistype);
+			$this->gisdb->connect( $this->gisurl, $this->gisuser, $this->gispass, $this->gisdatabase );
+		} else {
+			$this->gisdb = $this->initGISDatasource($this->type);
+			$this->gisdb->connect( $this->url, $this->user, $this->pass, $this->database );
+			$this->db = $this->gisdb;
+		}
+	}
+	
+	protected function init($appName) {
+		$gisdatasource = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::$PROP_GISDB);
+		if ($gisdatasource != NULL) {
+			$this->gisurl      = $gisdatasource['url'];
+			$this->gisuser     = $gisdatasource['user'];
+			$this->gispass     = $gisdatasource['pass'];
+			$this->gisdatabase = $gisdatasource['database'];
+			$this->gistype	   = $gisdatasource['type'];
 		}
 		
 		$this->srid = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::$PROP_SRID);
 
-		parent::__construct($appName);
+		parent::init($appName);
+	}
+	
+	private function initGISDatasource( $type ) {
+		switch( $type ) {
+         case YuppConfig::DB_POSTGRES:
+            YuppLoader::load( "yuppgis.core.db", "DatabasePostgisSQL" );
+            return new DatabasePostgisSQL();
+         break;
+         default:
+            throw new Exception('datasource type no soportado: '.$type);
+		}
 	}
 
 	/**
@@ -33,9 +69,9 @@ class GISDAL extends DAL {
 
 		$q = "SELECT id, AsText(geom) as text FROM " . $tableName . " WHERE id=" . $id;
 
-		$this->db->query( $q );
+		$this->gisdb->query( $q );
 
-		if ( $row = $this->db->nextRow() ) {
+		if ( $row = $this->gisdb->nextRow() ) {
 			return $row;
 		}
 
@@ -49,9 +85,9 @@ class GISDAL extends DAL {
 	 */
 	public function insert_geometry ( $tableName, $attrs ) {
 		$query = "INSERT INTO " . $tableName . " ( geom ) VALUES ( GeomFromText ( '". $attrs['geom'] ."', ". $this->srid ."));" ;
-		$this->db->execute( $query );
+		$this->gisdb->execute( $query );
 		
-		return $this->db->getLastInsertedID($tableName, 'id');
+		return $this->gisdb->getLastInsertedID($tableName, 'id');
 	}
 	
 	/**
@@ -62,7 +98,7 @@ class GISDAL extends DAL {
 	public function update_geometry( $tableName, $attrs ) {
 		$query = "UPDATE " .  $tableName . " SET geom = GeomFromText( '" . $attrs['geom'] . "', " . $this->srid 
 					. ") WHERE id = " . $attrs['id'];
-		$this->db->execute( $query );
+		$this->gisdb->execute( $query );
 	}
 
 }
