@@ -4,7 +4,7 @@ class Condition {
 
 
    // Tipo de condicion. Se utiliza un campo para no tener tantas subclases.
-   private $type;
+   protected $type;
    
    // Atributo de condicion compleja
    // Lista de subcondiciones de una condicion compleja (AND, OR, NOT).

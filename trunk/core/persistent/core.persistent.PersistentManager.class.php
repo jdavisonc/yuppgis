@@ -56,41 +56,25 @@ class PersistentManager {
    const CASCADE_LOAD_ESTRATEGY = 1;
    const LAZY_LOAD_ESTRATEGY    = 2;
    
-   private static $instance = NULL; // prueba con singleton normal
-
-   public static function getInstance( $load_estragegy = NULL )
+   
+   public function __construct( $load_estragegy )
    {
-      if (!self::$instance)
+   	  switch ($load_estragegy)
       {
-         // Definicion de estrategia de carga. Por defecto es Lazy.
-         $po_loader = NULL;
-         switch ($load_estragegy)
-         {
-            case self::LAZY_LOAD_ESTRATEGY:
-               YuppLoader::load( "core.persistent", "LazyLoadStrategy" );
-               $po_loader = new LazyLoadStrategy();
-            break;
-            case self::CASCADE_LOAD_ESTRATEGY:
-               YuppLoader::load( "core.persistent", "CascadeLoadStrategy" );
-               $po_loader = new CascadeLoadStrategy();
-            break;
-            default:
-               YuppLoader::load( "core.persistent", "LazyLoadStrategy" );
-               $po_loader = new LazyLoadStrategy();
-            break;
-         }
-         // /Definicion de estrategia de carga.
-		self::$instance = new GISPersistentManager( $po_loader );
-		
+         case self::LAZY_LOAD_ESTRATEGY:
+            YuppLoader::load( "core.persistent", "LazyLoadStrategy" );
+            $this->po_loader = new LazyLoadStrategy();
+         break;
+         case self::CASCADE_LOAD_ESTRATEGY:
+            YuppLoader::load( "core.persistent", "CascadeLoadStrategy" );
+            $this->po_loader = new CascadeLoadStrategy();
+         break;
+         default:
+            YuppLoader::load( "core.persistent", "LazyLoadStrategy" );
+            $this->po_loader = new LazyLoadStrategy();
+         break;
       }
-      
-      return self::$instance;
-   }
-
-   private function __construct( $po_loader )
-   {
-      $po_loader->setManager( $this ); // Inversion Of Control
-      $this->po_loader = $po_loader; // Siempre viene una estrategia, getInstance se encarga de eso.
+      $this->po_loader->setManager( $this ); // Inversion Of Control
       
       $ctx = YuppContext::getInstance();
       $appName = $ctx->getApp();

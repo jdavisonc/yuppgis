@@ -140,7 +140,7 @@ class ModelA004Test {
 	 
 	private function test1()
 	{
-      PersistentManager::getInstance()->generateAll();
+      PersistentManagerFactory::getManager()->generateAll();
       
       echo YuppConventions::tableName('Pagina') . "<br/>";
       

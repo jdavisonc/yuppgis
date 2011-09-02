@@ -141,7 +141,7 @@ class ModelI005Test {
 	 
 	private function test1()
 	{
-      PersistentManager::getInstance()->generateAll();
+      PersistentManagerFactory::getManager()->generateAll();
       
       echo YuppConventions::tableName('Contenido') . "<br/>";
       echo YuppConventions::tableName('Recipiente') . "<br/>";
