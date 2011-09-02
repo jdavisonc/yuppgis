@@ -1,9 +1,10 @@
 <?php
 
 YuppLoader::load('yuppgis.core.utils', 'ReflectionUtils');
+YuppLoader::load('core.mvc', 'DisplayHelper');
 
 class GISHelpers{
-	
+
 	/**
 	 * Obtiene las acciones declaradas en la clase
 	 * @param nombre de la clase
@@ -14,7 +15,7 @@ class GISHelpers{
 		return ReflectionUtils::ReflectMethods($class, 'Action', true);
 	}
 
-	
+
 	/**
 	 * Obtiene los filtros declarados en la clase
 	 * @param nombre de la clase
@@ -35,13 +36,13 @@ class GISHelpers{
 	public static function ActionsMenu($class, $id){
 		$html = '<select id="'.$id.'">';
 		$html .= '<option value="nothing"></option>';
-		
+
 		foreach (self::AvailableActions($class) as $option){
-			$html .= '<option value="'.$option.'">'.$option.'</option>';			 
+			$html .= '<option value="'.$option.'">'.$option.'</option>';
 		}
-		
+
 		$html .= '</select>';
-		
+
 		return $html;
 	}
 
@@ -60,88 +61,107 @@ class GISHelpers{
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
 		$kmlurl = MapParams::getValueOrDefault($params, MapParams::KML_URL);
-		
-		
+
+
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 
 		$html =	'
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script> 
 		<script src="'.$olurl.'" type="text/javascript"></script>			
 		<script type="text/javascript">
-			function setHTML(response) {
-				document.getElementById("nodeList").innerHTML = response.responseText;
-			}
 			
-			function init(){
+		var map_'.$id.'; 
+		$(document).ready(function(){
+			
 				
 				 $.ajax({
-			      url:"/yuppgis/prototipo/Home/getLayersAction" ,			      
+			      url:"/yuppgis/prototipo/Home/getLayersAction?mapId='.$id.'",			      			      			      
 			      success: function(data){
 				
 			
-			
- 				var google = new OpenLayers.Layer.Google( "Google", { type: G_HYBRID_MAP } );
-		
-				var options = {
-					minResolution: "auto",
-					minExtent: new OpenLayers.Bounds(-1, -1, 1, 1),
-					maxResolution: "auto",
-					maxExtent: new OpenLayers.Bounds(-180, -90, 180, 90),
-				};
-				var map = new OpenLayers.Map("'.$id.'", options );
-
- 			 	map.addLayer(google);
-				map.zoomToMaxExtent();				
+					
+		 				var google = new OpenLayers.Layer.Google( "Google", { type: G_HYBRID_MAP } );
 				
-								
-                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});
-
-			    $.each(data, function(i, item){
-                	var layerurl =  "/yuppgis/prototipo/Home/mapLayer?layerId=" + item.id;
-		 			var kml = new OpenLayers.Layer.Vector("KML", {
-							            strategies: [new OpenLayers.Strategy.Fixed()],
-							            protocol: new OpenLayers.Protocol.HTTP({
-							                url: layerurl,					                
-							                format: new OpenLayers.Format.KML({
-							                    extractStyles: true, 
-							                    extractAttributes: true,
-							                    maxDepth: 2
-							                })
-							            })
-							        });					        
-		             map.addLayers([wms, kml]);
-	                
-                });
-                
-              
-                
-               	map.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
-                 
-				}
-			   });
-			}
+						var options = {
+							minResolution: "auto",
+							minExtent: new OpenLayers.Bounds(-1, -1, 1, 1),
+							maxResolution: "auto",
+							maxExtent: new OpenLayers.Bounds(-180, -90, 180, 90),
+						};
+						map_'.$id.' = new OpenLayers.Map("map_'.$id.'", options );
+		
+		 			 	map_'.$id.'.addLayer(google);
+						map_'.$id.'.zoomToMaxExtent();				
+						
+										
+		                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});
+		
+					    $.each(data, function(i, item){
+		                	var layerurl =  "/yuppgis/prototipo/Home/mapLayer?layerId=" + item.id;
+				 			var kml = new OpenLayers.Layer.Vector(item.id, {
+									            strategies: [new OpenLayers.Strategy.Fixed()],
+									            protocol: new OpenLayers.Protocol.HTTP({
+									                url: layerurl,					                
+									                format: new OpenLayers.Format.KML({
+									                    extractStyles: true, 
+									                    extractAttributes: true,
+									                    maxDepth: 2
+									                })
+									            })
+									        });					        
+				             map_'.$id.'.addLayers([wms, kml]);
+			                
+		                });  
+		               	map_'.$id.'.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
+		                 
+					}
+				});
+			
+			
+			});
 
 		</script>
 	
 		<style type="text/css">
-			#'.$id.' {
+			#map_'.$id.' {
 				width: '.$width.';
 				height: '.$height.';
 				border: '.$border.';
 				}
 		</style>
 		
-		<div id="'.$id.'"></div>
-		<div id="nodeList"></div>
-	
-	
-		<body onload="init()">        	
-        
-    	</body> ';
+		<div id="map_'.$id.'"></div>';
+			
+
 
 		return  $html;
 
 	}
+
+	public static function MapLayers($params=null){
+		$id = MapParams::getValueOrDefault($params, MapParams::ID);
+
+		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
+
+		$map = Map::get($id);
+		$layers = $map->getLayers();
+		$html =  '<ul>';
+		foreach ($layers as $layer){
+			$layerId = $layer->getId();
+			$checkboxId = 'chb_'.$id.'_'.$layerId;
+			$html .= '<li>'.DisplayHelper::check($checkboxId, true, array('id'=> $checkboxId, 'onclick' => GISHelpers::MapLayerHandler($id, $layerId, $checkboxId))).'<label for="'.$checkboxId.'">'.$layer->getName().'</label></li>';
+		}
+		
+		return $html.'</ul>';
+	}
+	
+	private static function MapLayerHandler($mapId, $layerId, $checkboxId){
+		
+		$html = 'javascript:map_'.$mapId.'.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'))';
+		
+		return $html;
+	}
+
 }
 
 

@@ -35,17 +35,17 @@ class DataLayer extends PersistentObject {
 	
 	public static function listAll(ArrayObject $params) {
 		self :: $thisClass = __CLASS__;
-		return GISPersistentObject::listAll($params);
+		return PersistentObject::listAll($params);
 	}
 	
 	public static function findBy(Condition $condition, ArrayObject $params) {
 		self :: $thisClass = __CLASS__;
-		return GISPersistentObject::findBy($condition, $params);
+		return PersistentObject::findBy($condition, $params);
 	}
 	
 	public static function get($id) {
 		self :: $thisClass = __CLASS__;
-		return GISPersistentObject :: get($id);
+		return PersistentObject :: get($id);
 	}
 }
 
