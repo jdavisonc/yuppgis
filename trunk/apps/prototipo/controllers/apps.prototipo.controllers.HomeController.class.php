@@ -1,4 +1,6 @@
 <?php
+
+YuppLoader::load('yuppgis.core.basic', 'Map');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 YuppLoader::load('prototipo.model', 'Paciente');
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
@@ -24,8 +26,9 @@ class HomeController extends YuppController {
 	}
 
 	public function getLayersAction(){
-
-		$layers = DataLayer::listAll($this->params);
+		
+		$map = Map::get($this->params['mapId']);
+		$layers =$map->getLayers();
 
 		header('Content-type: application/json');
 		$json = '[';

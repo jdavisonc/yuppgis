@@ -14,7 +14,7 @@ class MapParams{
 		else{
 			switch ($key){
 				case MapParams::ID:
-					return 'map_'.uniqid();
+					return -1;
 				case MapParams::OpenLayerJS_URL:
 					return "http://maps.google.com/maps?file=api&v=2&key=your_key_here";
 				case MapParams::WIDTH:

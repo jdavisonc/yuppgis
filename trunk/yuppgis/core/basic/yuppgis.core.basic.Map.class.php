@@ -1,28 +1,19 @@
 <?php
 
-YuppLoader::load('yuppgis.core.basic', 'Layer');
+YuppLoader::load('yuppgis.core.basic', 'DataLayer');
+
 
 class Map  extends PersistentObject {
 
-	private  $id;
-	private  $name;
-	private  $layers;
 
-	/**
-	 * 
-	 * Enter description here ...
-	 * @param unknown_type $id
-	 * @param unknown_type $name
-	 * @param unknown_type $indexAttribute
-	 */
-	function __construct($id,$name){
+	function __construct($name = ''){
 		
 		$this->setWithTable("map");
 		
 		$this->addAttribute("name", Datatypes::TEXT);
-		$this->addHasMany("layers", "Layer");
+		$this->addHasMany("layers", "DataLayer");
 		
-		$args = array('id'=> $id, 'name' =>$name, 'layers' => array());
+		$args = array('name' =>$name);
 		parent :: __construct($args, false);				
 	}
 
@@ -31,8 +22,8 @@ class Map  extends PersistentObject {
 	 * Enter description here ...
 	 * @param unknown_type $element
 	 */
-	function addLayer($layer){	
-		$this->$layers[$layer->getId()] = $layer;
+	function addLayer($layer){		
+		$this->addToLayers($layer);
 	}
 
 	/**
@@ -40,23 +31,23 @@ class Map  extends PersistentObject {
 	 * Enter description here ...
 	 * @param unknown_type $key
 	 */
-	function removeElement($key){
-		if ( array_key_exists($key, $this->$layers) ){
-			unset($this->$layers[$key]);
-		}
+	function removeLayer($layer){
+		$this->removeFromLayers($layer);
 	}
 
-	/**
-	 * 
-	 * Enter description here ...
-	 */
-	function getLayers(){
-		return $this->$layers;
+	public static function listAll(ArrayObject $params) {
+		self :: $thisClass = __CLASS__;
+		return PersistentObject::listAll($params);
 	}
 	
-	function toKML(){
-		//TODO_GIS
+	public static function findBy(Condition $condition, ArrayObject $params) {
+		self :: $thisClass = __CLASS__;
+		return PersistentObject::findBy($condition, $params);
+	}
 	
+	public static function get($id) {
+		self :: $thisClass = __CLASS__;
+		return PersistentObject :: get($id);
 	}
 }
 
