@@ -18,7 +18,7 @@ class KMLUtilities{
 		$elements = $layer->getElements();
 		
 		foreach ($elements as $element){
-			$kml .= KMLUtilities::ElementToKml($element);
+			$kml .= KMLUtilities::ElementToKml($element, $layer);
 		}
 				
 		$kml .= '</Folder>
@@ -29,18 +29,37 @@ class KMLUtilities{
 	}
 
 
-	private static function ElementToKml($element){		
-		$kml = "		
+	private static function ElementToKml($element, $layer){		
+		$kml = '		
 		<Placemark>
-			<name>Blue Icon</name>
+			<name>'.$element->getName().'</name>
 			<description>Just another blue icon.</description>
+			<Style>
+		        <IconStyle>
+		          <scale>0.8</scale>
+		          <Icon>
+		            <href>'.$layer->getIconurl().'</href>
+		          </Icon>
+		        </IconStyle>
+		    </Style>			
 			<Point>
-				<coordinates>".$element->getUbicacion()->getX().",".$element->getUbicacion()->getY()."</coordinates>
+				<coordinates>'.$element->getUbicacion()->getX().','.$element->getUbicacion()->getY().'</coordinates>
 			</Point>
-		</Placemark>";
+		</Placemark>';
 		
 		return $kml;
 	}	
+	
+	
+	/* kml.events.register(\'mousedown\', kml, function(evt) {
+							  
+							  var popup = new OpenLayers.Popup.FramedCloud(null,new OpenLayers.LonLat(-56.181944, -34.883611),null,
+							              "<div style=\'background-color:red; width:150;height:100\'>hi</div>",
+							              null,true,null);
+							    map_'.$id.'.addPopup(popup);
+							    OpenLayers.Event.stop(evt);
+				             
+			                });*/
 }
 
 

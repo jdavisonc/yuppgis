@@ -11,7 +11,7 @@ class DataLayer extends PersistentObject {
 	 * @param unknown_type $indexAttribute
 	 */
 	
-	function __construct($name = '', $indexAttribute='id'){		
+	function __construct($name = '', $indexAttribute='id', $iconurl='/yuppgis/yuppgis/js/gis/img/marker-gold.png', $visible=true){		
 		
 		$this->setWithTable("data_layer");
 		
@@ -20,8 +20,10 @@ class DataLayer extends PersistentObject {
 		
 		$this->addHasMany("elements", "GISPersistentObject");		
 		$this->addHasMany("tags", "Tag");
+		$this->addAttribute("iconurl", Datatypes::TEXT);
+		$this->addAttribute("visible", Datatypes::BOOLEAN);
 		
-		$args = array('name' =>$name, 'indexAttribute' => $indexAttribute);
+		$args = array('name' =>$name, 'indexAttribute' => $indexAttribute, 'iconurl' => $iconurl, 'visible' => $visible );
 		parent :: __construct($args, false);
 	}	
 
