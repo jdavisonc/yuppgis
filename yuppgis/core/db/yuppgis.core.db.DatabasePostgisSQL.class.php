@@ -4,38 +4,62 @@ YuppLoader::load( 'core.db', 'DatabasePostgreSQL' );
 
 class DatabasePostgisSQL extends DatabasePostgreSQL {
 	
-	public function evaluateAnyCondition( Condition $condition ) {
+	public function evaluateAnyGISCondition( Condition $condition , $srid) {
 		$where = "";
 		switch ( $condition->getType() ) {
 			case GISCondition::GISTYPE_ISCONTAINED:
-				$where = $this->evaluateISCONTAINED( $condition );
+				$where = $this->evaluateISCONTAINED( $condition, $srid );
+				break;
+			case GISCondition::GISTYPE_CONTAINS:
+				$where = $this->evaluateCONTAINS( $condition, $srid );
 				break;
 			default:
 				$where = parent::evaluateAnyCondition($condition);
 		}
-		
 		return $where;
 	}
 	
-	private function evaluateISCONTAINED( GISCondition $condition ) {
+	
+	private function evaluateCONTAINS( GISCondition $condition, $srid ) {
 		$refVal = $condition->getReferenceValue();
-		$refAtr = $condition->getReferenceAttribute();
 		$atr    = $condition->getAttribute();
       
-		// TODO_GIS: Ejemplo 
-		// 	return "	ST_Contains(p.geom, AsGeom('POINT(10 10)'))	" -> geom columna geom de paciente_ubicacion_geo
-		// Tambien tener cuidado que se puede hacer algo asi:
-		// ST_CONTAINS (paciente.geom, medicos.geom) -> los pacientes en el area de medicos
-		/*if ( $refAtr !== NULL ) {
-			return $atr->alias.".".$atr->attr ."=". $refAtr->alias.".".$refAtr->attr; // a.b = c.d
-		} else {
-            return $atr->alias.".".$atr->attr ."=". $this->evaluateReferenceValue( $refVal ); // a.b = 666
-		}*/
-		return '';
-		
-		throw new Exception("Uno de valor o atributo de referencia debe estar presente. " . __FILE__ . " " . __LINE__);
+		return "ST_Contains(" . $atr->alias.".".$atr->attr . ", ". $this->geomFromText($refVal, $srid) .") "; // -> geom columna geom de paciente_ubicacion_geo
 	}
 	
+	private function evaluateISCONTAINED( GISCondition $condition, $srid ) {
+		$refVal = $condition->getReferenceValue();
+		$atr    = $condition->getAttribute();
+      
+		return "ST_Contains(" .  $this->geomFromText($refVal, $srid) . ", " . $atr->alias.".".$atr->attr . ") "; // -> geom columna geom de paciente_ubicacion_geo
+	}
+	
+	public function geomFromText($wkt, $srid) {
+		return "GeomFromText( '" . $wkt ."' , " . $srid.")";
+	}
+	
+	public function asText($columnName) {
+		return "AsText( '" . $columnName .")";
+	}
+	
+	public function evaluateGISQuery( Query $query, $srid )
+	{
+		$select = $this->evaluateSelect( $query->getSelect() ) . " ";
+		$from   = $this->evaluateFrom( $query->getFrom() )   . " ";
+		$where  = $this->evaluateGISWhere( $query->getWhere(), $srid )  . " ";
+		$order  = $this->evaluateOrder( $query->getOrder() )  . " ";
+
+		return $select . $from . $where . $order;
+   }
+   
+	public function evaluateGISWhere( Condition $condition, $srid )
+	{
+		$where = "";
+		if ($where !== NULL) {
+			$where = "WHERE " . $this->evaluateAnyGISCondition( $condition, $srid );
+		}
+		return $where;
+   }
 	
 }
 

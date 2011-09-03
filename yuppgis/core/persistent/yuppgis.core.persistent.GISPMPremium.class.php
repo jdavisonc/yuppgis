@@ -1,5 +1,7 @@
 <?php
 
+YuppLoader :: load('core.db.criteria2', 'Query');
+
 // Se importa DAL geografico
 YuppLoader :: load('yuppgis.core.db', 'GISDAL');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'GISCondition');
@@ -109,23 +111,71 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	}
 	
 	public function findBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
-		//$newCondition = $this->findGISBy($instance, $condition, $params);
-		//return parent::findBy($instance, $newCondition, $params);
-		return parent::findBy($instance, $condition, $params);
+		$newCondition = $this->findGISBy($instance, $condition, $params);
+		return parent::findBy($instance, $newCondition, $params);
 	}
 	
 	private function findGISBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
-		if ( is_subclass_of($condition, GISCondition::getClassName()) ) {
-			// Es gis condition, tener cuidado que puede tener subcondiciones comunes
+		if ( $condition instanceof GISCondition) {
 			
+			$attr = $condition->getAttribute();
+			
+			// Es gis condition, tener cuidado que puede tener subcondiciones comunes
+			$tableName = YuppGISConventions::gisTableName(YuppConventions::tableName( $instance ), $attr->attr);
+			
+			$gisCondition = new GISCondition();
+			$gisCondition->setType($condition->getType());
+			$gisCondition->setAttribute('geo', 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
+			
+			if ($condition->getReferenceAttribute() !== null) {
+				// Consulta que compara un valor con valor de otra tabla geografica -> g.geom == j.geom
+			} else {
+				$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
+				$gisCondition->setReferenceValue($attrGeo);
+			}
+			
+			$query = new Query();
+			$query->addFrom($tableName, 'geo');
+			$query->addProjection('geo', 'id');
+			$query->setCondition($gisCondition);
+			
+			$query_res = $this->dal->gis_query($query);
+			
+			$res = '';
+			$first = true;
+			foreach ($query_res as $value ) {
+				if ($first) {
+					$first = false;	
+				} else {
+					$res =  $res . ',';
+				}
+				$res = $res . $value['id'];
+			}
+			
+			$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
+			if ($res !== '') {
+				return Condition::IN($attr->alias, $attr_id, $res);
+			} else {
+				return Condition::IN($attr->alias, $attr_id, null);
+			}
 		} else {
-			if ( $condition->getType() == Condition::TYPE_AND || $condition->getType() == Condition::TYPE_OR ) {
-				// Recorro subcondiciones
+			if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR || 
+					$condition->getType() == Condition::TYPE_NOT ) {
+				$newCondition = new Condition();
+				$newCondition->setType($condition->getType());
+				$subconditions = $condition->getSubconditions();
+				for ($i = 0; $i < count($subconditions); $i++) {
+					$newCondition->add($this->findGISBy( $instance, $subconditions[$i], $params ));
+				}
+				return $newCondition;
+			} else {
+				return $condition;
 			}
 		}
 		
 	}
 	
+
 }
 
 ?>
