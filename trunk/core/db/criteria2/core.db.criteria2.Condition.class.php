@@ -34,6 +34,7 @@ class Condition {
    const TYPE_EEQ   = "condition.type.exact"; // Igual que EQ pero se asegura de que los valores sean exactamente iguales.
    const TYPE_NEQ   = "condition.type.not_equals"; // En MySQL dos strings iguales pero uno con una vocal con tilde y el otro sin tilde son considerados como iguales.
    const TYPE_ENEQ  = "condition.type.exact_not_equals"; // Se asegura de que si difiere un solo caracter en un string, sea considerado como distintos.
+   const TYPE_IN  	= "condition.type.in";
    
    // Condiciones de "parecidos"
    const TYPE_LIKE  = "condition.type.like";
@@ -121,7 +122,8 @@ class Condition {
                 self::TYPE_LTEQ,
                 self::TYPE_NOT,
                 self::TYPE_AND,
-                self::TYPE_OR
+                self::TYPE_OR,
+                self::TYPE_IN
              );
    } 
    
@@ -490,6 +492,14 @@ class Condition {
       $c->setType( self::TYPE_LTEQ );
       $c->setAttribute( $alias, $attr );
       $c->setReferenceAttribute( $refAlias, $refAttr );
+      return $c;
+   }
+   
+   public static function IN( $alias, $attr, $refValue ) {
+      $c = new Condition();
+      $c->setType( self::TYPE_IN );
+      $c->setAttribute( $alias, $attr );
+      $c->setReferenceValue( $refValue );
       return $c;
    }
 

@@ -320,7 +320,7 @@ class DatabaseMySQL {
       return $select . $from . $where . $order . $limit;
    }
    
-   private function evaluateSelect( Select $select )
+   protected function evaluateSelect( Select $select )
    {
       // FIXME: no todos los objetos tienen porque ser proyecciones,
       //        pueden haber agregaciones y funciones.
@@ -343,7 +343,7 @@ class DatabaseMySQL {
       }
    }
 
-   private function evaluateFrom( $from )
+   protected function evaluateFrom( $from )
    {
       if (count($from) == 0)
       {
@@ -417,12 +417,15 @@ class DatabaseMySQL {
          case Condition::TYPE_OR:
             $where = $this->evaluateORCondition( $condition );
          break;
+         case Condition::TYPE_IN:
+            $where = $this->evaluateINCondition( $condition );
+         break;
       }
       
       return $where;
    }
    
-   private function evaluateOrder( $order )
+   protected function evaluateOrder( $order )
    {
       if (count($order) > 0)
       {
@@ -651,7 +654,17 @@ class DatabaseMySQL {
 
    		return mysql_insert_id();
    }
-   
+
+   public function evaluateINCondition( Condition $condition ) {
+   		$refVal = $condition->getReferenceValue();
+		$atr    = $condition->getAttribute();
+		
+		if ($refVal !== null) {
+			return $atr->alias.".".$atr->attr ." IN (".  $refVal  ." )";
+		} else {
+			return 'FALSE';
+		}
+   }
    
 }
 

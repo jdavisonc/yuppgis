@@ -24,15 +24,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$this->assert($point->getY() == 32, 'Test punto Y:'.$point->getY());
 	}
 
-	/*public function testGetPoint() {
-		$paciente = Paciente::get(1);
-
-		$point = $paciente->getUbicacion();
-
-		$this->assert($point->getX() == 23, 'Test punto X:'.$point->getX());
-		$this->assert($point->getY() == 32, 'Test punto Y:'.$point->getY());
-	}
-	
+	/*
 	public function testListAllPoint() {
 		$pacientes = Paciente::listAll( new ArrayObject(array()) );
 		$point = $pacientes[0]->getUbicacion();
@@ -84,16 +76,18 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$this->assert($deleted, 'Test de borrado de Paciente');
 	}
 	
-	/*function testFindBy() {
+	function testFindBy() {
+		$and = Condition::_AND()
+			->add(GISCondition::ISCONTAINED(
+				YuppGISConventions::tableName(Paciente::getClassName()), 
+				'ubicacion', new Point(10, 10)))
+			->add(Condition::EQ(YuppGISConventions::tableName(Paciente::getClassName()), 'nombre', 'Roberto'));
 		
-		$condition = YuppGISCondition::CONTAINS(
-			YuppGISConventions::tableName(Paciente::getClassName()), 
-			'ubicacion', Circulo(X, Y));
+		$pacientes = Paciente::findBy($and, new ArrayObject());
 		
+		$this->assert($pacientes !== null, 'Test de filtrado de pacientes');
 		
-		Paciente::findBy($condition, new ArrayObject());
-		
-	}*/
+	}
 
 }
 

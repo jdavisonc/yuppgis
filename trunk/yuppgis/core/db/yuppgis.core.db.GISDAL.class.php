@@ -18,7 +18,7 @@ class GISDAL extends DAL {
 		
 		$this->init($appName);
 
-		if ($this->gisurl !== $this->url && $this->gistype !== $this->type) {
+		if ( $this->gisurl !== $this->url && $this->gistype !== $this->type && $this->gisdatabase !== $this->database ) {
 			
 			// Se setea el db
 			parent::__construct($appName);
@@ -99,6 +99,30 @@ class GISDAL extends DAL {
 		$query = "UPDATE " .  $tableName . " SET geom = GeomFromText( '" . $attrs['geom'] . "', " . $this->srid 
 					. ") WHERE id = " . $attrs['id'];
 		$this->gisdb->execute( $query );
+	}
+	
+	/**
+	 * Ejecuta consulta sobre gis datasource
+	 * @param Query $query
+	 * @throws Exception
+	 */
+	public function gis_query( Query $query ) {
+		$res = array();
+	    try {
+	    	$q = $this->gisdb->evaluateGISQuery( $query, $this->srid );
+			if ( !$this->gisdb->query( $q ) ) { 
+				throw new Exception("ERROR");
+			}
+
+			while ( $row = $this->gisdb->nextRow() ) { 
+				$res[] = $row;
+			}
+			
+		} catch (Exception $e) {
+			echo $e->getMessage();
+			echo $this->gisdb->getLastError();
+		}
+		return $res;
 	}
 
 }
