@@ -8,10 +8,5 @@
 		<td><?php echo GISHelpers::MapLayers(array(MapParams::ID => 1)); ?></td>
 		<td></td>
 	</tr>
-	<tr><td colspan="3"><?php echo 'Mapa 2' ?></td><tr>
-	<tr>
-		<td><?php echo GISHelpers::Map(array(MapParams::ID => 2, MapParams::KML_URL => '/yuppgis/prototipo/Home/Kml')); ?></td>
-		<td><?php echo GISHelpers::MapLayers(array(MapParams::ID => 2)); ?></td>
-		<td></td>
-	</tr>
+	
 </table>

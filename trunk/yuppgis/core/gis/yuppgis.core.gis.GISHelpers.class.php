@@ -70,7 +70,7 @@ class GISHelpers{
 		<script src="'.$olurl.'" type="text/javascript"></script>			
 		<script type="text/javascript">
 			
-		var map_'.$id.'; 
+		var selectcontrol_'.$id.', selectedFeature_'.$id.', map_'.$id.'; 
 		$(document).ready(function(){
 			
 				
@@ -95,7 +95,7 @@ class GISHelpers{
 						
 										
 		                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});
-		
+						map_'.$id.'.addLayer(wms);
 					    $.each(data, function(i, item){
 		                	var layerurl =  "/yuppgis/prototipo/Home/mapLayer?layerId=" + item.id;
 				 			var kml = new OpenLayers.Layer.Vector(item.id, {
@@ -109,9 +109,17 @@ class GISHelpers{
 									                })
 									            })
 									        });					        
-				             map_'.$id.'.addLayers([wms, kml]);
-			                
-		                });  
+				             map_'.$id.'.addLayer(kml);
+				             console.log(\'Capa \' + i);
+				    	    selectcontrol_'.$id.' = new OpenLayers.Control.SelectFeature(map_'.$id.'.layers[i + 2], {				                
+				    	    	onSelect: onFeatureSelect_'.$id.', 
+				                onUnselect: onFeatureUnselect_'.$id.' 
+							});
+				  
+				            map_'.$id.'.addControl(selectcontrol_'.$id.');
+				            selectcontrol_'.$id.'.activate();  
+						});  
+						                
 		               	map_'.$id.'.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
 		                 
 					}
@@ -119,6 +127,28 @@ class GISHelpers{
 			
 			
 			});
+			
+		function onPopupClose_'.$id.'(evt) {
+            selectControl_'.$id.'.unselect(selectedFeature_'.$id.');
+        }
+        
+        function onFeatureSelect_'.$id.'(feature) {
+            selectedFeature_'.$id.' = feature;
+            popup_'.$id.' = new OpenLayers.Popup.FramedCloud("chicken", 
+                                     feature.geometry.getBounds().getCenterLonLat(),
+                                     new OpenLayers.Size(100,100),
+                                     "<div style=\'font-size:.8em\'>"+feature.attributes.name+"</div>",
+                                     null, true, onPopupClose_'.$id.');
+            feature.popup = popup_'.$id.';
+            map_'.$id.'.addPopup(popup_'.$id.');
+        }
+        
+        function onFeatureUnselect_'.$id.'(feature) {
+            map_'.$id.'.removePopup(feature.popup);
+            feature.popup.destroy();
+            feature.popup = null;
+        }
+			
 
 		</script>
 	
@@ -149,7 +179,7 @@ class GISHelpers{
 		foreach ($layers as $layer){
 			$layerId = $layer->getId();
 			$checkboxId = 'chb_'.$id.'_'.$layerId;
-			$html .= '<li>'.DisplayHelper::check($checkboxId, true, array('id'=> $checkboxId, 'onclick' => GISHelpers::MapLayerHandler($id, $layerId, $checkboxId))).'<label for="'.$checkboxId.'">'.$layer->getName().'</label></li>';
+			$html .= '<li style="list-style-type: none">'.DisplayHelper::check($checkboxId, true, array('id'=> $checkboxId, 'onclick' => GISHelpers::MapLayerHandler($id, $layerId, $checkboxId))).'<label for="'.$checkboxId.'">'.$layer->getName().'</label></li>';
 		}
 		
 		return $html.'</ul>';
