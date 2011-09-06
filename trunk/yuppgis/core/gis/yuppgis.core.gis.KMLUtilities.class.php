@@ -29,7 +29,8 @@ class KMLUtilities{
 	}
 
 
-	private static function ElementToKml($element, $layer){		
+	private static function ElementToKml($element, $layer){
+		/*TODO: el elemento puede tener mas de un componente geografico, ver como resolver getUbicacion()*/		
 		$kml = '		
 		<Placemark>
 			<name>'.$element->getName().'</name>
@@ -41,7 +42,7 @@ class KMLUtilities{
 		            <href>'.$layer->getIconurl().'</href>
 		          </Icon>
 		        </IconStyle>
-		    </Style>			
+		    </Style>		    
 			<Point>
 				<coordinates>'.$element->getUbicacion()->getX().','.$element->getUbicacion()->getY().'</coordinates>
 			</Point>

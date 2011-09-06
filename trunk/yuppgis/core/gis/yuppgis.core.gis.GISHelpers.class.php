@@ -2,6 +2,7 @@
 
 YuppLoader::load('yuppgis.core.utils', 'ReflectionUtils');
 YuppLoader::load('core.mvc', 'DisplayHelper');
+YuppLoader::load('core.mvc', 'DisplayHelper');
 
 class GISHelpers{
 
@@ -66,6 +67,17 @@ class GISHelpers{
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 
 		$html =	'
+			<style>
+		  		.olPopupCloseBox {
+		  			height: 27px !important;			    
+				    right: 4px !important;
+				    top: 38px !important;
+				    width: 26px !important;			    
+	    			background: url("/yuppgis/yuppgis/images/close.png") no-repeat scroll 0 0 transparent;
+	    			cursor: pointer;
+				}
+		</style>
+	
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script> 
 		<script src="'.$olurl.'" type="text/javascript"></script>			
 		<script type="text/javascript">
@@ -129,7 +141,7 @@ class GISHelpers{
 			});
 			
 		function onPopupClose_'.$id.'(evt) {
-            selectControl_'.$id.'.unselect(selectedFeature_'.$id.');
+            selectcontrol_'.$id.'.unselect(selectedFeature_'.$id.');
         }
         
         function onFeatureSelect_'.$id.'(feature) {
@@ -137,7 +149,7 @@ class GISHelpers{
             popup_'.$id.' = new OpenLayers.Popup.FramedCloud("chicken", 
                                      feature.geometry.getBounds().getCenterLonLat(),
                                      new OpenLayers.Size(100,100),
-                                     "<div style=\'font-size:.8em\'>"+feature.attributes.name+"</div>",
+                                     "<div style=\'font-size:.8em\'>"+feature.attributes.description+"</div>",
                                      null, true, onPopupClose_'.$id.');
             feature.popup = popup_'.$id.';
             map_'.$id.'.addPopup(popup_'.$id.');
