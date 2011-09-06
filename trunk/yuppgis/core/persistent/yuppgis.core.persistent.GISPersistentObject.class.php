@@ -16,7 +16,7 @@ class GISPersistentObject extends PersistentObject {
 		
 		$this->setWithTable('gis_persistent_object');
 		
-		$this->addAttribute("app", Datatypes::TEXT);
+		$this->addAttribute('app', Datatypes::TEXT);
 		
 		$ctx = YuppContext::getInstance();
 		$appName = null;
