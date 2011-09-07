@@ -2,12 +2,29 @@
 
 class Border extends UIProperty {
 	
-	function __construct($color = '', $width = 10) {
-		
-		$this->addAttribute('color', Datatypes::TEXT);
-		$this->addAttribute('width', Datatypes::INT_NUMBER);
-		
-		parent :: __construct(array ('color' => $color, 'width' => $width));
+	protected $color;
+	protected $width;
+	
+	public function __construct($alpha = 0, $zIndex = 0, $color = Color::BLACK, $width = 0) {
+		$this->color = $color;
+		$this->width = $width;
+		parent::__construct($alpha, $zIndex);
+	}
+	
+	public function getColor() {
+		return $this->color;
+	}
+	
+	public function setColor($color) {
+		$this->color = $color;
+	}
+	
+	public function getWidth() {
+		return $this->width;
+	}
+	
+	public function setWidth($width) {
+		$this->width = $width;
 	}
 	
 }
