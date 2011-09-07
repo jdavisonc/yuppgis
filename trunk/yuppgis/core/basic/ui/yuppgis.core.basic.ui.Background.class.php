@@ -2,11 +2,19 @@
 
 class Background extends UIProperty {
 	
-	function __construct($color = '') {
-		
-		$this->addAttribute('color', Datatypes::TEXT);
-		
-		parent :: __construct(array ('color' => $color));
+	protected $color;
+	
+	public function __construct($alpha = 0, $zIndex = 0, $color = Color::BLACK) {
+		$this->color = $color;
+		parent::__construct($alpha, $zIndex);
+	}
+	
+	public function getColor() {
+		return $this->color;
+	}
+	
+	public function setColor($color) {
+		$this->color = $color;
 	}
 	
 }
