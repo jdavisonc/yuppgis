@@ -2,13 +2,39 @@
 
 class Icon extends UIProperty {
 	
-	function __construct($url = '', $height = 10, $width = 10) {
-		
-		$this->addAttribute('url', Datatypes::TEXT);
-		$this->addAttribute('height', Datatypes::INT_NUMBER);
-		$this->addAttribute('width', Datatypes::INT_NUMBER);
-		
-		parent :: __construct(array ('url' => $urk, 'height' => $height, 'width' => $width));
+	protected $url;
+	protected $width;
+	protected $height;
+	
+	public function __construct($alpha = 0, $zIndex = 0, $url = '', $width = 0, $height = 0) {
+		$this->url = $url;
+		$this->width = $width;
+		$this->height = $height;
+		parent::__construct($alpha, $zIndex);
+	}
+	
+	public function getUrl() {
+		return $this->url;
+	}
+	
+	public function setUrl($url) {
+		$this->url = $url;
+	}
+	
+	public function getWidth() {
+		return $this->width;
+	}
+	
+	public function setWidth($width) {
+		$this->width = $width;
+	}
+	
+	public function getHeight() {
+		return $this->height;
+	}
+	
+	public function setHeight($height) {
+		$this->height = $height;
 	}
 	
 }
