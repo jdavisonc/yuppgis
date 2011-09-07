@@ -2,13 +2,37 @@
 
 class UIProperty {
 	
-	function __construct($alpha = 0, $zIndex = 0) {
-		
-		$this->addAttribute('alpha', Datatypes::INT_NUMBER);
-		$this->addAttribute('zIndex', Datatypes::LONG_NUMBER);
-		
-		parent :: __construct(array ('alpha' => $alpha, 'zIndex' => $zIndex));
+	protected $alpha;
+	protected $zIndex;
+	
+	public function __construct($alpha = 0, $zIndex = 0) {
+		$this->alpha = $alpha;
+		$this->zIndex = $zIndex;
 	}
+	
+	public function getAlpha() {
+		return $this->alpha;
+	}
+	
+	public function setAlpha($alpha) {
+		$this->alpha = $alpha;
+	}
+	
+	public function getZIndex() {
+		return $this->zIndex;
+	}
+	
+	public function setZIndex($zIndex) {
+		$this->zIndex = $zIndex;
+	}
+
+}
+
+class Color {
+	
+	const WHITE = 0;
+	const BLACK = 1;
+	const RED = 2;
 	
 }
 
