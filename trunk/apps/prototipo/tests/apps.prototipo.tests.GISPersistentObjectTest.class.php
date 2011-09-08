@@ -2,6 +2,8 @@
 
 YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('prototipo.model', 'Paciente');
+YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
+YuppLoader::load('yuppgis.core.basic.ui', 'Icon');
 
 /**
  * Test para probar configuracion de objetos geograficos con modelo de datos
@@ -93,6 +95,17 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		
 		$this->assert($pacientes !== null, 'Test de filtrado de pacientes');
 		
+	}
+	
+	public function testJSON2() {
+			
+			$uip = new Icon(60, 10, '//hola', 20, 10);
+			$json =$uip->encodeJSON();
+			
+			$icon2 = new Icon();
+			$icon2->decodeJSON( $json );
+			$this->assert($icon2->getUrl() === $uip->getUrl(), 'Test json2');
+			
 	}
 
 }
