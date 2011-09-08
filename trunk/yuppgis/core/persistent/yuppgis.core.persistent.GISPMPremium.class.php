@@ -35,8 +35,8 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	 * @param unknown_type $data
 	 */
 	private function createGISObjectFromData( $class, $data ) {
-		$attrsValues = array( 'id' => $data['id'], 'class' => $class );
-		$attrsValues = array_merge( $attrsValues , WKTGEO::fromText($class, $data['text']));
+		$attrsValues = array( 'id' => $data['id'], 'class' => $class, 'uiproperty' => $data['uiproperty'] );
+		$attrsValues = array_merge( $attrsValues , WKTGEO::fromText($class, $data['geo']));
 		
 		return $this->createObjectFromData($class, $attrsValues);
 	}
@@ -64,11 +64,11 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 		$attrGeo = WKTGEO::toText( $obj );
 	   	
 		if ( !$obj->getId() ) {
-	   		$attrs = array( 'geom' => $attrGeo );
+	   		$attrs = array( 'geom' => $attrGeo, 'uiproperty' => $obj->aGet('uiproperty') );
 	   		$id = $this->dal->insert_geometry($tableName, $attrs);
 	   		$obj->setId($id);
 	   	} else {
-	   		$attrs = array( 'id' => $obj->getId(), 'geom' => $attrGeo );
+	   		$attrs = array( 'id' => $obj->getId(), 'geom' => $attrGeo, 'uiproperty' => $obj->aGet('uiproperty') );
 	   		$this->dal->update_geometry($tableName, $attrs);
 	   	}
    }

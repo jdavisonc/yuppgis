@@ -44,6 +44,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$paciente->setNombre('Ernestino');
 		$point = new Point(23, 32);
 		$paciente->setUbicacion($point);
+		$paciente->getUbicacion()->setUIProperty(new Icon(0,0,'opa',10,10));
 		$paciente->save();
 		
 		$this->assert($paciente != null && $paciente->getUbicacion()->getId() != null, 
@@ -52,6 +53,11 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		
 		$this->paciente = $paciente;
 	}
+	
+	function testJSON() {
+		$this->paciente->getUbicacion()->setUIProperty(new Icon(0,0,'opa',10,10));
+	}
+	
 	
 	function testUpdatePoint() {
 		$point = $this->paciente->getUbicacion();
