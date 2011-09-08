@@ -29,12 +29,14 @@ class KMLUtilities{
 	}
 
 
-	private static function ElementToKml($element, $layer){
-		/*TODO: el elemento puede tener mas de un componente geografico, ver como resolver getUbicacion()*/		
+	private static function ElementToKml($element, $layer){				
 		$kml = '		
 		<Placemark>
-			<name>'.$element->getName().'</name>
-			<description>Just another blue icon.</description>
+			<name>'.$element->getId().'</name>
+			<description>Capa: '.$layer->getName().', Id: '.$element->getId().'</description>
+			<className>'.get_class($element).'</className>
+			<layerId>'.$layer->getId().'</layerId>
+			<elementId>'.$element->getId().'</elementId>
 			<Style>
 		        <IconStyle>
 		          <scale>0.8</scale>
