@@ -48,7 +48,11 @@ class GISController extends YuppController {
 		
 		$template = ''.$className.'.'.$layer->getName();
 		
-		return $this->renderTemplate($template, array('layer'=> $layer, 'elementId' => $elementId));
+		if (file_exists('apps/'.$this->appName.'/views/'.$this->controllerName.'/'.$template.'.template.php')){		
+			return $this->renderTemplate($template, array('layer'=> $layer, 'elementId' => $elementId));
+		}else{
+			return $this->renderString('');
+		}
 	}
 
 }

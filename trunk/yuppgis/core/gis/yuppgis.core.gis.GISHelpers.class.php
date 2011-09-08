@@ -122,8 +122,8 @@ class GISHelpers{
 									            })
 									        });					        
 				             map_'.$id.'.addLayer(kml);
-				             console.log(\'Capa \' + i);
-				    	    selectcontrol_'.$id.' = new OpenLayers.Control.SelectFeature(map_'.$id.'.layers[i + 2], {				                
+				             
+				    	    selectcontrol_'.$id.' = new OpenLayers.Control.SelectFeature(kml, {				                
 				    	    	onSelect: onFeatureSelect_'.$id.', 
 				                onUnselect: onFeatureUnselect_'.$id.' 
 							});
@@ -145,14 +145,29 @@ class GISHelpers{
         }
         
         function onFeatureSelect_'.$id.'(feature) {
-            selectedFeature_'.$id.' = feature;
-            popup_'.$id.' = new OpenLayers.Popup.FramedCloud("chicken", 
-                                     feature.geometry.getBounds().getCenterLonLat(),
-                                     new OpenLayers.Size(100,100),
-                                     "<div style=\'font-size:.8em\'>"+feature.attributes.description+"</div>",
-                                     null, true, onPopupClose_'.$id.');
-            feature.popup = popup_'.$id.';
-            map_'.$id.'.addPopup(popup_'.$id.');
+        console.log(feature);
+        	 $.ajax({
+			      url:"/yuppgis/prototipo/home/details",
+			      data: {
+			      	layerId: feature.attributes.layerId,
+			      	className:feature.attributes.className,
+			      	elementId:feature.attributes.elementId
+			      },			      			      			      
+			      success: function(data){
+				    var html = data;
+				    if (data == \'\'){
+				    	html = feature.attributes.description;
+				    };
+		            selectedFeature_'.$id.' = feature;
+		            popup_'.$id.' = new OpenLayers.Popup.FramedCloud("chicken", 
+		                                     feature.geometry.getBounds().getCenterLonLat(),
+		                                     new OpenLayers.Size(100,100),
+		                                     html,
+		                                     null, true, onPopupClose_'.$id.');
+		            feature.popup = popup_'.$id.';
+		            map_'.$id.'.addPopup(popup_'.$id.');
+		          }
+			});
         }
         
         function onFeatureUnselect_'.$id.'(feature) {
