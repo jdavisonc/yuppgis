@@ -67,7 +67,7 @@ class GISDAL extends DAL {
 	public function get_geometry( $tableName, $id ) {
 		if ( $id === NULL ) throw new Exception("GISDAL.get: id no puede ser null");
 
-		$q = "SELECT id, AsText(geom) as text FROM " . $tableName . " WHERE id=" . $id;
+		$q = "SELECT id, AsText(geom) as geo, uiproperty FROM " . $tableName . " WHERE id=" . $id;
 
 		$this->gisdb->query( $q );
 
@@ -84,7 +84,8 @@ class GISDAL extends DAL {
 	 * @param $attrs Atributos
 	 */
 	public function insert_geometry ( $tableName, $attrs ) {
-		$query = "INSERT INTO " . $tableName . " ( geom ) VALUES ( GeomFromText ( '". $attrs['geom'] ."', ". $this->srid ."));" ;
+		$query = "INSERT INTO " . $tableName . " ( geom, uiproperty ) ".
+					"VALUES ( GeomFromText ( '". $attrs['geom'] ."', ". $this->srid ."), '".$attrs['uiproperty']."');" ;
 		$this->gisdb->execute( $query );
 		
 		return $this->gisdb->getLastInsertedID($tableName, 'id');
@@ -97,7 +98,7 @@ class GISDAL extends DAL {
 	 */
 	public function update_geometry( $tableName, $attrs ) {
 		$query = "UPDATE " .  $tableName . " SET geom = GeomFromText( '" . $attrs['geom'] . "', " . $this->srid 
-					. ") WHERE id = " . $attrs['id'];
+					. "), uiproperty = '".$attrs['uiproperty']."' WHERE id = " . $attrs['id'];
 		$this->gisdb->execute( $query );
 	}
 	

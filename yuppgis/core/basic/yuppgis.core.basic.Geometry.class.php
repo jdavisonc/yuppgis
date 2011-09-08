@@ -1,5 +1,7 @@
 <?php
 
+YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
+
 class Geometry extends GISPersistentObject {
 	
 	private $uiPropertyObject = null;
@@ -28,6 +30,7 @@ class Geometry extends GISPersistentObject {
 	public function setUIProperty($uiProperty) {
 		//TODO_GIS: $this->registerBeforeSaveCallback();
 		$this->uiPropertyObject = $uiProperty;
+		$this->aSet('uiproperty', 'hola');
 	}
 	
 	private function UIProp2JSON() {

@@ -1,5 +1,9 @@
 <?php
 
+YuppLoader::load('yuppgis.core.basic.ui', 'Icon');
+YuppLoader::load('yuppgis.core.basic.ui', 'Background');
+YuppLoader::load('yuppgis.core.basic.ui', 'Border');
+
 class UIProperty {
 	
 	protected $alpha;
