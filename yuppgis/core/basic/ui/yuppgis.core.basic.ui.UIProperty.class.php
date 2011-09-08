@@ -29,6 +29,24 @@ class UIProperty {
 	public function setZIndex($zIndex) {
 		$this->zIndex = $zIndex;
 	}
+	
+	public function encodeJSON() { 
+		$json = new stdClass();;
+	    foreach ($this as $key => $value) 
+	    { 
+	        $json->$key = $value; 
+	    } 
+    	return json_encode($json); 
+	} 
+	
+	public function decodeJSON($json_str) 
+	{ 
+    	$json = json_decode($json_str, 1); 
+    	foreach ($json as $key => $value) 
+    	{ 
+        	$this->$key = $value; 
+    	} 
+	} 
 
 }
 
