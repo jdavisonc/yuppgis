@@ -30,23 +30,32 @@ class UIProperty {
 		$this->zIndex = $zIndex;
 	}
 	
-	public function encodeJSON() { 
-		$json = new stdClass();;
-	    foreach ($this as $key => $value) 
+	public static function toJSON($uiProperty) {
+		if ($uiProperty == null) {
+			return null;
+		}
+		
+		$json = new stdClass();
+	    foreach ($uiProperty as $key => $value) 
 	    { 
 	        $json->$key = $value; 
 	    } 
-    	return json_encode($json); 
+	    $json->class = get_class($uiProperty);
+    	
+	    return json_encode($json);
 	} 
 	
-	public function decodeJSON($json_str) 
-	{ 
-    	$json = json_decode($json_str, 1); 
+	public static function fromJSON($json_str) 
+	{
+    	$json = json_decode($json_str, 1);
+    	$obj = new $json['class'];
+    	unset($json['class']);
     	foreach ($json as $key => $value) 
     	{ 
-        	$this->$key = $value; 
-    	} 
-	} 
+        	$obj->$key = $value; 
+    	}
+    	return $obj;
+	}
 
 }
 

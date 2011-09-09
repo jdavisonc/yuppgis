@@ -337,7 +337,7 @@ class PersistentObject {
    }
 
    // Operaciones de ejecucion de callbacks registrados
-   private function executeAfterSave()
+   public function executeAfterSave()
    {
       Logger::getInstance()->po_log("Excecute after save ". get_class($this));
 
@@ -347,7 +347,7 @@ class PersistentObject {
       $this->afterSave = array();
    }
    
-   private function executeBeforeSave()
+   public function executeBeforeSave()
    {
       //Logger::getInstance()->po_log("Excecute before save ". get_class($this));
 
@@ -1124,8 +1124,6 @@ class PersistentObject {
       
       Logger::getInstance()->po_log("PO:save post validate");
 
-      $this->executeBeforeSave();
-
       // ===============================================================================================
       // Si esta clase es sublase de otra clase persistente, se deben mergear los atributos de toda
       // la estructura de herencia en una clase persistente "ficticia" y se salva esa clase persistente.
@@ -1133,8 +1131,6 @@ class PersistentObject {
       // CAMBIO: NO ESTO NO VA ACA!!!
 
       PersistentManagerFactory::getManager()->save($this);
-
-      $this->executeAfterSave();
       
       // Validacion
       return true;

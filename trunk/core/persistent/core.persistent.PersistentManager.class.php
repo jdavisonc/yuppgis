@@ -195,6 +195,8 @@ class PersistentManager {
    public function save_object( PersistentObject $obj, $sessId )
    {
       Logger::getInstance()->pm_log("PersistentManager::save_object " . get_class($obj) );
+      
+      $obj->executeBeforeSave();
 
       // ===========================================================================================
       // FIX: faltaba validar clases relacionadas
@@ -253,6 +255,8 @@ class PersistentManager {
 
       $obj->setSessId( $sessId );
       
+      $obj->executeAfterSave();
+      
    } // save_object
 
 
@@ -279,6 +283,7 @@ class PersistentManager {
          // Nuevo: solo salva si se ha cambiado un atributo o una relacion hasOne (dirty)
          if ($obj->isDirtyOne())
          {
+         	
              //asOne no necesita tablas intermedias (salvar la referencia)
              // Retorna los valores no nulos de hasOne
              $sassoc = $obj->getSimpleAssocValues(); // TODO?: Podria chekear si debe o no salvarse en cascada...
@@ -418,7 +423,7 @@ class PersistentManager {
     * @param unknown_type $sessId
     */
    public function save_cascade_owner( PersistentObject $owner, $attrNameObj, PersistentObject $obj, $sessId ) {
-   		return $this->save_cascade( $obj, $sessId );
+   		$this->save_cascade( $obj, $sessId );
    }
 
   /**

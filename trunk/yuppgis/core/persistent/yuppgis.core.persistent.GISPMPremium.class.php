@@ -43,10 +43,15 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	
 	public function save_cascade_owner( PersistentObject $owner, $attrNameAssoc, PersistentObject $obj, $sessId ) {
    		if (is_subclass_of($obj, Geometry :: getClassName())) {
+   			
+   			$obj->executeBeforeSave();
+   			
    			$ownerTableName = YuppConventions::tableName( $owner );
-   			return $this->save_gis_object($ownerTableName, $attrNameAssoc, $obj);
+   			$this->save_gis_object($ownerTableName, $attrNameAssoc, $obj);
+   			
+   			$obj->executeAfterSave();
    		} else {
-   			return parent::save_cascade_owner( $owner, $attrNameAssoc, $obj, $sessId ) ;
+   			parent::save_cascade_owner( $owner, $attrNameAssoc, $obj, $sessId ) ;
    		}
    }
    
