@@ -84,8 +84,13 @@ class GISDAL extends DAL {
 	 * @param $attrs Atributos
 	 */
 	public function insert_geometry ( $tableName, $attrs ) {
+		$uiprop = 'null';
+		if ($attrs['uiproperty'] != null){
+			$uiprop = "'".$attrs['uiproperty']."'";
+		}
+		
 		$query = "INSERT INTO " . $tableName . " ( geom, uiproperty ) ".
-					"VALUES ( ".$this->gisdb->geomFromText($attrs['geom'], $this->srid).", '".$attrs['uiproperty']."');" ;
+					"VALUES ( ".$this->gisdb->geomFromText($attrs['geom'], $this->srid).", ".$uiprop." );" ;
 		$this->gisdb->execute( $query );
 		
 		return $this->gisdb->getLastInsertedID($tableName, 'id');
@@ -97,8 +102,13 @@ class GISDAL extends DAL {
 	 * @param $attrs Atributos
 	 */
 	public function update_geometry( $tableName, $attrs ) {
+		$uiprop = 'null';
+		if ($attrs['uiproperty'] != null){
+			$uiprop = "'".$attrs['uiproperty']."'";
+		}
+		
 		$query = "UPDATE " .  $tableName . " SET geom = ".$this->gisdb->geomFromText($attrs['geom'], $this->srid).
-					", uiproperty = '".$attrs['uiproperty']."' WHERE id = " . $attrs['id'];
+					", uiproperty = ".$uiprop." WHERE id = " . $attrs['id'];
 		$this->gisdb->execute( $query );
 	}
 	

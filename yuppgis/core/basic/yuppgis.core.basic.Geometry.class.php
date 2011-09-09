@@ -5,9 +5,14 @@ YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 class Geometry extends GISPersistentObject {
 	
 	private $uiPropertyObject = null;
+	private $callbackUpdate = null;
 	
 	public function __construct($args = array (), $isSimpleInstance = false) {
-		$this->addAttribute('uiproperty', Datatypes::TEXT);		
+		$this->addAttribute('uiproperty', Datatypes::TEXT);
+
+		$this->callbackUpdate = new Callback();
+		$this->callbackUpdate->set( $this, 'serializeUIProperty', array() );
+		
 		parent :: __construct($args, $isSimpleInstance);
 	}
 
@@ -20,27 +25,28 @@ class Geometry extends GISPersistentObject {
 	}
 	
 	public function getUIProperty() {
-		//TODO_GIS: $this->registerBeforeSaveCallback($this->UIProp2JSON());
+		$this->registerToUpdateUIProperty();
 		if ($this->uiPropertyObject == null) {
-			$this->JSON2UIProp();
+			$this->uiPropertyObject = UIProperty::fromJSON($this->aGet('uiproperty'));
 		}
 		return $this->uiPropertyObject;
 	}
 	
 	public function setUIProperty($uiProperty) {
-		//TODO_GIS: $this->registerBeforeSaveCallback();
+		$this->registerToUpdateUIProperty();
 		$this->uiPropertyObject = $uiProperty;
-		$this->aSet('uiproperty', 'hola');
 	}
 	
-	private function UIProp2JSON() {
-		
+	public function serializeUIProperty() {
+		$this->aSet('uiproperty', UIProperty::toJSON($this->uiPropertyObject));
 	}
 	
-	private function JSON2UIProp() {
-		
+	private function registerToUpdateUIProperty() {
+		if ($this->isDirty()) {
+			$this->registerBeforeSaveCallback($this->callbackUpdate);
+		}
 	}
-	
+
 }
 
 ?>

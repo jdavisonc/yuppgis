@@ -63,7 +63,7 @@ class GISPersistentObject extends PersistentObject {
 	public static function getClassName() {
         return get_called_class();
     }
-	
+    
 }
 
 ?>

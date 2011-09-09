@@ -26,14 +26,6 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$this->assert($point->getY() == 32, 'Test punto Y:'.$point->getY());
 	}
 
-	/*
-	public function testListAllPoint() {
-		$pacientes = Paciente::listAll( new ArrayObject(array()) );
-		$point = $pacientes[0]->getUbicacion();
-		
-		$this->assert($pacientes != null, 'Test list all', $pacientes);
-	}*/
-	
 	public function testTextParserPoint() {
 		$text = 'POINT(23 32)';
 		$point = WKTGEO::fromText(Point::getClassName(), $text);
@@ -100,10 +92,9 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	public function testJSON2() {
 			
 			$uip = new Icon(60, 10, '//hola', 20, 10);
-			$json =$uip->encodeJSON();
+			$json = UIProperty::toJSON($uip);
 			
-			$icon2 = new Icon();
-			$icon2->decodeJSON( $json );
+			$icon2 = UIProperty::fromJSON( $json );
 			$this->assert($icon2->getUrl() === $uip->getUrl(), 'Test json2');
 			
 	}
