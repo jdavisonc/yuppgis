@@ -39,7 +39,7 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 	}
 	
 	public function asText($columnName) {
-		return "AsText( '" . $columnName .")";
+		return "AsText(" . $columnName .")";
 	}
 	
 	public function evaluateGISQuery( Query $query, $srid )
