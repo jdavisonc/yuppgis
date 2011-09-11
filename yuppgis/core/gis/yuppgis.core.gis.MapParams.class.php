@@ -8,10 +8,11 @@ class MapParams{
 	const OpenLayerJS_URL = "OLUrl";
 	const WIDTH = "Width";
 	const HEIGHT = "height";
-	const BORDER = "border";
-	const KML_URL = "kmlurl";
-	const CLICK_HANDLER = "clickhandler";
-	const DOUBLECLICK_HANDLER = "doubleclickhandler";
+	const BORDER = "border";	
+	const MAP_CLICK_HANDLER = "clickhandler";
+	const MAP_DOUBLECLICK_HANDLER = "doubleclickhandler";
+	const ELEMENT_SELECT_HANDLER = "selecthandler";
+	const ELEMENT_UNSELECT_HANDLER = "unselecthandler";
 	
 	public static function getValueOrDefault($array, $key)
 	{
@@ -31,13 +32,15 @@ class MapParams{
 				case MapParams::HEIGHT:
 					return "250px";
 				case MapParams::BORDER:
-					return "1px solid black";
-				case MapParams::KML_URL:
-					return "/Home/KML";  
-				case MapParams::CLICK_HANDLER:
+					return "1px solid black";				  
+				case MapParams::MAP_CLICK_HANDLER:
 					return "defaultClickHandler";
-				case MapParams::DOUBLECLICK_HANDLER:
-					return "defaultDoubleClickHandler";
+				case MapParams::MAP_DOUBLECLICK_HANDLER:
+					return "defaultDoubleClickHandler";					
+				case MapParams::ELEMENT_SELECT_HANDLER:
+					return "defaultSelectHandler";				
+				case MapParams::ELEMENT_UNSELECT_HANDLER:
+					return "defaultUnselectHandler";
 			}
 			
 		}			

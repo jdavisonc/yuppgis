@@ -4,9 +4,8 @@
 <fieldset>
 	<legend>Mapa</legend>
 	<?php echo GISHelpers::Map(array(
-		MapParams::ID => 1, 
-		MapParams::KML_URL => '/yuppgis/prototipo/Home/Kml',
-		MapParams::CLICK_HANDLER => 'customClickHandler',
+		MapParams::ID => 1,		
+		MapParams::MAP_CLICK_HANDLER => 'customClickHandler'
 	)); ?>
 </fieldset>
 <fieldset>
@@ -22,14 +21,19 @@
 	<div id="resultsDiv"></div>
 </fieldset>
 
+<fieldset>
+	<legend>Log</legend>
+	<?php echo  GISHelpers::Log(1); ?>
+</fieldset>
+
 <script type="text/javascript">
 
 function customClickHandler(event){
-	trace("custom click handler", event);
+	trace("User custom click handler", event);
 }
 
 function customDoubleClickHandler(event){
-	trace("custom double click handler", event);
+	trace("User custom double click handler", event);
 }
 
 </script>

@@ -4,10 +4,30 @@ function trace(msg, s) {
     	console.log(msg + ": ");
         console.log(s);		        
     }
+    
 }
 
-function defaultClickHandler(event){trace("default click handler", event);}
-function defaultDoubleClickHandler(event){trace("default double click handler", event);}
+function log(msg){
+
+    $('.logarea').append(msg + '<br/>');
+    $('.logarea').scrollTop($('.logarea').height());
+}
+
+function defaultClickHandler(event){
+	trace("default click handler", event);
+}
+
+function defaultDoubleClickHandler(event){
+	trace("default double click handler", event);
+}
+
+function defaultSelectHandler(feature){
+	trace("default select handler", feature);
+}
+
+function defaultUnselectHandler(feature){
+	trace("default select handler", feature);
+}
  
 function getElementsInLayer(layer,ids){
 	var i,feature,len = layer.features.length,foundFeatures=[];
