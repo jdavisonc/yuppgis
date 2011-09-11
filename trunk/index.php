@@ -53,7 +53,6 @@ YuppLoader :: load('yuppgis.core.mvc', 'GISController');
 YuppLoader :: load('yuppgis.core.layout', 'GISLayoutManager'); 
 YuppLoader :: load('yuppgis.core.gis', 'GISHelpers'); 
 YuppLoader :: load('yuppgis.core.gis', 'MapParams');
-
 YuppLoader :: load('core.utils', 'Logger');
 
 

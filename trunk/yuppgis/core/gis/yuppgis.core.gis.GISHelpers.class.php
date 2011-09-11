@@ -116,19 +116,10 @@ class GISHelpers{
 		
 
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
+		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/common"));
 
 		$html =	'
-		<style>
-	  		.olPopupCloseBox {
-	  			height: 27px !important;			    
-			    right: 4px !important;
-			    top: 38px !important;
-			    width: 26px !important;			    
-    			background: url("/yuppgis/yuppgis/images/close.png") no-repeat scroll 0 0 transparent;
-    			cursor: pointer;
-			}
-		</style>
-	
+		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script> 
 		<script src="'.$olurl.'" type="text/javascript"></script>			
 		<script type="text/javascript">
@@ -160,10 +151,7 @@ class GISHelpers{
                
 
         });
-        
-        function defaultClickHandler(event){console.log(event);}
-        function defaultDoubleClickHandler(event){console.log(event);}
-			
+        	
 		var selectcontrol_'.$id.', selectedFeature_'.$id.', map_'.$id.'; 
 		$(document).ready(function(){
 			
@@ -262,7 +250,7 @@ class GISHelpers{
         }
         
         function onFeatureSelect_'.$id.'(feature) {
-        console.log(feature);
+        	
         	 $.ajax({
 			      url:"/yuppgis/prototipo/home/details",
 			      data: {
