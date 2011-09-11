@@ -233,6 +233,7 @@ class GISHelpers{
 			});
 			
 		function onPopupClose_'.$id.'(evt) {
+			trace("Popupclose",evt);
             selectcontrol_'.$id.'.unselect(selectedFeature_'.$id.');
         }
         
@@ -256,13 +257,13 @@ class GISHelpers{
 				    	html = feature.attributes.description;
 				    };
 		            selectedFeature_'.$id.' = feature;
-		            popup_'.$id.' = new OpenLayers.Popup.FramedCloud("chicken", 
+		            feature.popup  = new OpenLayers.Popup.FramedCloud("popup_'.$id.'_" + feature.attributes.elementId , 
 		                                     feature.geometry.getBounds().getCenterLonLat(),
 		                                     new OpenLayers.Size(100,100),
 		                                     html,
 		                                     null, true, onPopupClose_'.$id.');
-		            feature.popup = popup_'.$id.';
-		            map_'.$id.'.addPopup(popup_'.$id.');
+		            
+		            map_'.$id.'.addPopup(feature.popup );
 		          }
 			});
         }
@@ -276,8 +277,10 @@ class GISHelpers{
         	log("Ejecuto default handler");
         	
             map_'.$id.'.removePopup(feature.popup);
+            
             feature.popup.destroy();
             feature.popup = null;
+            
         }
         
 		</script>
