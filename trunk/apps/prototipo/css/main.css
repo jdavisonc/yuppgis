@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+
+fieldset {
+	float: left;
+	width:200px;
+}

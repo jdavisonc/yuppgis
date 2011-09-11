@@ -10,6 +10,8 @@ class MapParams{
 	const HEIGHT = "height";
 	const BORDER = "border";
 	const KML_URL = "kmlurl";
+	const CLICK_HANDLER = "clickhandler";
+	const DOUBLECLICK_HANDLER = "doubleclickhandler";
 	
 	public static function getValueOrDefault($array, $key)
 	{
@@ -32,6 +34,10 @@ class MapParams{
 					return "1px solid black";
 				case MapParams::KML_URL:
 					return "/Home/KML";  
+				case MapParams::CLICK_HANDLER:
+					return "defaultClickHandler";
+				case MapParams::DOUBLECLICK_HANDLER:
+					return "defaultDoubleClickHandler";
 			}
 			
 		}			
