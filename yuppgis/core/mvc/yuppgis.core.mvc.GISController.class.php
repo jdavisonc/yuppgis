@@ -54,7 +54,31 @@ class GISController extends YuppController {
 			return $this->renderString('');
 		}
 	}
-
+	
+	public function filterAction(){
+		$mapId = $this->params['mapId'];
+		$className = $this->params['className'];
+		$filterName = $this->params['filterName'];
+		$text = $this->params['param'];
+		$methodName = $filterName;
+		
+		
+		$result = call_user_func($className.'::'.$methodName,  $text);
+		
+		$json = '[';
+		$count = sizeof($result);
+		for ($i = 0; $i < $count-1; $i++) {
+			$json .= JSONPO::toJSON($result[$i]).',' ;
+		}
+		if ($count > 0){
+			$json .= JSONPO::toJSON($result[$count-1]) ;
+		}
+		 
+		$json .= ']';
+		header('Content-type: application/json');
+		
+		return $this->renderString($json);
+	}
 }
 
 ?>

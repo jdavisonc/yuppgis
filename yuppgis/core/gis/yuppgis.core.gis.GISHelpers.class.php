@@ -46,6 +46,54 @@ class GISHelpers{
 
 		return $html;
 	}
+	
+/**
+	 * Genera el html para un combo de selección
+	 * @param nombre de la clase
+	 * @param id del elemento
+	 * @return html generado para el menú
+	 */
+	public static function FiltersMenu($class, $mapid, $handler){
+		$html = '<select id="select_'.$class.'_'.$mapid.'">';
+		$html .= '<option value="nothing"></option>';
+
+		foreach (self::AvailableFilters($class) as $option){
+			$html .= '<option value="'.$option.'">'.str_ireplace('Filter', '', $option).'</option>';
+		}
+
+		$html .= '</select>';
+		$html .= '<input type="text" id="tbFiltersMenu_'.$class.'_'.$mapid.'" />';
+		
+		$methodName = 'filter_'.$class.'_'.$mapid;
+		$html .= '<a href="#" id="btnFiltersMenu_'.$class.'_'.$mapid.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
+
+		$script = '<script>
+						function '.$methodName.'(){
+							var selectedOption = $("#select_'.$class.'_'.$mapid.'").val();
+							var text = $("#tbFiltersMenu_'.$class.'_'.$mapid.'").val();
+							
+							 $.ajax({
+							      url: "/yuppgis/prototipo/Home/Filter",
+							      data: {
+							        filterName: selectedOption,
+							        className: "'.$class.'",
+							        mapId: '.$mapid.',
+							      	param: text
+							      },			      			      			      
+							      success: function(data){
+							      	'.$handler.'(data);
+							      }
+							  })
+							  
+							  return false;
+						}
+				</script>		
+		';
+
+		$html .= $script;
+		
+		return $html;
+	}
 
 	/*Mapa*/
 
@@ -62,29 +110,64 @@ class GISHelpers{
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
 		$kmlurl = MapParams::getValueOrDefault($params, MapParams::KML_URL);
-
+		
+		$clickhandler = MapParams::getValueOrDefault($params, MapParams::CLICK_HANDLER);
+		$doubleclickhandler  = MapParams::getValueOrDefault($params, MapParams::DOUBLECLICK_HANDLER);
+		
 
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 
 		$html =	'
-			<style>
-		  		.olPopupCloseBox {
-		  			height: 27px !important;			    
-				    right: 4px !important;
-				    top: 38px !important;
-				    width: 26px !important;			    
-	    			background: url("/yuppgis/yuppgis/images/close.png") no-repeat scroll 0 0 transparent;
-	    			cursor: pointer;
-				}
+		<style>
+	  		.olPopupCloseBox {
+	  			height: 27px !important;			    
+			    right: 4px !important;
+			    top: 38px !important;
+			    width: 26px !important;			    
+    			background: url("/yuppgis/yuppgis/images/close.png") no-repeat scroll 0 0 transparent;
+    			cursor: pointer;
+			}
 		</style>
 	
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script> 
 		<script src="'.$olurl.'" type="text/javascript"></script>			
 		<script type="text/javascript">
+		
+		 OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+                defaultHandlerOptions: {
+                    "single": true,
+                    "double": true,
+                    "pixelTolerance": 0,
+                    "stopSingle": true,
+                    "stopDouble": true
+                },
+
+                initialize: function(options) {
+                    this.handlerOptions = OpenLayers.Util.extend(
+                        {}, this.defaultHandlerOptions
+                    );
+                    OpenLayers.Control.prototype.initialize.apply(
+                        this, arguments
+                    ); 
+                    this.handler = new OpenLayers.Handler.Click(
+                        this, {
+                            "click": '.$clickhandler.',
+                            "doubleclick": '.$doubleclickhandler.'
+                        }, this.handlerOptions
+                    );
+                }, 
+
+               
+
+        });
+        
+        function defaultClickHandler(event){console.log(event);}
+        function defaultDoubleClickHandler(event){console.log(event);}
 			
 		var selectcontrol_'.$id.', selectedFeature_'.$id.', map_'.$id.'; 
 		$(document).ready(function(){
 			
+		
 				
 				 $.ajax({
 			      url:"/yuppgis/prototipo/Home/getLayersAction?mapId='.$id.'",			      			      			      
@@ -103,8 +186,16 @@ class GISHelpers{
 						map_'.$id.' = new OpenLayers.Map("map_'.$id.'", options );
 		
 		 			 	map_'.$id.'.addLayer(google);
-						map_'.$id.'.zoomToMaxExtent();				
+						map_'.$id.'.zoomToMaxExtent();
+
+						var click = new OpenLayers.Control.Click();
+                		map_'.$id.'.addControl(click);
+                		click.activate();
 						
+                		                
+						var report = function(e) {
+			                OpenLayers.Console.log(e.type, e.feature.id);
+			            };
 										
 		                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});
 						map_'.$id.'.addLayer(wms);
@@ -120,19 +211,45 @@ class GISHelpers{
 									                    maxDepth: 2
 									                })
 									            })
-									        });					        
-				             map_'.$id.'.addLayer(kml);
+									        });		
+							
+                				        
+				            map_'.$id.'.addLayer(kml);
 				             
 				    	    selectcontrol_'.$id.' = new OpenLayers.Control.SelectFeature(kml, {				                
 				    	    	onSelect: onFeatureSelect_'.$id.', 
 				                onUnselect: onFeatureUnselect_'.$id.' 
 							});
+							
+							var highlightCtrl = new OpenLayers.Control.SelectFeature(kml, {
+				                hover: true,
+				                highlightOnly: true,
+				                renderIntent: "temporary",
+				                eventListeners: {
+				                    beforefeaturehighlighted: report,
+				                    featurehighlighted: report,
+				                    featureunhighlighted: report
+				                }
+				            });
+				
+				            var selectCtrl = new OpenLayers.Control.SelectFeature(kml, {
+				            	clickout: true
+							});
+				
+				            map_'.$id.'.addControl(highlightCtrl);
+				            map_'.$id.'.addControl(selectCtrl);
+				
+				            highlightCtrl.activate();
+				            selectCtrl.activate();
 				  
 				            map_'.$id.'.addControl(selectcontrol_'.$id.');
-				            selectcontrol_'.$id.'.activate();  
+				            selectcontrol_'.$id.'.activate();
+
+				            /*map_'.$id.'.addControl(new OpenLayers.Control.EditingToolbar(kml));*/
 						});  
-						                
-		               	map_'.$id.'.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
+									
+			            
+	    	           	map_'.$id.'.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
 		                 
 					}
 				});
@@ -175,6 +292,8 @@ class GISHelpers{
             feature.popup.destroy();
             feature.popup = null;
         }
+        
+       
 			
 
 		</script>
