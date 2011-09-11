@@ -133,7 +133,8 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 			$gisCondition->setAttribute('geo', 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
 			
 			if ($condition->getReferenceAttribute() !== null) {
-				// Consulta que compara un valor con valor de otra tabla geografica -> g.geom == j.geom
+				//TODO_GIS: Consulta que compara un valor con valor de otra tabla geografica -> g.geom == j.geom
+				// Tiene sentido para cuando es una condicion sobre elementos? o seria solo para Query?
 			} else {
 				$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
 				$gisCondition->setReferenceValue($attrGeo);
