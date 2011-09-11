@@ -34,7 +34,7 @@ class GISDAL extends DAL {
 	}
 	
 	protected function init($appName) {
-		$gisdatasource = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::$PROP_GISDB);
+		$gisdatasource = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GISDB);
 		if ($gisdatasource != NULL) {
 			$this->gisurl      = $gisdatasource['url'];
 			$this->gisuser     = $gisdatasource['user'];
@@ -43,7 +43,7 @@ class GISDAL extends DAL {
 			$this->gistype	   = $gisdatasource['type'];
 		}
 		
-		$this->srid = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::$PROP_SRID);
+		$this->srid = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_SRID);
 
 		parent::init($appName);
 	}

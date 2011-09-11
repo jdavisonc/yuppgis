@@ -3,17 +3,19 @@
 class YuppGISConfig {
 	
 	// Propiedades a almacenar
-	public static $PROP_SRID = 'srid';
-	public static $PROP_GISDB = 'gisdb';
+	const PROP_SRID = 'srid';
+	const PROP_GISDB = 'gisdb';
+	const PROP_GOOGLE_MAPS_KEY = 'google_maps_key';
 	
 	// Valores por defecto
-	private static $DEFAULT_SRID = 32721;
-	private static $DEFAULT_GISDB = null;
+	const DEFAULT_SRID = 32721;
+	const DEFAULT_GISDB = null;
+	const DEFAULT_GOOGLE_MAPS_KEY = 'ABQIAAAA9a4X6TFheB81m4gfqmoVHRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTQ99cJQVFQa1QeiRqp7S_AHD65MQ'; // localhost 
 	
 	// Propiedades de configuracion
-	private static $CONFIG_FILENAME = 'yuppgis_config.php';
-	private static $APP_DIR = './apps/';
-	private static $CONFIG_DIR = '/config/'; 
+	const CONFIG_FILENAME = 'yuppgis_config.php';
+	const APP_DIR = './apps/';
+	const CONFIG_DIR = '/config/'; 
 
 	private $app_gis_properties = array( );
 	private $default_values = array( );
@@ -34,12 +36,13 @@ class YuppGISConfig {
 	public function __construct() {
 		$this->currentMode = YuppConfig::getInstance()->getCurrentMode();
 		
-		$this->default_values[self::$PROP_SRID] = self::$DEFAULT_SRID;
-		$this->default_values[self::$PROP_GISDB] = self::$DEFAULT_GISDB;
+		$this->default_values[self::PROP_SRID] = self::DEFAULT_SRID;
+		$this->default_values[self::PROP_GISDB] = self::DEFAULT_GISDB;
+		$this->default_values[self::PROP_GOOGLE_MAPS_KEY] = self::DEFAULT_GOOGLE_MAPS_KEY;
 	}
 	
 	public static function generatePath( $appName ) {
-		return self::$APP_DIR . $appName . self::$CONFIG_DIR . self::$CONFIG_FILENAME; 
+		return self::APP_DIR . $appName . self::CONFIG_DIR . self::CONFIG_FILENAME; 
 	}
 	
 	/**
@@ -58,8 +61,9 @@ class YuppGISConfig {
 					include_once($appConfigFile);
 					
 					// Inicializo arrays
-					$this->app_gis_properties[$appName][self::$PROP_SRID] = $srid;
-					$this->app_gis_properties[$appName][self::$PROP_GISDB] = $gisdb[$this->currentMode];
+					$this->app_gis_properties[$appName][self::PROP_SRID] = ${self::PROP_SRID};
+					$this->app_gis_properties[$appName][self::PROP_GISDB] = ${self::PROP_GISDB}[$this->currentMode];
+					$this->app_gis_properties[$appName][self::PROP_GOOGLE_MAPS_KEY] = ${self::PROP_GOOGLE_MAPS_KEY};
 					
 					return $this->app_gis_properties[$appName][$propertyName];		
 				}
