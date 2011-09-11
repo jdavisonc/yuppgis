@@ -6,7 +6,7 @@ class YuppGISConfig {
 	const PROP_SRID = 'srid';
 	const PROP_GISDB = 'gisdb';
 	const PROP_GOOGLE_MAPS_KEY = 'google_maps_key';
-	
+		
 	// Valores por defecto
 	const DEFAULT_SRID = 32721;
 	const DEFAULT_GISDB = null;
