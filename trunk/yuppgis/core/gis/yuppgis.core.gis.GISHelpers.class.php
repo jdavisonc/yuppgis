@@ -108,12 +108,13 @@ class GISHelpers{
 		$olurl = MapParams::getValueOrDefault($params, MapParams::OpenLayerJS_URL);
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
-		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
-		$kmlurl = MapParams::getValueOrDefault($params, MapParams::KML_URL);
+		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);	
 		
-		$clickhandler = MapParams::getValueOrDefault($params, MapParams::CLICK_HANDLER);
-		$doubleclickhandler  = MapParams::getValueOrDefault($params, MapParams::DOUBLECLICK_HANDLER);
+		$clickhandler = MapParams::getValueOrDefault($params, MapParams::MAP_CLICK_HANDLER);
+		$doubleclickhandler  = MapParams::getValueOrDefault($params, MapParams::MAP_DOUBLECLICK_HANDLER);
 		
+		$featureSelectHandler = MapParams::getValueOrDefault($params, MapParams::ELEMENT_SELECT_HANDLER);
+		$featureUnSelectHandler = MapParams::getValueOrDefault($params, MapParams::ELEMENT_UNSELECT_HANDLER);
 
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/common"));
@@ -152,17 +153,14 @@ class GISHelpers{
 
         });
         	
-		var selectcontrol_'.$id.', selectedFeature_'.$id.', map_'.$id.'; 
-		$(document).ready(function(){
-			
+		var selectcontrol_'.$id.', selectedFeature_'.$id.', map_'.$id.', drawControls_'.$id.';		
 		
+		$(document).ready(function(){
 				
 				 $.ajax({
 			      url:"/yuppgis/prototipo/Home/getLayersAction?mapId='.$id.'",			      			      			      
 			      success: function(data){
-				
-			
-					
+			      		
 		 				var google = new OpenLayers.Layer.Google( "Google", { type: G_HYBRID_MAP } );
 				
 						var options = {
@@ -178,15 +176,15 @@ class GISHelpers{
 
 						var click = new OpenLayers.Control.Click();
                 		map_'.$id.'.addControl(click);
-                		click.activate();
-						
-                		                
-						var report = function(e) {
-			                OpenLayers.Console.log(e.type, e.feature.id);
-			            };
+                		click.activate();						
 										
-		                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", {layers: "basic"});
+		                var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS","http://labs.metacarta.com/wms/vmap0?", 
+		                {
+		                	layers: "basic"
+						});
+						
 						map_'.$id.'.addLayer(wms);
+						var vector = [];
 					    $.each(data, function(i, item){
 		                	var layerurl =  "/yuppgis/prototipo/Home/mapLayer?layerId=" + item.id;
 				 			var kml = new OpenLayers.Layer.Vector(item.id, {
@@ -198,46 +196,35 @@ class GISHelpers{
 									                    extractAttributes: true,
 									                    maxDepth: 2
 									                })
-									            })
+									            }),									            
+                								rendererOptions: {zIndexing: true}
 									        });		
-							
-                				        
-				            map_'.$id.'.addLayer(kml);
-				             
-				    	    selectcontrol_'.$id.' = new OpenLayers.Control.SelectFeature(kml, {				                
-				    	    	onSelect: onFeatureSelect_'.$id.', 
-				                onUnselect: onFeatureUnselect_'.$id.' 
-							});
-							
-							var highlightCtrl = new OpenLayers.Control.SelectFeature(kml, {
-				                hover: true,
-				                highlightOnly: true,
-				                renderIntent: "temporary",
-				                eventListeners: {
-				                    beforefeaturehighlighted: report,
-				                    featurehighlighted: report,
-				                    featureunhighlighted: report
-				                }
-				            });
-				
-				            var selectCtrl = new OpenLayers.Control.SelectFeature(kml, {
-				            	clickout: true
-							});
-				
-				            map_'.$id.'.addControl(highlightCtrl);
-				            map_'.$id.'.addControl(selectCtrl);
-				
-				            highlightCtrl.activate();
-				            selectCtrl.activate();
-				  
-				            map_'.$id.'.addControl(selectcontrol_'.$id.');
-				            selectcontrol_'.$id.'.activate();
-
-				            /*map_'.$id.'.addControl(new OpenLayers.Control.EditingToolbar(kml));*/
+									        
+							vector.push(kml);
+				            
 						});  
+						map_'.$id.'.addLayers(vector);
+						map_'.$id.'.addControl(new OpenLayers.Control.EditingToolbar(vector));
+						
+						 
 									
-			            
-	    	           	map_'.$id.'.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
+						selectcontrol_'.$id.' = new OpenLayers.Control.SelectFeature(vector, {				                
+				    	    onSelect: onFeatureSelect_'.$id.', 
+				            onUnselect: onFeatureUnselect_'.$id.',			             
+				
+	                        clickout: false, toggle: false,
+	                        multiple: false, hover: false,
+	                        toggleKey: "ctrlKey", // ctrl key removes from selection
+	                        multipleKey: "shiftKey", // shift key adds to selection
+	                        box: true                   
+			                
+			            });
+			            							
+						
+			            map_'.$id.'.addControl(selectcontrol_'.$id.');
+			            selectcontrol_'.$id.'.activate();
+			            		            					
+			            map_'.$id.'.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
 		                 
 					}
 				});
@@ -250,7 +237,12 @@ class GISHelpers{
         }
         
         function onFeatureSelect_'.$id.'(feature) {
-        	
+        	log("Elemento " + feature.attributes[\'elementId\'] + " seleccionado");
+        	trace("Selected:", feature);
+
+        	log("Ejecuto custom handler: " + "'.$featureSelectHandler.'" );
+        	'.$featureSelectHandler.'(feature);
+        	log("Ejecuto default handler");
         	 $.ajax({
 			      url:"/yuppgis/prototipo/home/details",
 			      data: {
@@ -276,14 +268,18 @@ class GISHelpers{
         }
         
         function onFeatureUnselect_'.$id.'(feature) {
+        	log("Elemento " + feature.attributes[\'elementId\'] + " deseleccionado");
+        	trace("UnSelected:", feature);        	
+        	
+        	log("Ejecuto custom handler: " + "'.$featureUnSelectHandler.'" );
+        	'.$featureUnSelectHandler.'(feature);
+        	log("Ejecuto default handler");
+        	
             map_'.$id.'.removePopup(feature.popup);
             feature.popup.destroy();
             feature.popup = null;
         }
         
-       
-			
-
 		</script>
 	
 		<style type="text/css">
@@ -294,8 +290,11 @@ class GISHelpers{
 				}
 		</style>
 		
-		<div id="map_'.$id.'"></div>';
-			
+		<div id="map_'.$id.'"></div>
+		
+		
+		
+		';			
 
 
 		return  $html;
@@ -322,6 +321,12 @@ class GISHelpers{
 	private static function MapLayerHandler($mapId, $layerId, $checkboxId){
 		
 		$html = 'javascript:map_'.$mapId.'.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'))';
+		
+		return $html;
+	}
+	
+	public static function Log($mapId){
+		$html = '<div class="logarea" style="width:550px!important;height:220px; overflow:scroll!important;" id="log_'.$mapId.'"></div>';
 		
 		return $html;
 	}
