@@ -4,8 +4,10 @@
 <fieldset>
 	<legend>Mapa</legend>
 	<?php echo GISHelpers::Map(array(
-		MapParams::ID => 1,		
-		MapParams::MAP_CLICK_HANDLER => 'customClickHandler'
+		MapParams::ID => 1,
+		MapParams::CLICK_HANDLERS => array('customClickHandler'),
+		MapParams::SELECT_HANDLERS => array()
+		
 	)); ?>
 </fieldset>
 <fieldset>
@@ -14,7 +16,7 @@
 </fieldset>
 <fieldset>
 	<legend>Filtros de Paciente</legend>
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'showFilteredElements'); ?>
+	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements'); ?>
 </fieldset>
 <fieldset>
 	<legend>Resultados</legend>
@@ -29,11 +31,24 @@
 <script type="text/javascript">
 
 function customClickHandler(event){
-	trace("User custom click handler", event);
+	alert("Custom click handler!");
 }
 
-function customDoubleClickHandler(event){
-	trace("User custom double click handler", event);
+function customSelectHandler(event){
+	alert("Custom select handler!");
+}
+
+function listFilteredElements(data){
+	
+	var log = '';
+	var ids = [];
+	$.each(data, function(i, item){
+		ids.push(item.id);
+		log += item.id + '. ' + item.nombre + '<br/>';
+	});
+	$('#resultsDiv').html(log);
+	
+	return false;
 }
 
 </script>
