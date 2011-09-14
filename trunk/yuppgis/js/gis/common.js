@@ -7,26 +7,11 @@ function trace(msg, s) {
     
 }
 
+
 function log(msg){
 
     $('.logarea').append(msg + '<br/>');
     $('.logarea').scrollTop($('.logarea').height());
-}
-
-function defaultClickHandler(event){
-	trace("default click handler", event);
-}
-
-function defaultDoubleClickHandler(event){
-	trace("default double click handler", event);
-}
-
-function defaultSelectHandler(feature){
-	trace("default select handler", feature);
-}
-
-function defaultUnselectHandler(feature){
-	trace("default select handler", feature);
 }
  
 function getElementsInLayer(layer,ids){
@@ -45,13 +30,6 @@ function getElementsInLayer(layer,ids){
 
 function showFilteredElements(data){
 	
-	var log = '';
-	var ids = [];
-	$.each(data, function(i, item){
-		ids.push(item.id);
-		log += item.id + '. ' + item.nombre + '<br/>';
-	});
-	$('#resultsDiv').html(log);
 		
 	$.each(map_1.layers, function(i, layer){
 		if (i > 1){
@@ -67,3 +45,43 @@ function showFilteredElements(data){
 	
 	return false;
 }
+
+var handlers = {
+		click: [],
+		select:[]
+};
+
+function addClickHandler(mapId, handler){		
+	addHandler(mapId, handler, "click");
+}
+
+function addSelectHandler($mapId, $handler){	
+	addHandler(mapId, handler, "select");
+}
+
+function addHandler(mapId, handler, type){
+	var h = {
+			mapId: mapId,
+			handler: handler
+	};	
+	var array = handlers[type];
+	array.push(h);
+}
+
+function removeClickHandler(mapId, handler){
+	removeHandler(mapId, handler, "click");
+}
+
+function removeSelectHandler(mapId, handler){
+	removeHandler(mapId, handler, "select");
+}
+
+function removeHandler(mapId, handler, type){
+   var array = handlers[type];
+   $.each(array, function(i,item) {
+      if(item.mapId == mapId && item.handler == handler) {          
+          array.splice(i, 1);
+      }    
+   });
+}
+

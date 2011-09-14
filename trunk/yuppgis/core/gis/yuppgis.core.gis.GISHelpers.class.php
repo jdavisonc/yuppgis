@@ -110,11 +110,8 @@ class GISHelpers{
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);	
 		
-		$clickhandler = MapParams::getValueOrDefault($params, MapParams::MAP_CLICK_HANDLER);
-		$doubleclickhandler  = MapParams::getValueOrDefault($params, MapParams::MAP_DOUBLECLICK_HANDLER);
-		
-		$featureSelectHandler = MapParams::getValueOrDefault($params, MapParams::ELEMENT_SELECT_HANDLER);
-		$featureUnSelectHandler = MapParams::getValueOrDefault($params, MapParams::ELEMENT_UNSELECT_HANDLER);
+		$clickhandlers = MapParams::getValueOrDefault($params, MapParams::CLICK_HANDLERS);
+		$selecthandlers = MapParams::getValueOrDefault($params, MapParams::SELECT_HANDLERS);
 
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/common"));
@@ -143,8 +140,15 @@ class GISHelpers{
                     ); 
                     this.handler = new OpenLayers.Handler.Click(
                         this, {
-                            "click": '.$clickhandler.',
-                            "doubleclick": '.$doubleclickhandler.'
+                            "click": function(evt){
+                            	$.each(handlers.click, function(i, item){
+                            		if (item.mapId == '.$id.'){
+                            			log("Click: Llamo a " + item.handler);
+                            			window[item.handler](evt);
+                            		}
+								});
+							} 
+                            
                         }, this.handlerOptions
                     );
                 }, 
@@ -154,6 +158,7 @@ class GISHelpers{
         });
         	
 		var selectcontrol_'.$id.', selectedFeature_'.$id.', map_'.$id.', drawControls_'.$id.';		
+		
 		
 		$(document).ready(function(){
 				
@@ -209,7 +214,16 @@ class GISHelpers{
 						 
 									
 						selectcontrol_'.$id.' = new OpenLayers.Control.SelectFeature(vector, {				                
-				    	    onSelect: onFeatureSelect_'.$id.', 
+				    	    onSelect: function(feature){
+				    	    	onFeatureSelect_'.$id.'(feature);
+                            	$.each(handlers.select, function(i, item){
+                            		if (item.mapId == '.$id.'){
+                            			log("Select: Llamo a " + item.handler);
+	                            		window[item.handler](feature);
+	                            	}
+								});
+                            		
+							} , 
 				            onUnselect: onFeatureUnselect_'.$id.',			             
 				
 	                        clickout: false, toggle: false,
@@ -233,17 +247,13 @@ class GISHelpers{
 			});
 			
 		function onPopupClose_'.$id.'(evt) {
-			trace("Popupclose",evt);
+			
             selectcontrol_'.$id.'.unselect(selectedFeature_'.$id.');
         }
         
-        function onFeatureSelect_'.$id.'(feature) {
-        	log("Elemento " + feature.attributes[\'elementId\'] + " seleccionado");
-        	trace("Selected:", feature);
-
-        	log("Ejecuto custom handler: " + "'.$featureSelectHandler.'" );
-        	'.$featureSelectHandler.'(feature);
-        	log("Ejecuto default handler");
+        function onFeatureSelect_'.$id.'(feature) {      	
+        	
+        	
         	 $.ajax({
 			      url:"/yuppgis/prototipo/home/details",
 			      data: {
@@ -268,13 +278,7 @@ class GISHelpers{
 			});
         }
         
-        function onFeatureUnselect_'.$id.'(feature) {
-        	log("Elemento " + feature.attributes[\'elementId\'] + " deseleccionado");
-        	trace("UnSelected:", feature);        	
-        	
-        	log("Ejecuto custom handler: " + "'.$featureUnSelectHandler.'" );
-        	'.$featureUnSelectHandler.'(feature);
-        	log("Ejecuto default handler");
+        function onFeatureUnselect_'.$id.'(feature) {    	        	
         	
             map_'.$id.'.removePopup(feature.popup);
             
@@ -282,6 +286,7 @@ class GISHelpers{
             feature.popup = null;
             
         }
+        
         
 		</script>
 	
@@ -296,9 +301,18 @@ class GISHelpers{
 		<div id="map_'.$id.'"></div>
 		
 		
-		
+		<script type="text/javascript">
 		';			
-
+		
+		foreach ($clickhandlers as $clickhandler){
+			$html .= 'addClickHandler("'.$id.'", "'.$clickhandler.'");';
+		}
+		
+		foreach ($selecthandlers as $selecthandler){
+			$html .= 'addSelectHandler("'.$id.'", "'.$clickhandler.'");';
+		}
+		
+		$html .= '</script>';
 
 		return  $html;
 
