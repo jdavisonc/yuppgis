@@ -55,7 +55,7 @@ function addClickHandler(mapId, handler){
 	addHandler(mapId, handler, "click");
 }
 
-function addSelectHandler($mapId, $handler){	
+function addSelectHandler(mapId, handler){	
 	addHandler(mapId, handler, "select");
 }
 

@@ -6,7 +6,7 @@
 	<?php echo GISHelpers::Map(array(
 		MapParams::ID => 1,
 		MapParams::CLICK_HANDLERS => array('customClickHandler'),
-		MapParams::SELECT_HANDLERS => array()
+		MapParams::SELECT_HANDLERS => array('customSelectHandler')
 		
 	)); ?>
 </fieldset>
@@ -31,11 +31,11 @@
 <script type="text/javascript">
 
 function customClickHandler(event){
-	alert("Custom click handler!");
+	//alert("Custom click handler!");
 }
 
 function customSelectHandler(event){
-	alert("Custom select handler!");
+	//alert("Custom select handler!");
 }
 
 function listFilteredElements(data){
