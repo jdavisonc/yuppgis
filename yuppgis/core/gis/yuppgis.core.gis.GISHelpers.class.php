@@ -309,7 +309,7 @@ class GISHelpers{
 		}
 		
 		foreach ($selecthandlers as $selecthandler){
-			$html .= 'addSelectHandler("'.$id.'", "'.$clickhandler.'");';
+			$html .= 'addSelectHandler("'.$id.'", "'.$selecthandler.'");';
 		}
 		
 		$html .= '</script>';
