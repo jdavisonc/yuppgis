@@ -6,12 +6,21 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 	
 	public function evaluateAnyGISCondition( Condition $condition , $srid) {
 		$where = "";
+		$refVal = $condition->getReferenceValue();
+		$atr    = $condition->getAttribute();
+		
 		switch ( $condition->getType() ) {
 			case GISCondition::GISTYPE_ISCONTAINED:
-				$where = $this->evaluateISCONTAINED( $condition, $srid );
+				$where = $this->evaluateISCONTAINED( $atr, $refVal, $srid );
 				break;
 			case GISCondition::GISTYPE_CONTAINS:
-				$where = $this->evaluateCONTAINS( $condition, $srid );
+				$where = $this->evaluateCONTAINS( $atr, $refVal, $srid );
+				break;
+			case GISCondition::GISTYPE_EQGEO:
+				$where = $this->evaluateEQGEO( $atr, $refVal, $srid );
+				break;
+			case GISCondition::GISTYPE_INTERSECTS:
+				$where = $this->evaluateINTERSECTS( $atr, $refVal, $srid );
 				break;
 			default:
 				$where = parent::evaluateAnyCondition($condition);
@@ -19,19 +28,21 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 		return $where;
 	}
 	
-	
-	private function evaluateCONTAINS( GISCondition $condition, $srid ) {
-		$refVal = $condition->getReferenceValue();
-		$atr    = $condition->getAttribute();
-      
-		return "ST_Contains(" . $atr->alias.".".$atr->attr . ", ". $this->geomFromText($refVal, $srid) .") "; // -> geom columna geom de paciente_ubicacion_geo
+	private function evaluateINTERSECTS( $attribute, $refValue, $srid ) { 
+		return "ST_Intersects(" . $attribute->alias . "." . $attribute->attr . ", ". $this->geomFromText($refValue, $srid) .") "; 
 	}
 	
-	private function evaluateISCONTAINED( GISCondition $condition, $srid ) {
-		$refVal = $condition->getReferenceValue();
-		$atr    = $condition->getAttribute();
-      
-		return "ST_Contains(" .  $this->geomFromText($refVal, $srid) . ", " . $atr->alias.".".$atr->attr . ") "; // -> geom columna geom de paciente_ubicacion_geo
+	private function evaluateEQGEO( $attribute, $refValue, $srid ) {
+		// -> geom columna geom de paciente_ubicacion_geo 
+		return "ST_Equals(" . $attribute->alias . "." . $attribute->attr . ", ". $this->geomFromText($refValue, $srid) .") ";
+	}
+	
+	private function evaluateCONTAINS( $attribute, $refValue, $srid ) { 
+		return "ST_Contains(" . $attribute->alias . "." . $attribute->attr . ", ". $this->geomFromText($refValue, $srid) .") ";
+	}
+	
+	private function evaluateISCONTAINED( $attribute, $refValue, $srid ) { 
+		return "ST_Contains(" .  $this->geomFromText($refValue, $srid) . ", " . $attribute->alias . "." . $attribute->attr . ") ";
 	}
 	
 	public function geomFromText($wkt, $srid) {
