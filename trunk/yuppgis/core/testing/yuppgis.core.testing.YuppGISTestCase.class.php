@@ -23,6 +23,11 @@ abstract class YuppGISTestCase extends TestCase {
 		}
 	}
 	
+	public function assert($cond, $msg = 'Error') {
+		$trace = debug_backtrace();
+		parent::assert($cond, get_called_class() . '::' . $trace[1]['function'] . '() - ' . $msg);
+	}
+	
 	public function assertEquals($expected, $actual, $msg) {
 		$this->assert($expected === $actual, $msg);
 	}
