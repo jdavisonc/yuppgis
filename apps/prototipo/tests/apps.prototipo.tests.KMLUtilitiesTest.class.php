@@ -6,11 +6,7 @@ YuppLoader::load('prototipo.model', 'Paciente');
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
 
 class KMLUtilitiesTest extends YuppGISTestCase {
-	
-	public function __construct($suite) {
-		parent::__construct($suite);
-	}	
-	
+
 	private function getKml($id, $name, $X, $Y){		
 		$kml = '<?xml version="1.0" encoding="UTF-8"?>
 					<kml xmlns="http://earth.google.com/kml/2.0">
@@ -44,13 +40,13 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 		$paciente->setUbicacion(new Point(10, 10));
 				
 		$layer->addElement($paciente);
-		$layer->save();
+		//$layer->save();
 		
 		$kml = $this->getKml($layer->getId(), $layer->getName(), $paciente->getUbicacion()->getX(), $paciente->getUbicacion()->getY());
 		
-		$result = KMLUtilities::LayerToKml($layer);		
+		$result = KMLUtilities::LayerToKml($layer);
 				
-		$this->assertXMLEquals($kml, $result, "Test layer to kml");		
+		$this->assertXMLEquals($kml, $result, "Test layer to kml");
 		
 	}	
 	

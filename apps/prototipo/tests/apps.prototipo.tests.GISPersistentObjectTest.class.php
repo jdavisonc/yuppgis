@@ -16,7 +16,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	/**
 	 * Prueba para probar configuracion de Punto
 	 */
-	public function testPoint() {
+	public function testAssignPointToPatient() {
 		$paciente = new Paciente();
 		$paciente->setUbicacion(new Point(23, 32));
 
@@ -25,20 +25,14 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$this->assert($point->getX() == 23, 'Test punto X:'.$point->getX());
 		$this->assert($point->getY() == 32, 'Test punto Y:'.$point->getY());
 	}
-
-	public function testTextParserPoint() {
-		$text = 'POINT(23 32)';
-		$point = WKTGEO::fromText(Point::getClassName(), $text);
-		
-		$this->assert($point == array('x' => 23, 'y' => 32), 'Test parseo punto');
-	}
 	
-	function testSavePoint() {
+	function testSavePatientWithLocation() {
+		$point = new Point(23, 32);
+		$point->setUIProperty(new Icon(0,0,'opa',10,10));
+
 		$paciente = new Paciente();
 		$paciente->setNombre('Ernestino');
-		$point = new Point(23, 32);
 		$paciente->setUbicacion($point);
-		$paciente->getUbicacion()->setUIProperty(new Icon(0,0,'opa',10,10));
 		$paciente->save();
 		
 		$this->assert($paciente != null && $paciente->getUbicacion()->getId() != null, 
@@ -48,12 +42,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$this->paciente = $paciente;
 	}
 	
-	function testJSON() {
-		$this->paciente->getUbicacion()->setUIProperty(new Icon(0,0,'opa',10,10));
-	}
-	
-	
-	function testUpdatePoint() {
+	function testUpdatePatientWithLocation() {
 		$point = $this->paciente->getUbicacion();
 		$point->setX(456);
 		$this->paciente->save();
@@ -63,7 +52,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 			', X = '.$point->getX().', Y = '.$point->getY().') ');
 	}
 	
-	function testRemovePaciente() {
+	function testRemovePatient() {
 		$id = $this->paciente->getId();
 		$this->paciente->delete();
 		
@@ -74,52 +63,6 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 			$deleted = true;
 		}
 		$this->assert($deleted, 'Test de borrado de Paciente');
-	}
-	
-	function testFindBy() {
-		$and = Condition::_AND()
-			->add(GISCondition::ISCONTAINED(
-				YuppGISConventions::tableName(Paciente::getClassName()), 
-				'ubicacion', new Point(10, 10)))
-			->add(Condition::EQ(YuppGISConventions::tableName(Paciente::getClassName()), 'nombre', 'Roberto'));
-		
-		$pacientes = Paciente::findBy($and, new ArrayObject());
-		
-		$this->assert($pacientes !== null, 'Test de filtrado de pacientes');
-	}
-	
-	function testFindByEquals() {
-		$and = Condition::_AND()
-			->add(GISCondition::EQGEO(
-				YuppGISConventions::tableName(Paciente::getClassName()), 
-				'ubicacion', new Point(10, 10)))
-			->add(Condition::EQ(YuppGISConventions::tableName(Paciente::getClassName()), 'nombre', 'Roberto'));
-		
-		$pacientes = Paciente::findBy($and, new ArrayObject());
-		
-		$this->assert($pacientes !== null, 'Test de filtrado de pacientes por igualdad de figuras');
-	}
-	
-	function testFindByIntersection() {
-		$and = Condition::_AND()
-			->add(GISCondition::INTERSECTS(
-				YuppGISConventions::tableName(Paciente::getClassName()), 
-				'ubicacion', new Point(10, 10)))
-			->add(Condition::EQ(YuppGISConventions::tableName(Paciente::getClassName()), 'nombre', 'Roberto'));
-		
-		$pacientes = Paciente::findBy($and, new ArrayObject());
-		
-		$this->assert($pacientes !== null, 'Test de filtrado de pacientes por interseccion');
-	}
-	
-	public function testJSON2() {
-			
-			$uip = new Icon(60, 10, '//hola', 20, 10);
-			$json = UIProperty::toJSON($uip);
-			
-			$icon2 = UIProperty::fromJSON( $json );
-			$this->assert($icon2->getUrl() === $uip->getUrl(), 'Test json2');
-			
 	}
 
 }
