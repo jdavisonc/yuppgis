@@ -4,7 +4,9 @@ YuppLoader :: load('core.db.criteria2', 'Query');
 
 // Se importa DAL geografico
 YuppLoader :: load('yuppgis.core.db', 'GISDAL');
+YuppLoader :: load('yuppgis.core.db.criteria2', 'GISQuery');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'GISCondition');
+YuppLoader :: load('yuppgis.core.db.criteria2', 'GISFunction');
 YuppLoader :: load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
 class GISPMPremium  extends PersistentManager implements GISPersistentManager {
@@ -113,6 +115,10 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
     	} else {
     		return $this->delete($assocObj, $assocObj->getId(), $logical) ;
     	}
+	}
+	
+	public function findByQuery(Query $q) {
+		// TODO_GIS
 	}
 	
 	public function findBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {

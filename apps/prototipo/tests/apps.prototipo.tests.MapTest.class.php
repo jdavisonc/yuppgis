@@ -28,7 +28,7 @@ class MapTest extends YuppGISTestCase {
 		$map->addLayer($layer2);
 		$map->addLayer($layer3);
 		
-		$count = count($map->getLayers());		
+		$count = count($map->getLayers());
 		$this->assert($count == 3, 'Test agregar layer a mapa:'.$count);		
 		
 	}
