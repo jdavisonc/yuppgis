@@ -4,20 +4,20 @@ YuppLoader::load( "core.db.criteria2", "Select" );
 
 class Query
 {
-   // FIXME: todas las palabras clave de SQL deben ser pedidas a la clase XXXDatabase configurada para acceso a datos.
+    // FIXME: todas las palabras clave de SQL deben ser pedidas a la clase XXXDatabase configurada para acceso a datos.
    
-   private $select; // Select
+    protected $select; // Select
    
 	//private $select = array (); // Opcional    (Projection) // Si es vacio corresponde un '*' en la evaluacion.
-	private $from   = array (); // Obligatorio (From)
-	private $where  = NULL;     // Opcional    (Condition)
+	protected $from   = array (); // Obligatorio (From)
+	protected $where  = NULL;     // Opcional    (Condition)
 
 	// Arrays de cada cosa, puedo tener varios ordenamientos.
-   // Order: alias, atributo, direccion (ASC,DESC)
-   private $order = array();
+    // Order: alias, atributo, direccion (ASC,DESC)
+    protected $order = array();
 
-	private $limit_max;
-	private $limit_offset;
+	protected $limit_max;
+	protected $limit_offset;
 
 	// http://www.1keydata.com/sql/sqldistinct.html
 
