@@ -7,6 +7,7 @@ YuppLoader :: load('yuppgis.core.db', 'GISDAL');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'GISQuery');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'GISCondition');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'GISFunction');
+YuppLoader :: load('yuppgis.core.db.criteria2', 'SelectValue');
 YuppLoader :: load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
 class GISPMPremium  extends PersistentManager implements GISPersistentManager {
@@ -119,6 +120,7 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	
 	public function findByQuery(Query $q) {
 		// TODO_GIS
+		//  return $this->dal->query( $q );
 	}
 	
 	public function findBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
