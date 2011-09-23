@@ -13,12 +13,12 @@
 		}
 
 		var instance = this;
-		
-		var defaultOptions = {				
-				
-		};
-
-		var options = $.extend({}, defaultOptions, mapOptions);
+		var selectcontrol, selectedFeature, map, drawControls;	
+		/*
+		 * var defaultOptions = { test: false };
+		 * 
+		 * var options = $.extend({}, defaultOptions, mapOptions);
+		 */
 		
 
 		var _handlers = {
@@ -36,14 +36,14 @@
             	 var id = mapOptions.id;
 			
 
-			 OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
-	                defaultHandlerOptions: {
-	                    "single": true,
-	                    "double": true,
-	                    "pixelTolerance": 0,
-	                    "stopSingle": true,
-	                    "stopDouble": true
-	                },
+					 OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+			                defaultHandlerOptions: {
+			                    "single": true,
+			                    "double": true,
+			                    "pixelTolerance": 0,
+			                    "stopSingle": true,
+			                    "stopDouble": true
+			                },
 
 	                initialize: function(options) {
 	                    this.handlerOptions = OpenLayers.Util.extend(
@@ -75,7 +75,7 @@
 
 	        });
 	        	
-			var selectcontrol, selectedFeature, map, drawControls;		
+				
 			
 					
 					 $.ajax({
@@ -162,7 +162,8 @@
 				            selectcontrol.activate();
 				            		            					
 				            map.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
-			                 
+			             
+				            instance.map = map;
 						}
 					});
 				
@@ -209,8 +210,9 @@
 	            
 	        }
 	        
-
+	        	instance.map = map;
 	        	$this.data('map', instance)
+	        	
 	        	data = instance;
              }    
 			

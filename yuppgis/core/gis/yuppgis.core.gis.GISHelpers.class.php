@@ -174,7 +174,7 @@ class GISHelpers{
 	
 	private static function MapLayerHandler($mapId, $layerId, $checkboxId){
 		
-		$html = 'javascript:map_'.$mapId.'.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'))';
+		$html = 'javascript:$(\'#map_'.$mapId.'\').YuppGISMap().map.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'))';
 		
 		return $html;
 	}
