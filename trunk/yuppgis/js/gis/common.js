@@ -1,4 +1,5 @@
 
+/*Logging*/
 function trace(msg, s) {
     if (this.console && typeof console.log != "undefined") {
     	console.log(msg + ": ");
@@ -14,6 +15,9 @@ function log(msg){
     $('.logarea').scrollTop($('.logarea').height());
 }
  
+/**/
+
+
 function getElementsInLayer(layer,ids){
 	var i,feature,len = layer.features.length,foundFeatures=[];
 	for(i=0;i<len;i++){
@@ -46,42 +50,4 @@ function showFilteredElements(data){
 	return false;
 }
 
-var handlers = {
-		click: [],
-		select:[]
-};
-
-function addClickHandler(mapId, handler){		
-	addHandler(mapId, handler, "click");
-}
-
-function addSelectHandler(mapId, handler){	
-	addHandler(mapId, handler, "select");
-}
-
-function addHandler(mapId, handler, type){
-	var h = {
-			mapId: mapId,
-			handler: handler
-	};	
-	var array = handlers[type];
-	array.push(h);
-}
-
-function removeClickHandler(mapId, handler){
-	removeHandler(mapId, handler, "click");
-}
-
-function removeSelectHandler(mapId, handler){
-	removeHandler(mapId, handler, "select");
-}
-
-function removeHandler(mapId, handler, type){
-   var array = handlers[type];
-   $.each(array, function(i,item) {
-      if(item.mapId == mapId && item.handler == handler) {          
-          array.splice(i, 1);
-      }    
-   });
-}
 
