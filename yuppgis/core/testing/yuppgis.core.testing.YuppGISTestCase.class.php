@@ -15,6 +15,8 @@ YuppLoader::load('yuppgis.core.utils', 'XMLUtils');
 abstract class YuppGISTestCase extends TestCase {
 	
 	public function run() {
+		
+		
 		$tests = ReflectionUtils::ReflectMethods(get_called_class(), 'test', false);
 		
 		// Ejecuto metodos obtenidos por reflection
