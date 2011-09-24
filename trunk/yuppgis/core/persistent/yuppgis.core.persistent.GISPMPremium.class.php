@@ -32,7 +32,7 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
    		$geo = $this->createGISObjectFromData( $attrValues );
    		
    		//Valido que la clase creada sea una instancia valida
-   		if (! is_subclass_of($geo, $persistentClass)) {
+   		if (! $geo instanceof $persistentClass) {
    			throw new Exception('No coinciden los tipos de geometrias. Se esperaba ' . $persistentClass . ' y se obtuvo ' . $geo->getClass());
    		}
    		return $geo;
@@ -128,11 +128,124 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	public function findByQuery(Query $q) {
 		// TODO_GIS
 		//  return $this->dal->query( $q );
+		if (is_subclass_of($q, GISQuery::getClassName())) {
+			$q->setCondition($this->evaluateGISCondition($q->getFrom(), $q->getWhere()));
+			
+			// evaluar select
+			
+			return $this->dal->query( $q );
+		} else {
+			return parent::findByQuery($q);
+		}
 	}
 	
 	public function findBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
 		$newCondition = $this->findGISBy($instance, $condition, $params);
 		return parent::findBy($instance, $newCondition, $params);
+	}
+	
+	private function evaluateGISCondition(array $froms, Condition $condition) {
+		
+		if ( $condition instanceof GISCondition) {
+			
+			$attr = $condition->getAttribute();
+			$fromSelect = busqueda($froms, $attr->alias); // hacer busqueda
+			
+			// Es gis condition, tener cuidado que puede tener subcondiciones comunes
+			$tableName = YuppConventions::tableName($fromSelect->instance_or_class);
+			$gisTableName = YuppGISConventions::gisTableName($tableName, $attr->attr);
+			
+			$gisCondition = new GISCondition();
+			$gisCondition->setType($condition->getType());
+			$gisCondition->setAttribute($fromSelect->alias, 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
+			
+			$query = new Query();
+			$query->addFrom($gisTableName, $fromSelect->alias);
+			$query->addProjection($fromSelect->alias, 'id');
+			
+			if ($condition->getReferenceAttribute() !== null) {
+				//TODO_GIS: Consulta que compara un valor con valor de otra tabla geografica -> g.geom == j.geom
+				// Tiene sentido para cuando es una condicion sobre elementos? o seria solo para Query?
+				$attr2 = $condition->getReferenceAttribute();
+				$fromSelect2 = busqueda($froms, $attr2->alias); // hacer busqueda
+				
+				$tableName2 = YuppConventions::tableName($fromSelect2->instance_or_class);
+				$gisTableName2 = YuppGISConventions::gisTableName($tableName2, $attr2->attr);
+				$query->addFrom($gisTableName2, $fromSelect2->alias);
+				$query->addProjection($fromSelect2->alias, 'id2');
+				
+				$gisCondition->setReferenceAttribute($fromSelect2->alias, 'geom');
+				
+			} else {
+				$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
+				$gisCondition->setReferenceValue($attrGeo);
+			}
+			$query->setCondition($gisCondition);
+			
+			$query_res = $this->dal->gis_query($query);
+			
+			$res = createValuesStringFromKeyOnQuery($query_res, 'id');
+			$res2 = null;
+			if ($condition->getReferenceAttribute() !== null) {
+				$res2 = createValuesStringFromKeyOnQuery($query_res, 'id2');
+			}
+			
+			if ($res2 == null) {
+				$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
+				if ($res !== '') {
+					return Condition::IN($attr->alias, $attr_id, $res);
+				} else {
+					return Condition::IN($attr->alias, $attr_id, null);
+				}
+			} else {
+				$newCondition = new Condition();
+				$newCondition->setType(Condition::TYPE_AND);
+				
+				$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
+				if ($res !== '') {
+					$newCondition->add(Condition::IN($attr->alias, $attr_id, $res));
+				} else {
+					$newCondition->add(Condition::IN($attr->alias, $attr_id, null));
+				}
+				$attr_id2 = DatabaseNormalization::simpleAssoc($attr2->attr); // Se normaliza el nombre para obtener el nombre de la columna
+				if ($res2 !== '') {
+					$newCondition->add(Condition::IN($attr2->alias, $attr_id2, $res2));
+				} else {
+					$newCondition->add(Condition::IN($attr2->alias, $attr_id2, null));
+				}
+				return $newCondition;
+			}
+			
+			
+		} else {
+			if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR || 
+					$condition->getType() == Condition::TYPE_NOT ) {
+				$newCondition = new Condition();
+				$newCondition->setType($condition->getType());
+				$subconditions = $condition->getSubconditions();
+				for ($i = 0; $i < count($subconditions); $i++) {
+					$newCondition->add($this->evaluateGISCondition( $from, $subconditions[$i] ));
+				}
+				return $newCondition;
+			} else {
+				return $condition;
+			}
+		}
+		
+	}
+	
+	private function createValuesStringFromKeyOnQuery($query_res, $key) {
+		$res = '';
+		$first = true;
+		foreach ($query_res as $value ) {
+			if ($first) {
+				$first = false;	
+			} else {
+				$res =  $res . ',';
+			}
+			$res = $res . $value[$key];
+		}
+		return $res;
 	}
 	
 	private function findGISBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
