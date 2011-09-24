@@ -13,14 +13,14 @@ class WKTGEO {
 		$class = $matches[1];
 		$res = array('class' => $class);
 		
-		switch ( $class ) {
-			case Point::getClassName():
+		switch ( strtoupper($class) ) {
+			case strtoupper(Point::getClassName()):
 				$coord = explode(' ', $matches[2]);
 				$res['x'] = $coord[0];
 				$res['y'] = $coord[1];
 				break;
 				
-			case LineString::getClassName():
+			case strtoupper(LineString::getClassName()):
 				preg_match( self::$regex['lineString'], $matches[2], $pointsMatch );
 				$points = array();
 				
@@ -31,13 +31,11 @@ class WKTGEO {
 				
 				$res['points'] = $points;
 				
-				/*if (self::isLine( $points )) {
+				if (self::isLine( $points )) {
 					$res['class'] = Line::getClassName();
 				} elseif (self::isLineRing( $points )) {
 					$res['class'] = LineRing::getClassName();
-				}*/
-				
-				
+				}
 				break;
 				
 			default:
