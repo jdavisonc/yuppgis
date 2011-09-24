@@ -29,7 +29,13 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 		
    		// Se crea el objeto directamente ya que no se va a contar con herencia en tablas distintas para
    		// elementos geograficos.
-   		return $this->createGISObjectFromData( $persistentClass, $attrValues );
+   		$geo = $this->createGISObjectFromData( $attrValues );
+   		
+   		//Valido que la clase creada sea una instancia valida
+   		if (! is_subclass_of($geo, $persistentClass)) {
+   			throw new Exception('No coinciden los tipos de geometrias. Se esperaba ' . $persistentClass . ' y se obtuvo ' . $geo->getClass());
+   		}
+   		return $geo;
 	}
 	
 	/**
@@ -37,11 +43,12 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	 * @param unknown_type $class
 	 * @param unknown_type $data
 	 */
-	private function createGISObjectFromData( $class, $data ) {
-		$attrsValues = array( 'id' => $data['id'], 'class' => $class, 'uiproperty' => $data['uiproperty'] );
-		$attrsValues = array_merge( $attrsValues , WKTGEO::fromText($class, $data['geo']));
+	//TODO_GIS
+	private function createGISObjectFromData( $data ) {
+		$attrsValues = array( 'id' => $data['id'],  'uiproperty' => $data['uiproperty'] );
+		$attrsValues = array_merge( $attrsValues , WKTGEO::fromText($data['geo']));
 		
-		return $this->createObjectFromData($class, $attrsValues);
+		return $this->createObjectFromData($attrsValues['class'], $attrsValues);
 	}
 	
 	public function save_cascade_owner( PersistentObject $owner, $attrNameAssoc, PersistentObject $obj, $sessId ) {

@@ -42,6 +42,8 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$this->paciente = $paciente;
 	}
 	
+	
+
 	function testUpdatePatientWithLocation() {
 		$point = $this->paciente->getUbicacion();
 		$point->setX(456);

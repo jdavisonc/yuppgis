@@ -6,6 +6,9 @@ YuppLoader :: load('yuppgis.core.db', 'GISDatatypes');
 // Se importa modelo de datos geograficos
 YuppLoader :: load('yuppgis.core.basic', 'Geometry');
 YuppLoader :: load('yuppgis.core.basic', 'Point');
+YuppLoader :: load('yuppgis.core.basic', 'Curve');
+YuppLoader :: load('yuppgis.core.basic', 'LineString');
+YuppLoader :: load('yuppgis.core.basic', 'Line');
 
 // Se importan dependencias de persistencia
 YuppLoader :: load('yuppgis.core.config', 'YuppGISConventions');
@@ -36,9 +39,12 @@ class GISPersistentObject extends PersistentObject {
 		    case GISDatatypes::POINT:
 		        parent::addHasOne($name, Point::getClassName());
 		    	break;
+		    case GISDatatypes::LINESTRING:
+		    	parent::addHasOne($name, LineString::getClassName());
+		    	break;
 		    case GISDatatypes::LINE:
 		    case GISDatatypes::LINERING:
-		    case GISDatatypes::LINESTRING:
+		    
 		    case GISDatatypes::POLYGON:
 		    	break;
 		    default;
