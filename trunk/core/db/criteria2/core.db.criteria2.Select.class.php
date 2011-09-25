@@ -5,7 +5,7 @@
 
 class Select {
 
-    private $projections = array(); // Se inicializa esta sola porque es la mas comun.
+    private $projections; // Se inicializa esta sola porque es la mas comun.
 
 //    private $functionSetted = false; // Para saber si se seteo algo mas que proyecciones.
 
@@ -25,7 +25,9 @@ class Select {
 //    private $lower = NULL;
 //    private $upper = NULL;
 
-    function __construct() {}
+    function __construct($projections = array()) {
+    	$this->projections = $projections;
+    }
 
     /**
      * Agrega un item al select de la consulta. 
@@ -53,14 +55,27 @@ class Select {
 }
 
 class SelectItem {
+	
+	private $selectItemAlias;
+	
+	public function __construct( $selectItemAlias = null ){
+		$this->selectItemAlias = $selectItemAlias;
+	}
+	
+	public function getSelectItemAlias() {
+		return $this->selectItemAlias;
+	}
+	
 }
+
 class SelectAttribute extends SelectItem {
    private $tableAlias;
    private $attrName;
-   public function __construct($tableAlias, $attrName)
+   public function __construct($tableAlias, $attrName, $selectItemAlias = null)
    {
       $this->tableAlias = $tableAlias;
       $this->attrName = $attrName;
+      parent::__construct($selectItemAlias);
    }
    public function getAlias()
    {
@@ -78,15 +93,17 @@ class SelectFunction extends SelectItem {
    const FUNCTION_LOWER = "lower";
    const FUNCTION_UPPER = "upper";
    
-   public function __construct($functionName, SelectItem $param)
+   public function __construct($functionName, SelectItem $param, $selectItemAlias = null)
    {
       $this->functionName = $functionName;
       $this->param = $param;
+      parent::__construct($selectItemAlias);
    }
 //   public function setParam( SelectItem $param )
 //   {
 //      $this->param = $param;
 //   }
+
 }
 class SelectAggregation extends SelectItem {
    private $name;
@@ -99,10 +116,11 @@ class SelectAggregation extends SelectItem {
    const AGTN_SUM = "sum";
    const AGTN_DISTINTC = "distinct";
    
-   public function __construct($aggregationName, SelectItem $param)
+   public function __construct($aggregationName, SelectItem $param, $selectItemAlias = null)
    {
       $this->name = $aggregationName;
       $this->param = $param;
+      parent::__construct($selectItemAlias);
    }
 //   public function setParam( SelectItem $param )
 //   {

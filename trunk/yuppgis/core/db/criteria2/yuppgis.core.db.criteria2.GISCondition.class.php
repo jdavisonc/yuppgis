@@ -7,7 +7,7 @@ class GISCondition extends Condition {
 	const GISTYPE_ISCONTAINED	= "giscondition.type.iscontained";
 	const GISTYPE_EQGEO			= "giscondition.type.equals";
 	const GISTYPE_INTERSECTS	= "giscondition.type.intersects";
-	const GISTYPE_DWITHIN	= "giscondition.type.dwithin";
+	const GISTYPE_DWITHIN		= "giscondition.type.dwithin";
 	
 	public static function getClassName() {
         return get_called_class();
@@ -37,28 +37,40 @@ class GISCondition extends Condition {
 		throw new Exception("No corresponde");
 	}
 	
-	private static function createGISConditionAttribute( $type, $alias, $attr, $refValue ) {
+	private static function createGISConditionValue( $type, $alias, $attr, $refValue ) {
 		$c = new GISCondition();
 		$c->setType( $type );
 		$c->setAttribute( $alias, $attr );
 		$c->setReferenceValue( $refValue );
 		return $c;
 	}
+	
+	private static function createGISConditionAttribute( $type, $alias, $attr, $refAlias, $refAttr ) {
+		$c = new GISCondition();
+		$c->setType( $type );
+		$c->setAttribute( $alias, $attr );
+		$c->setReferenceAttribute( $refAlias, $refAttr );
+		return $c;
+	}
 
 	public static function CONTAINS( $alias, $attr, $refValue ) {
-		return self::createGISConditionAttribute(self::GISTYPE_CONTAINS, $alias, $attr, $refValue );
+		return self::createGISConditionValue(self::GISTYPE_CONTAINS, $alias, $attr, $refValue );
 	}
 	
 	public static function ISCONTAINED( $alias, $attr, $refValue ) {
-		return self::createGISConditionAttribute(self::GISTYPE_ISCONTAINED, $alias, $attr, $refValue );
+		return self::createGISConditionValue(self::GISTYPE_ISCONTAINED, $alias, $attr, $refValue );
 	}
 	
 	public static function EQGEO( $alias, $attr, $refValue ) {
-		return self::createGISConditionAttribute(self::GISTYPE_EQGEO, $alias, $attr, $refValue );
+		return self::createGISConditionValue(self::GISTYPE_EQGEO, $alias, $attr, $refValue );
 	}
 	
+	public static function EQGEOA( $alias, $attr, $refAlias, $refAttr ) {
+       return self::createGISConditionAttribute(self::GISTYPE_EQGEO, $alias, $attr, $refAlias, $refAttr );
+    }
+	
 	public static function INTERSECTS( $alias, $attr, $refValue ) {
-		return self::createGISConditionAttribute(self::GISTYPE_INTERSECTS, $alias, $attr, $refValue );
+		return self::createGISConditionValue(self::GISTYPE_INTERSECTS, $alias, $attr, $refValue );
 	}
 	
 	public static function DWITHIN( $alias, $attr, $refValue, $distance) {

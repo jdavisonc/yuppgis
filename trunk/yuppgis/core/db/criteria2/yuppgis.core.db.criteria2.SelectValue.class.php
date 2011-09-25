@@ -4,8 +4,9 @@ class SelectValue extends SelectItem {
 	
 	private $value;
 	
-	public function __construct($value = null) {
+	public function __construct($value = null, $selectItemAlias = null) {
 		$this->value = $value;
+		parent::__construct($selectItemAlias);
 	}
 	
 	public function getValue() {
