@@ -6,10 +6,11 @@ fieldset {
 }
 
 .olPopupCloseBox {
-			height: 27px !important;			    
-    right: 4px !important;
-    top: 38px !important;
-    width: 26px !important;			    
- 			background: url("/yuppgis/yuppgis/images/close.png") no-repeat scroll 0 0 transparent;
- 			cursor: pointer;
+	height: 27px !important;
+	right: 4px !important;
+	top: 38px !important;
+	width: 26px !important;
+	background: url("/yuppgis/yuppgis/images/close.png") no-repeat scroll 0
+		0 transparent!important;
+	cursor: pointer!important;
 }
