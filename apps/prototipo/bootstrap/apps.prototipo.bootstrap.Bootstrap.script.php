@@ -28,6 +28,11 @@ $layer1->addElement($p1);
 $layer1->addElement($p2);
 $layer1->addElement($p3);
 
+$t1 = new Tag();
+$t1->setName('Sanos-Tag');
+$t1->setColor('Red');
+$layer1->addTag($t1);
+
 $layer1->save();
 
 
@@ -47,6 +52,17 @@ $layer2->addElement($p1);
 $layer2->addElement($p2);
 $layer2->addElement($p3);
 
+$t2 = new Tag();
+$t2->setName('Enfermos-Tag 1');
+$t2->setColor('Green');
+$layer2->addTag($t2);
+
+$t4 = new Tag();
+$t4->setName('Enfermos-Tag 2');
+$t4->setColor('Orange');
+$layer2->addTag($t4);
+
+
 $layer2->save();
 
 $p1 = new Paciente();
@@ -65,7 +81,16 @@ $layer3->addElement($p1);
 $layer3->addElement($p2);
 $layer3->addElement($p3);
 
+$t3 = new Tag();
+$t3->setName('Viejos-Tag');
+$t3->setColor('Yellow');
+$layer3->addTag($t3);
+
+$layer2->addTag($t3);
+$layer2->save();
+
 $layer3->save();
+
 
 
 $map->addLayer($layer1);
