@@ -52,6 +52,18 @@ class GISPersistentObject extends PersistentObject {
 		    	break;
 		}
 	}
+	
+
+   public function hasGeometryAttributes()
+   {
+      $res = array();
+      foreach ($this->hasOne as $attrname => $hmclazz) {
+      	if ($clazz instanceof Geometry) {
+      		$res[] = $attrname;
+      	}
+      }
+      return $res;
+   }
 
 	public function aGetObject( $attr, $id ) {
 		if (is_subclass_of($this->hasOne[$attr], Geometry :: getClassName())) {
