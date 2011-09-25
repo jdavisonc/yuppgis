@@ -5,7 +5,7 @@
 	<legend>Mapa</legend>
 	<?php echo GISHelpers::Map(array(
 		MapParams::ID => 1,
-		MapParams::CLICK_HANDLERS => array('customClickHandler'),
+		MapParams::CLICK_HANDLERS => array('customClickHandler', 'customClickHandler2'),
 		MapParams::SELECT_HANDLERS => array('customSelectHandler')
 		
 	)); ?>
@@ -13,6 +13,10 @@
 <fieldset>
 	<legend>Capas del Mapa</legend>
 	<?php echo GISHelpers::MapLayers(array(MapParams::ID => 1)); ?>
+</fieldset>
+<fieldset>
+	<legend>Tags del Mapa</legend>
+	<?php echo GISHelpers::TagLayers(array(MapParams::ID => 1)); ?>
 </fieldset>
 <fieldset>
 	<legend>Filtros de Paciente</legend>
@@ -31,6 +35,10 @@
 <script type="text/javascript">
 
 function customClickHandler(event){
+	//alert("Custom click handler!");
+}
+
+function customClickHandler2(event){
 	//alert("Custom click handler!");
 }
 
