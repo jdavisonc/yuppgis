@@ -35,6 +35,14 @@ class DataLayer extends PersistentObject {
 		$this->removeFromElements($element);
 	}
 	
+	function addTag($tag){		
+		$this->addToTags($tag);
+	}
+	
+	function removeTag($tag){
+		$this->removeFromTags($tag);
+	}
+	
 	public static function listAll(ArrayObject $params) {
 		self :: $thisClass = __CLASS__;
 		return PersistentObject::listAll($params);
@@ -49,6 +57,7 @@ class DataLayer extends PersistentObject {
 		self :: $thisClass = __CLASS__;
 		return PersistentObject :: get($id);
 	}
+	
 }
 
 ?>
