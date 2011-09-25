@@ -185,6 +185,42 @@ class GISHelpers{
 		return $html;
 	}
 
+	public static function TagLayers($params=null){		
+		$myTags = array ();
+		$id = MapParams::getValueOrDefault($params, MapParams::ID);
+		$map = Map::get($id);
+		$layers = $map->getLayers();		
+		$html =  '<ul>';
+		foreach ($layers as $layer){
+			$tags = $layer->getTags();
+			$layerId = $layer->getId();
+			foreach ($tags as $tag){
+				if(!in_array($tag, $myTags)){
+					$myTags[] = $tag;
+					$tagId = $tag->getId();
+					$checkboxId = 'chb_'.$id.'_'.$layerId.'_'.$tagId;
+					$html .= '<li style="list-style-type: none">'.DisplayHelper::check($checkboxId, true, array('id'=> $checkboxId, 'onclick' => GISHelpers::TagLayerHandler($id, $tagId, $checkboxId))).'<label for="'.$checkboxId.'">'.$tag->getName().'</label></li>';	
+				}
+			}			
+		}		
+		return $html.'</ul>';
+	}
+
+	private static function TagLayerHandler($mapId, $tagId, $checkboxId){
+		$map = Map::get($mapId);
+		$layers = $map->getLayers();
+		foreach ($layers as $layer){									
+			$tags = $layer->getTags();
+			foreach ($tags as $tag){
+				if($tag->getId() == $tagId){
+					$layerId = $layer->getId();
+					$html = 'javascript:$(\'#map_'.$mapId.'\').YuppGISMap().map.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'))';		
+				}	
+			}			
+		}	
+		return $html;
+	}
+	
 }
 
 
