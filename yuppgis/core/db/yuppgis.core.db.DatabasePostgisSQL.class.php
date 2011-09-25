@@ -7,6 +7,7 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 	public function evaluateAnyGISCondition( Condition $condition , $srid) {
 		$where = "";
 		$refVal = $condition->getReferenceValue();
+		$refAttr = $condition->getReferenceAttribute();
 		$atr    = $condition->getAttribute();
 		
 		switch ( $condition->getType() ) {
@@ -17,7 +18,7 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 				$where = $this->evaluateCONTAINS( $atr, $refVal, $srid );
 				break;
 			case GISCondition::GISTYPE_EQGEO:
-				$where = $this->evaluateEQGEO( $atr, $refVal, $srid );
+				$where = $this->evaluateEQGEO( $atr, $refVal, $refAttr, $srid );
 				break;
 			case GISCondition::GISTYPE_INTERSECTS:
 				$where = $this->evaluateINTERSECTS( $atr, $refVal, $srid );
@@ -32,9 +33,12 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 		return "ST_Intersects(" . $attribute->alias . "." . $attribute->attr . ", ". $this->geomFromText($refValue, $srid) .") "; 
 	}
 	
-	private function evaluateEQGEO( $attribute, $refValue, $srid ) {
-		// -> geom columna geom de paciente_ubicacion_geo 
-		return "ST_Equals(" . $attribute->alias . "." . $attribute->attr . ", ". $this->geomFromText($refValue, $srid) .") ";
+	private function evaluateEQGEO( $attribute, $refValue, $refAttr, $srid ) {
+		if ($refValue != null) {
+			return "ST_Equals(" . $attribute->alias . "." . $attribute->attr . ", ". $this->geomFromText($refValue, $srid) .") ";
+		} else {
+			return "ST_Equals(" . $attribute->alias . "." . $attribute->attr . ", " . $refAttr->alias . "." . $refAttr->attr . ") ";
+		}
 	}
 	
 	private function evaluateCONTAINS( $attribute, $refValue, $srid ) { 

@@ -125,15 +125,22 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
     	}
 	}
 	
+	/**
+	 * Si es una GISQuery, la descomponemos y creamos una Query soportada por Yupp.
+	 * @see PersistentManager::findByQuery()
+	 */
 	public function findByQuery(Query $q) {
 		// TODO_GIS
-		//  return $this->dal->query( $q );
-		if (is_subclass_of($q, GISQuery::getClassName())) {
-			$q->setCondition($this->evaluateGISCondition($q->getFrom(), $q->getWhere()));
+		if ($q instanceof GISQuery) {
 			
-			// evaluar select
+			$newQuery = new Query();
+			$newQuery->setSelect($this->GISSelectToSelect($q->getFrom(), $q->getSelect()));
+			$newQuery->setFrom($this->GISFromToFrom($q->getFrom()));
+			$newQuery->setCondition($this->GISConditionToCondition($q->getFrom(), $q->getWhere()));
 			
-			return $this->dal->query( $q );
+			return $this->dal->query($newQuery);
+			
+			
 		} else {
 			return parent::findByQuery($q);
 		}
@@ -144,12 +151,75 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 		return parent::findBy($instance, $newCondition, $params);
 	}
 	
-	private function evaluateGISCondition(array $froms, Condition $condition) {
+	private static function getGeometryAttrs($instance_or_class) {
+		$ins = $instance_or_class;
+		if ( !is_object($ins) ) {
+			$ins = new $instance_or_class(array(), true);
+		}
+		return $ins->hasGeometryAttributes();
+	}
+	
+	private function GISProjectionToProjection($geoAttrsOfFroms, $selectItem) {
+		if ($selectItem instanceof SelectAttribute) {
+			$alias = $selectItem->getAlias();
+			
+			if (in_array($selectItem->getAttrName(), $geoAttrsOfFroms[$alias])) {
+				$geoAttrAssoc = DatabaseNormalization::simpleAssoc($selectItem->getAttrName());
+				return new SelectAttribute($alias, $geoAttrAssoc, $selectItem->getSelectItemAlias());
+			} else {
+				return new SelectAttribute($alias, $selectItem->getAttrName(), $selectItem->getSelectItemAlias()); 
+			}
+		} else if ($selectItem instanceof SelectAggregation) {
+			return new SelectAggregation($selectItem->getName(), 
+				$this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem->getParam()), 
+				$selectItem->getSelectItemAlias());
+		} else if ($selectItem instanceof SelectValue) {
+			return new SelectValue($selectItem->getValue(), $selectItem->getSelectItemAlias());
+		} else if ($selectItem instanceof GISFunction) {
+			$params = array();
+			foreach ($selectItem->getParams() as $param) {
+				$params[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $param);
+			}
+			return new GISFunction($selectItem->getType(), $params, $selectItem->getSelectItemAlias());
+		} else {
+			throw new Exception("No implementado");
+		}
+	}
+	
+	private function GISFromToFrom(array $gisFroms) {
+		$from = array();
+		foreach ($gisFroms as $gisFrom) {
+			$f = new stdClass();
+			$f->alias = $gisFrom->alias;
+			$f->name = YuppConventions::tableName($gisFrom->instance_or_class);
+			$from[] = $f;
+		}
+		return $from;
+	}
+	
+	private function GISSelectToSelect(array $froms, $gisSelect) {
+		
+		$geoAttrsOfFroms = array();
+		foreach ($froms as $from) {
+			// TODO_GIS ver de mejorar el caso de que se realize From de las mismas tablas y no se realize
+			// dos veces la busqueda
+			$geoAttrsOfFroms[$from->alias] = self::getGeometryAttrs($from->instance_or_class);
+		}
+		
+		$projections = array();
+		foreach ($gisSelect->getAll() as $selectItem) {
+			$projections[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem);
+		}
+		return new Select($projections);
+	}
+	
+	private function GISConditionToCondition(array $froms, Condition $condition) {
 		
 		if ( $condition instanceof GISCondition) {
 			
 			$attr = $condition->getAttribute();
-			$fromSelect = busqueda($froms, $attr->alias); // hacer busqueda
+			
+			$fromSelect = self::getFrom($froms, $attr->alias);
 			
 			// Es gis condition, tener cuidado que puede tener subcondiciones comunes
 			$tableName = YuppConventions::tableName($fromSelect->instance_or_class);
@@ -161,18 +231,16 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 			
 			$query = new Query();
 			$query->addFrom($gisTableName, $fromSelect->alias);
-			$query->addProjection($fromSelect->alias, 'id');
+			$query->addProjection($fromSelect->alias, 'id', 'id');
 			
 			if ($condition->getReferenceAttribute() !== null) {
-				//TODO_GIS: Consulta que compara un valor con valor de otra tabla geografica -> g.geom == j.geom
-				// Tiene sentido para cuando es una condicion sobre elementos? o seria solo para Query?
 				$attr2 = $condition->getReferenceAttribute();
-				$fromSelect2 = busqueda($froms, $attr2->alias); // hacer busqueda
+				$fromSelect2 = self::getFrom($froms, $attr2->alias);
 				
 				$tableName2 = YuppConventions::tableName($fromSelect2->instance_or_class);
 				$gisTableName2 = YuppGISConventions::gisTableName($tableName2, $attr2->attr);
 				$query->addFrom($gisTableName2, $fromSelect2->alias);
-				$query->addProjection($fromSelect2->alias, 'id2');
+				$query->addProjection($fromSelect2->alias, 'id', 'id2');
 				
 				$gisCondition->setReferenceAttribute($fromSelect2->alias, 'geom');
 				
@@ -184,10 +252,10 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 			
 			$query_res = $this->dal->gis_query($query);
 			
-			$res = createValuesStringFromKeyOnQuery($query_res, 'id');
+			$res = self::createValuesStringFromKeyOnQuery($query_res, 'id');
 			$res2 = null;
 			if ($condition->getReferenceAttribute() !== null) {
-				$res2 = createValuesStringFromKeyOnQuery($query_res, 'id2');
+				$res2 = self::createValuesStringFromKeyOnQuery($query_res, 'id2');
 			}
 			
 			if ($res2 == null) {
@@ -224,7 +292,7 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 				$newCondition->setType($condition->getType());
 				$subconditions = $condition->getSubconditions();
 				for ($i = 0; $i < count($subconditions); $i++) {
-					$newCondition->add($this->evaluateGISCondition( $from, $subconditions[$i] ));
+					$newCondition->add($this->GISConditionToCondition( $froms, $subconditions[$i] ));
 				}
 				return $newCondition;
 			} else {
@@ -234,18 +302,38 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 		
 	}
 	
-	private function createValuesStringFromKeyOnQuery($query_res, $key) {
-		$res = '';
-		$first = true;
+	/**
+	 * TODO_GIS
+	 * Funcion que obtiene la $key del resultado de la DB y los retorna en una lista string (SIN REPETIDOS)
+	 * @param $query_res
+	 * @param $key
+	 */
+	private static function createValuesStringFromKeyOnQuery($query_res, $key) {
+		$res = array ();
 		foreach ($query_res as $value ) {
-			if ($first) {
-				$first = false;	
-			} else {
-				$res =  $res . ',';
-			}
-			$res = $res . $value[$key];
+			$res[] = $value[$key];
 		}
-		return $res;
+		return implode(',', array_unique($res, SORT_REGULAR));
+	}
+	
+	/**
+	 * Retorna el objeto From dado un alias en un array de From
+	 * @param $from
+	 * @param $alias
+	 */
+	private static function getFrom(array $from, $alias) {
+		$i = 0;
+		$finded = null;
+		while ($i < count($from) && $finded == null) {
+			if ($from[$i]->alias == $alias) {
+				$finded = $from[$i];
+			}
+			$i++;
+		}
+		if ($finded == null) {
+			throw new Exception("Alias en From no encontrado");
+		}
+		return $finded;
 	}
 	
 	private function findGISBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {

@@ -62,7 +62,7 @@ class Query
    /**
     * Agrega una proyeccion sobre las columnas de las tablas seleccionadas para la respuesta de la consulta.
     */
-	public function addProjection($alias, $attr)
+	public function addProjection($alias, $attr, $projectionAlias = null)
 	{
 		// TODO:
 		// CHECK CORRECTITUD: proyeccion debe tener aliases presentes en el from. Necesario agregar primero el FROM.
@@ -73,15 +73,15 @@ class Query
 //
 //		$this->select[] = $p;
 
-      $this->select->add( new SelectAttribute($alias, $attr) );
+      $this->select->add( new SelectAttribute($alias, $attr, $projectionAlias) );
 
 		return $this;
 	}
    
-   public function addAggregation($aggName, $alias, $attr)
+   public function addAggregation($aggName, $alias, $attr, $agregationAlias = null)
    {
       $selAttr = new SelectAttribute($alias, $attr);
-      $aggregation= new SelectAggregation( $aggName, $selAttr );
+      $aggregation= new SelectAggregation( $aggName, $selAttr, $agregationAlias);
       $this->select->add( $aggregation );
       
       return $this;
@@ -244,6 +244,14 @@ class Query
       }
    }
    */
+	
+	public function setSelect($select) {
+		$this->select = $select;
+	}
+	
+	public function setFrom(array $from) {
+		$this->from = $from;
+	}
 
 }
 ?>

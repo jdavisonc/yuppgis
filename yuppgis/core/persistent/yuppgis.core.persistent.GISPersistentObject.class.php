@@ -58,7 +58,7 @@ class GISPersistentObject extends PersistentObject {
    {
       $res = array();
       foreach ($this->hasOne as $attrname => $hmclazz) {
-      	if ($clazz instanceof Geometry) {
+      	if ($hmclazz == Geometry::getClassName() || is_subclass_of($hmclazz, Geometry::getClassName())) {
       		$res[] = $attrname;
       	}
       }

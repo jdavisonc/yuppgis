@@ -470,10 +470,15 @@ class DatabasePostgreSQL {
             // FIXME: la aggregation puede ser una evaluacion
             //        recursiva porque param es SelectItem y
             //        puede ser que tenga una agg adentro, asi sucesivamente.
-            if ($proj instanceof SelectAttribute)
-               $res .= $proj->getAlias() . "." . $proj->getAttrName() . ", "; // Projection
-            else if ($proj instanceof SelectAggregation)
-               $res .= $proj->getName() . "(". $proj->getParam()->getAlias() . "." . $proj->getParam()->getAttrName() ."), ";
+            if ($proj instanceof SelectAttribute) {
+               $res .= $proj->getAlias() . "." . $proj->getAttrName(); // Projection
+            } else if ($proj instanceof SelectAggregation) {
+               $res .= $proj->getName() . "(". $proj->getParam()->getAlias() . "." . $proj->getParam()->getAttrName() .")";
+            }
+			if ($proj->getSelectItemAlias() != null) {
+				$res .= " as " . $proj->getSelectItemAlias();
+			}
+			$res .= ", ";
          }
          return substr($res, 0, -2); // Saca ultimo "; "
       }
