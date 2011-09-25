@@ -120,10 +120,10 @@ class GISHelpers{
 
 		$html =	'	
 		 
-		<script src="'.$olurl.'" type="text/javascript"></script>			
-		<script type="text/javascript">
+		<script src="'.$olurl.'" type="text/javascript"></script>	
 		
-		</script>
+		<link type="text/css" rel="stylesheet" href="/yuppgis/yuppgis/js/gis/OpenLayers.css" />
+		
 	
 		<style type="text/css">
 			#map_'.$id.' {
