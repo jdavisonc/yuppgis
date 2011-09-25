@@ -61,6 +61,53 @@ class DataLayerTest extends YuppGISTestCase {
 		$count = count($layer->getElements());		
 		$this->assert($count == 2, 'Test quitar elemento de capa:'.$count);
 	}
+
+	public  function testAddTag(){
+		$name = 'AddTag';
+		$layer = new DataLayer($name,'AddTag');
+		
+		$firstTag = new Tag();
+		$firstTag->setName('First Tag');
+		$firstTag->setColor('Red');
+		$layer->addTag($firstTag);
+		
+		$secTag = new Tag();
+		$secTag->setName('Second Tag');
+		$secTag->setColor('Green');
+		$layer->addTag($secTag);
+		
+		$layer->save();
+		
+		$count = count($layer->getTags());		
+		$this->assert($count == 2, 'Test agregar tag a capa:'.$count);
+	}
+	
+	public function testRemoveTag(){
+		$name = 'RemoveTag';
+		$layer = new DataLayer($name,'RemoveTag');
+		
+		$firstTag = new Tag();
+		$firstTag->setName('First Tag');
+		$firstTag->setColor('Red');
+		$layer->addTag($firstTag);
+		
+		$secTag = new Tag();
+		$secTag->setName('Second Tag');
+		$secTag->setColor('Green');
+		$layer->addTag($secTag);
+		
+		$thirdTag = new Tag();
+		$thirdTag->setName('Third Tag');
+		$thirdTag->setColor('Yellow');
+		$layer->addTag($thirdTag);
+		
+		$layer->save();
+				
+		$layer->removeTag($secTag);
+		
+		$count = count($layer->getTags());		
+		$this->assert($count == 2, 'Test quitar tag a capa:'.$count);
+	}
 }
 
 ?>
