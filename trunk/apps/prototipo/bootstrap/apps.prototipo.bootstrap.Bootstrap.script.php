@@ -27,17 +27,27 @@ foreach ($maps as $map){
 		}
 
 		$layer->save();
-		
+
+
 		$map->removeLayer($layer);
-		
+
 		$map->save();
 		$layer->delete();
 	}
-	
+
 
 	$map->delete();
 }
 
+$pacientes = Paciente::listAll($params);
+foreach ($pacientes as $paciente){
+	$paciente->delete();
+}
+
+$tags = Tag::listAll($params);
+foreach ($tags as $tag){
+	$tag->delete();
+}
 
 /**/
 
