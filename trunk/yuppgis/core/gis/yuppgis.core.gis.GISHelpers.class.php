@@ -209,12 +209,13 @@ class GISHelpers{
 	private static function TagLayerHandler($mapId, $tagId, $checkboxId){
 		$map = Map::get($mapId);
 		$layers = $map->getLayers();
+		$html = "";
 		foreach ($layers as $layer){									
 			$tags = $layer->getTags();
 			foreach ($tags as $tag){
 				if($tag->getId() == $tagId){
 					$layerId = $layer->getId();
-					$html = 'javascript:$(\'#map_'.$mapId.'\').YuppGISMap().map.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'))';		
+					$html .= '$(\'#map_'.$mapId.'\').YuppGISMap().map.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'));';		
 				}	
 			}			
 		}	
