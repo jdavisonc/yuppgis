@@ -17,26 +17,33 @@ foreach ($maps as $map){
 	//$layers = DataLayer::listAll($params);
 	$layers =$map->getLayers();
 	foreach ($layers as $layer){
-		$elements = $layer->getElements();
-		foreach ($elements as $element){
-			$layer->removeElement($element);
-		}
-		$tags = $layer->getTags();
-		foreach ($tags as $tag){
-			$layer->removeTag($tag);
-		}
-
-		$layer->save();
-
+		
 
 		$map->removeLayer($layer);
 
 		$map->save();
-		$layer->delete();
+		
 	}
 
 
 	$map->delete();
+}
+
+$layers = DataLayer::listAll($params);
+foreach ($layers as $layer){
+	$elements = $layer->getElements();
+	foreach ($elements as $element){
+		$layer->removeElement($element);
+
+	}
+	$tags = $layer->getTags();
+	foreach ($tags as $tag){
+		$layer->removeTag($tag);
+	}
+
+	$layer->save();
+
+	$layer->delete();
 }
 
 $pacientes = Paciente::listAll($params);
