@@ -53,19 +53,28 @@ class GISHelpers{
 	 * @param id del elemento
 	 * @return html generado para el menú
 	 */
-	public static function FiltersMenu($class, $mapid, $handler){
+	public static function FiltersMenu($class, $mapid, $handler = null){
 		$html = '<select id="select_'.$class.'_'.$mapid.'">';
 		$html .= '<option value="nothing"></option>';
 
 		foreach (self::AvailableFilters($class) as $option){
 			$html .= '<option value="'.$option.'">'.str_ireplace('Filter', '', $option).'</option>';
 		}
+		
+		$handlerCall = '';
+		if ($handler != null){
+			$handlerCall = $handler.'(data);';
+		}else{
+		 	$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';			
+		}
 
 		$html .= '</select>';
 		$html .= '<input type="text" id="tbFiltersMenu_'.$class.'_'.$mapid.'" />';
+		$random = uniqid();
 		
-		$methodName = 'filter_'.$class.'_'.$mapid;
-		$html .= '<a href="#" id="btnFiltersMenu_'.$class.'_'.$mapid.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
+		$methodName = 'filter_'.$class.'_'.$mapid.'_'.$random;
+		
+		$html .= '<a href="#" id="btnFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
 
 		$script = '<script>
 						function '.$methodName.'(){
@@ -81,7 +90,8 @@ class GISHelpers{
 							      	param: text
 							      },			      			      			      
 							      success: function(data){
-							      	'.$handler.'(data);
+							      	
+							      	'.$handlerCall.'
 							      }
 							  })
 							  

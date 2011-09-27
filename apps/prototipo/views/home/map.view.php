@@ -20,7 +20,8 @@
 </fieldset>
 <fieldset>
 	<legend>Filtros de Paciente</legend>
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements'); ?>
+	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements'); ?><br />
+	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?>
 </fieldset>
 <fieldset>
 	<legend>Resultados</legend>
