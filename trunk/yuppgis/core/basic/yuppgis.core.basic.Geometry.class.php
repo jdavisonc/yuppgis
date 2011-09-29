@@ -2,7 +2,7 @@
 
 YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 
-class Geometry extends GISPersistentObject {
+class Geometry extends PersistentObject {
 	
 	private $uiPropertyObject = null;
 	
@@ -38,6 +38,15 @@ class Geometry extends GISPersistentObject {
 	public function preValidate(){
 		$this->aSet('uiproperty', UIProperty::toJSON($this->uiPropertyObject));
 	}
+	
+/**
+	 * Retorna nombre de clase.
+	 * Solo soportado por PHP > 5.3
+	 * @return nombre de la clase
+	 */
+	public static function getClassName() {
+        return get_called_class();
+    }
 
 }
 

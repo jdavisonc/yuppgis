@@ -45,10 +45,11 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	 */
 	//TODO_GIS
 	private function createGISObjectFromData( $data ) {
-		$attrsValues = array( 'id' => $data['id'],  'uiproperty' => $data['uiproperty'] );
-		$attrsValues = array_merge( $attrsValues , WKTGEO::fromText($data['geo']));
+		$geo = WKTGEO::fromText($data['geo']);
+		$geo->setId($data['id']);
+		$geo->setUiproperty($data['uiproperty']);
 		
-		return $this->createObjectFromData($attrsValues['class'], $attrsValues);
+		return $geo;
 	}
 	
 	public function save_cascade_owner( PersistentObject $owner, $attrNameAssoc, PersistentObject $obj, $sessId ) {
