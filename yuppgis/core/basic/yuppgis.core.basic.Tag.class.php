@@ -11,6 +11,11 @@ class Tag extends PersistentObject {
 		parent :: __construct($args, $isSimpleInstance);
 						
 	}	
+	
+	public static function listAll(ArrayObject $params) {
+		self :: $thisClass = __CLASS__;
+		return PersistentObject::listAll($params);
+	}
 }
 
 ?>
