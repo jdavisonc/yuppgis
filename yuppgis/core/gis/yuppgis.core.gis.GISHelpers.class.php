@@ -54,7 +54,9 @@ class GISHelpers{
 	 * @return html generado para el menú
 	 */
 	public static function FiltersMenu($class, $mapid, $handler = null){
-		$html = '<select id="select_'.$class.'_'.$mapid.'">';
+		$random = uniqid();
+		
+		$html = '<select id="select_'.$class.'_'.$mapid.'_'.$random.'">';
 		$html .= '<option value="nothing"></option>';
 
 		foreach (self::AvailableFilters($class) as $option){
@@ -69,8 +71,7 @@ class GISHelpers{
 		}
 
 		$html .= '</select>';
-		$html .= '<input type="text" id="tbFiltersMenu_'.$class.'_'.$mapid.'" />';
-		$random = uniqid();
+		$html .= '<input type="text" id="tbFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'" />';		
 		
 		$methodName = 'filter_'.$class.'_'.$mapid.'_'.$random;
 		
@@ -78,8 +79,8 @@ class GISHelpers{
 
 		$script = '<script>
 						function '.$methodName.'(){
-							var selectedOption = $("#select_'.$class.'_'.$mapid.'").val();
-							var text = $("#tbFiltersMenu_'.$class.'_'.$mapid.'").val();
+							var selectedOption = $("#select_'.$class.'_'.$mapid.'_'.$random.'").val();
+							var text = $("#tbFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'").val();
 							
 							 $.ajax({
 							      url: "/yuppgis/prototipo/Home/Filter",
