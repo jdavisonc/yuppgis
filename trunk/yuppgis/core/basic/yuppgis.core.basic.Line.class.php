@@ -3,7 +3,7 @@
 class Line extends LineString {
 	function __construct( $points ) {
 		
-		parent :: __construct( $points = array() );
+		parent :: __construct( $points);
 	}
 	
 	private function validatePoints( $points ) {

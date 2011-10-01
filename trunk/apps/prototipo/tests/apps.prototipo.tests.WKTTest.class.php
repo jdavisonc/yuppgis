@@ -20,7 +20,6 @@ class WKTTest extends YuppGISTestCase {
 		$text = 'POLYGON((0 0 0,4 0 0,4 4 0,0 4 0,0 0 0))';
 		$p = WKTGEO::fromText($text);
 		
-		//Debe devolver clase linea por estar formado exactamente por dos lineas
 		//$this->assert($point == array('class' => 'Point', 'x' => 23, 'y' => 32), 'Test parseo punto');
 	}
 	
@@ -28,8 +27,8 @@ class WKTTest extends YuppGISTestCase {
 		$text = 'LineString(23 32, 32 56, 32 59)';
 		$linea = WKTGEO::fromText($text);
 		
-		$arr = array ('class' => 'Line', 'points' => array (array('x' => 23, 'y' => 32), array('x' => 32, 'y' => 56)));
-		$this->assert($linea == $arr, 'Test parseo camino');
+		$points = $linea->getPoints();
+		$this->assert($points[0]->getX() == 23 && $points[0]->getY() == 32 && $points[2]->getX() == 32 && $points[2]->getY() == 59, 'Test parseo camino');
 	}
 	
 	public function testSerializationOfLine() {
@@ -38,8 +37,8 @@ class WKTTest extends YuppGISTestCase {
 		$linea = WKTGEO::fromText($text);
 		
 		//Debe devolver clase linea por estar formado exactamente por dos lineas
-		$arr = array ('class' => 'Line', 'points' => array (array('x' => 23, 'y' => 32), array('x' => 32, 'y' => 56)));
-		$this->assert($linea == $arr, 'Test parseo linea');
+		$points = $linea->getPoints();
+		$this->assert($points[0]->getX() == 23 && $points[0]->getY() == 32 && $points[1]->getX() == 32 && $points[1]->getY() == 56, 'Test parseo linea');
 	}
 	
 	public function testSerializationOfLine2() {
@@ -64,5 +63,14 @@ class WKTTest extends YuppGISTestCase {
 		$count2 = count(array_unique($points2, SORT_REGULAR));
 		
 		$this->assert(true, 'Test ' . $count1 . ' ' . $count2);
+	}
+	
+	public function testExpLines() {
+		$exp = '/\([^\)]*\)/';
+		$line = '(20 10, 25 36, 33 54)';
+		preg_match_all( $exp, $line, $pointsMatch, PREG_SET_ORDER );
+		
+		
+		
 	}
 }
