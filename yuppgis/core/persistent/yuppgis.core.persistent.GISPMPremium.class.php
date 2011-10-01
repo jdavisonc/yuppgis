@@ -133,15 +133,29 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	public function findByQuery(Query $q) {
 		// TODO_GIS
 		if ($q instanceof GISQuery) {
+
+			$geoAttrsOfFroms = self::getGeometryAttrs($q->getFrom());
 			
+			// Contiene informacion de un atributo geografico en el select (alias, nombre de columna, nombre de atributo, nombre de objeto)
+			$tableAttrGeo = array();
+			
+			// Creamos los select, from y condition para ejecutar en la DB (no geo)
+			$newSelect = $this->GISSelectToSelect($geoAttrsOfFroms, $q->getSelect(), $tableAttrGeo); //TODO_GIS: llenado de tablaAttrGeo
+			$newFrom = $this->GISFromToFrom($q->getFrom());
+			$newCondition = $this->GISConditionToCondition($q->getFrom(), $q->getWhere());
+			
+			// Se crea query para ir contra DB (no geo)
 			$newQuery = new Query();
-			$newQuery->setSelect($this->GISSelectToSelect($q->getFrom(), $q->getSelect()));
-			$newQuery->setFrom($this->GISFromToFrom($q->getFrom()));
-			$newQuery->setCondition($this->GISConditionToCondition($q->getFrom(), $q->getWhere()));
+			$newQuery->setSelect($newSelect);
+			$newQuery->setFrom($newFrom);
+			$newQuery->setCondition($newCondition);
 			
-			return $this->dal->query($newQuery);
+			$result = $this->dal->query($newQuery);
+			
+			// TODO_GIS: Crear nuevo res
 			
 			
+			return $newResult;
 		} else {
 			return parent::findByQuery($q);
 		}
@@ -152,12 +166,22 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 		return parent::findBy($instance, $newCondition, $params);
 	}
 	
-	private static function getGeometryAttrs($instance_or_class) {
-		$ins = $instance_or_class;
-		if ( !is_object($ins) ) {
-			$ins = new $instance_or_class(array(), true);
+	/**
+	 * Retorna un array con los atributos geograficos de tablas en un From
+	 * @param array $from
+	 */
+	private static function getGeometryAttrs(array $from) {
+		$geoAttrsOfFroms = array();
+		foreach ($froms as $from) {
+			// TODO_GIS ver de mejorar el caso de que se realize From de las mismas tablas y no se realize
+			// dos veces la busqueda
+			$ins = $from->instance_or_class;
+			if ( !is_object($ins) ) {
+				$ins = new $instance_or_class(array(), true);
+			}
+			$geoAttrsOfFroms[$from->alias] = $ins->hasGeometryAttributes();
 		}
-		return $ins->hasGeometryAttributes();
+		return $geoAttrsOfFroms;
 	}
 	
 	private function GISProjectionToProjection($geoAttrsOfFroms, $selectItem) {
@@ -198,14 +222,7 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 		return $from;
 	}
 	
-	private function GISSelectToSelect(array $froms, $gisSelect) {
-		
-		$geoAttrsOfFroms = array();
-		foreach ($froms as $from) {
-			// TODO_GIS ver de mejorar el caso de que se realize From de las mismas tablas y no se realize
-			// dos veces la busqueda
-			$geoAttrsOfFroms[$from->alias] = self::getGeometryAttrs($from->instance_or_class);
-		}
+	private function GISSelectToSelect(array $geoAttrsOfFroms, $gisSelect) {
 		
 		$projections = array();
 		foreach ($gisSelect->getAll() as $selectItem) {
