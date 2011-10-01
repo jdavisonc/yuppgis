@@ -13,7 +13,6 @@ class HomeController extends GISController {
 	public function mapAction(){
 		return;
 	}
-
 	
 
 }
