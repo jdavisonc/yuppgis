@@ -153,7 +153,21 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 			$result = $this->dal->query($newQuery);
 			
 			// TODO_GIS: Crear nuevo res
+			// Se va a buscar los objetos geograficos			
+			$geoRes;
 			
+			// Recorremos los resultados orignales y se mergean con los objetos geo
+			$newResult = array();
+			foreach ($result as $row) {
+				foreach (array_keys($row) as $column) {
+					$attrGeo = $tableAttrGeo[$column];
+					if ($attrGeo != null) {
+						$newResult[$attrGeo->attr] = $geoRes[$column][$result[$column]]; 
+					} else {
+						$newResult[$columna] = $result[column];
+					}
+				}
+			}
 			
 			return $newResult;
 		} else {
@@ -184,28 +198,45 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 		return $geoAttrsOfFroms;
 	}
 	
-	private function GISProjectionToProjection($geoAttrsOfFroms, $selectItem) {
+	private function GISProjectionToProjection($geoAttrsOfFroms, $selectItem, $tableAttrGeo) {
 		if ($selectItem instanceof SelectAttribute) {
 			$alias = $selectItem->getAlias();
 			
 			if (in_array($selectItem->getAttrName(), $geoAttrsOfFroms[$alias])) {
+
 				$geoAttrAssoc = DatabaseNormalization::simpleAssoc($selectItem->getAttrName());
-				return new SelectAttribute($alias, $geoAttrAssoc, $selectItem->getSelectItemAlias());
+				$attrRes = new SelectAttribute($alias, $geoAttrAssoc, $selectItem->getSelectItemAlias()); 				
+				
+				$attrGeo = new stdClass();
+				$attrGeo->alias = $attrRes->getSelectItemAlias();
+				$attrGeo->attrGeo = $geoAttrAssoc;
+				$attrGeo->object = $alias;
+				$attrGeo->attr = $selectItem->getAttrName();
+				$tableAttrGeo[$attrGeo->alias] = $attrGeo;
+				
+				return $attrRes; 
+			
 			} else {
 				return new SelectAttribute($alias, $selectItem->getAttrName(), $selectItem->getSelectItemAlias()); 
 			}
+			
 		} else if ($selectItem instanceof SelectAggregation) {
+			
 			return new SelectAggregation($selectItem->getName(), 
-				$this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem->getParam()), 
+				$this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem->getParam(), $tableAttrGeo), 
 				$selectItem->getSelectItemAlias());
+				
 		} else if ($selectItem instanceof SelectValue) {
 			return new SelectValue($selectItem->getValue(), $selectItem->getSelectItemAlias());
+			
 		} else if ($selectItem instanceof GISFunction) {
+			//TODO_GIS, esto generaría cosas del estilo Area(ubicacio_id), estas funciones debe de ir contra la otra base
 			$params = array();
 			foreach ($selectItem->getParams() as $param) {
-				$params[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $param);
+				$params[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $param, $tableAttrGeo);
 			}
 			return new GISFunction($selectItem->getType(), $params, $selectItem->getSelectItemAlias());
+			
 		} else {
 			throw new Exception("No implementado");
 		}
@@ -222,11 +253,11 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 		return $from;
 	}
 	
-	private function GISSelectToSelect(array $geoAttrsOfFroms, $gisSelect) {
+	private function GISSelectToSelect(array $geoAttrsOfFroms, $gisSelect, $tableAttrGeo) {
 		
 		$projections = array();
 		foreach ($gisSelect->getAll() as $selectItem) {
-			$projections[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem);
+			$projections[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem, $tableAttrGeo);
 		}
 		return new Select($projections);
 	}
