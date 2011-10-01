@@ -9,6 +9,7 @@ YuppLoader :: load('yuppgis.core.basic', 'Point');
 YuppLoader :: load('yuppgis.core.basic', 'Curve');
 YuppLoader :: load('yuppgis.core.basic', 'LineString');
 YuppLoader :: load('yuppgis.core.basic', 'Line');
+YuppLoader :: load('yuppgis.core.basic', 'LineRing');
 YuppLoader :: load('yuppgis.core.basic', 'Surface');
 YuppLoader :: load('yuppgis.core.basic', 'Polygon');
 

@@ -5,7 +5,8 @@ class WKTGEO {
 	private static $regex  = array (
 		'class' => '/^(\w+)\((.*)\)/',
 		'lineString' => '/([^,]*)(,[^,]*)*/',
-		'polygon' => '/(\(.*\))(,\(.*\))*?/'
+		'polygon' => '/\([^\)]*\)/'
+		
 	);
 	
 	public static function fromText( $text ) {
@@ -33,14 +34,14 @@ class WKTGEO {
 				preg_match( self::$regex['polygon'], $matches[2], $linesMatch);
 				
 				//se hace parse del borde exterior
-				preg_match( self::$regex['lineString'], substr($linesMatch[1], 1, -1), $pointsMatch );
-				$exteriorBoundary = self::createLine( $pointsMatch );
+				//preg_match( self::$regex['lineString'], substr($linesMatch[1], 1, -1), $pointsMatch );
+				$exteriorBoundary = self::createLine( explode(',',  substr($linesMatch[0], 1, -1)) );
 				
 				//se hace parse de los posibles bordes interiores 
 				$interiorsBoundary = array();
-				for ($i = 2; $i < count($linesMatch); $i++) {
-					preg_match( self::$regex['lineString'], substr($linesMatch[$i], 1, -1), $pointsMatch );
-					$interiorsBoundary[] = 	self::createLine( $pointsMatch );
+				for ($i = 1; $i < count($linesMatch); $i++) {
+					//preg_match( self::$regex['lineString'], substr($linesMatch[$i], 1, -1), $pointsMatch );
+					$interiorsBoundary[] = 	self::createLine( explode(',',  substr($linesMatch[i], 1, -1)) );
 				}
 				
 				return new Polygon($exteriorBoundary, $interiorsBoundary);
@@ -62,10 +63,10 @@ class WKTGEO {
 			$res[] =  new Point( $coord[0], $coord[1] );
 		}
 		
-		if (self::isLine( $points )) {
+		if (self::isLine( $res )) {
 			$line = new Line($res);
 			$line->setClass(Line::getClassName());
-		} elseif (self::isLineRing( $points )) {
+		} elseif (self::isLineRing( $res )) {
 			$line = new LineRing($res);
 			$line->setClass(LineRing::getClassName());
 		} else {
@@ -83,7 +84,7 @@ class WKTGEO {
 	private static function isLineRing( $points ) {
 		$count = count($points);
 		if ($count - count(array_unique($points, SORT_REGULAR) === 1)) {
-			return ($points[0] === $points[$count - 1]);
+			return ($points[0] == $points[$count - 1]);
 		}
 		return false;
 	}
