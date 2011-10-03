@@ -46,40 +46,64 @@ class GISQueryProcessor {
 	private static function GISProjectionToProjection($geoAttrsOfQuery, $selectItem, ProcessedSelects $processedSelects) {
 		if ($selectItem instanceof SelectAttribute) {
 			$alias = $selectItem->getAlias();
-			$attrAlias = $selectItem->getSelectItemAlias();
+			$attrAlias = ($selectItem->getSelectItemAlias() == null)? $alias : $selectItem->getSelectItemAlias();
 			$attrName = $selectItem->getAttrName();
 			
 			if (in_array($attrName, $geoAttrsOfQuery[$alias])) {
 
 				$geoAttrAssoc = DatabaseNormalization::simpleAssoc($attrName);
-				$attrMainProjection = new SelectAttribute($alias, $geoAttrAssoc, $attrAlias);
+				$attrMainProjection = new SelectAttribute($alias, $geoAttrAssoc); // Alias de atributo AttrName_id == geoAttrAssoc
 
 				$processedSelects->mainSelect->add($attrMainProjection);
 				
-				$attrGeo = new stdClass();
-				$attrGeo->alias = ($attrAlias == null)? $attrName : $attrRes->getSelectItemAlias();
-				$attrGeo->attrGeo = $geoAttrAssoc;
-				$attrGeo->object = $alias;
-				$attrGeo->attr = $attrName;
-				
-				$processedSelects->tableAttrGeo[$attrGeo->alias] = $attrGeo;
-				
 				$attrGisProjectionId = new SelectAttribute($alias, 'id');
 				$attrGisProjectionGeom = new SelectAttribute($alias, 'geom', $attrGeo->alias);
-				$processedSelects->gisSelect[] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom));
+				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom));
+				$processedSelects->tableAttrGeo[$attrAlias] = array($geoAttrAssoc);
 				
 			} else {
-				return new SelectAttribute($alias, $selectItem->getAttrName(), $selectItem->getSelectItemAlias()); 
+				$processedSelects->mainSelect->add($selectItem); 
 			}
 			
 		} else if ($selectItem instanceof SelectAggregation) {
 			
-			return new SelectAggregation($selectItem->getName(), 
-				$this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem->getParam(), $tableAttrGeo), 
-				$selectItem->getSelectItemAlias());
+			if ($selectItem->getParam() instanceof GISFunction) { // Mismo caso que cuando es GISFunction, se ejecuta todo en GISDB
+				
+				$gisFunction = $selectItem->getParam();
+				$gisFunctionAlias = $selectItem->getSelectItemAlias();
+				if ($gisFunctionAlias == null) {
+					$gisFunctionAlias = 'function' . $processedSelects->functionCount++;
+				}
+				$processedSelects->tableAttrGeo[$gisFunctionAlias] = array();
+				
+				$newGisFunctionParams = array();
+				
+				foreach ($gisFunction->getParams() as $param) {
+					if ($param instanceof SelectAttribute) {
+						
+						$alias = $param->getAlias();
+						$attrName = $param->getAttrName();
+						
+						$geoAttrAssoc = DatabaseNormalization::simpleAssoc($attrName);
+						$attrMainProjection = new SelectAttribute($alias, $geoAttrAssoc);
+		
+						$processedSelects->mainSelect->add($attrMainProjection);
+						$processedSelects->tableAttrGeo[$gisFunctionAlias][] = $geoAttrAssoc;
+						$newGisFunctionParams[] = new SelectAttribute($alias, 'geom'); // No interesa que tenga alias de selectItem
+						
+					} else { // SelectValue
+						$newGisFunctionParams[] = $param;
+					}
+				}
+				
+				$processedSelects->gisSelect[$gisFunctionAlias] = new GISFunction($gisFunction->getType(), $newGisFunctionParams, $gisFunctionAlias);
+				
+			} else {
+				$processedSelects->mainSelect->add($selectItem); 
+			}
 				
 		} else if ($selectItem instanceof SelectValue) {
-			return new SelectValue($selectItem->getValue(), $selectItem->getSelectItemAlias());
+			$processedSelects->mainSelect->add($selectItem); 
 			
 		} else if ($selectItem instanceof GISFunction) {
 			//TODO_GIS, esto generaría cosas del estilo Area(ubicacio_id), estas funciones debe de ir contra la otra base
@@ -150,7 +174,8 @@ class GISQueryProcessor {
 class ProcessedSelects {
 	public $mainSelect;
 	public $gisSelect;
-	public $tableAttrGeo;
+	public $tableAttrGeo; // Por cada main select, guardo un array con todos los attrName_id que se usa xa hacer
+	public $functionCount = 0;  
 	
 	public function __construct() {
 		$this->mainSelect = new Select();
