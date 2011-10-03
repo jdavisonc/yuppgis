@@ -90,19 +90,47 @@
 								maxExtent: new OpenLayers.Bounds(-180, -90, 180, 90),
 						};
 						map = new OpenLayers.Map("map_" + id, options);
+						var wms = new OpenLayers.Layer.WMS("WMS",
+				                "http://localhost/cgi-bin/mapserv?",
+				                {
+				                    map: '/home/yuppgis/workspace/YuppGis/yuppgis/yuppgis.map',
+				                    layers: 'departamento,manzanas',
+				                    format: 'aggpng24',
+				                    transparent: 'on'
+				                },
+				                {
+				                	minResolution: "auto",
+									minExtent: new OpenLayers.Bounds(-1, -1, 1, 1),
+									maxResolution: "auto",
+									
+									 maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
+					                    scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
+					                         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
+				                    units: 'm',
+				                    projection: "EPSG:32721",
+				                    gutter: 0,
+				                    ratio: 1/*,
+				                    wrapDateLine: true,
+				                    isBaselayer: true,
+				                    singleTile: true,
+				                    transitionEffect: 'resize',
+				                    queryVisible: true
+									*/
+				                });
 
-						map.addLayer(google);
+						if(mapOptions.type == 'google'){
+							map.addLayer(google);
+						}else{
+							map.addLayer(wms);
+						}						
+						
 						map.zoomToMaxExtent();
 
 						var click = new OpenLayers.Control.Click();
 						map.addControl(click);
 						click.activate();
 
-						var wms = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://labs.metacarta.com/wms/vmap0?", {
-							layers: "basic"
-						});
-
-						map.addLayer(wms);
+						
 						var vector = [];
 						$.each(data, function (i, item) {
 							var layerurl = "/yuppgis/prototipo/Home/mapLayer?layerId=" + item.id;
@@ -113,7 +141,7 @@
 									format: new OpenLayers.Format.KML({
 										extractStyles: true,
 										extractAttributes: true,
-										maxDepth: 2
+										maxDepth: 5
 									})
 								}),
 								rendererOptions: {

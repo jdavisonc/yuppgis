@@ -1,0 +1,81 @@
+MAP
+    NAME "sample"
+    STATUS ON
+    SIZE 200 200
+    EXTENT 323000 6000000 664000 6624430
+    UNITS METERS
+        
+                
+    #
+    # Start of web interface definition
+    #
+    WEB
+      
+                IMAGEPATH "/home/yuppgis/workspace/YuppGis/yuppgis"
+                IMAGEURL "/home/yuppgis/workspace/YuppGis/yuppgis"
+                METADATA
+                        "wms_title"     "Test"
+                        "wms_feature_info_mime_type" "text/xml"
+                        "wms_onlineresource"  "http://localhost/cgi-bin/mapserv?"
+                        "wms_srs"       "EPSG:32721"
+                END                 
+                HEADER "/home/yuppgis/workspace/YuppGis/yuppgis/template.header.html"
+                FOOTER "/home/yuppgis/workspace/YuppGis/yuppgis/template.footer.html"
+    END  # Web
+    
+    PROJECTION
+            "init=epsg:32721"
+    END
+
+    #
+    # Start of layer definitions
+    #
+   LAYER
+        DEBUG 5 
+    CONNECTIONTYPE POSTGIS
+    NAME "departamento"
+    CONNECTION "user=yuppgis password=yuppgis dbname=gis host=localhost port=5432" 
+    DATA "the_geom from departamento using unique gid"
+    STATUS ON
+    TYPE POLYGON 
+    METADATA
+      "wms_title"    "departamento"   ##required
+      "gml_include_items"   "all"
+      "wms_include_items"   "all"
+    END
+    PROJECTION
+      "init=epsg:32721"   ##recommended
+    END 
+    CLASS
+      SIZE 3
+      COLOR 61 103 122
+    END 
+    DUMP TRUE
+    TEMPLATE "/home/yuppgis/workspace/YuppGis/yuppgis/template.departamentos.html"
+   END
+   
+   LAYER
+    
+    NAME "manzanas"
+    METADATA
+      "wms_title"    "manzanas"   ##required
+      "gml_include_items"   "all"
+      "wms_include_items"   "all"
+    END
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=yuppgis password=yuppgis dbname=gis host=localhost port=5432" 
+    DATA "the_geom from manzanas using unique gid"
+    STATUS ON
+    TYPE LINE 
+    PROJECTION
+      "init=epsg:32721"   ##recommended
+    END 
+    CLASS
+      SIZE 3
+      COLOR 112 11 0 
+    END
+    DUMP TRUE
+    TEMPLATE "/home/yuppgis/workspace/YuppGis/yuppgis/template.manzanas.html"
+   END
+
+END
