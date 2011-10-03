@@ -95,27 +95,23 @@
 				                {
 				                    map: '/home/yuppgis/workspace/YuppGis/yuppgis/yuppgis.map',
 				                    layers: 'departamento,manzanas',
-				                    format: 'aggpng24',
-				                    transparent: 'on'
+				                    format: 'aggpng24'
 				                },
 				                {
-				                	minResolution: "auto",
-									minExtent: new OpenLayers.Bounds(-1, -1, 1, 1),
-									maxResolution: "auto",
-									
-									 maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
-					                    scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
+				                	
+									maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
+					                scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
 					                         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
 				                    units: 'm',
 				                    projection: "EPSG:32721",
 				                    gutter: 0,
-				                    ratio: 1/*,
+				                    ratio: 1,
 				                    wrapDateLine: true,
-				                    isBaselayer: true,
+				                    isBaselayer: false,
 				                    singleTile: true,
 				                    transitionEffect: 'resize',
 				                    queryVisible: true
-									*/
+
 				                });
 
 						if(mapOptions.type == 'google'){
@@ -141,7 +137,7 @@
 									format: new OpenLayers.Format.KML({
 										extractStyles: true,
 										extractAttributes: true,
-										maxDepth: 5
+										maxDepth: 2
 									})
 								}),
 								rendererOptions: {
