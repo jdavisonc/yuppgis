@@ -6,7 +6,8 @@
 	<?php echo GISHelpers::Map(array(
 		MapParams::ID => 1,
 		MapParams::CLICK_HANDLERS => array('customClickHandler', 'customClickHandler2'),
-		MapParams::SELECT_HANDLERS => array('customSelectHandler')
+		MapParams::SELECT_HANDLERS => array('customSelectHandler'),
+		MapParams::TYPE => "fruta"
 		
 	)); ?>
 </fieldset>

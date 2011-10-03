@@ -46,15 +46,17 @@ foreach ($layers as $layer){
 	$layer->delete();
 }
 
+$tags = Tag::listAll($params);
+foreach ($tags as $tag){
+	$tag->delete();
+}
+
 $pacientes = Paciente::listAll($params);
 foreach ($pacientes as $paciente){
 	$paciente->delete();
 }
 
-$tags = Tag::listAll($params);
-foreach ($tags as $tag){
-	$tag->delete();
-}
+
 
 /**/
 

@@ -120,7 +120,7 @@ class GISHelpers{
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);	
-		
+		$type = MapParams::getValueOrDefault($params, MapParams::TYPE);
 		$clickhandlers = MapParams::getValueOrDefault($params, MapParams::CLICK_HANDLERS);
 		$selecthandlers = MapParams::getValueOrDefault($params, MapParams::SELECT_HANDLERS);
 
@@ -149,7 +149,7 @@ class GISHelpers{
 		
 		<script type="text/javascript">
 		
-			$("#map_'.$id.'").YuppGISMap({id: '.$id.'})
+			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'"})
 		';			
 		
 		foreach ($clickhandlers as $clickhandler){
