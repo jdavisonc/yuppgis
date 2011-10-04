@@ -14,7 +14,7 @@ class GISQueryProcessor {
 		$mainResult = self::executeSimpleQuery($query, $processedSelects->mainSelect);
 		
 		//3. Se arman las GISQuery con los res de 1 y 2 
-		$gisQueries = self::createGISQuerys($query->getFrom(), $processedSelects->gisSelect, $mainResult);
+		$gisQueries = self::createGISQuerys($query->getFrom(), $processedSelects->gisSelect, $mainResult, $processedSelects->tableAttrGeo);
 		
 		//4. 
 		$gisResults = self::executeGISQuerys($gisQueries);
@@ -143,8 +143,17 @@ class GISQueryProcessor {
 	/**
 	 * Se encarga de ejececutar la query sobre la base de datos no geografica
 	 */
-	private static function executeSimpleQuery() {
-		//TODO_GIS
+	private static function executeSimpleQuery($mainQuery, $mainSelect) {
+
+		$newFrom = self::GISFromToFrom($q->getFrom());
+		$newCondition = self::GISConditionToCondition($q->getFrom(), $q->getWhere());
+		
+		$newQuery = new Query();
+		$newQuery->setSelect($mainSelect);
+		$newQuery->setFrom($newFrom);
+		$newQuery->setCondition($newCondition);
+		
+		return $this->dal->query($newQuery);
 	}
 	
 	/**
@@ -157,8 +166,57 @@ class GISQueryProcessor {
 	/**
 	 * Se encarga de ejececutar las querys sobre la base de datos geografica
 	 */
-	private static function createGISQuerys() {
-		//TODO_GIS
+	private static function createGISQuerys($mainFrom, $gisSelects, $mainResult, $tableAttrGeo) {
+		
+		foreach ($gisSelects as $aliasSelect => $gisSelect) {
+			$newGisQuery = new Query();
+			$alias = array();
+			foreach ($gisSelect->getAll() as $gisProjection) {
+				// se arma from para ir contra la base geo
+				$from = self::getFrom($mainFrom, $gisProjection->getAlias());
+				if (!array_key_exists($from->alias, $newGisQuerygetFrom())) {
+					$newGisQuery->addFrom($from->name, $from->alias);
+				}
+			}
+			
+			$orConditions = Condition::_OR(); 
+			foreach ($mainResult as $row) {
+				foreach ($gisSelect->getAll() as $gisProjection) {
+					if ($gisProjection instanceof  SelectAttribute) {
+						$ref = $tableAttrGeo[$aliasSelect][0]; // stdClass
+						$condition = Condition::EEQ($ref->alias, 'id', $row[$ref->name]);
+						$orConditions->add($condition);
+					} else {
+						//GIS Function
+						$andConditions = Condition::_AND();
+						for ($i = 0; $i < count($tableAttrGeo[$aliasSelect]); $i++) {
+							$ref = $tableAttrGeo[$aliasSelect][$i];
+							$condition = Condition::EEQ($ref->alias, 'id', $row[$ref->name]);
+							$andConditions->add($condition);
+						}
+						
+						if (count($andConditions->getSubconditions()) == 1) {
+							// si la funcion recibe un solo parametro, no tiene sentido el and
+							$orConditions->add($condition);
+						} else {
+							$orConditions->add($andCondition);
+						}
+					}
+				}
+			}
+			
+			if (count($orConditions->getSubconditions()) == 1) {
+				// si el resultado era uno, no es un OR
+				$condition = $orConditions->getSubconditions();
+				$newGisQuery->setCondition($condition[0]);
+			} else {
+				$newGisQuery->setCondition($orConditions);
+			}
+			
+			$gisQuerys[] = $newGisQuery;
+		}
+		
+		return $gisQuerys; 
 	}
 	
 	/**
@@ -187,6 +245,141 @@ class GISQueryProcessor {
 			$geoAttrsOfFroms[$from->alias] = $ins->hasGeometryAttributes();
 		}
 		return $geoAttrsOfFroms;
+	}
+	
+	private static function GISFromToFrom(array $gisFroms) {
+		$from = array();
+		foreach ($gisFroms as $gisFrom) {
+			$f = new stdClass();
+			$f->alias = $gisFrom->alias;
+			$f->name = YuppConventions::tableName($gisFrom->instance_or_class);
+			$from[] = $f;
+		}
+	return $from;
+	}
+	
+	
+	private static function GISConditionToCondition(array $froms, Condition $condition) {
+		
+		if ( $condition instanceof GISCondition) {
+			
+			$attr = $condition->getAttribute();
+			
+			$fromSelect = self::getFrom($froms, $attr->alias);
+			
+			// Es gis condition, tener cuidado que puede tener subcondiciones comunes
+			$tableName = YuppConventions::tableName($fromSelect->instance_or_class);
+			$gisTableName = YuppGISConventions::gisTableName($tableName, $attr->attr);
+			
+			$gisCondition = new GISCondition();
+			$gisCondition->setType($condition->getType());
+			$gisCondition->setAttribute($fromSelect->alias, 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
+			
+			$query = new Query();
+			$query->addFrom($gisTableName, $fromSelect->alias);
+			$query->addProjection($fromSelect->alias, 'id', 'id');
+			
+			if ($condition->getReferenceAttribute() !== null) {
+				$attr2 = $condition->getReferenceAttribute();
+				$fromSelect2 = self::getFrom($froms, $attr2->alias);
+				
+				$tableName2 = YuppConventions::tableName($fromSelect2->instance_or_class);
+				$gisTableName2 = YuppGISConventions::gisTableName($tableName2, $attr2->attr);
+				$query->addFrom($gisTableName2, $fromSelect2->alias);
+				$query->addProjection($fromSelect2->alias, 'id', 'id2');
+				
+				$gisCondition->setReferenceAttribute($fromSelect2->alias, 'geom');
+				
+			} else {
+				$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
+				$gisCondition->setReferenceValue($attrGeo);
+			}
+			$query->setCondition($gisCondition);
+			
+			$query_res = $this->dal->gis_query($query);
+			
+			$res = self::createValuesStringFromKeyOnQuery($query_res, 'id');
+			$res2 = null;
+			if ($condition->getReferenceAttribute() !== null) {
+				$res2 = self::createValuesStringFromKeyOnQuery($query_res, 'id2');
+			}
+			
+			if ($res2 == null) {
+				$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
+				if ($res !== '') {
+					return Condition::IN($attr->alias, $attr_id, $res);
+				} else {
+					return Condition::IN($attr->alias, $attr_id, null);
+				}
+			} else {
+				$newCondition = new Condition();
+				$newCondition->setType(Condition::TYPE_AND);
+				
+				$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
+				if ($res !== '') {
+					$newCondition->add(Condition::IN($attr->alias, $attr_id, $res));
+				} else {
+					$newCondition->add(Condition::IN($attr->alias, $attr_id, null));
+				}
+				$attr_id2 = DatabaseNormalization::simpleAssoc($attr2->attr); // Se normaliza el nombre para obtener el nombre de la columna
+				if ($res2 !== '') {
+					$newCondition->add(Condition::IN($attr2->alias, $attr_id2, $res2));
+				} else {
+					$newCondition->add(Condition::IN($attr2->alias, $attr_id2, null));
+				}
+				return $newCondition;
+			}
+			
+			
+		} else {
+			if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR || 
+					$condition->getType() == Condition::TYPE_NOT ) {
+				$newCondition = new Condition();
+				$newCondition->setType($condition->getType());
+				$subconditions = $condition->getSubconditions();
+				for ($i = 0; $i < count($subconditions); $i++) {
+					$newCondition->add($this->GISConditionToCondition( $froms, $subconditions[$i] ));
+				}
+				return $newCondition;
+			} else {
+				return $condition;
+			}
+		}
+		
+	}
+	
+	/**
+	 * Retorna el objeto From dado un alias en un array de From
+	 * @param $from
+	 * @param $alias
+	 */
+	private static function getFrom(array $from, $alias) {
+		$i = 0;
+		$finded = null;
+		while ($i < count($from) && $finded == null) {
+			if ($from[$i]->alias == $alias) {
+				$finded = $from[$i];
+			}
+			$i++;
+		}
+		if ($finded == null) {
+			throw new Exception("Alias en From no encontrado");
+		}
+		return $finded;
+	}
+	
+	/**
+	 * TODO_GIS
+	 * Funcion que obtiene la $key del resultado de la DB y los retorna en una lista string (SIN REPETIDOS)
+	 * @param $query_res
+	 * @param $key
+	 */
+	private static function createValuesStringFromKeyOnQuery($query_res, $key) {
+		$res = array ();
+		foreach ($query_res as $value ) {
+			$res[] = $value[$key];
+		}
+		return implode(',', array_unique($res, SORT_REGULAR));
 	}
 	
 }
