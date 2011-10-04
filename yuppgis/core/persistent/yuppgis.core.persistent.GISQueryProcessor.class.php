@@ -59,7 +59,7 @@ class GISQueryProcessor {
 				$attrGisProjectionId = new SelectAttribute($alias, 'id');
 				$attrGisProjectionGeom = new SelectAttribute($alias, 'geom', $attrGeo->alias);
 				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom));
-				$processedSelects->tableAttrGeo[$attrAlias] = array($geoAttrAssoc);
+				$processedSelects->tableAttrGeo[$attrAlias] = array( new Reference($geoAttrAssoc, $alias) );
 				
 			} else {
 				$processedSelects->mainSelect->add($selectItem); 
@@ -69,12 +69,9 @@ class GISQueryProcessor {
 			
 			if ($selectItem->getParam() instanceof GISFunction) { // Mismo caso que cuando es GISFunction, se ejecuta todo en GISDB
 				
+				$aggregationName = $selectItem->getName();
 				$gisFunction = $selectItem->getParam();
-				$gisFunctionAlias = $selectItem->getSelectItemAlias();
-				if ($gisFunctionAlias == null) {
-					$gisFunctionAlias = 'function' . $processedSelects->functionCount++;
-				}
-				$processedSelects->tableAttrGeo[$gisFunctionAlias] = array();
+				$processedSelects->tableAttrGeo[$aggregationName] = array();
 				
 				$newGisFunctionParams = array();
 				
@@ -88,7 +85,7 @@ class GISQueryProcessor {
 						$attrMainProjection = new SelectAttribute($alias, $geoAttrAssoc);
 		
 						$processedSelects->mainSelect->add($attrMainProjection);
-						$processedSelects->tableAttrGeo[$gisFunctionAlias][] = $geoAttrAssoc;
+						$processedSelects->tableAttrGeo[$aggregationName][] = new Reference($geoAttrAssoc, $alias);
 						$newGisFunctionParams[] = new SelectAttribute($alias, 'geom'); // No interesa que tenga alias de selectItem
 						
 					} else { // SelectValue
@@ -96,7 +93,8 @@ class GISQueryProcessor {
 					}
 				}
 				
-				$processedSelects->gisSelect[$gisFunctionAlias] = new GISFunction($gisFunction->getType(), $newGisFunctionParams, $gisFunctionAlias);
+				$newGisFunction = new GISFunction($gisFunction->getType(), $newGisFunctionParams);
+				$processedSelects->gisSelect[$aggregationName] = new SelectAggregation($selectItem->getName(), $newGisFunction);
 				
 			} else {
 				$processedSelects->mainSelect->add($selectItem); 
@@ -106,12 +104,36 @@ class GISQueryProcessor {
 			$processedSelects->mainSelect->add($selectItem); 
 			
 		} else if ($selectItem instanceof GISFunction) {
-			//TODO_GIS, esto generaría cosas del estilo Area(ubicacio_id), estas funciones debe de ir contra la otra base
-			$params = array();
-			foreach ($selectItem->getParams() as $param) {
-				$params[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $param, $tableAttrGeo);
+			
+			// TODO_GIS: Refactor de codigo de cuando es Aggregation (linea 72)
+			$gisFunction = $selectItem;
+			$gisFunctionAlias = $selectItem->getSelectItemAlias();
+			if ($gisFunctionAlias == null) {
+				$gisFunctionAlias = 'function' . $processedSelects->functionCount++;
 			}
-			return new GISFunction($selectItem->getType(), $params, $selectItem->getSelectItemAlias());
+			$processedSelects->tableAttrGeo[$gisFunctionAlias] = array();
+			
+			$newGisFunctionParams = array();
+			
+			foreach ($gisFunction->getParams() as $param) {
+				if ($param instanceof SelectAttribute) {
+					
+					$alias = $param->getAlias();
+					$attrName = $param->getAttrName();
+					
+					$geoAttrAssoc = DatabaseNormalization::simpleAssoc($attrName);
+					$attrMainProjection = new SelectAttribute($alias, $geoAttrAssoc);
+	
+					$processedSelects->mainSelect->add($attrMainProjection);
+					$processedSelects->tableAttrGeo[$gisFunctionAlias][] = new Reference($geoAttrAssoc, $alias);
+					$newGisFunctionParams[] = new SelectAttribute($alias, 'geom'); // No interesa que tenga alias de selectItem
+					
+				} else { // SelectValue
+					$newGisFunctionParams[] = $param;
+				}
+			}
+			
+			$processedSelects->gisSelect[$gisFunctionAlias] = new GISFunction($gisFunction->getType(), $newGisFunctionParams, $gisFunctionAlias);
 			
 		} else {
 			throw new Exception("No implementado");
@@ -184,5 +206,14 @@ class ProcessedSelects {
 	}
 }
 
+class Reference {
+	public $name; // Nombre del atributo referenciado. Ejemplo: ubicacion_id
+	public $alias; // Nombre de la tabla/objeto al que hace referencia
+	
+	public function __construct($name, $alias) {
+		$this->name = $name;
+		$this->alias = $alias;
+	}
+}
 
 ?>
