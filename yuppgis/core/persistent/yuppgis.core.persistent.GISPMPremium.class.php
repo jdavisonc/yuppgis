@@ -8,9 +8,13 @@ YuppLoader :: load('yuppgis.core.db.criteria2', 'GISQuery');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'GISCondition');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'GISFunction');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'SelectValue');
+
+YuppLoader :: load('yuppgis.core.persistent', 'GISQueryProcessor');
 YuppLoader :: load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
 class GISPMPremium  extends PersistentManager implements GISPersistentManager {
+	
+	private $gisQueryProcessor = null;
 
 	// TODO_GIS: Ver de tema de configuracion cuando es un Basico, no crear un GISDAL o bien crear dos
 	// 			 dos persistentmanager, GISPersistentManagerSimple y GISPersistentManagerPremium, uno para
@@ -127,265 +131,44 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	}
 	
 	/**
-	 * Si es una GISQuery, la descomponemos y creamos una Query soportada por Yupp.
+	 * Retorna instancia de procesador de consultas geograficas
+	 * @return GISQueryProcessor
+	 */
+	private function getGISQueryProcessor() {
+		if ($this->gisQueryProcessor == null) {
+			$this->gisQueryProcessor = new GISQueryProcessor($this->dal);
+		}
+		return $this->gisQueryProcessor;
+	}
+	
+	/**
+	 * Ejecuta una consulta, si es una consulta geografica se procesa con un GISQueryProcessor
 	 * @see PersistentManager::findByQuery()
 	 */
 	public function findByQuery(Query $q) {
-		// TODO_GIS
 		if ($q instanceof GISQuery) {
-
-			$geoAttrsOfFroms = self::getGeometryAttrs($q->getFrom());
-			
-			// Contiene informacion de un atributo geografico en el select (alias, nombre de columna, nombre de atributo, nombre de objeto)
-			$tableAttrGeo = array();
-			
-			// Creamos los select, from y condition para ejecutar en la DB (no geo)
-			$newSelect = $this->GISSelectToSelect($geoAttrsOfFroms, $q->getSelect(), $tableAttrGeo); //TODO_GIS: llenado de tablaAttrGeo
-			$newFrom = $this->GISFromToFrom($q->getFrom());
-			$newCondition = $this->GISConditionToCondition($q->getFrom(), $q->getWhere());
-			
-			// Se crea query para ir contra DB (no geo)
-			$newQuery = new Query();
-			$newQuery->setSelect($newSelect);
-			$newQuery->setFrom($newFrom);
-			$newQuery->setCondition($newCondition);
-			
-			$result = $this->dal->query($newQuery);
-			
-			// TODO_GIS: Crear nuevo res
-			// Se va a buscar los objetos geograficos			
-			$geoRes;
-			
-			// Recorremos los resultados orignales y se mergean con los objetos geo
-			$newResult = array();
-			foreach ($result as $row) {
-				foreach (array_keys($row) as $column) {
-					$attrGeo = $tableAttrGeo[$column];
-					if ($attrGeo != null) {
-						$newResult[$attrGeo->attr] = $geoRes[$column][$result[$column]]; 
-					} else {
-						$newResult[$columna] = $result[column];
-					}
-				}
-			}
-			
-			return $newResult;
+			$this->getGISQueryProcessor()->process($q);
 		} else {
 			return parent::findByQuery($q);
 		}
 	}
-	
+	/**
+	 * Busca elementos $instance segun una condicion
+	 * @see PersistentManager::findBy()
+	 */
 	public function findBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
-		$newCondition = $this->findGISBy($instance, $condition, $params);
+		$newCondition = $this->processCondition($instance, $condition, $params);
 		return parent::findBy($instance, $newCondition, $params);
 	}
-	
-	/**
-	 * Retorna un array con los atributos geograficos de tablas en un From
-	 * @param array $from
-	 */
-	private static function getGeometryAttrs(array $from) {
-		$geoAttrsOfFroms = array();
-		foreach ($froms as $from) {
-			// TODO_GIS ver de mejorar el caso de que se realize From de las mismas tablas y no se realize
-			// dos veces la busqueda
-			$ins = $from->instance_or_class;
-			if ( !is_object($ins) ) {
-				$ins = new $instance_or_class(array(), true);
-			}
-			$geoAttrsOfFroms[$from->alias] = $ins->hasGeometryAttributes();
-		}
-		return $geoAttrsOfFroms;
-	}
-	
-	private function GISProjectionToProjection($geoAttrsOfFroms, $selectItem, $tableAttrGeo) {
-		if ($selectItem instanceof SelectAttribute) {
-			$alias = $selectItem->getAlias();
-			
-			if (in_array($selectItem->getAttrName(), $geoAttrsOfFroms[$alias])) {
 
-				$geoAttrAssoc = DatabaseNormalization::simpleAssoc($selectItem->getAttrName());
-				$attrRes = new SelectAttribute($alias, $geoAttrAssoc, $selectItem->getSelectItemAlias()); 				
-				
-				$attrGeo = new stdClass();
-				$attrGeo->alias = $attrRes->getSelectItemAlias();
-				$attrGeo->attrGeo = $geoAttrAssoc;
-				$attrGeo->object = $alias;
-				$attrGeo->attr = $selectItem->getAttrName();
-				$tableAttrGeo[$attrGeo->alias] = $attrGeo;
-				
-				return $attrRes; 
-			
-			} else {
-				return new SelectAttribute($alias, $selectItem->getAttrName(), $selectItem->getSelectItemAlias()); 
-			}
-			
-		} else if ($selectItem instanceof SelectAggregation) {
-			
-			return new SelectAggregation($selectItem->getName(), 
-				$this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem->getParam(), $tableAttrGeo), 
-				$selectItem->getSelectItemAlias());
-				
-		} else if ($selectItem instanceof SelectValue) {
-			return new SelectValue($selectItem->getValue(), $selectItem->getSelectItemAlias());
-			
-		} else if ($selectItem instanceof GISFunction) {
-			//TODO_GIS, esto generaría cosas del estilo Area(ubicacio_id), estas funciones debe de ir contra la otra base
-			$params = array();
-			foreach ($selectItem->getParams() as $param) {
-				$params[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $param, $tableAttrGeo);
-			}
-			return new GISFunction($selectItem->getType(), $params, $selectItem->getSelectItemAlias());
-			
-		} else {
-			throw new Exception("No implementado");
-		}
-	}
-	
-	private function GISFromToFrom(array $gisFroms) {
-		$from = array();
-		foreach ($gisFroms as $gisFrom) {
-			$f = new stdClass();
-			$f->alias = $gisFrom->alias;
-			$f->name = YuppConventions::tableName($gisFrom->instance_or_class);
-			$from[] = $f;
-		}
-		return $from;
-	}
-	
-	private function GISSelectToSelect(array $geoAttrsOfFroms, $gisSelect, $tableAttrGeo) {
-		
-		$projections = array();
-		foreach ($gisSelect->getAll() as $selectItem) {
-			$projections[] = $this->GISProjectionToProjection($geoAttrsOfFroms, $selectItem, $tableAttrGeo);
-		}
-		return new Select($projections);
-	}
-	
-	private function GISConditionToCondition(array $froms, Condition $condition) {
-		
-		if ( $condition instanceof GISCondition) {
-			
-			$attr = $condition->getAttribute();
-			
-			$fromSelect = self::getFrom($froms, $attr->alias);
-			
-			// Es gis condition, tener cuidado que puede tener subcondiciones comunes
-			$tableName = YuppConventions::tableName($fromSelect->instance_or_class);
-			$gisTableName = YuppGISConventions::gisTableName($tableName, $attr->attr);
-			
-			$gisCondition = new GISCondition();
-			$gisCondition->setType($condition->getType());
-			$gisCondition->setAttribute($fromSelect->alias, 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
-			
-			$query = new Query();
-			$query->addFrom($gisTableName, $fromSelect->alias);
-			$query->addProjection($fromSelect->alias, 'id', 'id');
-			
-			if ($condition->getReferenceAttribute() !== null) {
-				$attr2 = $condition->getReferenceAttribute();
-				$fromSelect2 = self::getFrom($froms, $attr2->alias);
-				
-				$tableName2 = YuppConventions::tableName($fromSelect2->instance_or_class);
-				$gisTableName2 = YuppGISConventions::gisTableName($tableName2, $attr2->attr);
-				$query->addFrom($gisTableName2, $fromSelect2->alias);
-				$query->addProjection($fromSelect2->alias, 'id', 'id2');
-				
-				$gisCondition->setReferenceAttribute($fromSelect2->alias, 'geom');
-				
-			} else {
-				$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
-				$gisCondition->setReferenceValue($attrGeo);
-			}
-			$query->setCondition($gisCondition);
-			
-			$query_res = $this->dal->gis_query($query);
-			
-			$res = self::createValuesStringFromKeyOnQuery($query_res, 'id');
-			$res2 = null;
-			if ($condition->getReferenceAttribute() !== null) {
-				$res2 = self::createValuesStringFromKeyOnQuery($query_res, 'id2');
-			}
-			
-			if ($res2 == null) {
-				$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
-				if ($res !== '') {
-					return Condition::IN($attr->alias, $attr_id, $res);
-				} else {
-					return Condition::IN($attr->alias, $attr_id, null);
-				}
-			} else {
-				$newCondition = new Condition();
-				$newCondition->setType(Condition::TYPE_AND);
-				
-				$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
-				if ($res !== '') {
-					$newCondition->add(Condition::IN($attr->alias, $attr_id, $res));
-				} else {
-					$newCondition->add(Condition::IN($attr->alias, $attr_id, null));
-				}
-				$attr_id2 = DatabaseNormalization::simpleAssoc($attr2->attr); // Se normaliza el nombre para obtener el nombre de la columna
-				if ($res2 !== '') {
-					$newCondition->add(Condition::IN($attr2->alias, $attr_id2, $res2));
-				} else {
-					$newCondition->add(Condition::IN($attr2->alias, $attr_id2, null));
-				}
-				return $newCondition;
-			}
-			
-			
-		} else {
-			if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR || 
-					$condition->getType() == Condition::TYPE_NOT ) {
-				$newCondition = new Condition();
-				$newCondition->setType($condition->getType());
-				$subconditions = $condition->getSubconditions();
-				for ($i = 0; $i < count($subconditions); $i++) {
-					$newCondition->add($this->GISConditionToCondition( $froms, $subconditions[$i] ));
-				}
-				return $newCondition;
-			} else {
-				return $condition;
-			}
-		}
-		
-	}
-	
 	/**
-	 * TODO_GIS
-	 * Funcion que obtiene la $key del resultado de la DB y los retorna en una lista string (SIN REPETIDOS)
-	 * @param $query_res
-	 * @param $key
+	 * Procesa una condicion pasada en la funcion findBy(), generando una nueva condicion a partir de la evaluacion
+	 * de las condiciones geograficas.
+	 * @param PersistentObject $instance
+	 * @param Condition $condition
+	 * @param ArrayObject $params
 	 */
-	private static function createValuesStringFromKeyOnQuery($query_res, $key) {
-		$res = array ();
-		foreach ($query_res as $value ) {
-			$res[] = $value[$key];
-		}
-		return implode(',', array_unique($res, SORT_REGULAR));
-	}
-	
-	/**
-	 * Retorna el objeto From dado un alias en un array de From
-	 * @param $from
-	 * @param $alias
-	 */
-	private static function getFrom(array $from, $alias) {
-		$i = 0;
-		$finded = null;
-		while ($i < count($from) && $finded == null) {
-			if ($from[$i]->alias == $alias) {
-				$finded = $from[$i];
-			}
-			$i++;
-		}
-		if ($finded == null) {
-			throw new Exception("Alias en From no encontrado");
-		}
-		return $finded;
-	}
-	
-	private function findGISBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
+	private function processCondition( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
 		if ( $condition instanceof GISCondition) {
 			
 			$attr = $condition->getAttribute();
