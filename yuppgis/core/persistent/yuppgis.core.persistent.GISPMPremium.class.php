@@ -219,7 +219,7 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 				$newCondition->setType($condition->getType());
 				$subconditions = $condition->getSubconditions();
 				for ($i = 0; $i < count($subconditions); $i++) {
-					$newCondition->add($this->findGISBy( $instance, $subconditions[$i], $params ));
+					$newCondition->add($this->findBy( $instance, $subconditions[$i], $params ));
 				}
 				return $newCondition;
 			} else {

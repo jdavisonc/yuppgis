@@ -183,8 +183,8 @@ class GISQueryProcessor {
 			foreach ($gisSelect->getAll() as $gisProjection) {
 				// se arma from para ir contra la base geo
 				$from = $this->getFrom($mainFrom, $gisProjection->getAlias());
-				if (!array_key_exists($from->alias, $newGisQuerygetFrom())) {
-					$newGisQuery->addFrom($from->name, $from->alias);
+				if (!array_key_exists($from->alias, $newGisQuery->getFrom())) {
+					$newGisQuery->addFrom($from->instance_or_class, $from->alias);
 				}
 			}
 			
@@ -228,10 +228,14 @@ class GISQueryProcessor {
 		return $gisQuerys; 
 	}
 	
+	
+	private function executeGISQuerys($gisQueries) {
+		//TODO_GIS
+	}
 	/**
 	 * Se arma el resultado
 	 */
-	private function processResults() {
+	private function processResults($mainResult, $gisResults) {
 		//TODO_GIS
 	}
 	
