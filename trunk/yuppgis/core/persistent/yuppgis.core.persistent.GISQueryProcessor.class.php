@@ -2,25 +2,31 @@
 
 class GISQueryProcessor {
 	
-	public function process(Query $query) {
+	private $dal = null;
+	
+	public function __construct(GISDAL $dal) {
+		$this->dal = $dal;
+	}
+	
+	public function process(GISQuery $query) {
 		
 		//0. Obtengo atributos geograficos posibles en la query
-		$geoAttrsOfQuery = self::getGeometryAttrs($query->getFrom());
+		$geoAttrsOfQuery = $this->getGeometryAttrs($query->getFrom());
 		
 		//1. Armamos las dos bolsas de Selects
-		$processedSelects = self::processSelects($query->getSelect(), $geoAttrsOfQuery);
+		$processedSelects = $this->processSelects($query->getSelect(), $geoAttrsOfQuery);
 		
 		//2. Se ejecuta query sobre DB (no Geo)
-		$mainResult = self::executeSimpleQuery($query, $processedSelects->mainSelect);
+		$mainResult = $this->executeSimpleQuery($query, $processedSelects->mainSelect);
 		
 		//3. Se arman las GISQuery con los res de 1 y 2 
-		$gisQueries = self::createGISQuerys($query->getFrom(), $processedSelects->gisSelect, $mainResult, $processedSelects->tableAttrGeo);
+		$gisQueries = $this->createGISQuerys($query->getFrom(), $processedSelects, $mainResult);
 		
 		//4. 
-		$gisResults = self::executeGISQuerys($gisQueries);
+		$gisResults = $this->executeGISQuerys($gisQueries);
 		
 		//5. Se arma resultado final
-		$finalResult = self::processResults($mainResult, $gisResults);
+		$finalResult = $this->processResults($mainResult, $gisResults);
 		
 		return $finalResult;
 	}
@@ -33,17 +39,17 @@ class GISQueryProcessor {
 	 * @param array		atributos geograficos posibles de la consulta
 	 * @return ProcessedSelects		 objeto con select principal y geograficos
 	 */
-	private static function processSelects(Select $select, $geoAttrsOfQuery) {
+	private function processSelects(Select $select, $geoAttrsOfQuery) {
 		$processedSelects = new ProcessedSelects();
 
 		foreach ($select->getAll() as $selectItem) {
-			self::GISProjectionToProjection($geoAttrsOfQuery, $selectItem, $processedSelects);
+			$this->GISProjectionToProjection($geoAttrsOfQuery, $selectItem, $processedSelects);
 		}
 		
 		return $processedSelects;
 	}
 	
-	private static function GISProjectionToProjection($geoAttrsOfQuery, $selectItem, ProcessedSelects $processedSelects) {
+	private function GISProjectionToProjection($geoAttrsOfQuery, $selectItem, ProcessedSelects $processedSelects) {
 		if ($selectItem instanceof SelectAttribute) {
 			$alias = $selectItem->getAlias();
 			$attrAlias = ($selectItem->getSelectItemAlias() == null)? $alias : $selectItem->getSelectItemAlias();
@@ -57,7 +63,7 @@ class GISQueryProcessor {
 				$processedSelects->mainSelect->add($attrMainProjection);
 				
 				$attrGisProjectionId = new SelectAttribute($alias, 'id');
-				$attrGisProjectionGeom = new SelectAttribute($alias, 'geom', $attrGeo->alias);
+				$attrGisProjectionGeom = new SelectAttribute($alias, 'geom', $attrAlias);
 				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom));
 				$processedSelects->tableAttrGeo[$attrAlias] = array( new Reference($geoAttrAssoc, $alias) );
 				
@@ -143,10 +149,10 @@ class GISQueryProcessor {
 	/**
 	 * Se encarga de ejececutar la query sobre la base de datos no geografica
 	 */
-	private static function executeSimpleQuery($mainQuery, $mainSelect) {
+	private function executeSimpleQuery($mainQuery, $mainSelect) {
 
-		$newFrom = self::GISFromToFrom($q->getFrom());
-		$newCondition = self::GISConditionToCondition($q->getFrom(), $q->getWhere());
+		$newFrom = $this->GISFromToFrom($mainQuery->getFrom());
+		$newCondition = $this->GISConditionToCondition($mainQuery->getFrom(), $mainQuery->getWhere());
 		
 		$newQuery = new Query();
 		$newQuery->setSelect($mainSelect);
@@ -159,21 +165,24 @@ class GISQueryProcessor {
 	/**
 	 * Se encarga de armar las gis query
 	 */
-	private static function processGISQuerys() {
+	private function processGISQuerys() {
 		//TODO_GIS
 	}
 	
 	/**
 	 * Se encarga de ejececutar las querys sobre la base de datos geografica
 	 */
-	private static function createGISQuerys($mainFrom, $gisSelects, $mainResult, $tableAttrGeo) {
+	private function createGISQuerys($mainFrom, ProcessedSelects $pocessedSelects, $mainResult) {
+		
+		$gisSelects = $pocessedSelects->gisSelect;
+		$tableAttrGeo = $pocessedSelects->tableAttrGeo;
 		
 		foreach ($gisSelects as $aliasSelect => $gisSelect) {
 			$newGisQuery = new Query();
 			$alias = array();
 			foreach ($gisSelect->getAll() as $gisProjection) {
 				// se arma from para ir contra la base geo
-				$from = self::getFrom($mainFrom, $gisProjection->getAlias());
+				$from = $this->getFrom($mainFrom, $gisProjection->getAlias());
 				if (!array_key_exists($from->alias, $newGisQuerygetFrom())) {
 					$newGisQuery->addFrom($from->name, $from->alias);
 				}
@@ -222,7 +231,7 @@ class GISQueryProcessor {
 	/**
 	 * Se arma el resultado
 	 */
-	private static function processResults() {
+	private function processResults() {
 		//TODO_GIS
 	}
 	
@@ -233,21 +242,21 @@ class GISQueryProcessor {
 	 * Retorna un array con los atributos geograficos de tablas en un From
 	 * @param array $from
 	 */
-	private static function getGeometryAttrs(array $from) {
+	private function getGeometryAttrs(array $froms) {
 		$geoAttrsOfFroms = array();
 		foreach ($froms as $from) {
 			// TODO_GIS ver de mejorar el caso de que se realize From de las mismas tablas y no se realize
 			// dos veces la busqueda
 			$ins = $from->instance_or_class;
 			if ( !is_object($ins) ) {
-				$ins = new $instance_or_class(array(), true);
+				$ins = new $ins(array(), true);
 			}
 			$geoAttrsOfFroms[$from->alias] = $ins->hasGeometryAttributes();
 		}
 		return $geoAttrsOfFroms;
 	}
 	
-	private static function GISFromToFrom(array $gisFroms) {
+	private function GISFromToFrom(array $gisFroms) {
 		$from = array();
 		foreach ($gisFroms as $gisFrom) {
 			$f = new stdClass();
@@ -259,13 +268,13 @@ class GISQueryProcessor {
 	}
 	
 	
-	private static function GISConditionToCondition(array $froms, Condition $condition) {
+	private function GISConditionToCondition(array $froms, Condition $condition) {
 		
 		if ( $condition instanceof GISCondition) {
 			
 			$attr = $condition->getAttribute();
 			
-			$fromSelect = self::getFrom($froms, $attr->alias);
+			$fromSelect = $this->getFrom($froms, $attr->alias);
 			
 			// Es gis condition, tener cuidado que puede tener subcondiciones comunes
 			$tableName = YuppConventions::tableName($fromSelect->instance_or_class);
@@ -281,7 +290,7 @@ class GISQueryProcessor {
 			
 			if ($condition->getReferenceAttribute() !== null) {
 				$attr2 = $condition->getReferenceAttribute();
-				$fromSelect2 = self::getFrom($froms, $attr2->alias);
+				$fromSelect2 = $this->getFrom($froms, $attr2->alias);
 				
 				$tableName2 = YuppConventions::tableName($fromSelect2->instance_or_class);
 				$gisTableName2 = YuppGISConventions::gisTableName($tableName2, $attr2->attr);
@@ -298,10 +307,10 @@ class GISQueryProcessor {
 			
 			$query_res = $this->dal->gis_query($query);
 			
-			$res = self::createValuesStringFromKeyOnQuery($query_res, 'id');
+			$res = $this->createValuesStringFromKeyOnQuery($query_res, 'id');
 			$res2 = null;
 			if ($condition->getReferenceAttribute() !== null) {
-				$res2 = self::createValuesStringFromKeyOnQuery($query_res, 'id2');
+				$res2 = $this->createValuesStringFromKeyOnQuery($query_res, 'id2');
 			}
 			
 			if ($res2 == null) {
@@ -353,7 +362,7 @@ class GISQueryProcessor {
 	 * @param $from
 	 * @param $alias
 	 */
-	private static function getFrom(array $from, $alias) {
+	private function getFrom(array $from, $alias) {
 		$i = 0;
 		$finded = null;
 		while ($i < count($from) && $finded == null) {
@@ -374,7 +383,7 @@ class GISQueryProcessor {
 	 * @param $query_res
 	 * @param $key
 	 */
-	private static function createValuesStringFromKeyOnQuery($query_res, $key) {
+	private function createValuesStringFromKeyOnQuery($query_res, $key) {
 		$res = array ();
 		foreach ($query_res as $value ) {
 			$res[] = $value[$key];
