@@ -147,7 +147,7 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	 */
 	public function findByQuery(Query $q) {
 		if ($q instanceof GISQuery) {
-			$this->getGISQueryProcessor()->process($q);
+			return $this->getGISQueryProcessor()->process($q);
 		} else {
 			return parent::findByQuery($q);
 		}

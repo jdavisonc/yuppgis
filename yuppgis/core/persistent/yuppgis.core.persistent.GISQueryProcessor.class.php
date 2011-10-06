@@ -50,7 +50,9 @@ class GISQueryProcessor {
 	}
 	
 	private function GISProjectionToProjection($geoAttrsOfQuery, $selectItem, ProcessedSelects $processedSelects) {
+		
 		if ($selectItem instanceof SelectAttribute) {
+			
 			$alias = $selectItem->getAlias();
 			$attrAlias = ($selectItem->getSelectItemAlias() == null)? $alias : $selectItem->getSelectItemAlias();
 			$attrName = $selectItem->getAttrName();
@@ -64,6 +66,7 @@ class GISQueryProcessor {
 				
 				$attrGisProjectionId = new SelectAttribute($alias, 'id');
 				$attrGisProjectionGeom = new SelectAttribute($alias, 'geom', $attrAlias);
+				
 				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom));
 				$processedSelects->tableAttrGeo[$attrAlias] = array( new Reference($geoAttrAssoc, $alias) );
 				
@@ -157,17 +160,12 @@ class GISQueryProcessor {
 		$newQuery = new Query();
 		$newQuery->setSelect($mainSelect);
 		$newQuery->setFrom($newFrom);
-		$newQuery->setCondition($newCondition);
+		if ($newCondition != null)
+			$newQuery->setCondition($newCondition);
 		
 		return $this->dal->query($newQuery);
 	}
 	
-	/**
-	 * Se encarga de armar las gis query
-	 */
-	private function processGISQuerys() {
-		//TODO_GIS
-	}
 	
 	/**
 	 * Se encarga de ejececutar las querys sobre la base de datos geografica
@@ -180,17 +178,35 @@ class GISQueryProcessor {
 		foreach ($gisSelects as $aliasSelect => $gisSelect) {
 			$newGisQuery = new Query();
 			$alias = array();
+			
 			foreach ($gisSelect->getAll() as $gisProjection) {
 				// se arma from para ir contra la base geo
 				$from = $this->getFrom($mainFrom, $gisProjection->getAlias());
-				if (!array_key_exists($from->alias, $newGisQuery->getFrom())) {
-					$newGisQuery->addFrom($from->instance_or_class, $from->alias);
+				if (!in_array($from->alias, $alias)) {
+					
+					$alias[] = $from->alias;
+					
+					$ref = $tableAttrGeo[$aliasSelect][0]; // stdClass
+					$tableName = YuppConventions::tableName($from->instance_or_class);
+					$attrName = DatabaseNormalization::getSimpleAssocName($ref->name);
+					$gisTableName = YuppGISConventions::gisTableName($tableName, $attrName);
+					
+					$newGisQuery->setSelect($gisSelect);
+					$newGisQuery->addFrom($gisTableName, $from->alias);
 				}
 			}
 			
 			$orConditions = Condition::_OR(); 
 			foreach ($mainResult as $row) {
+				$alias = array();
 				foreach ($gisSelect->getAll() as $gisProjection) {
+					$from = $this->getFrom($mainFrom, $gisProjection->getAlias());
+					if (in_array($from->alias, $alias)) {
+						continue;
+					}
+					
+					$alias[] = $from->alias;
+					
 					if ($gisProjection instanceof  SelectAttribute) {
 						$ref = $tableAttrGeo[$aliasSelect][0]; // stdClass
 						$condition = Condition::EEQ($ref->alias, 'id', $row[$ref->name]);
@@ -230,13 +246,20 @@ class GISQueryProcessor {
 	
 	
 	private function executeGISQuerys($gisQueries) {
-		//TODO_GIS
+		$gisResult = array();
+		
+		foreach ($gisQueries as $gisQuery) {
+			$gisResult[] = $this->dal->gis_query($gisQuery);
+		}
+		
+		return $gisResult;
 	}
 	/**
-	 * Se arma el resultado
+	 * Se arma el resultado, mergeando el resultado de la base no geo y la base geo
 	 */
 	private function processResults($mainResult, $gisResults) {
 		//TODO_GIS
+		return $mainResult;
 	}
 	
 	
@@ -272,7 +295,7 @@ class GISQueryProcessor {
 	}
 	
 	
-	private function GISConditionToCondition(array $froms, Condition $condition) {
+	private function GISConditionToCondition(array $froms, $condition) {
 		if ($condition !== null) {
 			if ($condition instanceof GISCondition) {
 				
