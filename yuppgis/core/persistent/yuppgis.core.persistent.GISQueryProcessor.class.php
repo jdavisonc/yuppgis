@@ -39,7 +39,7 @@ class GISQueryProcessor {
 	 * @param array		atributos geograficos posibles de la consulta
 	 * @return ProcessedSelects		 objeto con select principal y geograficos
 	 */
-	private function processSelects(Select $select, $geoAttrsOfQuery) {
+	private function processSelects($select, $geoAttrsOfQuery) {
 		$processedSelects = new ProcessedSelects();
 
 		foreach ($select->getAll() as $selectItem) {
@@ -160,8 +160,7 @@ class GISQueryProcessor {
 		$newQuery = new Query();
 		$newQuery->setSelect($mainSelect);
 		$newQuery->setFrom($newFrom);
-		if ($newCondition != null)
-			$newQuery->setCondition($newCondition);
+		$newQuery->setCondition($newCondition);
 		
 		return $this->dal->query($newQuery);
 	}

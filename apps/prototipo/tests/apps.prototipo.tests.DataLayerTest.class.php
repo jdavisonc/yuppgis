@@ -60,6 +60,16 @@ class DataLayerTest extends YuppGISTestCase {
 				
 		$count = count($layer->getElements());		
 		$this->assert($count == 2, 'Test quitar elemento de capa:'.$count);
+		
+		// Borrando
+		$layer->removeElement($p1);
+		$layer->removeElement($p3);
+		
+		$p1->delete();
+		$p2->delete();
+		$p3->delete();
+		
+		$layer->delete();
 	}
 
 	public  function testAddTag(){
@@ -80,6 +90,15 @@ class DataLayerTest extends YuppGISTestCase {
 		
 		$count = count($layer->getTags());		
 		$this->assert($count == 2, 'Test agregar tag a capa:'.$count);
+		
+		// Borrando
+		$layer->removeTag($firstTag);
+		$layer->removeTag($secTag);
+		
+		$firstTag->delete();
+		$secTag->delete();
+		
+		$layer->delete();
 	}
 	
 	public function testRemoveTag(){
@@ -107,6 +126,16 @@ class DataLayerTest extends YuppGISTestCase {
 		
 		$count = count($layer->getTags());		
 		$this->assert($count == 2, 'Test quitar tag a capa:'.$count);
+		
+		// Borrando
+		$layer->removeTag($firstTag);
+		$layer->removeTag($thirdTag);
+		
+		$firstTag->delete();
+		$secTag->delete();
+		$thirdTag->delete();
+		
+		$layer->delete();
 	}
 }
 

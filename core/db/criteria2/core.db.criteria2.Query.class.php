@@ -140,7 +140,7 @@ class Query
    /**
     * Agrega una condicion a la consulta.
     */
-	public function setCondition(Condition $cond)
+	public function setCondition($cond)
 	{
 		$this->where = $cond;
 	}

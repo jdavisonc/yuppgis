@@ -52,6 +52,16 @@ class MapTest extends YuppGISTestCase {
 				
 		$count = count($map->getLayers());		
 		$this->assert($count == 2, 'Test quitar layer de mapa:'.$count);
+		
+		// Borrando
+		$map->removeLayer($layer1);
+		$map->removeLayer($layer3);
+		
+		$layer1->delete();
+		$layer2->delete();
+		$layer3->delete();
+		
+		$map->delete();
 	}
 }
 

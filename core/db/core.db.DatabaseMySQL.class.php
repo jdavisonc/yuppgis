@@ -361,10 +361,10 @@ class DatabaseMySQL {
       }
    }
 
-   public function evaluateWhere( Condition $condition )
+   public function evaluateWhere( $condition )
    {
       $where = "";
-      if ($where !== NULL)
+      if ($condition !== NULL)
       {
          $where = "WHERE " . $this->evaluateAnyCondition( $condition );
       }
