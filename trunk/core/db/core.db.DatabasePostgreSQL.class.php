@@ -502,8 +502,7 @@ class DatabasePostgreSQL {
       }
    }
 
-   //TODO_GIS si se le pasa Condition condition no soporta recibir null
-   public function evaluateWhere(  $condition )
+   public function evaluateWhere( $condition )
    {
       $where = "";
       if ($condition !== NULL)
