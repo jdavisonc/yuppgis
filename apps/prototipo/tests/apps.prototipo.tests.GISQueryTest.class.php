@@ -18,8 +18,8 @@ class GISQueryTest extends YuppGISTestCase {
 	function testSimpleGISQueryWithConditionOneRecord() {
 		$q = new GISQuery();
 		$q->addProjection('p', 'ubicacion', 'ubicacion_de_p');
-		$q->setCondition(GISCondition::_AND()
-			->add(GISCondition::EQ('p', 'nombre', 'Juan'))
+		$q->setCondition(Condition::_AND()
+			->add(Condition::EQ('p', 'nombre', 'Juan'))
 			->add(GISCondition::EQGEO('p', 'ubicacion', new Point(-56.181948, -34.884621)))
 			);
 		$q->addFrom(Paciente::getClassName(), 'p');

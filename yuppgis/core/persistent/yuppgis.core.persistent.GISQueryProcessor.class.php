@@ -273,92 +273,92 @@ class GISQueryProcessor {
 	
 	
 	private function GISConditionToCondition(array $froms, Condition $condition) {
-		
-		if ( $condition instanceof GISCondition) {
-			
-			$attr = $condition->getAttribute();
-			
-			$fromSelect = $this->getFrom($froms, $attr->alias);
-			
-			// Es gis condition, tener cuidado que puede tener subcondiciones comunes
-			$tableName = YuppConventions::tableName($fromSelect->instance_or_class);
-			$gisTableName = YuppGISConventions::gisTableName($tableName, $attr->attr);
-			
-			$gisCondition = new GISCondition();
-			$gisCondition->setType($condition->getType());
-			$gisCondition->setAttribute($fromSelect->alias, 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
-			
-			$query = new Query();
-			$query->addFrom($gisTableName, $fromSelect->alias);
-			$query->addProjection($fromSelect->alias, 'id', 'id');
-			
-			if ($condition->getReferenceAttribute() !== null) {
-				$attr2 = $condition->getReferenceAttribute();
-				$fromSelect2 = $this->getFrom($froms, $attr2->alias);
+		if ($condition !== null) {
+			if ($condition instanceof GISCondition) {
 				
-				$tableName2 = YuppConventions::tableName($fromSelect2->instance_or_class);
-				$gisTableName2 = YuppGISConventions::gisTableName($tableName2, $attr2->attr);
-				$query->addFrom($gisTableName2, $fromSelect2->alias);
-				$query->addProjection($fromSelect2->alias, 'id', 'id2');
+				$attr = $condition->getAttribute();
 				
-				$gisCondition->setReferenceAttribute($fromSelect2->alias, 'geom');
+				$fromSelect = $this->getFrom($froms, $attr->alias);
+				
+				// Es gis condition, tener cuidado que puede tener subcondiciones comunes
+				$tableName = YuppConventions::tableName($fromSelect->instance_or_class);
+				$gisTableName = YuppGISConventions::gisTableName($tableName, $attr->attr);
+				
+				$gisCondition = new GISCondition();
+				$gisCondition->setType($condition->getType());
+				$gisCondition->setAttribute($fromSelect->alias, 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
+				
+				$query = new Query();
+				$query->addFrom($gisTableName, $fromSelect->alias);
+				$query->addProjection($fromSelect->alias, 'id', 'id');
+				
+				if ($condition->getReferenceAttribute() !== null) {
+					$attr2 = $condition->getReferenceAttribute();
+					$fromSelect2 = $this->getFrom($froms, $attr2->alias);
+					
+					$tableName2 = YuppConventions::tableName($fromSelect2->instance_or_class);
+					$gisTableName2 = YuppGISConventions::gisTableName($tableName2, $attr2->attr);
+					$query->addFrom($gisTableName2, $fromSelect2->alias);
+					$query->addProjection($fromSelect2->alias, 'id', 'id2');
+					
+					$gisCondition->setReferenceAttribute($fromSelect2->alias, 'geom');
+					
+				} else {
+					$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
+					$gisCondition->setReferenceValue($attrGeo);
+				}
+				$query->setCondition($gisCondition);
+				
+				$query_res = $this->dal->gis_query($query);
+				
+				$res = $this->createValuesStringFromKeyOnQuery($query_res, 'id');
+				$res2 = null;
+				if ($condition->getReferenceAttribute() !== null) {
+					$res2 = $this->createValuesStringFromKeyOnQuery($query_res, 'id2');
+				}
+				
+				if ($res2 == null) {
+					$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
+					if ($res !== '') {
+						return Condition::IN($attr->alias, $attr_id, $res);
+					} else {
+						return Condition::IN($attr->alias, $attr_id, null);
+					}
+				} else {
+					$newCondition = new Condition();
+					$newCondition->setType(Condition::TYPE_AND);
+					
+					$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
+					if ($res !== '') {
+						$newCondition->add(Condition::IN($attr->alias, $attr_id, $res));
+					} else {
+						$newCondition->add(Condition::IN($attr->alias, $attr_id, null));
+					}
+					$attr_id2 = DatabaseNormalization::simpleAssoc($attr2->attr); // Se normaliza el nombre para obtener el nombre de la columna
+					if ($res2 !== '') {
+						$newCondition->add(Condition::IN($attr2->alias, $attr_id2, $res2));
+					} else {
+						$newCondition->add(Condition::IN($attr2->alias, $attr_id2, null));
+					}
+					return $newCondition;
+				}
+				
 				
 			} else {
-				$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
-				$gisCondition->setReferenceValue($attrGeo);
-			}
-			$query->setCondition($gisCondition);
-			
-			$query_res = $this->dal->gis_query($query);
-			
-			$res = $this->createValuesStringFromKeyOnQuery($query_res, 'id');
-			$res2 = null;
-			if ($condition->getReferenceAttribute() !== null) {
-				$res2 = $this->createValuesStringFromKeyOnQuery($query_res, 'id2');
-			}
-			
-			if ($res2 == null) {
-				$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
-				if ($res !== '') {
-					return Condition::IN($attr->alias, $attr_id, $res);
+				if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR || 
+						$condition->getType() == Condition::TYPE_NOT ) {
+					$newCondition = new Condition();
+					$newCondition->setType($condition->getType());
+					$subconditions = $condition->getSubconditions();
+					for ($i = 0; $i < count($subconditions); $i++) {
+						$newCondition->add($this->GISConditionToCondition( $froms, $subconditions[$i] ));
+					}
+					return $newCondition;
 				} else {
-					return Condition::IN($attr->alias, $attr_id, null);
+					return $condition;
 				}
-			} else {
-				$newCondition = new Condition();
-				$newCondition->setType(Condition::TYPE_AND);
-				
-				$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
-				if ($res !== '') {
-					$newCondition->add(Condition::IN($attr->alias, $attr_id, $res));
-				} else {
-					$newCondition->add(Condition::IN($attr->alias, $attr_id, null));
-				}
-				$attr_id2 = DatabaseNormalization::simpleAssoc($attr2->attr); // Se normaliza el nombre para obtener el nombre de la columna
-				if ($res2 !== '') {
-					$newCondition->add(Condition::IN($attr2->alias, $attr_id2, $res2));
-				} else {
-					$newCondition->add(Condition::IN($attr2->alias, $attr_id2, null));
-				}
-				return $newCondition;
-			}
-			
-			
-		} else {
-			if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR || 
-					$condition->getType() == Condition::TYPE_NOT ) {
-				$newCondition = new Condition();
-				$newCondition->setType($condition->getType());
-				$subconditions = $condition->getSubconditions();
-				for ($i = 0; $i < count($subconditions); $i++) {
-					$newCondition->add($this->GISConditionToCondition( $froms, $subconditions[$i] ));
-				}
-				return $newCondition;
-			} else {
-				return $condition;
 			}
 		}
-		
 	}
 	
 	/**
