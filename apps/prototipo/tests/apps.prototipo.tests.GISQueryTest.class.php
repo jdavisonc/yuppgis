@@ -27,7 +27,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert($result[0]['ubicacion'] !== null, 'Fallo al deserializar un punto en GISQuery');
+		$this->assert($result[0]['ubicacion_de_p'] !== null, 'Fallo al deserializar un punto en GISQuery');
 	}
 	
 	function testGISQuery() {
