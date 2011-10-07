@@ -9,6 +9,9 @@ $app = $m->get('app');
 <html>
    <head>
       <style>
+      body {
+      	font-size: 14px;
+      }
       .ERROR {
          border: 1px solid #cc0000;
          padding: 5px;

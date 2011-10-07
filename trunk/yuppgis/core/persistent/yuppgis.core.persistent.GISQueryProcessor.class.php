@@ -65,9 +65,10 @@ class GISQueryProcessor {
 				$processedSelects->mainSelect->add($attrMainProjection);
 				
 				$attrGisProjectionId = new SelectAttribute($alias, 'id');
-				$attrGisProjectionGeom = new SelectAttribute($alias, 'geom', $attrAlias);
+				$attrGisProjectionGeom = new SelectGISAttribute($alias, 'geom', $attrAlias);
+				$attrGisProjectionUIProperty = new SelectAttribute($alias, 'uiproperty');
 				
-				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom));
+				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom, $attrGisProjectionUIProperty));
 				$processedSelects->tableAttrGeo[$attrAlias] = array( new Reference($geoAttrAssoc, $alias) );
 				
 			} else {

@@ -57,20 +57,43 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 		return "AsText(" . $columnName .")";
 	}
 	
-	public function evaluateGISQuery( Query $query, $srid )
-	{
-		$select = $this->evaluateSelect( $query->getSelect() ) . " ";
+	public function evaluateGISQuery( Query $query, $srid ) {
+		$select = $this->evaluateGISSelect( $query->getSelect() ) . " ";
 		$from   = $this->evaluateFrom( $query->getFrom() )   . " ";
 		$where  = $this->evaluateGISWhere( $query->getWhere(), $srid )  . " ";
 		$order  = $this->evaluateOrder( $query->getOrder() )  . " ";
-
+		
 		return $select . $from . $where . $order;
-   }
+	}
+	
+	public function evaluateGISSelect( $select ) {
+		$projections = $select->getAll();
+		if (count($projections) == 0) {
+			return "SELECT *";
+		} else {
+			$res = "SELECT ";
+			foreach ($projections as $proj) {
+				if ($proj instanceof SelectGISAttribute) {
+					$res .= $this->asText($proj->getAlias() . "." . $proj->getAttrName());
+				} else if ($proj instanceof GISFunction) {
+					// TODO_GIS: HACER GISFUNCTION como ASTEXT()
+				} else if ($proj instanceof SelectAttribute) {
+					$res .= $proj->getAlias() . "." . $proj->getAttrName();
+				} else if ($proj instanceof SelectAggregation) {
+					$res .= $proj->getName() . "(". $proj->getParam()->getAlias() . "." . $proj->getParam()->getAttrName() .")";
+				}
+				if ($proj->getSelectItemAlias() != null) {
+					$res .= " as " . $proj->getSelectItemAlias();
+				}
+				$res .= ", ";
+			}
+			return substr($res, 0, -2); // Saca ultimo "; "
+		}
+	}
    
-	public function evaluateGISWhere( Condition $condition, $srid )
-	{
+	public function evaluateGISWhere( $condition, $srid ) {
 		$where = "";
-		if ($where !== NULL) {
+		if ($condition !== NULL) {
 			$where = "WHERE " . $this->evaluateAnyGISCondition( $condition, $srid );
 		}
 		return $where;
