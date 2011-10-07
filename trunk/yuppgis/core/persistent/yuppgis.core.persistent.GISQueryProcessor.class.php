@@ -26,7 +26,7 @@ class GISQueryProcessor {
 		$gisResults = $this->executeGISQuerys($gisQueries);
 		
 		//5. Se arma resultado final
-		$finalResult = $this->processResults($mainResult, $gisResults);
+		$finalResult = $this->processResults($query->getSelect(), $mainResult, $processedSelects, $gisResults);
 		
 		return $finalResult;
 	}
@@ -39,9 +39,14 @@ class GISQueryProcessor {
 	 * @param array		atributos geograficos posibles de la consulta
 	 * @return ProcessedSelects		 objeto con select principal y geograficos
 	 */
-	private function processSelects($select, $geoAttrsOfQuery) {
+	private function processSelects($select, $froms, $geoAttrsOfQuery) {
 		$processedSelects = new ProcessedSelects();
-
+	
+		if ($select->isEmpty()) {
+			// caso select *
+			//TODO_GIS setear al select las proyecciones de todos sus atributos
+			$this->createProjection($select, $froms);
+		}
 		foreach ($select->getAll() as $selectItem) {
 			$this->GISProjectionToProjection($geoAttrsOfQuery, $selectItem, $processedSelects);
 		}
@@ -238,7 +243,7 @@ class GISQueryProcessor {
 				$newGisQuery->setCondition($orConditions);
 			}
 			
-			$gisQuerys[] = $newGisQuery;
+			$gisQuerys[$aliasSelect] = $newGisQuery;
 		}
 		
 		return $gisQuerys; 
@@ -246,25 +251,82 @@ class GISQueryProcessor {
 	
 	
 	private function executeGISQuerys($gisQueries) {
-		$gisResult = array();
+		$gisResults = array();
 		
-		foreach ($gisQueries as $gisQuery) {
-			$gisResult[] = $this->dal->gis_query($gisQuery);
+		foreach ($gisQueries as $aliasSelect => $gisQuery) {
+			$result = $this->dal->gis_query($gisQuery);
+			$newGisResult = array();
+			
+			//se indexan los gis results por id para joinear con los main result
+			foreach ($result as $row) {
+				$key = $row['id'];
+				unset($row['id']);
+				
+				if (array_key_exists('id2', $row)) {
+					$key .= '$' . $row['id2'];
+					unset($row['id2']);
+				}
+				
+				$newGisResult[$key] = $row; 
+			}
+			
+			$gisResults[$aliasSelect] = $newGisResult;
 		}
 		
-		return $gisResult;
+		return $gisResults;
 	}
 	/**
 	 * Se arma el resultado, mergeando el resultado de la base no geo y la base geo
 	 */
-	private function processResults($mainResult, $gisResults) {
-		//TODO_GIS
-		return $mainResult;
+	private function processResults($mainSelect, $mainResult, ProcessedSelects $processedSelects, $gisResults) {
+
+		$tableAttrGeo = $processedSelects->tableAttrGeo;
+		$queryResult = array();
+		
+		foreach ($mainResult as $result) {
+			$mergeRow = array();
+			foreach ($mainSelect->getAll() as $mainProjection) {
+				
+				$alias = $mainProjection->getSelectItemAlias();
+				if (array_key_exists($alias, $result)) {
+					$mergeRow[$alias] = $result[$alias];
+				} else {
+					
+					// Caso geografico
+					
+					//TODO_GIS, caso de $key null y que no exista en gisResults
+					$key = $this->getKeyFromTableAttrGeo($tableAttrGeo, $alias, $result);
+					//Se vuelve a pedir alias, el gis esta indexado por alias el cual contiene
+					//segun una key un conjunto de atributos de los cuales nos interesa el atributo alias
+					$mergeRow[$alias] = $gisResults[$alias][$key][$alias];
+				}
+				
+				$queryResult[] = $mergeRow;
+			}
+		}
+		
+		return $queryResult;
 	}
 	
 	
 	//// Metodos auxiliares
-	
+	/**
+	 * Funcio que retorna la key para ir a buscar al gis result
+	 * @param $tableAttrGeo
+	 * @param $alias
+	 * @param $result
+	 */
+	private function getKeyFromTableAttrGeo ($tableAttrGeo, $alias, $result) {
+		$key = "";
+		
+		foreach ($tableAttrGeo[$alias] as $ref) {
+			$key .=  $result[$ref->name] . "$";
+		}
+		
+		//quitamos el ultimo $
+		return substr($key, 0, -1);
+		
+	}
 	/**
 	 * Retorna un array con los atributos geograficos de tablas en un From
 	 * @param array $from
