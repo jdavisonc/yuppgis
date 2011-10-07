@@ -77,6 +77,7 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 					$res .= $this->asText($proj->getAlias() . "." . $proj->getAttrName());
 				} else if ($proj instanceof GISFunction) {
 					// TODO_GIS: HACER GISFUNCTION como ASTEXT()
+          $res .= $this->asText($this->evaluateGISFunction($proj));
 				} else if ($proj instanceof SelectAttribute) {
 					$res .= $proj->getAlias() . "." . $proj->getAttrName();
 				} else if ($proj instanceof SelectAggregation) {
