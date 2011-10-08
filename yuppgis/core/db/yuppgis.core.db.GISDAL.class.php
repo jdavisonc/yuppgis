@@ -144,7 +144,9 @@ class GISDAL extends DAL {
 						$param->setValue($wkt);
 					}
 				}
-				$gisSelects[] = $proj->getSelectItemAlias();
+				if ($proj->returnGeometry()) {
+					$gisSelects[] = $proj->getSelectItemAlias();
+				}
 			} else if ($proj instanceof SelectGISAttribute) {
 				$gisSelects[] = $proj->getSelectItemAlias();
 			}

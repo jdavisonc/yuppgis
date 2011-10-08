@@ -19,6 +19,16 @@ class GISFunction extends SelectItem {
              );
 	}
 	
+	private static function getGISTypesThatReturnGeometry() {
+      return array(
+                
+             );
+	}
+	
+	public function returnGeometry() {
+		return in_array($this->type, self::getGISTypesThatReturnGeometry());
+	}
+	
 	public function setParams( array $params ) {
 		$this->params = $params;
 	}

@@ -84,7 +84,7 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 				if ($proj instanceof SelectGISAttribute) {
 					$res .= $this->asText($proj->getAlias() . "." . $proj->getAttrName());
 				} else if ($proj instanceof GISFunction) {
-          			$res .= $this->asText($this->evaluateGISFunction($proj, $srid ));
+          			$res .= $this->evaluateGISFunction($proj, $srid );
 				} else if ($proj instanceof SelectAttribute) {
 					$res .= $proj->getAlias() . "." . $proj->getAttrName();
 				} else if ($proj instanceof SelectAggregation) {
@@ -100,33 +100,29 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 	}
 	
 	public function evaluateGISFunction( $projection, $srid ) {
-		$select = "";
 		$params = $projection->getParams();
 		
 		switch ($projection->getType()) {
 			case GISFunction::GIS_FUNCTION_DISTANCE:
-				$this->evaluateDISTANCEFunction($params, $srid);
-				break;
+				 return $this->evaluateDISTANCEFunction($params, $srid);
 			default:
 				throw new Exception("Function " . $projection->getYpe() . "not supported yet");
-				break;
 		}
-		return $select;
 	}
 	
 	private function evaluateDISTANCEFunction(array $params, $srid) {
-		$function = "ST_Distane(";
+		$function = "ST_Distance(";
 		foreach ($params as $selectItem) {
 			if ($selectItem instanceof SelectAttribute) {
-				$function .= $proj->getAlias() . "." . $proj->getAttrName() . ",";
+				$function .= $selectItem->getAlias() . "." . $selectItem->getAttrName() . ",";
 			} else if ($selectItem instanceof SelectValue) {
-				$function .= $this->geomFromText($proj->getValue(), $srid) . ",";
+				$function .= $this->geomFromText($selectItem->getValue(), $srid) . ",";
 			} else {
 				throw new Exception("Type not supported for Function DISTANCE");
 			}
 		}
 		
-		return substr($res, 0, -2) . ")"; // Saca ultimo "; " y agrega el ultimo parentesis
+		return substr($function, 0, -1) . ")"; // Saca ultimo "; " y agrega el ultimo parentesis
 	}
 
 	

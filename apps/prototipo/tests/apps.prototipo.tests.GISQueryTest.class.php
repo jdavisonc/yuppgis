@@ -38,19 +38,18 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert($result[0]['ubicacion_de_p'] !== null, 'Deserializacion de punto en GISQuery caminando');
-		$this->assert(count($result) == 12, 'Se trajeron los 12 objetos de la tabla pacientes');
+		$this->assert(count($result) == 1 && $result[0]['ubicacion_de_p'] !== null, 'Deserializacion de punto en GISQuery caminando');
 	}
 	
 	function testGISQuery() {
 		$q = new GISQuery();
-		$q->addFunction(GISFunction::DISTANCE_TO('p', 'ubicacion', new Point(-56.181548, -34.884121)), 'distancia');
+		$q->addFunction(GISFunction::DISTANCE_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'distancia'));
 		$q->addFrom(Paciente::getClassName(), 'p');
 		  
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert($result[0]['distancia'] !== null, 'Distancia de de puntos caminando');
+		$this->assert(count($result) == 12 && $result[0]['distancia'] !== null, 'Distancia de de puntos caminando ' . $result[0]['distancia']);
 	}
 	
 }
