@@ -75,7 +75,7 @@ class GISQueryProcessor {
 
 				$processedSelects->mainSelect->add($attrMainProjection);
 				
-				$attrGisProjectionId = new SelectAttribute($alias, 'id');
+				$attrGisProjectionId = new SelectAttribute($alias, 'id', 'id1');
 				$attrGisProjectionGeom = new SelectGISAttribute($alias, 'geom', $attrAlias);
 				$attrGisProjectionUIProperty = new SelectAttribute($alias, 'uiproperty');
 				
@@ -95,6 +95,8 @@ class GISQueryProcessor {
 				$processedSelects->tableAttrGeo[$aggregationName] = array();
 				
 				$newGisFunctionParams = array();
+				$select = new Select();
+				$i = 1;
 				
 				foreach ($gisFunction->getParams() as $param) {
 					if ($param instanceof SelectAttribute) {
@@ -108,14 +110,17 @@ class GISQueryProcessor {
 						$processedSelects->mainSelect->add($attrMainProjection);
 						$processedSelects->tableAttrGeo[$aggregationName][] = new Reference($geoAttrAssoc, $alias);
 						$newGisFunctionParams[] = new SelectAttribute($alias, 'geom'); // No interesa que tenga alias de selectItem
+						$select->add(new SelectAttribute($alias, 'id', 'id' . $i++));
 						
 					} else { // SelectValue
 						$newGisFunctionParams[] = $param;
 					}
 				}
 				
-				$newGisFunction = new GISFunction($gisFunction->getType(), $newGisFunctionParams);
-				$processedSelects->gisSelect[$aggregationName] = new Select(array(new SelectAggregation($selectItem->getName(), $newGisFunction)));
+				$select->add(new SelectAggregation(
+									$selectItem->getName(), 
+									new GISFunction($gisFunction->getType(), $newGisFunctionParams)));
+				$processedSelects->gisSelect[$aggregationName] = $select;
 				
 			} else {
 				$processedSelects->mainSelect->add($selectItem); 
@@ -135,6 +140,8 @@ class GISQueryProcessor {
 			$processedSelects->tableAttrGeo[$gisFunctionAlias] = array();
 			
 			$newGisFunctionParams = array();
+			$select = new Select();
+			$i = 1;
 			
 			foreach ($gisFunction->getParams() as $param) {
 				if ($param instanceof SelectAttribute) {
@@ -148,13 +155,15 @@ class GISQueryProcessor {
 					$processedSelects->mainSelect->add($attrMainProjection);
 					$processedSelects->tableAttrGeo[$gisFunctionAlias][] = new Reference($geoAttrAssoc, $alias);
 					$newGisFunctionParams[] = new SelectAttribute($alias, 'geom'); // No interesa que tenga alias de selectItem
+					$select->add(new SelectAttribute($alias, 'id', 'id' . $i++));
 					
 				} else { // SelectValue
 					$newGisFunctionParams[] = $param;
 				}
 			}
-			
-			$processedSelects->gisSelect[$gisFunctionAlias] = new Select(array(new GISFunction($gisFunction->getType(), $newGisFunctionParams, $gisFunctionAlias)));
+
+			$select->add(new GISFunction($gisFunction->getType(), $newGisFunctionParams, $gisFunctionAlias));
+			$processedSelects->gisSelect[$gisFunctionAlias] = $select;
 			
 		} else {
 			throw new Exception("No implementado");
@@ -194,7 +203,7 @@ class GISQueryProcessor {
 			foreach ($gisSelect->getAll() as $gisProjection) {
 				// se arma from para ir contra la base geo
 				
-				$isSelectAttribute = ($gisProjection instanceof  SelectAttribute);
+				$isSelectAttribute = ($gisProjection instanceof SelectAttribute);
 				
 				if ($isSelectAttribute) {
 					$resAdd = $this->addFromsInGisQueries($newGisQuery, $aliasSelect, $mainFrom, $gisProjection->getAlias(), $tableAttrGeo, $alias);
@@ -209,13 +218,14 @@ class GISQueryProcessor {
 					//Caso de funciones
 					foreach ($gisProjection->getPArams() as $param) {
 						
-						//TODO params solo SelectAttribute
-						$resAdd = $this->addFromsInGisQueries($newGisQuery, $aliasSelect, $mainFrom, $param->getAlias(), $tableAttrGeo, $alias);
-						$alias = $resAdd[0];
-						$addGisSelect = false;
-						
-						if ($resAdd[1]) {
-							$addGisSelect = true; // Si solo hace falta agregar un from, hay que agregar el select
+						if (! ($param instanceof SelectValue)) {
+							$resAdd = $this->addFromsInGisQueries($newGisQuery, $aliasSelect, $mainFrom, $param->getAlias(), $tableAttrGeo, $alias);
+							$alias = $resAdd[0];
+							$addGisSelect = false;
+							
+							if ($resAdd[1]) {
+								$addGisSelect = true; // Si solo hace falta agregar un from, hay que agregar el select
+							}
 						}
 					}
 
@@ -271,7 +281,7 @@ class GISQueryProcessor {
 		return $gisQueries; 
 	}
 	
-	private function isFromProcessed($gisProjection, $mainFrom,  $usedAlias) {
+	private function isFromProcessed($gisProjection, $mainFrom, &$usedAlias) {
 		$isSelectAttribute = ($gisProjection instanceof  SelectAttribute);
 		if ($isSelectAttribute) {
 			$from = $this->getFrom($mainFrom, $gisProjection->getAlias());
@@ -282,11 +292,13 @@ class GISQueryProcessor {
 		} else {
 			//Caso funciones
 			foreach ($gisProjection->getParams() as $param) {
-				$from = $this->getFrom($mainFrom, $param->getAlias());
-				if (in_array($from->alias, $usedAlias)) {
-					return true;
+				if (! ($param instanceof SelectValue)) {
+					$from = $this->getFrom($mainFrom, $param->getAlias());
+					if (in_array($from->alias, $usedAlias)) {
+						return true;
+					}
+					$usedAlias[] = $from->alias;
 				}
-				$usedAlias[] = $from->alias;
 			}
 		}
 		return false;
@@ -320,8 +332,8 @@ class GISQueryProcessor {
 			
 			//se indexan los gis results por id para joinear con los main result
 			foreach ($result as $row) {
-				$key = $row['id'];
-				unset($row['id']);
+				$key = $row['id1'];
+				unset($row['id1']);
 				
 				if (array_key_exists('id2', $row)) {
 					$key .= '$' . $row['id2'];
@@ -348,7 +360,7 @@ class GISQueryProcessor {
 			$mergeRow = array();
 			foreach ($mainSelect->getAll() as $mainProjection) {
 				
-				$alias = $mainProjection->getSelectItemAlias() != null ? $mainProjection->getSelectItemAlias() : $mainProjection->getAttrName();
+				$alias = $mainProjection->getSelectItemAlias();
 				if (array_key_exists($alias, $result)) {
 					$mergeRow[$alias] = $result[$alias];
 				} else {
@@ -470,7 +482,7 @@ class GISQueryProcessor {
 				
 				$query = new Query();
 				$query->addFrom($gisTableName, $fromSelect->alias);
-				$query->addProjection($fromSelect->alias, 'id', 'id');
+				$query->addProjection($fromSelect->alias, 'id', 'id1');
 				
 				if ($condition->getReferenceAttribute() !== null) {
 					$attr2 = $condition->getReferenceAttribute();
@@ -491,7 +503,7 @@ class GISQueryProcessor {
 				
 				$query_res = $this->dal->gis_query($query);
 				
-				$res = $this->createValuesStringFromKeyOnQuery($query_res, 'id');
+				$res = $this->createValuesStringFromKeyOnQuery($query_res, 'id1');
 				$res2 = null;
 				if ($condition->getReferenceAttribute() !== null) {
 					$res2 = $this->createValuesStringFromKeyOnQuery($query_res, 'id2');
