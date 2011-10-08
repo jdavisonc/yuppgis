@@ -73,6 +73,7 @@ $p1 = new Paciente();
 $p1->setNombre('Juan');
 $p1->setUbicacion(new Point(-56.181948, -34.884621));
 
+
 $p2 = new Paciente();
 $p2->setNombre('Jose');
 $p2->setUbicacion(new Point( -56.181448, -34.883641));

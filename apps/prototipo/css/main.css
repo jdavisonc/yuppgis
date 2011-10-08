@@ -14,3 +14,12 @@ fieldset {
 		0 transparent!important;
 	cursor: pointer!important;
 }
+
+.olControlMousePosition {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    height: 15px;
+    font-size: 8pt;
+    background-color: white
+}

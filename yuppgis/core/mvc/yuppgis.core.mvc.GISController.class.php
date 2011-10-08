@@ -3,7 +3,7 @@ YuppLoader::load('yuppgis.core.persistent', 'GISPersistentObject');
 YuppLoader::load('yuppgis.core.basic', 'Map');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 YuppLoader::load('yuppgis.core.basic', 'Geometry');
-
+YuppLoader::load('core.http', 'HTTPRequest');
 
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
 YuppLoader::load('core.persistent.serialize', 'JSONPO');
@@ -79,6 +79,34 @@ class GISController extends YuppController {
 		
 		return $this->renderString($json);
 	}
+	
+	
+	public function mapServerAction(){
+	  //return self::redirect(array("url" => "http://localhost/cgi-bin/mapserv?"));
+	  $url = 'http://localhost/cgi-bin/mapserv?';
+	  $url .= 
+	  'MAP='.$this->params['MAP'].
+	  '&LAYERS='. $this->params['LAYERS'].
+	  '&FORMAT='. $this->params['FORMAT'].
+	  '&SERVICE='. $this->params['SERVICE'].
+	  '&VERSION='. $this->params['VERSION'].
+	  '&REQUEST='. $this->params['REQUEST'].
+	  '&STYLES='. $this->params['STYLES'].
+	  '&SRS='. $this->params['SRS'].
+	  '&BBOX='. $this->params['BBOX'].
+	  '&WIDTH='. $this->params['WIDTH'].
+	  '&HEIGHT='. $this->params['HEIGHT'];
+
+		$request = new  HTTPRequest();
+		$response = $request->HttpRequestGet($url);
+		
+		header('Content-Type: 	image/png; mode=24bit');
+		
+		
+		
+		return $this->renderString($response->getBody());
+	}  
+	
 }
 
 ?>
