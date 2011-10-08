@@ -80,7 +80,7 @@
 					success: function (data) {
 
 						var google = new OpenLayers.Layer.Google("Google", {
-							type: G_HYBRID_MAP/*,
+							/*type: G_HYBRID_MAP,
 							sphericalMercator: true*/
 						});
 
@@ -94,7 +94,7 @@
 					                    
 						});
 						var wms = new OpenLayers.Layer.WMS("WMS",
-				                "http://localhost/cgi-bin/mapserv?",
+				                "/yuppgis/prototipo/home/mapServer?",
 				                {
 				                    map: '/home/yuppgis/workspace/YuppGis/yuppgis/yuppgis.map',
 				                    layers: 'departamento,manzanas',

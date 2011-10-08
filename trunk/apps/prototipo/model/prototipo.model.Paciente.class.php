@@ -10,6 +10,7 @@ class Paciente extends GISPersistentObject {
 
 		$this->addAttribute("nombre", Datatypes :: TEXT);
 		$this->addAttribute("ubicacion", GISDatatypes :: POINT);
+		$this->addAttribute("linea", GISDatatypes ::LINE);
 		
 		
 
@@ -65,7 +66,7 @@ class Paciente extends GISPersistentObject {
 		
 		return $pacientes;
 	}
-	
+		
 }
 
 ?>
