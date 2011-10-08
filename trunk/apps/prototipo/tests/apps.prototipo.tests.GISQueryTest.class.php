@@ -43,6 +43,22 @@ class GISQueryTest extends YuppGISTestCase {
 			'Deserializacion de punto en GISQuery caminando');
 	}
 	
+	function testSimpleGISQueryWithConditionBetweenObject() {
+		$q = new GISQuery();
+		$q->addProjection('p', 'ubicacion', 'ubicacion_de_p');
+		$q->addProjection('t', 'ubicacion', 'ubicacion_de_t');
+		$q->setCondition(Condition::_AND()
+			->add(GISCondition::EQGEOA('p', 'ubicacion', 't', 'ubicacion'))
+			);
+		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(Paciente::getClassName(), 't');
+		
+		$pm = PersistentManagerFactory::getManager();
+		$result = $pm->findByQuery($q);
+		
+		$this->assert((count($result) == 144), 'Deserializacion de punto en GISQuery entre objetos caminando  ' . count($result));
+	}
+	
 	function testGISQueryDistance() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::DISTANCE_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'distancia'));
