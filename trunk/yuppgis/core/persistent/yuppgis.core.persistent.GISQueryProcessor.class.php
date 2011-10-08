@@ -193,18 +193,35 @@ class GISQueryProcessor {
 			
 			foreach ($gisSelect->getAll() as $gisProjection) {
 				// se arma from para ir contra la base geo
-				$from = $this->getFrom($mainFrom, $gisProjection->getAlias());
-				if (!in_array($from->alias, $alias)) {
+				
+				$isSelectAttribute = ($gisProjection instanceof  SelectAttribute);
+				
+				if ($isSelectAttribute) {
+					$resAdd = $this->addFromsInGisQueries($newGisQuery, $aliasSelect, $mainFrom, $gisProjection->getAlias(), $tableAttrGeo, $alias);
+					$alias = $resAdd[0];
 					
-					$alias[] = $from->alias;
+					if ($resAdd[1]) {
+						// se agrego el from
+						$newGisQuery->setSelect($gisSelect);
+					}
 					
-					$ref = $tableAttrGeo[$aliasSelect][0]; // stdClass
-					$tableName = YuppConventions::tableName($from->instance_or_class);
-					$attrName = DatabaseNormalization::getSimpleAssocName($ref->name);
-					$gisTableName = YuppGISConventions::gisTableName($tableName, $attrName);
-					
-					$newGisQuery->setSelect($gisSelect);
-					$newGisQuery->addFrom($gisTableName, $from->alias);
+				} else {
+					//Caso de funciones
+					foreach ($gisProjection->getPArams() as $param) {
+						
+						//TODO params solo SelectAttribute
+						$resAdd = $this->addFromsInGisQueries($newGisQuery, $aliasSelect, $mainFrom, $param->getAlias(), $tableAttrGeo, $alias);
+						$alias = $resAdd[0];
+						$addGisSelect = false;
+						
+						if ($resAdd[1]) {
+							$addGisSelect = true; // Si solo hace falta agregar un from, hay que agregar el select
+						}
+					}
+
+					if ($addGisSelect) {
+						$newGisQuery->setSelect($gisSelect);
+					}
 				}
 			}
 			
@@ -212,12 +229,10 @@ class GISQueryProcessor {
 			foreach ($mainResult as $row) {
 				$alias = array();
 				foreach ($gisSelect->getAll() as $gisProjection) {
-					$from = $this->getFrom($mainFrom, $gisProjection->getAlias());
-					if (in_array($from->alias, $alias)) {
+					
+					if ($this->isFromProcessed($gisProjection, $mainFrom, $alias)) {
 						continue;
 					}
-					
-					$alias[] = $from->alias;
 					
 					if ($gisProjection instanceof  SelectAttribute) {
 						$ref = $tableAttrGeo[$aliasSelect][0]; // stdClass
@@ -256,6 +271,45 @@ class GISQueryProcessor {
 		return $gisQueries; 
 	}
 	
+	private function isFromProcessed($gisProjection, $mainFrom,  $usedAlias) {
+		$isSelectAttribute = ($gisProjection instanceof  SelectAttribute);
+		if ($isSelectAttribute) {
+			$from = $this->getFrom($mainFrom, $gisProjection->getAlias());
+			if (in_array($from->alias, $usedAlias)) {
+				return true;
+			}
+			$usedAlias[] = $from->alias;
+		} else {
+			//Caso funciones
+			foreach ($gisProjection->getParams() as $param) {
+				$from = $this->getFrom($mainFrom, $param->getAlias());
+				if (in_array($from->alias, $usedAlias)) {
+					return true;
+				}
+				$usedAlias[] = $from->alias;
+			}
+		}
+		return false;
+	}
+	
+	private function addFromsInGisQueries($gisQuery, $aliasSelect, $mainFrom, $alias, $tableAttrGeo, $usedAlias) {
+		$from = $this->getFrom($mainFrom, $alias);
+		if (!in_array($from->alias, $usedAlias)) {
+			
+			$usedAlias[] = $from->alias;
+			
+			$ref = $tableAttrGeo[$aliasSelect][0]; // stdClass
+			$tableName = YuppConventions::tableName($from->instance_or_class);
+			$attrName = DatabaseNormalization::getSimpleAssocName($ref->name);
+			$gisTableName = YuppGISConventions::gisTableName($tableName, $attrName);
+			
+			$gisQuery->addFrom($gisTableName, $from->alias);
+			
+			return array($usedAlias, true);
+		} 
+		//ya se agrego la tabla con ese alias
+		return array($usedAlias, false);;
+	}
 	
 	private function executeGISQuerys($gisQueries) {
 		$gisResults = array();
