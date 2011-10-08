@@ -4,6 +4,17 @@ YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 
 class GISQueryTest extends YuppGISTestCase {
 	
+	function testSimpleGISQueryWithoutSelect() {
+		$q = new GISQuery();
+		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->setCondition(Condition::EQ('p', 'nombre', 'Juan'));
+		
+		$pm = PersistentManagerFactory::getManager();
+		$result = $pm->findByQuery($q);
+		
+		$this->assert(count($result) > 0, 'Fallo Query sin select '. count($result));
+	}
+	
 	function testSimpleGISQueryWithoutCondition() {
 		$q = new GISQuery();
 		$q->addProjection('p', 'ubicacion', 'ubicacion_de_p');

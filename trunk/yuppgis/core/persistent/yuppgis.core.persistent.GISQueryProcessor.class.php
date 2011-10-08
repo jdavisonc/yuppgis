@@ -14,7 +14,7 @@ class GISQueryProcessor {
 		$geoAttrsOfQuery = $this->getGeometryAttrs($query->getFrom());
 		
 		//1. Armamos las dos bolsas de Selects
-		$processedSelects = $this->processSelects($query->getSelect(), $geoAttrsOfQuery);
+		$processedSelects = $this->processSelects($query, $geoAttrsOfQuery);
 		
 		//2. Se ejecuta query sobre DB (no Geo)
 		$mainResult = $this->executeSimpleQuery($query, $processedSelects->mainSelect);
@@ -36,16 +36,22 @@ class GISQueryProcessor {
 	 * y los selects para ir contra la base geo.
 	 * 
 	 * @param Select	select de la consulta a procesar
+	 * @param from		From de la query a procesar
 	 * @param array		atributos geograficos posibles de la consulta
 	 * @return ProcessedSelects		 objeto con select principal y geograficos
 	 */
-	private function processSelects($select, $froms, $geoAttrsOfQuery) {
+	private function processSelects($query, $geoAttrsOfQuery) {
+		
 		$processedSelects = new ProcessedSelects();
 	
+		$select = $query->getSelect();
+		$from = $query->getFrom();
+		
 		if ($select->isEmpty()) {
 			// caso select *
-			//TODO_GIS setear al select las proyecciones de todos sus atributos
-			$this->createProjection($select, $froms);
+			$newProyections = $this->createAllProjections($select, $from);
+			$select = new Select($newProyections);
+			$query->setSelect($select);
 		}
 		foreach ($select->getAll() as $selectItem) {
 			$this->GISProjectionToProjection($geoAttrsOfQuery, $selectItem, $processedSelects);
@@ -180,6 +186,7 @@ class GISQueryProcessor {
 		$gisSelects = $pocessedSelects->gisSelect;
 		$tableAttrGeo = $pocessedSelects->tableAttrGeo;
 		
+		$gisQueries = array();
 		foreach ($gisSelects as $aliasSelect => $gisSelect) {
 			$newGisQuery = new Query();
 			$alias = array();
@@ -243,10 +250,10 @@ class GISQueryProcessor {
 				$newGisQuery->setCondition($orConditions);
 			}
 			
-			$gisQuerys[$aliasSelect] = $newGisQuery;
+			$gisQueries[$aliasSelect] = $newGisQuery;
 		}
 		
-		return $gisQuerys; 
+		return $gisQueries; 
 	}
 	
 	
@@ -287,7 +294,7 @@ class GISQueryProcessor {
 			$mergeRow = array();
 			foreach ($mainSelect->getAll() as $mainProjection) {
 				
-				$alias = $mainProjection->getSelectItemAlias();
+				$alias = $mainProjection->getSelectItemAlias() != null ? $mainProjection->getSelectItemAlias() : $mainProjection->getAttrName();
 				if (array_key_exists($alias, $result)) {
 					$mergeRow[$alias] = $result[$alias];
 				} else {
@@ -300,9 +307,9 @@ class GISQueryProcessor {
 					//segun una key un conjunto de atributos de los cuales nos interesa el atributo alias
 					$mergeRow[$alias] = $gisResults[$alias][$key][$alias];
 				}
-				
-				$queryResult[] = $mergeRow;
 			}
+			
+			$queryResult[] = $mergeRow;
 		}
 		
 		return $queryResult;
@@ -310,6 +317,31 @@ class GISQueryProcessor {
 	
 	
 	//// Metodos auxiliares
+	
+	
+	private function createAllProjections($select, $froms) {
+		
+		$usedAttrs = array();
+		$newSelectItems = array();
+		
+		foreach ($froms as $from) {
+			$ins = $from->instance_or_class;
+			if ( !is_object($ins) ) {
+				$ins = new $ins(array(), true);
+			}
+			
+			foreach ($ins->getAttributeTypes() as $attrName => $attrType) {
+				if (in_array($attrName, $usedAttrs)) {
+					throw new Exception("Columna ". $attrName . "es ambigua");
+				}
+				$usedAttrs[] = $attrName;
+				$newSelectItems[] = new SelectAttribute($from->alias, $attrName);
+			}
+		}
+		
+		return $newSelectItems;
+	}
+	
 	/**
 	 * Funcio que retorna la key para ir a buscar al gis result
 	 * @param $tableAttrGeo
