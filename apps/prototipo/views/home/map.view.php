@@ -7,7 +7,7 @@
 		MapParams::ID => 1,
 		MapParams::CLICK_HANDLERS => array('customClickHandler', 'customClickHandler2'),
 		MapParams::SELECT_HANDLERS => array('customSelectHandler'),
-		MapParams::TYPE => "fruta"
+		MapParams::TYPE => "google"
 		
 	)); ?>
 </fieldset>
