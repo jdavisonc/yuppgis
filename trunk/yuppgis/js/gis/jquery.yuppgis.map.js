@@ -80,16 +80,19 @@
 					success: function (data) {
 
 						var google = new OpenLayers.Layer.Google("Google", {
-							type: G_HYBRID_MAP
+							type: G_HYBRID_MAP/*,
+							sphericalMercator: true*/
 						});
 
-						var options = {
-								minResolution: "auto",
-								minExtent: new OpenLayers.Bounds(-1, -1, 1, 1),
-								maxResolution: "auto",
-								maxExtent: new OpenLayers.Bounds(-180, -90, 180, 90),
-						};
-						map = new OpenLayers.Map("map_" + id, options);
+						
+						map = new OpenLayers.Map("map_" + id, {
+							
+			                scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
+			                         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
+			                			                
+							projection: "EPSG:32721"
+					                    
+						});
 						var wms = new OpenLayers.Layer.WMS("WMS",
 				                "http://localhost/cgi-bin/mapserv?",
 				                {
@@ -97,20 +100,22 @@
 				                    layers: 'departamento,manzanas',
 				                    format: 'aggpng24'
 				                },
-				                {
-				                	
+				                {				                	
+				                		 
 									maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
 					                scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
 					                         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
 				                    units: 'm',
 				                    projection: "EPSG:32721",
+				                    
 				                    gutter: 0,
 				                    ratio: 1,
 				                    wrapDateLine: true,
-				                    isBaselayer: false,
+				                    isBaseLayer: true,
 				                    singleTile: true,
 				                    transitionEffect: 'resize',
 				                    queryVisible: true
+				                    
 
 				                });
 
@@ -150,7 +155,7 @@
 						});
 						map.addLayers(vector);
 						map.addControl(new OpenLayers.Control.EditingToolbar(vector));
-
+						map.addControl(new OpenLayers.Control.MousePosition({displayProjection: map.baseLayer.projection}));
 
 
 						selectcontrol = new OpenLayers.Control.SelectFeature(vector, {

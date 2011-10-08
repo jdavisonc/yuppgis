@@ -99,7 +99,7 @@ $p1->setUbicacion(new Point(-56.181948, -34.883821));
 
 $p2 = new Paciente();
 $p2->setNombre('Emilia');
-$p2->setUbicacion(new Point( -56.181554, -34.883731));
+$p2->setUbicacion(new Point( 585055, 6242602));
 
 $p3 = new Paciente();
 $p3->setNombre('Eliana');
