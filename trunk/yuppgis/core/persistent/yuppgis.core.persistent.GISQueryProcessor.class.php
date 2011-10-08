@@ -65,8 +65,8 @@ class GISQueryProcessor {
 		if ($selectItem instanceof SelectAttribute) {
 			
 			$alias = $selectItem->getAlias();
-			$attrAlias = ($selectItem->getSelectItemAlias() == null)? $alias : $selectItem->getSelectItemAlias();
 			$attrName = $selectItem->getAttrName();
+			$attrAlias = ($selectItem->getSelectItemAlias() == null) ? $attrName : $selectItem->getSelectItemAlias();
 			
 			if (in_array($attrName, $geoAttrsOfQuery[$alias])) {
 
@@ -337,6 +337,15 @@ class GISQueryProcessor {
 				$usedAttrs[] = $attrName;
 				$newSelectItems[] = new SelectAttribute($from->alias, $attrName);
 			}
+			
+			foreach ($ins->getHasOne() as $attrName => $attrType) {
+				if (in_array($attrName, $usedAttrs)) {
+					throw new Exception("Columna ". $attrName . "es ambigua");
+				}
+				$usedAttrs[] = $attrName;
+				$newSelectItems[] = new SelectAttribute($from->alias, $attrName);
+			}
+			
 		}
 		
 		return $newSelectItems;
