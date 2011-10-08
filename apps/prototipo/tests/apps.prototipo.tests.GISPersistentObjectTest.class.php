@@ -2,6 +2,7 @@
 
 YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('prototipo.model', 'Paciente');
+YuppLoader::load('prototipo.model', 'Street');
 YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 YuppLoader::load('yuppgis.core.basic.ui', 'Icon');
 
@@ -12,6 +13,7 @@ YuppLoader::load('yuppgis.core.basic.ui', 'Icon');
 class GISPersistentObjectTest extends YuppGISTestCase {
 
 	private $paciente = null;
+	private $street = null;
 
 	/**
 	 * Prueba para probar configuracion de Punto
@@ -71,6 +73,35 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$p = Paciente::get(1);
 		$ubi = $p->getUbicacion();
 		$this->assert($ubi !== null, 'Se obtuvo correctamente el paciente con ID=1');
+	}
+	
+	function testSaveStreet() {
+		$s = new Street();
+		$s->setName('Calle Para probar');
+		
+		$puntos = array ( new Point(23, 32), new Point(32, 82));
+		$s->setData(new LineString($puntos));
+		
+		$s -> save();
+		$this->street = $s;
+		$this->assert($s->getId() !== null, 'Se guardo la Calle con una linea ');
+		
+	}
+	
+	function testGetStreet() {
+		$id = $this->street->getId();
+		$p = Street::get($id);
+		$line = $p->getData();
+		$this->assert($line !== null, 'Se obtuvo correctamente la calle con ID = '. $id);
+
+	}
+	
+	function testRemoveStreet() {
+		$id = $this->street->getId();
+		$this->street->delete();
+		
+		//TODO
+		$this->assert(0 == 0, 'Test de borrado de Calle');
 	}
 
 }
