@@ -117,8 +117,8 @@ class GISDAL extends DAL {
 			}
 			
 		} catch (Exception $e) {
-			echo $e->getMessage();
-			echo $this->gisdb->getLastError();
+			Logger::getInstance()->log("GISDAL::gis_query error: " . $e->getMessage() . " \n " . $this->gisdb->getLastError());
+			throw $e;
 		}
 		return $res;
 	}

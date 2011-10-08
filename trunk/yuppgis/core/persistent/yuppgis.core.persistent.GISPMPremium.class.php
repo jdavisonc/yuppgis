@@ -192,6 +192,7 @@ class GISPMPremium extends PersistentManager implements GISPersistentManager {
 			
 			$gisCondition = new GISCondition();
 			$gisCondition->setType($condition->getType());
+			$gisCondition->setExtraValueReference($condition->getExtraValueReference());
 			$gisCondition->setAttribute('geo', 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
 			
 			if ($condition->getReferenceAttribute() !== null) {
