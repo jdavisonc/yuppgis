@@ -13,7 +13,7 @@ YuppLoader :: load('yuppgis.core.db.criteria2', 'SelectGISAttribute');
 YuppLoader :: load('yuppgis.core.persistent', 'GISQueryProcessor');
 YuppLoader :: load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
-class GISPMPremium  extends PersistentManager implements GISPersistentManager {
+class GISPMPremium extends PersistentManager implements GISPersistentManager {
 	
 	private $gisQueryProcessor = null;
 
@@ -25,19 +25,32 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	}
 
 	public function get_gis_object( $tableNameOwner, $attr, $persistentClass, $id ) {
-		
 		Logger::getInstance()->pm_log("GISPM.get_gis_object " . $persistentClass . " " . $id);
+		
+		if ( $id === NULL ) {
+			throw new Exception("id de objeto " . $persistentClass . " no puede ser null");
+		}
 
 		$tableName = YuppGISConventions::gisTableName($tableNameOwner, $attr); 
 
-		$attrValues = $this->dal->get_geometry( $tableName, $id );
+		$query = new Query();
+		$query->addFrom($tableName, 'geo');
+		$query->getSelect()->add(new SelectAttribute('geo', 'id'));
+		$query->getSelect()->add(new SelectAttribute('geo', 'uiproperty'));
+		$query->getSelect()->add(new SelectGISAttribute('geo', 'geom'));
+		$query->setCondition(Condition::EQ('geo', 'id', $id));
+		
+		$query_res = $this->dal->gis_query($query);
+		if (count($query_res) == 0) {
+			throw new Exception("No se encuentra el objeto " . $persistentClass . " con id " . $id);
+		}
 		
    		// Se crea el objeto directamente ya que no se va a contar con herencia en tablas distintas para
    		// elementos geograficos.
-   		$geo = $this->createGISObjectFromData( $attrValues );
+   		$geo = $this->createGISObjectFromData( $query_res[0] );
    		
    		//Valido que la clase creada sea una instancia valida
-   		if (! $geo instanceof $persistentClass) {
+   		if (! ($geo instanceof $persistentClass)) {
    			throw new Exception('No coinciden los tipos de geometrias. Se esperaba ' . $persistentClass . ' y se obtuvo ' . $geo->getClass());
    		}
    		return $geo;
@@ -50,7 +63,7 @@ class GISPMPremium  extends PersistentManager implements GISPersistentManager {
 	 */
 	//TODO_GIS
 	private function createGISObjectFromData( $data ) {
-		$geo = WKTGEO::fromText($data['geo']);
+		$geo = $data['geom'];
 		$geo->setId($data['id']);
 		$geo->setUiproperty($data['uiproperty']);
 		

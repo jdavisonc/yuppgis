@@ -2,7 +2,7 @@
 
 class GISFunction extends SelectItem {
 	
-	private $functionName;
+	private $type;
 	private $params;
    
 	const GIS_FUNCTION_DISTANCE = "gisfunction.type.distance";

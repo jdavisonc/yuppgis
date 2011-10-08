@@ -66,6 +66,12 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		}
 		$this->assert($deleted, 'Test de borrado de Paciente');
 	}
+	
+	function testGetPacienteFromDBWithId() {
+		$p = Paciente::get(1);
+		$ubi = $p->getUbicacion();
+		$this->assert($ubi !== null, 'Se obtuvo correctamente el paciente con ID=1');
+	}
 
 }
 

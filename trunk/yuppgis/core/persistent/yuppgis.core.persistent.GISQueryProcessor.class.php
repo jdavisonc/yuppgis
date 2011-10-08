@@ -66,7 +66,7 @@ class GISQueryProcessor {
 			
 			$alias = $selectItem->getAlias();
 			$attrName = $selectItem->getAttrName();
-			$attrAlias = ($selectItem->getSelectItemAlias() == null) ? $attrName : $selectItem->getSelectItemAlias();
+			$attrAlias = $selectItem->getSelectItemAlias();
 			
 			if (in_array($attrName, $geoAttrsOfQuery[$alias])) {
 
@@ -115,7 +115,7 @@ class GISQueryProcessor {
 				}
 				
 				$newGisFunction = new GISFunction($gisFunction->getType(), $newGisFunctionParams);
-				$processedSelects->gisSelect[$aggregationName] = new SelectAggregation($selectItem->getName(), $newGisFunction);
+				$processedSelects->gisSelect[$aggregationName] = new Select(array(new SelectAggregation($selectItem->getName(), $newGisFunction)));
 				
 			} else {
 				$processedSelects->mainSelect->add($selectItem); 
@@ -154,7 +154,7 @@ class GISQueryProcessor {
 				}
 			}
 			
-			$processedSelects->gisSelect[$gisFunctionAlias] = new GISFunction($gisFunction->getType(), $newGisFunctionParams, $gisFunctionAlias);
+			$processedSelects->gisSelect[$gisFunctionAlias] = new Select(array(new GISFunction($gisFunction->getType(), $newGisFunctionParams, $gisFunctionAlias)));
 			
 		} else {
 			throw new Exception("No implementado");

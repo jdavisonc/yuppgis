@@ -56,7 +56,7 @@ class Select {
 
 class SelectItem {
 	
-	private $selectItemAlias;
+	protected $selectItemAlias;
 	
 	public function __construct( $selectItemAlias = null ){
 		$this->selectItemAlias = $selectItemAlias;
@@ -85,6 +85,10 @@ class SelectAttribute extends SelectItem {
    {
       return $this->attrName;
    }
+   
+	public function getSelectItemAlias() {
+		return ($this->selectItemAlias == null) ? $this->attrName : $this->selectItemAlias;
+	}
 }
 class SelectFunction extends SelectItem {
    private $functionName;

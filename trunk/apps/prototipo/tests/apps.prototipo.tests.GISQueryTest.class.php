@@ -23,7 +23,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 9, 'Existen mas pacientes que 9 y hay '. count($result));
+		$this->assert(count($result) == 12, 'Existen mas pacientes que 12 y hay '. count($result));
 	}
 	
 	function testSimpleGISQueryWithConditionOneRecord() {
@@ -38,21 +38,19 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert($result[0]['ubicacion_de_p'] !== null, 'Fallo al deserializar un punto en GISQuery');
+		$this->assert($result[0]['ubicacion_de_p'] !== null, 'Deserializacion de punto en GISQuery caminando');
+		$this->assert(count($result) == 12, 'Se trajeron los 12 objetos de la tabla pacientes');
 	}
 	
 	function testGISQuery() {
 		$q = new GISQuery();
-		
-		$q->addFunction(GISFunction::DISTANCE_TO('p', 'ubicacion', new Point(10, 10)));
+		$q->addFunction(GISFunction::DISTANCE_TO('p', 'ubicacion', new Point(-56.181548, -34.884121)), 'distancia');
 		$q->addFrom(Paciente::getClassName(), 'p');
-		$q->addFrom(Paciente::getClassName(), 't');
 		  
 		$pm = PersistentManagerFactory::getManager();
-		// TODO_GIS
-		//$result = $pm->findByQuery($q);
+		$result = $pm->findByQuery($q);
 		
-		//$this->assert($result !== null, 'Test de filtrado de pacientes');
+		$this->assert($result[0]['distancia'] !== null, 'Distancia de de puntos caminando');
 	}
 	
 }
