@@ -60,25 +60,6 @@ class GISDAL extends DAL {
 	}
 
 	/**
-	 * Obtiene un registro del tipo geografico
-	 * @param $tableName Nombre de tabla
-	 * @param $attrs Atributos
-	 */
-	public function get_geometry( $tableName, $id ) {
-		if ( $id === NULL ) throw new Exception("GISDAL.get: id no puede ser null");
-
-		$q = "SELECT id, ".$this->gisdb->asText('geom')." as geo, uiproperty FROM " . $tableName . " WHERE id=" . $id;
-
-		$this->gisdb->query( $q );
-
-		if ( $row = $this->gisdb->nextRow() ) {
-			return $row;
-		}
-
-		throw new Exception("GISDAL.get: no se encuentra el objeto con id ". $id . " en la tabla " . $tableName);
-	}
-
-	/**
 	 * Inserta un registro del tipo geografico
 	 * @param $tableName Nombre de tabla
 	 * @param $attrs Atributos
@@ -120,12 +101,18 @@ class GISDAL extends DAL {
 	public function gis_query( Query $query ) {
 		$res = array();
 	    try {
-	    	$q = $this->gisdb->evaluateGISQuery( $query, $this->srid );
-			if ( !$this->gisdb->query( $q ) ) { 
+	    	
+	    	$gisSelects = $this->extractGISSelectAndConvertGISValues($query->getSelect());
+	    	
+	    	$q = $this->gisdb->evaluateGISQuery($query, $this->srid);
+			if ( !$this->gisdb->query($q) ) { 
 				throw new Exception("ERROR");
 			}
 
-			while ( $row = $this->gisdb->nextRow() ) { 
+			while ( $row = $this->gisdb->nextRow() ) {
+				foreach ($gisSelects as $gs) {
+					$row[$gs] = WKTGEO::fromText($row[$gs]);
+				} 
 				$res[] = $row;
 			}
 			
@@ -134,6 +121,35 @@ class GISDAL extends DAL {
 			echo $this->gisdb->getLastError();
 		}
 		return $res;
+	}
+	
+	/**
+	 * Funcion que retorna un array con los select geograficos que se van a hacer en la consulta.
+	 * Tambien remplaza los objetos geograficos por su representacion en WKT.
+	 * @param $select Select a ser inspeccionado
+	 * @return array con alias de elementos geograficos en el select
+	 */
+	private function extractGISSelectAndConvertGISValues($select) {
+		$gisSelects = array();
+		foreach ($select->getAll() as $proj) {
+			if ($proj instanceof SelectValue && $proj->getValue() instanceof Geometry) {
+				$wkt = WKTGEO::toText($proj->getValue());
+				$proj->setValue($wkt);
+				$gisSelects[] = $proj->getSelectItemAlias();
+			} else if ($proj instanceof GISFunction) {
+				// Si existe un selectValue en la funcion geo, se convierte su valor a texto
+				foreach ($proj->getParams() as $param) {
+					if ($param instanceof SelectValue) {
+						$wkt = WKTGEO::toText($param->getValue());
+						$param->setValue($wkt);
+					}
+				}
+				$gisSelects[] = $proj->getSelectItemAlias();
+			} else if ($proj instanceof SelectGISAttribute) {
+				$gisSelects[] = $proj->getSelectItemAlias();
+			}
+		}
+		return $gisSelects;
 	}
 
 }

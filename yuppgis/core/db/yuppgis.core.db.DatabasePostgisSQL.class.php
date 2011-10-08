@@ -58,15 +58,23 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 	}
 	
 	public function evaluateGISQuery( Query $query, $srid ) {
-		$select = $this->evaluateGISSelect( $query->getSelect() ) . " ";
-		$from   = $this->evaluateFrom( $query->getFrom() )   . " ";
-		$where  = $this->evaluateGISWhere( $query->getWhere(), $srid )  . " ";
-		$order  = $this->evaluateOrder( $query->getOrder() )  . " ";
+		$select = $this->evaluateGISSelect($query->getSelect(), $srid ) . " ";
+		$from   = $this->evaluateFrom($query->getFrom()) . " ";
+		$where  = $this->evaluateGISWhere($query->getWhere(), $srid) . " ";
+		$order  = $this->evaluateOrder($query->getOrder()) . " ";
 		
 		return $select . $from . $where . $order;
 	}
 	
-	public function evaluateGISSelect( $select ) {
+	public function evaluateGISWhere( $condition, $srid ) {
+		$where = "";
+		if ($condition !== NULL) {
+			$where = "WHERE " . $this->evaluateAnyGISCondition( $condition, $srid );
+		}
+		return $where;
+   }
+	
+	public function evaluateGISSelect( $select, $srid  ) {
 		$projections = $select->getAll();
 		if (count($projections) == 0) {
 			return "SELECT *";
@@ -76,8 +84,7 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 				if ($proj instanceof SelectGISAttribute) {
 					$res .= $this->asText($proj->getAlias() . "." . $proj->getAttrName());
 				} else if ($proj instanceof GISFunction) {
-					// TODO_GIS: HACER GISFUNCTION como ASTEXT()
-          			$res .= $this->asText($this->evaluateGISFunction($proj));
+          			$res .= $this->asText($this->evaluateGISFunction($proj, $srid ));
 				} else if ($proj instanceof SelectAttribute) {
 					$res .= $proj->getAlias() . "." . $proj->getAttrName();
 				} else if ($proj instanceof SelectAggregation) {
@@ -91,14 +98,37 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 			return substr($res, 0, -2); // Saca ultimo "; "
 		}
 	}
-   
-	public function evaluateGISWhere( $condition, $srid ) {
-		$where = "";
-		if ($condition !== NULL) {
-			$where = "WHERE " . $this->evaluateAnyGISCondition( $condition, $srid );
+	
+	public function evaluateGISFunction( $projection, $srid ) {
+		$select = "";
+		$params = $projection->getParams();
+		
+		switch ($projection->getType()) {
+			case GISFunction::GIS_FUNCTION_DISTANCE:
+				$this->evaluateDISTANCEFunction($params, $srid);
+				break;
+			default:
+				throw new Exception("Function " . $projection->getYpe() . "not supported yet");
+				break;
 		}
-		return $where;
-   }
+		return $select;
+	}
+	
+	private function evaluateDISTANCEFunction(array $params, $srid) {
+		$function = "ST_Distane(";
+		foreach ($params as $selectItem) {
+			if ($selectItem instanceof SelectAttribute) {
+				$function .= $proj->getAlias() . "." . $proj->getAttrName() . ",";
+			} else if ($selectItem instanceof SelectValue) {
+				$function .= $this->geomFromText($proj->getValue(), $srid) . ",";
+			} else {
+				throw new Exception("Type not supported for Function DISTANCE");
+			}
+		}
+		
+		return substr($res, 0, -2) . ")"; // Saca ultimo "; " y agrega el ultimo parentesis
+	}
+
 	
 }
 
