@@ -2,6 +2,8 @@
 
 class GISCondition extends Condition {
 	
+	private $extraValueReference;
+	
 	// Tipos de condiciones
 	const GISTYPE_CONTAINS		= "giscondition.type.contains";
 	const GISTYPE_ISCONTAINED	= "giscondition.type.iscontained";
@@ -35,6 +37,23 @@ class GISCondition extends Condition {
    
 	public function getSubconditions() {
 		throw new Exception("No corresponde");
+	}
+	
+	public function setExtraValueReference($extraValueReference) {
+		$this->extraValueReference = $extraValueReference;
+	}
+	
+	public function getExtraValueReference() {
+		return $this->extraValueReference;
+	}
+	
+	private static function createGISConditionValueWithExtra( $type, $alias, $attr, $refValue, $extraValue) {
+		$c = new GISCondition();
+		$c->setType( $type );
+		$c->setAttribute( $alias, $attr );
+		$c->setReferenceValue( $refValue );
+		$c->setExtraValueReference($extraValue);
+		return $c;
 	}
 	
 	private static function createGISConditionValue( $type, $alias, $attr, $refValue ) {
@@ -74,8 +93,7 @@ class GISCondition extends Condition {
 	}
 	
 	public static function DWITHIN( $alias, $attr, $refValue, $distance) {
-		// TODO_GIS: Terminar esta funcion, ver de crear un nuevo constructor de GISCondition
-		//return self::createGISConditionAttribute(self::GISTYPE_DWITHIN, $alias, $attr, $refValue );
+		return self::createGISConditionValueWithExtra(self::GISTYPE_DWITHIN, $alias, $attr, $refValue, $distance);
 	}
 	
 }

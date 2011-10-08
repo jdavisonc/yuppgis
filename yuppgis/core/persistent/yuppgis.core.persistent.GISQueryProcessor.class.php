@@ -216,12 +216,12 @@ class GISQueryProcessor {
 					
 				} else {
 					//Caso de funciones
+					$addGisSelect = false;
 					foreach ($gisProjection->getPArams() as $param) {
 						
 						if (! ($param instanceof SelectValue)) {
 							$resAdd = $this->addFromsInGisQueries($newGisQuery, $aliasSelect, $mainFrom, $param->getAlias(), $tableAttrGeo, $alias);
 							$alias = $resAdd[0];
-							$addGisSelect = false;
 							
 							if ($resAdd[1]) {
 								$addGisSelect = true; // Si solo hace falta agregar un from, hay que agregar el select
@@ -261,7 +261,7 @@ class GISQueryProcessor {
 							// si la funcion recibe un solo parametro, no tiene sentido el and
 							$orConditions->add($condition);
 						} else {
-							$orConditions->add($andCondition);
+							$orConditions->add($andConditions);
 						}
 					}
 				}

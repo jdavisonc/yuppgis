@@ -45,7 +45,8 @@ class WKTGEO {
 				}
 				
 				return new Polygon($exteriorBoundary, $interiorsBoundary);
-				
+			case strtoupper('GEOMETRYCOLLECTION'):
+				throw new Exception("Not implemented yet");
 			default:
 				throw new Exception("Not implemented yet");
 		}

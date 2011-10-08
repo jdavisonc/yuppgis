@@ -45,4 +45,16 @@ class GISConditionsTest extends YuppGISTestCase {
 		$this->assert($pacientes !== null, 'Test de filtrado de pacientes por interseccion');
 	}
 	
+	function testFindByDWithin() {
+		$and = Condition::_AND()
+			->add(GISCondition::DWITHIN(
+				YuppGISConventions::tableName(Paciente::getClassName()), 
+				'ubicacion', new Point(10, 10), 0))
+			->add(Condition::EQ(YuppGISConventions::tableName(Paciente::getClassName()), 'nombre', 'Roberto'));
+		
+		$pacientes = Paciente::findBy($and, new ArrayObject());
+		
+		$this->assert($pacientes !== null, 'Test de filtrado de pacientes de aquellos que esten a una distancia 0 (DWITHIN)');
+	}
+	
 }

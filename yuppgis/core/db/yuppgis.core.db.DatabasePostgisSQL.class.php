@@ -23,10 +23,18 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 			case GISCondition::GISTYPE_INTERSECTS:
 				$where = $this->evaluateINTERSECTS( $atr, $refVal, $srid );
 				break;
+			case GISCondition::GISTYPE_DWITHIN:
+				$extra = $condition->getExtraValueReference();
+				$where = $this->evaluateDWITHIN( $atr, $refVal, $extra, $srid);
+				break;
 			default:
 				$where = parent::evaluateAnyCondition($condition);
 		}
 		return $where;
+	}
+	
+	private function evaluateDWITHIN( $attribute, $refValue, $extra, $srid ) { 
+		return "ST_DWithin(" . $attribute->alias . "." . $attribute->attr . ", ". $this->geomFromText($refValue, $srid) .", " . $extra .") "; 
 	}
 	
 	private function evaluateINTERSECTS( $attribute, $refValue, $srid ) { 
@@ -101,31 +109,44 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 	
 	public function evaluateGISFunction( $projection, $srid ) {
 		$params = $projection->getParams();
+		$returnGeometry = $projection->returnGeometry();
 		
 		switch ($projection->getType()) {
 			case GISFunction::GIS_FUNCTION_DISTANCE:
-				 return $this->evaluateDISTANCEFunction($params, $srid);
+				 return $this->evaluateGISFunctionName('ST_Distance', $returnGeometry,$params, $srid);
+			case GISFunction::GIS_FUNCTION_AREA:
+				 return $this->evaluateGISFunctionName('ST_Area', $returnGeometry, $params, $srid);
+			case GISFunction::GIS_FUNCTION_INTERSECTION:
+				 return $this->evaluateGISFunctionName('ST_Intersection', $returnGeometry, $params, $srid);
+			case GISFunction::GIS_FUNCTION_UNION:
+				 return $this->evaluateGISFunctionName('ST_Union', $returnGeometry, $params, $srid);
+			case GISFunction::GIS_FUNCTION_DIFFERENCE:
+				 return $this->evaluateGISFunctionName('ST_Difference', $returnGeometry, $params, $srid);
 			default:
 				throw new Exception("Function " . $projection->getYpe() . "not supported yet");
 		}
 	}
 	
-	private function evaluateDISTANCEFunction(array $params, $srid) {
-		$function = "ST_Distance(";
+	private function evaluateGISFunctionName($name, $returnGeometry, array $params, $srid) {
+		$function = $name . '(';
 		foreach ($params as $selectItem) {
 			if ($selectItem instanceof SelectAttribute) {
 				$function .= $selectItem->getAlias() . "." . $selectItem->getAttrName() . ",";
 			} else if ($selectItem instanceof SelectValue) {
 				$function .= $this->geomFromText($selectItem->getValue(), $srid) . ",";
 			} else {
-				throw new Exception("Type not supported for Function DISTANCE");
+				throw new Exception('Type not supported for Function ' . $name);
 			}
 		}
 		
-		return substr($function, 0, -1) . ")"; // Saca ultimo "; " y agrega el ultimo parentesis
+		$function = substr($function, 0, -1) . ")"; // Saca ultimo "; " y agrega el ultimo parentesis
+		if ($returnGeometry) {
+			return $this->asText($function);
+		} else {
+			return $function;
+		}
 	}
 
-	
 }
 
 ?>

@@ -23,7 +23,8 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 12, 'Existen mas pacientes que 12 y hay '. count($result));
+		$this->assert((count($result) == 12) && ($result[0]['ubicacion_de_p'] !== null) && ($result[0]['ubicacion_de_p'] instanceof Geometry), 
+			'Existen mas pacientes que 12 y hay '. count($result));
 	}
 	
 	function testSimpleGISQueryWithConditionOneRecord() {
@@ -38,10 +39,11 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 1 && $result[0]['ubicacion_de_p'] !== null, 'Deserializacion de punto en GISQuery caminando');
+		$this->assert((count($result) == 1) && ($result[0]['ubicacion_de_p'] !== null) && ($result[0]['ubicacion_de_p'] instanceof Geometry), 
+			'Deserializacion de punto en GISQuery caminando');
 	}
 	
-	function testGISQuery() {
+	function testGISQueryDistance() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::DISTANCE_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'distancia'));
 		$q->addFrom(Paciente::getClassName(), 'p');
@@ -52,6 +54,50 @@ class GISQueryTest extends YuppGISTestCase {
 		$this->assert(count($result) == 12 && $result[0]['distancia'] !== null, 'Distancia de de puntos caminando ' . $result[0]['distancia']);
 	}
 	
+	function testGISQueryArea() {
+		$q = new GISQuery();
+		$q->addFunction(GISFunction::AREA('p', 'ubicacion', 'area'));
+		$q->addFrom(Paciente::getClassName(), 'p');
+		  
+		$pm = PersistentManagerFactory::getManager();
+		$result = $pm->findByQuery($q);
+		
+		$this->assert(count($result) == 12 && $result[0]['area'] !== null, 'Area caminando ' . $result[0]['area']);
+	}
+	
+	function testGISQueryIntersection() {
+		$q = new GISQuery();
+		$q->addFunction(GISFunction::INTERSECTION_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'intersection'));
+		$q->addFrom(Paciente::getClassName(), 'p');
+		  
+		$pm = PersistentManagerFactory::getManager();
+		$result = $pm->findByQuery($q);
+		
+		$this->assert(count($result) == 12 && $result[0]['intersection'] !== null, 'Intersection caminando ' . $result[0]['intersection']);
+	}
+	
+	function testGISQueryUnion() {
+		$q = new GISQuery();
+		$q->addFunction(GISFunction::UNION_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'union'));
+		$q->addFrom(Paciente::getClassName(), 'p');
+		  
+		$pm = PersistentManagerFactory::getManager();
+		$result = $pm->findByQuery($q);
+		
+		$this->assert(count($result) == 12 && $result[0]['union'] !== null, 'Union caminando ' . $result[0]['union']);
+	}
+	
+	function testGISQueryDifference() {
+		$q = new GISQuery();
+		$q->addFunction(GISFunction::DIFFERENCE_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'difference'));
+		$q->addFrom(Paciente::getClassName(), 'p');
+		  
+		$pm = PersistentManagerFactory::getManager();
+		$result = $pm->findByQuery($q);
+		
+		$this->assert(count($result) == 12 && $result[0]['difference'] !== null, 'Difference caminando');
+	}
+
 }
 
 ?>
