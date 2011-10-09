@@ -40,6 +40,7 @@ class KMLUtilities{
 			<className>'.get_class($element).'</className>
 			<layerId>'.$layer->getId().'</layerId>
 			<elementId>'.$element->getId().'</elementId>
+			<gisType>'.GISDatatypes::POINT.'</gisType>
 			<Style>
 		        <IconStyle>
 		          <scale>0.8</scale>
@@ -63,16 +64,19 @@ class KMLUtilities{
 			<className>'.get_class($element).'</className>
 			<layerId>'.$layer->getId().'</layerId>
 			<elementId>'.$element->getId().'</elementId>
+			<gisType>'.GISDatatypes::LINESTRING.'</gisType>
+			';
 			
-			<LineString>
-				<coordinates>';
-			foreach ($element->getLinea()->getPoints() as $point){
-				$kml.=	$point->getX().','.$point->getY().',0. ';
-			}
-
+			if($element->getLinea() != null){
+			$kml.=	'<LineString>
+				<coordinates>';			
+				foreach ($element->getLinea()->getPoints() as $point){
+					$kml.=	$point->getX().','.$point->getY().',0. ';
+				}			
 			$kml.=	'</coordinates>
-			</LineString>
-		</Placemark>';
+			</LineString>';
+			}
+		$kml .= '</Placemark>';
 		}
 
 		return $kml;

@@ -72,15 +72,18 @@ $layer3 = new DataLayer('Viejos','','/yuppgis/yuppgis/js/gis/img/marker-gold.png
 $p1 = new Paciente();
 $p1->setNombre('Juan');
 $p1->setUbicacion(new Point(-56.181948, -34.884621));
+$p1->setLinea(new LineString(array ( new Point(-56.181948, -34.884621), new Point(-56.17438, -34.88619))));
 
 
 $p2 = new Paciente();
 $p2->setNombre('Jose');
 $p2->setUbicacion(new Point( -56.181448, -34.883641));
+$p2->setLinea(new LineString(array ( new Point(-56.181948, -34.884621), new Point(-56.17438, -34.88619))));
 
 $p3 = new Paciente();
 $p3->setNombre('Maria');
 $p3->setUbicacion(new Point(-56.181764, -34.884255));
+$p3->setLinea(new LineString(array ( new Point(-56.181948, -34.884621), new Point(-56.17438, -34.88619))));
 
 $layer1->addElement($p1);
 $layer1->addElement($p2);
@@ -97,14 +100,17 @@ $layer1->save();
 $p1 = new Paciente();
 $p1->setNombre('Roberto');
 $p1->setUbicacion(new Point(-56.181948, -34.883821));
+$p1->setLinea(new LineString(array ( new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619))));
 
 $p2 = new Paciente();
 $p2->setNombre('Emilia');
 $p2->setUbicacion(new Point( 585055, 6242602));
+//$p2->setLinea(new LineString(array ( new Point(585055, 6242602), new Point(-56.17438, -34.88619))));
 
 $p3 = new Paciente();
 $p3->setNombre('Eliana');
 $p3->setUbicacion(new Point(-56.181264, -34.883341));
+$p3->setLinea(new LineString(array ( new Point(-56.181264, -34.883341), new Point(-56.17438, -34.88619))));
 
 $layer2->addElement($p1);
 $layer2->addElement($p2);
@@ -126,14 +132,17 @@ $layer2->save();
 $p1 = new Paciente();
 $p1->setNombre('Martin');
 $p1->setUbicacion(new Point(-56.181548, -34.882521));
+$p1->setLinea(new LineString(array ( new Point(-56.181548, -34.882521), new Point(-56.17438, -34.88619))));
 
 $p2 = new Paciente();
 $p2->setNombre('Jorge');
 $p2->setUbicacion(new Point( -56.181354, -34.882631));
+$p2->setLinea(new LineString(array ( new Point(-56.181354, -34.882631), new Point(-56.17438, -34.88619))));
 
 $p3 = new Paciente();
 $p3->setNombre('German');
 $p3->setUbicacion(new Point(-56.181164, -34.882741));
+$p3->setLinea(new LineString(array ( new Point(-56.181164, -34.882741), new Point(-56.17438, -34.88619))));
 
 $layer3->addElement($p1);
 $layer3->addElement($p2);
