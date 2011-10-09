@@ -475,7 +475,7 @@ class DatabasePostgreSQL {
             } else if ($proj instanceof SelectAggregation) {
                $res .= $proj->getName() . "(". $proj->getParam()->getAlias() . "." . $proj->getParam()->getAttrName() .")";
             }
-			if ($proj->getSelectItemAlias() != null) {
+			if ($proj->getSelectItemAlias() != '*') {
 				$res .= " as " . $proj->getSelectItemAlias();
 			}
 			$res .= ", ";
