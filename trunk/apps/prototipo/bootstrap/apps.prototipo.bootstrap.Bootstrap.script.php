@@ -4,6 +4,7 @@ YuppLoader::load('yuppgis.core.basic', 'Map');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 YuppLoader::load('yuppgis.core.basic', 'Tag');
 YuppLoader::load('prototipo.model', 'Paciente');
+YuppLoader::load('prototipo.model', 'Medico');
 
 /*Borro toda la data preexistente*/
 
@@ -158,7 +159,15 @@ $layer2->save();
 
 $layer3->save();
 
+$medico = new Medico();
+$medico->setNombre('Medico Test');
 
+$puntos = array ( new Point(-56.181548, -34.842521), new Point(-56.192548, -34.843521), new Point(-56.185648, -34.433621), new Point(-56.182748, -34.882721), new Point(-56.181548, -34.842521));
+$line = new LineString($puntos);
+$polygon = new Polygon($line);
+$medico->setZonas(new MultiPolygon(array ($polygon)));
+$layer1->addElement($medico);
+$layer1->save();
 
 $map->addLayer($layer1);
 $map->addLayer($layer2);

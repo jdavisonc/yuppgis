@@ -78,6 +78,47 @@ class KMLUtilities{
 			}
 		$kml .= '</Placemark>';
 		}
+		
+		if ($element->hasAttribute('zonas')){
+			
+				
+				foreach ($element->getZonas()->getCollection() as $zona) {
+					$kml .= '
+						<Placemark>
+							<name>'.$element->getId().'</name>
+							<description>Capa: '.$layer->getName().', Id: '.$element->getId().'</description>
+							<className>'.get_class($element).'</className>
+							<layerId>'.$layer->getId().'</layerId>
+							<elementId>'.$element->getId().'</elementId>
+							<gisType>'.GISDatatypes::POLYGON.'</gisType>';
+					$kml .= '<Polygon><outerBoundaryIs>
+        						<LinearRing>
+        						<coordinates>';			
+									foreach ($zona->getExteriorBoundary()->getPoints() as $point){
+										$kml.=	$point->getX().','.$point->getY().',0. ';
+									}			
+						$kml.=	'</coordinates>
+								 </LinearRing>
+							</outerBoundaryIs>';
+         			
+					if ($zona->getInteriorsBoundary() != null) {
+						
+						$kml .= '<innerBoundaryIs>';
+						foreach ($zona->getInteriorsBoundary() as $line) {
+							$kml.=	'<LineRing>
+									<coordinates>';			
+										foreach ($line->getPoints() as $point){
+											$kml.=	$point->getX().','.$point->getY().',0. ';
+										}			
+							$kml.=	'</coordinates>
+									</LineRing>
+									</innerBoundaryIs>';
+						}
+						
+					}
+					$kml .= '</Polygon></Placemark>';
+				}
+		}
 
 		return $kml;
 	}
