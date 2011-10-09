@@ -23,7 +23,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert((count($result) == 12) && ($result[0]['ubicacion_de_p'] !== null) && ($result[0]['ubicacion_de_p'] instanceof Geometry), 
+		$this->assert((count($result) == 9) && ($result[0]['ubicacion_de_p'] !== null) && ($result[0]['ubicacion_de_p'] instanceof Geometry), 
 			'Existen mas pacientes que 12 y hay '. count($result));
 	}
 	
@@ -56,7 +56,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert((count($result) == 144), 'Deserializacion de punto en GISQuery entre objetos caminando  ' . count($result));
+		$this->assert((count($result) == 81), 'Deserializacion de punto en GISQuery entre objetos caminando  ' . count($result));
 	}
 	
 	function testGISQueryDistance() {
@@ -67,7 +67,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 12 && $result[0]['distancia'] !== null, 'Distancia de de puntos caminando ' . $result[0]['distancia']);
+		$this->assert(count($result) == 9 && $result[0]['distancia'] !== null, 'Distancia de de puntos caminando ' . $result[0]['distancia']);
 	}
 	
 	function testGISQueryArea() {
@@ -78,7 +78,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 12 && $result[0]['area'] !== null, 'Area caminando ' . $result[0]['area']);
+		$this->assert(count($result) == 9 && $result[0]['area'] !== null, 'Area caminando ' . $result[0]['area']);
 	}
 	
 	function testGISQueryIntersection() {
@@ -89,7 +89,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 12 && $result[0]['intersection'] !== null, 'Intersection caminando ' . $result[0]['intersection']);
+		$this->assert(count($result) == 9 && $result[0]['intersection'] !== null, 'Intersection caminando ' . $result[0]['intersection']);
 	}
 	
 	function testGISQueryUnion() {
@@ -100,7 +100,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 12 && $result[0]['union'] !== null, 'Union caminando ' . $result[0]['union']);
+		$this->assert(count($result) == 9 && $result[0]['union'] !== null, 'Union caminando ' . $result[0]['union']);
 	}
 	
 	function testGISQueryDifference() {
@@ -111,7 +111,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 12 && $result[0]['difference'] !== null, 'Difference caminando');
+		$this->assert(count($result) == 9 && $result[0]['difference'] !== null, 'Difference caminando');
 	}
 
 }
