@@ -1,7 +1,7 @@
 <?php
 
 $srid = 32721;
-$google_maps_key = 'ABQIAAAA9a4X6TFheB81m4gfqmoVHRQl3YGh390M_4O6wxlWQ-a6-Oz5rBRtOqOhlPbudwJAoZZBg_gql7zLpg';
+$google_maps_key = 'ABQIAAAAPiUEqlE8F8uamnkALXUlpBROxdxrcLD3lYp40t9TM89VIkUnWRTdXwm_Upj0NJZDmalkMVNX0hfonA';
 
 $gisdb = array( YuppConfig::MODE_DEV  => array(
                                      'type'     => YuppConfig::DB_POSTGRES,

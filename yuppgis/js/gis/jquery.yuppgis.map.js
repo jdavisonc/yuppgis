@@ -80,58 +80,59 @@
 					success: function (data) {
 
 						var google = new OpenLayers.Layer.Google("Google", {
-							/*type: G_HYBRID_MAP,
-							sphericalMercator: true*/
+							/*
+							 * type: G_HYBRID_MAP, sphericalMercator: true
+							 */
 						});
 
-						
+
 						map = new OpenLayers.Map("map_" + id, {
-							
-			                scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
-			                         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
-			                			                
-							projection: "EPSG:32721"
-					                    
+
+							scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
+							         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
+
+							         projection: "EPSG:32721"
+
 						});
 						var wms = new OpenLayers.Layer.WMS("WMS",
-				                "/yuppgis/prototipo/home/mapServer?",
-				                {
-				                    map: '/home/yuppgis/workspace/YuppGis/yuppgis/yuppgis.map',
-				                    layers: 'departamento,manzanas',
-				                    format: 'aggpng24'
-				                },
-				                {				                	
-				                		 
-									maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
-					                scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
-					                         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
-				                    units: 'm',
-				                    projection: "EPSG:32721",
-				                    
-				                    gutter: 0,
-				                    ratio: 1,
-				                    wrapDateLine: true,
-				                    isBaseLayer: true,
-				                    singleTile: true,
-				                    transitionEffect: 'resize',
-				                    queryVisible: true
-				                    
+								"/yuppgis/prototipo/home/mapServer?",
+								{
+							map: '/home/yuppgis/workspace/YuppGis/yuppgis/yuppgis.map',
+							layers: 'departamento,manzanas',
+							format: 'aggpng24'
+								},
+								{				                	
 
-				                });
+									maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
+									scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
+									         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
+									         units: 'm',
+									         projection: "EPSG:32721",
+
+									         gutter: 0,
+									         ratio: 1,
+									         wrapDateLine: true,
+									         isBaseLayer: true,
+									         singleTile: true,
+									         transitionEffect: 'resize',
+									         queryVisible: true
+
+
+								});
 
 						if(mapOptions.type == 'google'){
 							map.addLayer(google);
 						}else{
 							map.addLayer(wms);
 						}						
-						
+
 						map.zoomToMaxExtent();
 
 						var click = new OpenLayers.Control.Click();
 						map.addControl(click);
 						click.activate();
 
-						
+
 						var vector = [];
 						$.each(data, function (i, item) {
 							var layerurl = "/yuppgis/prototipo/Home/mapLayer?layerId=" + item.id;
@@ -223,39 +224,43 @@
 
 				function onFeatureSelect(feature) {
 
+					if( feature.attributes.gisType == 'yuppgis_type_point' ){
+						log("Select: Llamo a selectHandler");
 
-					$.ajax({
-						url: "/yuppgis/prototipo/home/details",
-						data: {
-							layerId: feature.attributes.layerId,
-							className: feature.attributes.className,
-							elementId: feature.attributes.elementId
-						},
-						success: function (data) {
-							var html = data;
-							if (data == '') {
-								html = feature.attributes.description;
-							};
+						$.ajax({
+							url: "/yuppgis/prototipo/home/details",
+							data: {
+								layerId: feature.attributes.layerId,
+								className: feature.attributes.className,
+								elementId: feature.attributes.elementId
+							},
+							success: function (data) {
+								var html = data;
+								if (data == '') {
+									html = feature.attributes.description;
+								};
 
+								feature.popup = new OpenLayers.Popup.FramedCloud("popup_" + id + "_" + feature.attributes.elementId, 
+										feature.geometry.getBounds().getCenterLonLat(), 
+										new OpenLayers.Size(100, 100), html, null, true, onPopupClose);
 
+								selectedFeatures.push(feature);
 
-							feature.popup = new OpenLayers.Popup.FramedCloud("popup_" + id + "_" + feature.attributes.elementId, 
-									feature.geometry.getBounds().getCenterLonLat(), 
-									new OpenLayers.Size(100, 100), html, null, true, onPopupClose);
-
-							selectedFeatures.push(feature);
-
-							map.addPopup(feature.popup);
-						}
-					});
+								map.addPopup(feature.popup);
+							}
+						});
+					}
 				}
 
 				function onFeatureUnselect(feature) {
+					if( feature.attributes.gisType == 'yuppgis_type_point' ){
+						log("Select: Llamo a unselectHandler");
+						map.removePopup(feature.popup);
 
-					map.removePopup(feature.popup);
+						feature.popup.destroy();
+						feature.popup = null;
 
-					feature.popup.destroy();
-					feature.popup = null;
+					}
 
 				}
 
@@ -325,10 +330,12 @@
 				if (layer.features != undefined){
 
 					for (var j=0; j<layer.features.length;j++){
-						var id = layer.features[j].attributes['elementId'];
+						if( layer.features[j].attributes.gisType == 'yuppgis_type_point' ){
+							var id = layer.features[j].attributes['elementId'];
 
-						if ($.inArray(id,fids) >= 0){	        			   
-							layer.features[j].style.display = 'none';												
+							if ($.inArray(id,fids) >= 0){	        			   
+								layer.features[j].style.display = 'none';												
+							}
 						}
 					}
 					layer.redraw();
@@ -347,13 +354,15 @@
 				if (layer.features != undefined){
 
 					for (var j=0; j<layer.features.length;j++){
-						var id = layer.features[j].attributes['elementId'];
+						if(layer.features[j].attributes.gisType == 'yuppgis_type_point' ){
+							var id = layer.features[j].attributes['elementId'];
 
-						if ($.inArray(id,fids) >= 0){	        			   
-							layer.features[j].style.display = '';
-						}else{
-							if (hideNonMatching){
-								layer.features[j].style.display = 'none';		
+							if ($.inArray(id,fids) >= 0){	        			   
+								layer.features[j].style.display = '';
+							}else{
+								if (hideNonMatching){
+									layer.features[j].style.display = 'none';		
+								}
 							}
 						}
 					}
