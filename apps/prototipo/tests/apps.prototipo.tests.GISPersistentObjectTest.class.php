@@ -3,6 +3,7 @@
 YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('prototipo.model', 'Paciente');
 YuppLoader::load('prototipo.model', 'Street');
+YuppLoader::load('prototipo.model', 'Medico');
 YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 YuppLoader::load('yuppgis.core.basic.ui', 'Icon');
 
@@ -14,6 +15,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 
 	private $paciente = null;
 	private $street = null;
+	private $medico = null;
 
 	/**
 	 * Prueba para probar configuracion de Punto
@@ -103,7 +105,37 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		//TODO
 		$this->assert(0 == 0, 'Test de borrado de Calle');
 	}
+	
+	function testSaveMedico() {
+		$s = new Medico();
+		$s->setNombre('Medico Test');
+		
+		$puntos = array ( new Point(23, 32), new Point(32, 82), new Point(83, 99), new Point(99, 108), new Point(23, 32));
+		$line = new LineString($puntos);
+		$polygon = new Polygon($line);
+		$s->setZonas(new MultiPolygon(array ($polygon)));
+		
+		$s -> save();
+		$this->medico = $s;
+		$this->assert($s->getId() !== null, 'Se guardo el medico con un polygono ');
+		
+	}
+	
+	function testGetMedico() {
+		$id = $this->medico->getId();
+		$p = Medico::get($id);
+		$line = $p->getZonas();
+		$this->assert($p !== null, 'Se obtuvo correctamente el medico con ID = '. $id);
 
+	}
+	
+	function testRemoveMedico() {
+		$id = $this->medico->getId();
+		$this->medico->delete();
+		
+		//TODO
+		$this->assert(0 == 0, 'Test de borrado de Medico');
+	}
 }
 
 ?>

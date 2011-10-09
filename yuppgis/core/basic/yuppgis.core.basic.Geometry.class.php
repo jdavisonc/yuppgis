@@ -4,6 +4,9 @@ YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 
 class Geometry extends PersistentObject {
 	
+	// propiedades de las geometrias, dimension
+	protected $dimension;
+	
 	private $uiPropertyObject = null;
 	
 	public function __construct($args = array (), $isSimpleInstance = false) {
@@ -47,7 +50,14 @@ class Geometry extends PersistentObject {
 	public static function getClassName() {
         return get_called_class();
     }
-
+    
+    /*
+    public abstract function getFirstPoint();
+	public abstract function getLastPoint();
+	public abstract function getPoint(int $n);
+	public abstract	function numPoints(); 
+	public abstract function isSimple();
+	*/
 }
 
 ?>
