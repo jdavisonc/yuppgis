@@ -3,6 +3,7 @@
 YuppLoader :: load('core.persistent', 'PersistentManager');
 YuppLoader :: load('yuppgis.core.persistent', 'GISPersistentManager');
 YuppLoader :: load('yuppgis.core.persistent', 'GISPMPremium');
+YuppLoader :: load('yuppgis.core.persistent', 'GISPMBasic');
 
 class PersistentManagerFactory {
 	
@@ -10,8 +11,13 @@ class PersistentManagerFactory {
 	
 	public static function getManager( $load_estragegy = NULL ) {
 		if (!self::$manager){
-			// TODO_GIS selecciona el PM segun config
-			self::$manager = new GISPMPremium( $load_estragegy );
+			$appName = YuppContext::getInstance()->getApp();
+			$mode = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_YUPPGIS_MODE);
+			if ($mode == YuppGISConfig::MODE_PREMIUM) {
+				self::$manager = new GISPMPremium( $load_estragegy );
+			} else {
+				self::$manager = new GISPMBasic( $load_estragegy );
+			}
 		}
 		return self::$manager;
    }

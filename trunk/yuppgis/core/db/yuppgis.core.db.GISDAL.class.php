@@ -58,6 +58,10 @@ class GISDAL extends DAL {
             throw new Exception('datasource type no soportado: '.$type);
 		}
 	}
+	
+	public function isTheSameConnectorThatGISDB() {
+		return ($this->db == $this->gisdb);
+	}
 
 	/**
 	 * Inserta un registro del tipo geografico

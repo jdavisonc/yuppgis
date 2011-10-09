@@ -4,11 +4,11 @@ YuppLoader::load( 'core.db', 'DatabasePostgreSQL' );
 
 class DatabasePostgisSQL extends DatabasePostgreSQL {
 	
-	public function evaluateAnyGISCondition( Condition $condition , $srid) {
+	public function evaluateAnyGISCondition( Condition $condition , $srid ) {
 		$where = "";
 		$refVal = $condition->getReferenceValue();
 		$refAttr = $condition->getReferenceAttribute();
-		$atr    = $condition->getAttribute();
+		$atr = $condition->getAttribute();
 		
 		switch ( $condition->getType() ) {
 			case GISCondition::GISTYPE_ISCONTAINED:
@@ -26,6 +26,15 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 			case GISCondition::GISTYPE_DWITHIN:
 				$extra = $condition->getExtraValueReference();
 				$where = $this->evaluateDWITHIN( $atr, $refVal, $extra, $srid);
+				break;
+			case Condition::TYPE_NOT:
+				$where = $this->evaluateNOTGISCondition( $condition, $srid );
+				break;
+			case Condition::TYPE_AND:
+				$where = $this->evaluateANDGISCondition( $condition, $srid );
+				break;
+			case Condition::TYPE_OR:
+				$where = $this->evaluateORGISCondition( $condition, $srid );
 				break;
 			default:
 				$where = parent::evaluateAnyCondition($condition);
@@ -85,7 +94,7 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 	public function evaluateGISSelect( $select, $srid  ) {
 		$projections = $select->getAll();
 		if (count($projections) == 0) {
-			return "SELECT *";
+			return "SELECT * ";
 		} else {
 			$res = "SELECT ";
 			foreach ($projections as $proj) {
@@ -147,6 +156,47 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 		}
 	}
 
+	public function evaluateNOTGISCondition( Condition $condition, $srid ) {
+		$conds = $condition->getSubconditions();
+		if ( count($conds) !== 1 ) {
+			throw new Exception("Not debe tener exactamente una condicion para evaluarse. ".__FILE__." ".__LINE__);
+		}
+		
+		return "NOT (" . $this->evaluateAnyGISCondition( $conds[0], $srid ) . ") ";
+	}
+   
+	public function evaluateANDGISCondition( Condition $condition, $srid ) {
+		$conds = $condition->getSubconditions();
+		$res = "(";
+		$i = 0;
+		$condCount = count( $conds );
+		
+		foreach ( $conds as $cond ) {
+			$res .= $this->evaluateAnyGISCondition( $cond, $srid );
+			if ($i+1 < $condCount) {
+				$res .= " AND ";
+			}
+			$i++;
+		}
+		return $res . ")";
+	}
+	
+	public function evaluateORGISCondition( Condition $condition, $srid ) {
+		$conds = $condition->getSubconditions();
+		$res = "(";
+		$i = 0;
+		$condCount = count( $conds );
+		
+		foreach ( $conds as $cond ) {
+			$res .= $this->evaluateAnyGISCondition( $cond, $srid );
+			if ($i+1 < $condCount) {
+				$res .= " OR ";
+			}
+			$i++;
+		}
+		return $res . ")";
+	}
+	
 }
 
 ?>

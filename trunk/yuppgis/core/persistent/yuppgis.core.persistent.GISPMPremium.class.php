@@ -168,6 +168,9 @@ class GISPMPremium extends PersistentManager implements GISPersistentManager {
 	}
 	/**
 	 * Busca elementos $instance segun una condicion
+	 * 
+	 * *TODO_GIS*: Ver de suplantar por una GISQuery y asi borrar la logica de la funcion processCondition
+	 * 
 	 * @see PersistentManager::findBy()
 	 */
 	public function findBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {

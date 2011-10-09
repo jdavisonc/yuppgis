@@ -8,8 +8,26 @@ class GISQueryProcessor {
 		$this->dal = $dal;
 	}
 	
+	/**
+	 * Procesa una GISQuery y retorna el resultado.
+	 * 
+	 * @param GISQuery $query
+	 */
 	public function process(GISQuery $query) {
-		
+		// Optimizacion para cuando es la misma conexion de DB que GISDB
+		if ($this->dal->isTheSameConnectorThatGISDB()) {
+			return $this->processQueryWithSameConnectorToGISDB($query);
+		} else {
+			return $this->processQueryWithDifferentConnectorToGISDB($query);
+		}
+	}
+	
+	/**
+	 * Procesa una GISQuery con conectores a DB y GISDB distintos.
+	 * 
+	 * @param GISQuery $query
+	 */
+	private function processQueryWithDifferentConnectorToGISDB(GISQuery $query) {
 		//0. Obtengo atributos geograficos posibles en la query
 		$geoAttrsOfQuery = $this->getGeometryAttrs($query->getFrom());
 		
@@ -26,9 +44,113 @@ class GISQueryProcessor {
 		$gisResults = $this->executeGISQuerys($gisQueries);
 		
 		//5. Se arma resultado final
-		$finalResult = $this->processResults($query->getSelect(), $mainResult, $processedSelects, $gisResults);
+		return $this->processResults($query->getSelect(), $mainResult, $processedSelects, $gisResults);
+	}
+	
+	/**
+	 * Procesa una GISQuery con el mismo conector de DB que GISDB.
+	 * *CUIDADO*: Esta funcion puede retornar menos resultados, ya que Yupp no soporta JOINS explicitos!!!!
+	 *  
+	 * @param GISQuery $query
+	 */
+	private function processQueryWithSameConnectorToGISDB(GISQuery $query) {
+		$geoAttrsOfQuery = $this->getGeometryAttrs($query->getFrom());
 		
-		return $finalResult;
+		$select = $query->getSelect();
+		$from = $query->getFrom();
+		
+		if ($select->isEmpty()) { // caso select *
+			$newProyections = $this->createAllProjections($select, $from);
+			$select = new Select($newProyections);
+		}
+		$conditions = Condition::_AND();
+		$newSelect = new Select();
+		$aliasAttrUsed = array();
+		
+		foreach ($select->getAll() as $selectItem) {
+			$this->GISProjectionToProjectionWithSameConnector($geoAttrsOfQuery, $selectItem, $newSelect, $aliasAttrUsed, $conditions);
+		}
+		
+		$newFrom = $this->GISFromToFromWithSameConnector($from, $aliasAttrUsed);
+		$newCondition = $this->GISConditionToConditionWithSameConnector($newFrom, $query->getWhere());
+		if ($newCondition != null) {
+			$conditions->add($newCondition);
+		}
+		$query->setSelect($newSelect);
+		$query->setFrom($newFrom);
+		$query->setCondition($conditions);
+		
+		return $this->dal->gis_query($query);
+	}
+	
+	private function GISProjectionToProjectionWithSameConnector($geoAttrsOfQuery, $selectItem, $newSelect, &$aliasAttrUsed, $conditions) {
+		if ($selectItem instanceof SelectAttribute) {
+			$alias = $selectItem->getAlias();
+			$attrName = $selectItem->getAttrName();
+			$attrAlias = $selectItem->getSelectItemAlias();
+			if (in_array($attrName, $geoAttrsOfQuery[$alias])) {
+				$geoAttrAssoc = DatabaseNormalization::simpleAssoc($attrName);
+				$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . 'geom' , 'id')); // p.ubicacion_id = pgeom.id
+				$newSelect->add(new SelectGISAttribute($alias . 'geom' , 'geom', $attrAlias));
+				if (array_key_exists($alias, $aliasAttrUsed)) {
+					$aliasAttrUsed[$alias][] = $attrName;
+				}else {
+					$aliasAttrUsed[$alias] = array($attrName);
+				}
+			} else {
+				$newSelect->add($selectItem);
+			}
+		} else if ($selectItem instanceof SelectAggregation) {
+			
+			if ($selectItem->getParam() instanceof GISFunction) {
+				$gisFunction = $selectItem->getParam();
+				$newGisFunctionParams = array();
+				foreach ($gisFunction->getParams() as $param) {
+					if ($param instanceof SelectAttribute) {
+
+						$alias = $param->getAlias();
+						$attrName = $param->getAttrName();
+						$geoAttrAssoc = DatabaseNormalization::simpleAssoc();
+						$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . 'geom' , 'id')); // p.ubicacion_id = pgeom.id
+						$newGisFunctionParams[] = new SelectAttribute($alias . 'geom', 'geom');
+						if (array_key_exists($alias, $aliasAttrUsed)) {
+							$aliasAttrUsed[$alias][] = $attrName;
+						}else {
+							$aliasAttrUsed[$alias] = array($attrName);
+						}
+					} else { // SelectValue
+						$newGisFunctionParams[] = $param;
+					}
+				}
+				$newSelect->add(new SelectAggregation($selectItem->getName(),new GISFunction($gisFunction->getType(), $newGisFunctionParams)));
+			} else {
+				$newSelect->add($selectItem);
+			}
+		} else if ($selectItem instanceof SelectValue) {
+			$newSelect->add($selectItem); 
+		} else if ($selectItem instanceof GISFunction) {
+			$gisFunction = $selectItem;
+			$gisFunctionAlias = $selectItem->getSelectItemAlias();
+			$newGisFunctionParams = array();
+			
+			foreach ($gisFunction->getParams() as $param) {
+				if ($param instanceof SelectAttribute) {
+					$alias = $param->getAlias();
+					$attrName = $param->getAttrName();
+					$geoAttrAssoc = DatabaseNormalization::simpleAssoc($attrName);
+					$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . 'geom' , 'id')); // p.ubicacion_id = pgeom.id
+					$newGisFunctionParams[] = new SelectAttribute($alias . 'geom', 'geom');
+					if (array_key_exists($alias, $aliasAttrUsed)) {
+						$aliasAttrUsed[$alias][] = $attrName;
+					}else {
+						$aliasAttrUsed[$alias] = array($attrName);
+					}
+				} else { // SelectValue
+					$newGisFunctionParams[] = $param;
+				}
+			}
+			$newSelect->add(new GISFunction($gisFunction->getType(), $newGisFunctionParams, $gisFunctionAlias));
+		}
 	}
 	
 	/**
@@ -77,9 +199,8 @@ class GISQueryProcessor {
 				
 				$attrGisProjectionId = new SelectAttribute($alias, 'id', 'id1');
 				$attrGisProjectionGeom = new SelectGISAttribute($alias, 'geom', $attrAlias);
-				$attrGisProjectionUIProperty = new SelectAttribute($alias, 'uiproperty');
 				
-				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom, $attrGisProjectionUIProperty));
+				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom));
 				$processedSelects->tableAttrGeo[$attrAlias] = array( new Reference($geoAttrAssoc, $alias) );
 				
 			} else {
@@ -460,9 +581,64 @@ class GISQueryProcessor {
 			$f->name = YuppConventions::tableName($gisFrom->instance_or_class);
 			$from[] = $f;
 		}
-	return $from;
+		return $from;
 	}
 	
+	private function GISFromToFromWithSameConnector(array $from, $aliasAttrUsed) {
+		$newFrom = array();
+		foreach ($from as $gisFrom) {
+			$f = new stdClass();
+			$f->alias = $gisFrom->alias;
+			$f->name = YuppConventions::tableName($gisFrom->instance_or_class);
+			$newFrom[] = $f;
+			
+			if (array_key_exists($f->alias, $aliasAttrUsed)) {
+				foreach ($aliasAttrUsed[$f->alias] as $alias => $attrName) {
+					$fgeom = new stdClass();
+					$fgeom->name = YuppGISConventions::gisTableName($f->name, $attrName);
+					$fgeom->alias = $gisFrom->alias . 'geom';
+					$newFrom[] = $fgeom;
+				}
+			}
+		}
+		return $newFrom;
+	}
+	
+	private function GISConditionToConditionWithSameConnector(array $froms, $condition) {
+		if ($condition !== null) {
+			if ($condition instanceof GISCondition) {
+				$attr = $condition->getAttribute();
+				$fromSelect = $this->getFrom($froms, $attr->alias);
+				$gisCondition = new GISCondition();
+				$gisCondition->setType($condition->getType());
+				$gisCondition->setAttribute($fromSelect->alias . 'geom', 'geom'); 
+				$gisCondition->setExtraValueReference($condition->getExtraValueReference());
+				
+				if ($condition->getReferenceAttribute() !== null) {
+					$attr2 = $condition->getReferenceAttribute();
+					$fromSelect2 = $this->getFrom($froms, $attr2->alias);
+					$gisCondition->setReferenceAttribute($fromSelect2->alias . 'geom', 'geom');
+				} else {
+					$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
+					$gisCondition->setReferenceValue($attrGeo);
+				}
+				return $gisCondition;
+			} else {
+				if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR || 
+						$condition->getType() == Condition::TYPE_NOT ) {
+					$newCondition = new Condition();
+					$newCondition->setType($condition->getType());
+					$subconditions = $condition->getSubconditions();
+					for ($i = 0; $i < count($subconditions); $i++) {
+						$newCondition->add($this->GISConditionToConditionWithSameConnector( $froms, $subconditions[$i] ));
+					}
+					return $newCondition;
+				} else {
+					return $condition;
+				}
+			}
+		}
+	}
 	
 	private function GISConditionToCondition(array $froms, $condition) {
 		if ($condition !== null) {
@@ -479,6 +655,7 @@ class GISQueryProcessor {
 				$gisCondition = new GISCondition();
 				$gisCondition->setType($condition->getType());
 				$gisCondition->setAttribute($fromSelect->alias, 'geom'); // Se establece el alias de la tabla (Ver query mas abajo) y nombre de la columna
+				$gisCondition->setExtraValueReference($condition->getExtraValueReference());
 				
 				$query = new Query();
 				$query->addFrom($gisTableName, $fromSelect->alias);
