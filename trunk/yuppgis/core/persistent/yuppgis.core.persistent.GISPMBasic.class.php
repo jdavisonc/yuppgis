@@ -6,7 +6,9 @@ class GISPMBasic extends GISPersistentManager {
 	 * @see GISPersistentManager::init()
 	 */
 	protected function init( $appName ) {
-		
+		// TODO_GIS: Deberia de tener dos instancias de dal distintas? uno comun y otro wsdal? xq esta clase no es igual que premium, 
+		//			 ya q uno es ws y otro db.
+		$this->dal = new DAL($appName);
 	}
 
 	/**

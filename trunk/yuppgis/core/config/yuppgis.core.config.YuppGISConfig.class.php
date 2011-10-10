@@ -23,7 +23,6 @@ class YuppGISConfig {
 
 	private $app_gis_properties = array( );
 	private $default_values = array( );
-	private $currentMode = null;
 	
 	private static $instance = null;
 	
@@ -38,12 +37,10 @@ class YuppGISConfig {
 	 * Se iniciliazan valores por defecto
 	 */
 	public function __construct() {
-		$this->currentMode = YuppConfig::getInstance()->getCurrentMode();
-		
 		$this->default_values[self::PROP_SRID] = self::DEFAULT_SRID;
 		$this->default_values[self::PROP_GISDB] = self::DEFAULT_GISDB;
 		$this->default_values[self::PROP_GOOGLE_MAPS_KEY] = self::DEFAULT_GOOGLE_MAPS_KEY;
-		$this->default_values[self::PROP_YUPPGIS_MODE] = self::MODE_PREMIUM;
+		$this->default_values[self::PROP_YUPPGIS_MODE] = null;
 	}
 	
 	public static function generatePath( $appName ) {
@@ -61,16 +58,7 @@ class YuppGISConfig {
 				
 				$appConfigFile = self::generatePath($appName);
 				if (file_exists($appConfigFile)) {
-					
-					// Obtengo variables del archivo de configuracion
-					include_once($appConfigFile);
-					
-					// Inicializo arrays
-					$this->app_gis_properties[$appName][self::PROP_SRID] = ${self::PROP_SRID};
-					$this->app_gis_properties[$appName][self::PROP_GISDB] = ${self::PROP_GISDB}[$this->currentMode];
-					$this->app_gis_properties[$appName][self::PROP_GOOGLE_MAPS_KEY] = ${self::PROP_GOOGLE_MAPS_KEY};
-					$this->app_gis_properties[$appName][self::PROP_YUPPGIS_MODE] = ${self::PROP_YUPPGIS_MODE};
-					
+					$this->loadPropertiesFile($appName, $appConfigFile);
 					return $this->app_gis_properties[$appName][$propertyName];		
 				}
 			} else {
@@ -80,6 +68,31 @@ class YuppGISConfig {
 		return $this->default_values[$propertyName];
 	}
 	
+	/**
+	 * Carga las propiedades segun una aplicacion y su archivo de configuracion
+	 * 
+	 * @param $appName
+	 * @param $appConfigFile
+	 */
+	private function loadPropertiesFile($appName, $appConfigFile) {
+		// Obtengo variables del archivo de configuracion
+		include_once($appConfigFile);
+		
+		// Inicializo arrays
+		$this->app_gis_properties[$appName][self::PROP_GISDB] = $this->getValue(${self::PROP_GISDB}, self::PROP_GISDB);
+		$this->app_gis_properties[$appName][self::PROP_SRID] = $this->getValue(${self::PROP_SRID}, self::PROP_SRID);
+		$this->app_gis_properties[$appName][self::PROP_GOOGLE_MAPS_KEY] = $this->getValue(${self::PROP_GOOGLE_MAPS_KEY}, self::PROP_GOOGLE_MAPS_KEY);
+		$this->app_gis_properties[$appName][self::PROP_YUPPGIS_MODE] = $this->getValue(${self::PROP_YUPPGIS_MODE}, self::PROP_YUPPGIS_MODE);
+	}
+	
+	/**
+	 * Funcion que retorna una variable si esta existe, y sino retorna su valor por defecto
+	 * @param $var 
+	 * @param $varName
+	 */
+	private function getValue(&$var, $varName) {
+		return (isset($var)) ? $var : $this->default_values[$varName];
+	}
 }
 
 ?>
