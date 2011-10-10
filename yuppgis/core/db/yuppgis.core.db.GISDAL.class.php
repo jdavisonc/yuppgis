@@ -36,11 +36,12 @@ class GISDAL extends DAL {
 	protected function init($appName) {
 		$gisdatasource = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GISDB);
 		if ($gisdatasource != NULL) {
-			$this->gisurl      = $gisdatasource['url'];
-			$this->gisuser     = $gisdatasource['user'];
-			$this->gispass     = $gisdatasource['pass'];
-			$this->gisdatabase = $gisdatasource['database'];
-			$this->gistype	   = $gisdatasource['type'];
+			$currentMode = YuppConfig::getInstance()->getCurrentMode();
+			$this->gisurl      = $gisdatasource[$currentMode]['url'];
+			$this->gisuser     = $gisdatasource[$currentMode]['user'];
+			$this->gispass     = $gisdatasource[$currentMode]['pass'];
+			$this->gisdatabase = $gisdatasource[$currentMode]['database'];
+			$this->gistype	   = $gisdatasource[$currentMode]['type'];
 		}
 		
 		$this->srid = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_SRID);

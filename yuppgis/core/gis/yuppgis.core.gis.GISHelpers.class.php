@@ -54,6 +54,7 @@ class GISHelpers{
 	 * @return html generado para el menú
 	 */
 	public static function FiltersMenu($class, $mapid, $handler = null){
+		$appName = YuppContext::getInstance()->getApp();
 		$random = uniqid();
 		
 		$html = '<select id="select_'.$class.'_'.$mapid.'_'.$random.'">';
@@ -83,7 +84,7 @@ class GISHelpers{
 							var text = $("#tbFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'").val();
 							
 							 $.ajax({
-							      url: "/yuppgis/prototipo/Home/Filter",
+							      url: "/yuppgis/"'.$appName.'"/Home/Filter",
 							      data: {
 							        filterName: selectedOption,
 							        className: "'.$class.'",
@@ -115,6 +116,7 @@ class GISHelpers{
 	 */
 	public static function Map($params=null){
 
+		$appName = YuppContext::getInstance()->getApp();
 		$id = MapParams::getValueOrDefault($params, MapParams::ID);
 		$olurl = MapParams::getValueOrDefault($params, MapParams::OpenLayerJS_URL);
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
@@ -149,7 +151,7 @@ class GISHelpers{
 		
 		<script type="text/javascript">
 		
-			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'"})
+			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'", appName: "'.$appName.'"})
 		';			
 		
 		foreach ($clickhandlers as $clickhandler){

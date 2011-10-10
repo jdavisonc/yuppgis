@@ -35,6 +35,7 @@
 
 			if (!data) {
 				var id = mapOptions.id;
+				var appName = mapOptions.appName;
 
 
 				OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
@@ -76,7 +77,7 @@
 
 
 				$.ajax({
-					url: "/yuppgis/prototipo/Home/getLayersAction?mapId=" + id,
+					url: "/yuppgis/" + appName + "/Home/getLayersAction?mapId=" + id,
 					success: function (data) {
 
 						var google = new OpenLayers.Layer.Google("Google", {
@@ -95,7 +96,7 @@
 
 						});
 						var wms = new OpenLayers.Layer.WMS("WMS",
-								"/yuppgis/prototipo/home/mapServer?",
+								"/yuppgis/" + appName + "/home/mapServer?",
 								{
 							map: '/home/yuppgis/workspace/YuppGis/yuppgis/yuppgis.map',
 							layers: 'departamento,manzanas',
@@ -135,7 +136,7 @@
 
 						var vector = [];
 						$.each(data, function (i, item) {
-							var layerurl = "/yuppgis/prototipo/Home/mapLayer?layerId=" + item.id;
+							var layerurl = "/yuppgis/" + appName + "/Home/mapLayer?layerId=" + item.id;
 							var kml = new OpenLayers.Layer.Vector(item.id, {
 								strategies: [new OpenLayers.Strategy.Fixed()],
 								protocol: new OpenLayers.Protocol.HTTP({
@@ -228,7 +229,7 @@
 						log("Select: Llamo a selectHandler");
 
 						$.ajax({
-							url: "/yuppgis/prototipo/home/details",
+							url: "/yuppgis/" + appName + "/home/details",
 							data: {
 								layerId: feature.attributes.layerId,
 								className: feature.attributes.className,

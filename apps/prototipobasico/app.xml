@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<app>
+  <name>prototipobasico</name>
+  <description></description>
+  <version>0.1</version>
+  <langs>es</langs>
+  <code></code>
+  <tags></tags>
+  <site></site>
+  <docs></docs>
+  <update></update>
+  <entry_point>
+    <controller>home</controller>
+    <action>index</action>
+  </entry_point>
+</app>

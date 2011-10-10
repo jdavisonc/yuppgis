@@ -2,7 +2,6 @@
 
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 
-
 class Map  extends PersistentObject {
 
 
