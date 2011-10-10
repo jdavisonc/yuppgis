@@ -162,7 +162,7 @@ $layer3->save();
 $medico = new Medico();
 $medico->setNombre('Medico Test');
 
-$puntos = array ( new Point(-56.181548, -34.842521), new Point(-56.192548, -34.843521), new Point(-56.185648, -34.433621), new Point(-56.182748, -34.882721), new Point(-56.181548, -34.842521));
+$puntos = array ( new Point(-56.17438, -34.88619), new Point(-56.181548, -34.882521), new Point(-56.181948, -34.880621), new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619));
 $line = new LineString($puntos);
 $polygon = new Polygon($line);
 $medico->setZonas(new MultiPolygon(array ($polygon)));
