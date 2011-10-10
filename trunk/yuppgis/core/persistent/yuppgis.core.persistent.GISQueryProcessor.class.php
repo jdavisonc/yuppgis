@@ -90,8 +90,8 @@ class GISQueryProcessor {
 			$attrAlias = $selectItem->getSelectItemAlias();
 			if (in_array($attrName, $geoAttrsOfQuery[$alias])) {
 				$geoAttrAssoc = DatabaseNormalization::simpleAssoc($attrName);
-				$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . 'geom' , 'id')); // p.ubicacion_id = pgeom.id
-				$newSelect->add(new SelectGISAttribute($alias . 'geom' , 'geom', $attrAlias));
+				$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . $attrName, 'id')); // p.ubicacion_id = pgeom.id
+				$newSelect->add(new SelectGISAttribute($alias . $attrName, 'geom', $attrAlias));
 				if (array_key_exists($alias, $aliasAttrUsed)) {
 					$aliasAttrUsed[$alias][] = $attrName;
 				}else {
@@ -111,8 +111,8 @@ class GISQueryProcessor {
 						$alias = $param->getAlias();
 						$attrName = $param->getAttrName();
 						$geoAttrAssoc = DatabaseNormalization::simpleAssoc();
-						$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . 'geom' , 'id')); // p.ubicacion_id = pgeom.id
-						$newGisFunctionParams[] = new SelectAttribute($alias . 'geom', 'geom');
+						$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . $attrName, 'id')); // p.ubicacion_id = pgeom.id
+						$newGisFunctionParams[] = new SelectAttribute($alias . $attrName, 'geom');
 						if (array_key_exists($alias, $aliasAttrUsed)) {
 							$aliasAttrUsed[$alias][] = $attrName;
 						}else {
@@ -138,8 +138,8 @@ class GISQueryProcessor {
 					$alias = $param->getAlias();
 					$attrName = $param->getAttrName();
 					$geoAttrAssoc = DatabaseNormalization::simpleAssoc($attrName);
-					$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . 'geom' , 'id')); // p.ubicacion_id = pgeom.id
-					$newGisFunctionParams[] = new SelectAttribute($alias . 'geom', 'geom');
+					$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . $attrName, 'id')); // p.ubicacion_id = pgeom.id
+					$newGisFunctionParams[] = new SelectAttribute($alias . $attrName, 'geom');
 					if (array_key_exists($alias, $aliasAttrUsed)) {
 						$aliasAttrUsed[$alias][] = $attrName;
 					}else {
@@ -596,7 +596,7 @@ class GISQueryProcessor {
 				foreach ($aliasAttrUsed[$f->alias] as $alias => $attrName) {
 					$fgeom = new stdClass();
 					$fgeom->name = YuppGISConventions::gisTableName($f->name, $attrName);
-					$fgeom->alias = $gisFrom->alias . 'geom';
+					$fgeom->alias = $gisFrom->alias . $attrName;
 					$newFrom[] = $fgeom;
 				}
 			}
@@ -611,13 +611,13 @@ class GISQueryProcessor {
 				$fromSelect = $this->getFrom($froms, $attr->alias);
 				$gisCondition = new GISCondition();
 				$gisCondition->setType($condition->getType());
-				$gisCondition->setAttribute($fromSelect->alias . 'geom', 'geom'); 
+				$gisCondition->setAttribute($fromSelect->alias . $attr->attr, 'geom'); 
 				$gisCondition->setExtraValueReference($condition->getExtraValueReference());
 				
 				if ($condition->getReferenceAttribute() !== null) {
 					$attr2 = $condition->getReferenceAttribute();
 					$fromSelect2 = $this->getFrom($froms, $attr2->alias);
-					$gisCondition->setReferenceAttribute($fromSelect2->alias . 'geom', 'geom');
+					$gisCondition->setReferenceAttribute($fromSelect2->alias . $attr2->attr, 'geom');
 				} else {
 					$attrGeo = WKTGEO::toText( $condition->getReferenceValue() );
 					$gisCondition->setReferenceValue($attrGeo);
