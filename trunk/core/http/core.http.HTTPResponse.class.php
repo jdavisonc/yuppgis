@@ -47,9 +47,11 @@ class HTTPResponse {
          $j++;
          while (($j <= (count($res)-1)) )
          {
-            $this->body .= $res[$j];
+            $this->body .= "$res[$j]\r\n"; // Se agrega \r\n ya q fue asi como se parseo, xo hay que agregarlo ya que es parte del binario
             $j++;
          }
+         $this->body = substr($this->body, 0, -2); // Elimina el ultimo \r\n que estan de mas
+         
       }
 
       return $this;

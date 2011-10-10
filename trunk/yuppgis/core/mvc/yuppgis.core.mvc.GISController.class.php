@@ -101,14 +101,9 @@ class GISController extends YuppController {
 		$request = new  HTTPRequest();
 		$url = "http://localhost/2dboy2.png";
 		$response = $request->HttpRequestGet($url);
-		
-		$data = $response->getBody();
-		//$data = pack("H" . strlen($data), $data);
 		header('Content-Type: image/png');
 		
-		
-		
-		return $this->renderString(file_get_contents($url));
+		return $this->renderString($data = $response->getBody());
 	}  
 	
 }
