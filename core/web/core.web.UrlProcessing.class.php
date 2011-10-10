@@ -34,10 +34,10 @@ class UrlProcessing {
        // OJO, el ultimo lugar puede tener params que estan en la URL: 
        // /YuppPHPFramework/portal/page/display/mi_pagina_bbb/sdfda/asdf?asdfa=sdf&gg=ee
 
-echo "<pre>";
+/*echo "<pre>";
 print_r( $url );
 print_r( $this->matches );
-echo "</pre>";
+echo "</pre>";*/
 
        // ------------------------------------------------------------------------------
        // procesado de args de url (get) o tambien de post y files.
