@@ -47,7 +47,7 @@ class HTTPResponse {
          $j++;
          while (($j <= (count($res)-1)) )
          {
-            $this->body .= $res[$j++];
+            $this->body .= $res[$j];
             $j++;
          }
       }

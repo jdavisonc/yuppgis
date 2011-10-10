@@ -30,7 +30,6 @@ function my_warning_handler($errno, $errstr, $errfile, $errline, $errcontext)
    throw new Exception( $errstr );
 }
 
-
 /*
 DateTime date_create ( [string $time [, DateTimeZone $timezone]] )
 DateTimeZone timezone_open ( string $timezone )
@@ -106,5 +105,4 @@ catch (Exception $e)
    echo '</body></html>';
    exit();
 }
-
 ?>

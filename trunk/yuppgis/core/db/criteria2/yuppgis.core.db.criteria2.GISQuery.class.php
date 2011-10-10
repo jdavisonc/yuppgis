@@ -20,3 +20,5 @@ class GISQuery extends Query {
 	}
 	
 }
+
+?>

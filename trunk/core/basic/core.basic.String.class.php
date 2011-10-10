@@ -1,8 +1,8 @@
 ﻿<?php
 
 class String {
-
-   public static function endsWith($str, $suffix)
+	
+	public static function endsWith($str, $suffix)
    {
       //echo "'" . substr( $str, -strlen($suffix), strlen($str) ) . "'";
    	 return substr( $str, -strlen($suffix), strlen($str) ) === $suffix;
@@ -145,4 +145,5 @@ class String {
       return preg_match($pattern, $string, $matches);
    }
 }
+
 ?>

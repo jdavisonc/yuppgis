@@ -1,4 +1,5 @@
 <?php
+
 class GISLayoutManager {
 
 	private function __construct() {}
@@ -28,4 +29,5 @@ class GISLayoutManager {
 		}
 	}
 }
+
 ?>
