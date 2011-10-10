@@ -89,7 +89,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 9 && $result[0]['intersection'] !== null, 'Intersection caminando ' . $result[0]['intersection']);
+		$this->assert(count($result) == 9 && $result[0]['intersection'] !== null, 'Intersection caminando');
 	}
 	
 	function testGISQueryUnion() {
@@ -100,7 +100,7 @@ class GISQueryTest extends YuppGISTestCase {
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
-		$this->assert(count($result) == 9 && $result[0]['union'] !== null, 'Union caminando ' . $result[0]['union']);
+		$this->assert(count($result) == 9 && $result[0]['union'] !== null, 'Union caminando');
 	}
 	
 	function testGISQueryDifference() {
