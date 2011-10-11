@@ -65,8 +65,9 @@ class GISPMPremium extends GISPersistentManager {
 	 */
 	private function createGISObjectFromData( $data ) {
 		$geo = $data['geom'];
-		$geo->setId($data['id']);
-		$geo->setUiproperty($data['uiproperty']);
+		$geo->setId($data['id']);		
+		$geo->aSet('id', $data['id']);
+		$geo->aSet('uiproperty', $data['uiproperty']);
 		return $geo;
 	}
 	
