@@ -247,7 +247,7 @@ class GISHelpers{
 			      type: "POST",
 			      data: {			        
 			        mapId: '.$mapId.',
-			      	json: {"d": "test"}
+			      	json: JSON.stringify($("#'.$mapId.'").YuppGISMap().getVisualizationState())
 			      }
 			  })
 			  
@@ -264,15 +264,14 @@ class GISHelpers{
 			"app" => "prototipo", 
 			"controller" =>"Home", 
 			"action"=>"loadVisualization",		 	
-			"mapId" => $mapId,
-			 
+			"mapId" => $mapId,			 
 			"body" => "Restaurar",
 			"before" => "log('beforeSend')",
 			"after" => "log('success')"
 			
 			);
 		
-		//$html .= Helpers::ajax_link($load_params);
+		$html .= Helpers::ajax_link($load_params);
 		
 		return $html;
 	}

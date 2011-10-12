@@ -20,7 +20,11 @@ class GISController extends YuppController {
 		return $this->renderString( KMLUtilities::LayerToKml($layer));
 	}
 	
-	public function saveVisualizationAction($mapId, $json){
+	public function saveVisualizationAction(){
+		
+		$mapId = $this->params['mapId'];
+		$json = $this->params['json'];
+		
 		header('Content-type: application/json');
 		
 		try{
