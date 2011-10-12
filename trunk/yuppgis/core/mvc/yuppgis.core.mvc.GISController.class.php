@@ -19,6 +19,29 @@ class GISController extends YuppController {
 
 		return $this->renderString( KMLUtilities::LayerToKml($layer));
 	}
+	
+	public function saveVisualizationAction($mapId, $json){
+		header('Content-type: application/json');
+		
+		try{
+			$map = Map::get($mapId);
+			$map->setVisualization_json($json);
+			$map->save();
+
+			return $this->renderString('{res: true}');
+		}catch (Exception $err){
+
+			return $this->renderString('{res: false, msg: "'.$err->getMessage().'"}');
+		}
+	}
+	
+	public function loadVisualizationAction(){
+		$map = Map::get($this->params['mapId']);
+		
+		header('Content-type: application/json');
+		
+		return $this->renderString($map->getVisualization_json());
+	}
 
 	public function getLayersAction(){
 

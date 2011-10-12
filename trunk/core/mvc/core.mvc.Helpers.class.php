@@ -245,14 +245,14 @@ function $func {
        $func = "ajax_link_". self::getCounter()."()";
         
        $script = "<script type=\"text/javascript\">
-function $func {
-   $.ajax({
-      url: '". self::url(array_filter($paramsMap)) ."',
-      beforeSend: $before,
-      success: $callback
-   });
-}
-</script>\n\n";
+					function $func {
+					   $.ajax({
+					      url: '". self::url(array_filter($paramsMap)) ."',
+					      beforeSend: $before,
+					      success: $callback
+					   });
+					}
+					</script>\n\n";
        
        return $script .'<a href="javascript:'. $func .'" target="_self" '. $strattrs .'">'. $body .'</a>'; // Tengo que pegar el script para que quede disponible.
     }
