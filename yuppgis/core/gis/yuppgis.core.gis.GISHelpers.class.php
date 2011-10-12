@@ -84,7 +84,7 @@ class GISHelpers{
 							var text = $("#tbFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'").val();
 							
 							 $.ajax({
-							      url: "/yuppgis/"'.$appName.'"/Home/Filter",
+							      url: "/yuppgis/'.$appName.'/Home/Filter",
 							      data: {
 							        filterName: selectedOption,
 							        className: "'.$class.'",
@@ -233,6 +233,47 @@ class GISHelpers{
 				}	
 			}			
 		}	
+		return $html;
+	}
+	
+	public static function VisualizationState($mapId){
+		
+		$saveMethod = '
+		<script type="text/javascript">
+		function saveVisualizationState_'.$mapId.'(){
+						
+			 $.ajax({
+			      url: "/yuppgis/prototipo/Home/saveVisualization",
+			      type: "POST",
+			      data: {			        
+			        mapId: '.$mapId.',
+			      	json: {"d": "test"}
+			      }
+			  })
+			  
+			  return false;
+		}
+		</script><br/>
+		';
+		
+		$html = $saveMethod;
+		$html .= '<a href="#" id="btnSaveVisualizationState_'.$mapId.'" onclick="javascript:return saveVisualizationState_'.$mapId.'()">Persistir</a>';
+		$html .= '<br />';
+		
+		$load_params = array( 
+			"app" => "prototipo", 
+			"controller" =>"Home", 
+			"action"=>"loadVisualization",		 	
+			"mapId" => $mapId,
+			 
+			"body" => "Restaurar",
+			"before" => "log('beforeSend')",
+			"after" => "log('success')"
+			
+			);
+		
+		//$html .= Helpers::ajax_link($load_params);
+		
 		return $html;
 	}
 	

@@ -34,6 +34,12 @@
 	<?php echo  GISHelpers::Log(1); ?>
 </fieldset>
 
+<fieldset>
+	<legend>Visualizaci&oacute;n</legend>
+	<?php echo  GISHelpers::VisualizationState(1); ?>
+</fieldset>
+
+
 <script type="text/javascript">
 
 function customClickHandler(event){

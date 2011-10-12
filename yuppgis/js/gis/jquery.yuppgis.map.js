@@ -373,6 +373,15 @@
 			}
 
 		}
+		
+		this.getVisualizationState = function(){
+			return {
+				layers: [],				
+				filters: [],
+				logs: [],
+				tags: []
+			};
+		}
 
 		return initialize();
 
