@@ -91,7 +91,7 @@ class GISQueryProcessor {
 			if (in_array($attrName, $geoAttrsOfQuery[$alias])) {
 				$geoAttrAssoc = DatabaseNormalization::simpleAssoc($attrName);
 				$conditions->add(Condition::EQA($alias, $geoAttrAssoc, $alias . $attrName, 'id')); // p.ubicacion_id = pgeom.id
-				$newSelect->add(new SelectGISAttribute($alias . $attrName, 'geom', $attrAlias));
+				$newSelect->add(new SelectGIS($alias . $attrName, $attrAlias));
 				if (array_key_exists($alias, $aliasAttrUsed)) {
 					$aliasAttrUsed[$alias][] = $attrName;
 				}else {
@@ -197,10 +197,9 @@ class GISQueryProcessor {
 
 				$processedSelects->mainSelect->add($attrMainProjection);
 				
-				$attrGisProjectionId = new SelectAttribute($alias, 'id', 'id1');
-				$attrGisProjectionGeom = new SelectGISAttribute($alias, 'geom', $attrAlias);
+				$attrGisProjection = new SelectGIS($alias, $attrAlias);
 				
-				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjectionId, $attrGisProjectionGeom));
+				$processedSelects->gisSelect[$attrAlias] = new Select(array($attrGisProjection));
 				$processedSelects->tableAttrGeo[$attrAlias] = array( new Reference($geoAttrAssoc, $alias) );
 				
 			} else {
@@ -231,6 +230,7 @@ class GISQueryProcessor {
 						$processedSelects->mainSelect->add($attrMainProjection);
 						$processedSelects->tableAttrGeo[$aggregationName][] = new Reference($geoAttrAssoc, $alias);
 						$newGisFunctionParams[] = new SelectAttribute($alias, 'geom'); // No interesa que tenga alias de selectItem
+						
 						$select->add(new SelectAttribute($alias, 'id', 'id' . $i++));
 						
 					} else { // SelectValue

@@ -69,8 +69,10 @@ class SelectItem {
 }
 
 class SelectAttribute extends SelectItem {
+
    private $tableAlias;
    private $attrName;
+   
    public function __construct($tableAlias, $attrName, $selectItemAlias = null)
    {
       $this->tableAlias = $tableAlias;

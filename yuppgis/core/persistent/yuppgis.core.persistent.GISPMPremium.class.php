@@ -7,6 +7,7 @@ YuppLoader :: load('yuppgis.core.db.criteria2', 'GISCondition');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'GISFunction');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'SelectValue');
 YuppLoader :: load('yuppgis.core.db.criteria2', 'SelectGISAttribute');
+YuppLoader :: load('yuppgis.core.db.criteria2', 'SelectGIS');
 
 YuppLoader :: load('yuppgis.core.persistent', 'GISQueryProcessor');
 YuppLoader :: load('yuppgis.core.persistent.serialize', 'WKTGEO');
@@ -36,9 +37,7 @@ class GISPMPremium extends GISPersistentManager {
 
 		$query = new Query();
 		$query->addFrom($tableName, 'geo');
-		$query->getSelect()->add(new SelectAttribute('geo', 'id'));
-		$query->getSelect()->add(new SelectAttribute('geo', 'uiproperty'));
-		$query->getSelect()->add(new SelectGISAttribute('geo', 'geom'));
+		$query->getSelect()->add(new SelectGIS($tableName, 'geo'));
 		$query->setCondition(Condition::EQ('geo', 'id', $id));
 		
 		$query_res = $this->dal->gis_query($query);
