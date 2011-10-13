@@ -56,6 +56,23 @@ class UIProperty {
     	}
     	return $obj;
 	}
+	
+	public function getColorName() {		
+		switch ($this->color) {
+		    case Color::WHITE:
+		        return "50FFFFFF";
+		        break;
+		    case Color::BLACK:
+		        return "50000014";
+		        break;
+		    case Color::RED:
+		        return "501400FF";
+		        break;
+		    default:
+		    	return "";
+		    	break; 
+		}		
+	}
 
 }
 

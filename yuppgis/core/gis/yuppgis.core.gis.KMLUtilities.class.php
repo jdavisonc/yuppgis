@@ -1,6 +1,9 @@
 <?php
 
 YuppLoader::load('yuppgis.core.basic','Point');
+YuppLoader::load('yuppgis.core.basic','MultiPolygon');
+YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
+
 
 class KMLUtilities{
 
@@ -65,10 +68,22 @@ class KMLUtilities{
 			<className>'.get_class($element).'</className>
 			<layerId>'.$layer->getId().'</layerId>
 			<elementId>'.$element->getId().'</elementId>
-			<gisType>'.GISDatatypes::LINESTRING.'</gisType>
-			';
-			
+			<gisType>'.GISDatatypes::LINESTRING.'</gisType>';
+						
 			if($element->getLinea() != null){
+				
+				if($element->getLinea()->hasAttribute('uiproperty')){
+						$lineStringUip = $element->getLinea()->getUIProperty();
+						if(get_class($lineStringUip) == "Border"){									
+							$kml.= '<Style>
+							    		<LineStyle>									    		 
+							      		<color>'.$lineStringUip->getColorName().'</color>	
+							      		<width>'.$lineStringUip->getWidth().'</width>								      
+							    		</LineStyle>
+						  			</Style>';
+						}								
+					}
+				
 			$kml.=	'<LineString>
 				<coordinates>';			
 				foreach ($element->getLinea()->getPoints() as $point){
@@ -81,17 +96,26 @@ class KMLUtilities{
 		}
 		
 		if ($element->hasAttribute('zonas')){
-			
-				
 				foreach ($element->getZonas()->getCollection() as $zona) {
 					$kml .= '
 						<Placemark>
 							<name>'.$element->getId().'</name>
-							<description>Capa: '.$layer->getName().', Id: '.$element->getId().'</description>
+							<description>Capa: '.$layer->getName().', Id: '.$element->getId()	.'</description>
 							<className>'.get_class($element).'</className>
 							<layerId>'.$layer->getId().'</layerId>
 							<elementId>'.$element->getId().'</elementId>
 							<gisType>'.GISDatatypes::POLYGON.'</gisType>';
+					
+							if($element->getZonas()->hasAttribute('uiproperty')){
+								$polygonUip = $element->getZonas()->getUIProperty();
+								if(get_class($polygonUip) == "Background"){									
+									$kml.= '<Style>
+									    		<PolyStyle>									    		 
+									      		<color>'.$polygonUip->getColorName().'</color>									      
+									    		</PolyStyle>
+								  			</Style>';
+								}								
+							}		
 					$kml .= '<Polygon><outerBoundaryIs>
         						<LinearRing>
         						<coordinates>';			

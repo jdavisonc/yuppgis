@@ -7,7 +7,7 @@ class Geometry extends PersistentObject {
 	// propiedades de las geometrias, dimension
 	protected $dimension;
 	
-	private $uiPropertyObject = null;
+	protected $uiPropertyObject = null;
 	
 	public function __construct($args = array (), $isSimpleInstance = false) {
 		$this->addAttribute('uiproperty', Datatypes::TEXT);
