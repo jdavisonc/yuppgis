@@ -138,7 +138,15 @@ $p1->setLinea(new LineString(array ( new Point(-56.181548, -34.882521), new Poin
 $p2 = new Paciente();
 $p2->setNombre('Jorge');
 $p2->setUbicacion(new Point( -56.181354, -34.882631));
-$p2->setLinea(new LineString(array ( new Point(-56.181354, -34.882631), new Point(-56.17438, -34.88619))));
+$lineString = new LineString(array ( new Point(-56.17438, -34.88549), new Point(-56.18159, -34.88566)));
+$p2->setLinea($lineString);
+
+/*Seteo Border a LineString */
+$borde = new Border();
+$borde->setColor(Color::WHITE);
+$borde->setWidth(4);
+$lineString->setUIProperty($borde);
+$p2->save();
 
 $p3 = new Paciente();
 $p3->setNombre('German');
@@ -165,7 +173,16 @@ $medico->setNombre('Medico Test');
 $puntos = array ( new Point(-56.17438, -34.88619), new Point(-56.181548, -34.882521), new Point(-56.181948, -34.880621), new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619));
 $line = new LineString($puntos);
 $polygon = new Polygon($line);
-$medico->setZonas(new MultiPolygon(array ($polygon)));
+
+/*Seteo Background al MultiPolygon */
+$relleno = new Background();
+$relleno->setColor(Color::RED);
+$multiPolygon = new MultiPolygon(array ($polygon));
+$multiPolygon->setUIProperty($relleno);
+
+$medico->setZonas($multiPolygon);
+$medico->save();
+
 $layer1->addElement($medico);
 $layer1->save();
 
