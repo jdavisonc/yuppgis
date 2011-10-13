@@ -71,8 +71,8 @@ class KMLUtilities{
 			<gisType>'.GISDatatypes::LINESTRING.'</gisType>';
 						
 			if($element->getLinea() != null){
-				
-				if($element->getLinea()->hasAttribute('uiproperty')){
+				//TODO:Propiedades del borde todavia no puedo mostrar, da error.
+				/*if($element->getLinea()->hasAttribute('uiproperty')){
 						$lineStringUip = $element->getLinea()->getUIProperty();
 						if(get_class($lineStringUip) == "Border"){									
 							$kml.= '<Style>
@@ -82,7 +82,7 @@ class KMLUtilities{
 							    		</LineStyle>
 						  			</Style>';
 						}								
-					}
+					}*/
 				
 			$kml.=	'<LineString>
 				<coordinates>';			
