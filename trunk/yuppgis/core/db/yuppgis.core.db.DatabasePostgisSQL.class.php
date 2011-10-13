@@ -97,11 +97,16 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 			return "SELECT * ";
 		} else {
 			$res = "SELECT ";
+			$i = 1;
 			foreach ($projections as $proj) {
-				if ($proj instanceof SelectGISAttribute) {
-					$res .= $this->asText($proj->getAlias() . "." . $proj->getAttrName());
+				if ($proj instanceof SelectGIS) {
+					$res .= $this->selectGisToSelect($proj->getAlias(), $i);
+					$i++;
 				} else if ($proj instanceof GISFunction) {
           			$res .= $this->evaluateGISFunction($proj, $srid );
+          			if ($proj->returnGeometry()) {
+          				$i++; //se debe incrementar la key
+          			}
 				} else if ($proj instanceof SelectAttribute) {
 					$res .= $proj->getAlias() . "." . $proj->getAttrName();
 				} else if ($proj instanceof SelectAggregation) {
@@ -115,6 +120,16 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 			return substr($res, 0, -2); // Saca ultimo "; "
 		}
 	}
+	
+	private function selectGisToSelect($alias, $i) {
+		$res = '';
+		$res .= $alias . "." . "id as id" . $i ." , ";
+		$res .= $alias . "." . "uiproperty as uiproperty" . $i ." , ";;
+		$res .= $this->asText($alias . "." . "geom");
+		return $res;
+	}
+	
+	
 	
 	public function evaluateGISFunction( $projection, $srid ) {
 		$params = $projection->getParams();

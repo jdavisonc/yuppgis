@@ -110,13 +110,22 @@ class GISDAL extends DAL {
 	    	$gisSelects = $this->extractGISSelectAndConvertGISValues($query->getSelect());
 	    	
 	    	$q = $this->gisdb->evaluateGISQuery($query, $this->srid);
-			if ( !$this->gisdb->query($q) ) { 
+			
+	    	if ( !$this->gisdb->query($q) ) { 
 				throw new Exception("ERROR");
 			}
-
+			$i = 1;
 			while ( $row = $this->gisdb->nextRow() ) {
 				foreach ($gisSelects as $gs) {
-					$row[$gs] = WKTGEO::fromText($row[$gs]);
+					$geom = WKTGEO::fromText($row[$gs]);
+					$idKey = 'id' . $i;
+					if (array_key_exists($idKey, $row)) {
+						$geom->setId($row[$idKey]);
+						$geom->aSet('uiproperty', $row['uiproperty' . $i]);
+					}
+					
+					$row[$gs] = $geom;
+					$i++;
 				} 
 				$res[] = $row;
 			}
@@ -152,7 +161,7 @@ class GISDAL extends DAL {
 				if ($proj->returnGeometry()) {
 					$gisSelects[] = $proj->getSelectItemAlias();
 				}
-			} else if ($proj instanceof SelectGISAttribute) {
+			} else if ($proj instanceof SelectGIS) {
 				$gisSelects[] = $proj->getSelectItemAlias();
 			}
 		}
