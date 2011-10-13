@@ -56,9 +56,17 @@ class UIProperty {
     	}
     	return $obj;
 	}
+
+}
+
+class Color {
 	
-	public function getColorName() {		
-		switch ($this->color) {
+	const WHITE = 0;
+	const BLACK = 1;
+	const RED = 2;
+	
+	public static function getColorName($color) {		
+		switch ($color) {
 		    case Color::WHITE:
 		        return "50FFFFFF";
 		        break;
@@ -73,14 +81,6 @@ class UIProperty {
 		    	break; 
 		}		
 	}
-
-}
-
-class Color {
-	
-	const WHITE = 0;
-	const BLACK = 1;
-	const RED = 2;
 	
 }
 
