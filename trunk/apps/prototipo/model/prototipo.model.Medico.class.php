@@ -32,6 +32,11 @@ class Medico extends GISPersistentObject {
 		return GISPersistentObject::findBy($condition, $params);
 	}
 	
+	public static function get($id) {
+		self :: $thisClass = __CLASS__;
+		return GISPersistentObject :: get($id);
+	}
+	
 }
 
 ?>
