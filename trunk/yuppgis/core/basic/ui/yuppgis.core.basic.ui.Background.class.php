@@ -12,11 +12,10 @@ class Background extends UIProperty {
 	public function getColor() {
 		return $this->color;
 	}
-	
+			
 	public function setColor($color) {
 		$this->color = $color;
 	}
-	
 }
 
 ?>
