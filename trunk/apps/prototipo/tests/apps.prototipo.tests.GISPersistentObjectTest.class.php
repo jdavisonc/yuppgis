@@ -38,7 +38,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$paciente->setNombre('Ernestino');
 		$paciente->setUbicacion($point);
 		$paciente->save();
-		
+		$paciente->getUbicacion();
 		$this->assert($paciente != null && $paciente->getUbicacion()->getId() != null, 
 			'Test de persistencia de Paciente (id = '.$paciente->getId().') con Punto (id = '.$point->getId().
 			', X = '.$point->getX().', Y = '.$point->getY().') ');
@@ -72,7 +72,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	}
 	
 	function testGetPacienteFromDBWithId() {
-		$p = Paciente::get(1);
+		$p = Paciente::get(54);
 		$ubi = $p->getUbicacion();
 		$this->assert($ubi !== null, 'Se obtuvo correctamente el paciente con ID=1');
 	}
