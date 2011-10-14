@@ -37,7 +37,7 @@ class GISPMPremium extends GISPersistentManager {
 
 		$query = new Query();
 		$query->addFrom($tableName, 'geo');
-		$query->getSelect()->add(new SelectGIS($tableName, 'geo'));
+		$query->getSelect()->add(new SelectGIS('geo', 'geom'));
 		$query->setCondition(Condition::EQ('geo', 'id', $id));
 		
 		$query_res = $this->dal->gis_query($query);
@@ -47,7 +47,7 @@ class GISPMPremium extends GISPersistentManager {
 		
    		// Se crea el objeto directamente ya que no se va a contar con herencia en tablas distintas para
    		// elementos geograficos.
-   		$geo = $this->createGISObjectFromData( $query_res[0] );
+   		$geo =  $query_res[0]['geom'];
    		
    		//Valido que la clase creada sea una instancia valida
    		if (! ($geo instanceof $persistentClass)) {
@@ -56,18 +56,7 @@ class GISPMPremium extends GISPersistentManager {
    		return $geo;
 	}
 	
-	/**
-	 * Crea un objeto geografico desde datos retornados por la base de datos.
-	 * 
-	 * @param unknown_type $class
-	 * @param unknown_type $data
-	 */
-	private function createGISObjectFromData( $data ) {
-		$geo = $data['geom'];
-		$geo->aSet('id', $data['id']);
-		$geo->aSet('uiproperty', $data['uiproperty']);
-		return $geo;
-	}
+	
 	
 	/**
 	 * @see GISPersistentManager::save_gis_object()

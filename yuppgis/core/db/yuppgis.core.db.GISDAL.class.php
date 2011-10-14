@@ -114,14 +114,18 @@ class GISDAL extends DAL {
 	    	if ( !$this->gisdb->query($q) ) { 
 				throw new Exception("ERROR");
 			}
-			$i = 1;
+			
 			while ( $row = $this->gisdb->nextRow() ) {
+				$i = 1;
 				foreach ($gisSelects as $gs) {
 					$geom = WKTGEO::fromText($row[$gs]);
 					$idKey = 'id' . $i;
+					$idUI = 'uiproperty' . $i;
 					if (array_key_exists($idKey, $row)) {
 						$geom->setId($row[$idKey]);
-						$geom->aSet('uiproperty', $row['uiproperty' . $i]);
+						unset($row[$idKey]);
+						$geom->aSet('uiproperty', $row[$idUI]);
+						unset($row[$idUI]);
 					}
 					
 					$row[$gs] = $geom;
@@ -146,11 +150,7 @@ class GISDAL extends DAL {
 	private function extractGISSelectAndConvertGISValues($select) {
 		$gisSelects = array();
 		foreach ($select->getAll() as $proj) {
-			if ($proj instanceof SelectValue && $proj->getValue() instanceof Geometry) {
-				$wkt = WKTGEO::toText($proj->getValue());
-				$proj->setValue($wkt);
-				$gisSelects[] = $proj->getSelectItemAlias();
-			} else if ($proj instanceof GISFunction) {
+			if ($proj instanceof GISFunction) {
 				// Si existe un selectValue en la funcion geo, se convierte su valor a texto
 				foreach ($proj->getParams() as $param) {
 					if ($param instanceof SelectValue) {
