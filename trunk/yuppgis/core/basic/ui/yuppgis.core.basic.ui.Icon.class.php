@@ -2,7 +2,7 @@
 
 class Icon extends UIProperty {
 	
-	protected  $url;
+	protected $url;
 	protected $width;
 	protected $height;
 	
