@@ -47,14 +47,18 @@ class UIProperty {
 	
 	public static function fromJSON($json_str) 
 	{
-    	$json = json_decode($json_str, 1);
-    	$obj = new $json['class'];
-    	unset($json['class']);
-    	foreach ($json as $key => $value) 
-    	{ 
-        	$obj->$key = $value; 
-    	}
-    	return $obj;
+    	if($json_str != null && $json_str != ""){
+			$json = json_decode($json_str, 1);
+	    	$obj = new $json['class'];
+	    	unset($json['class']);
+	    	foreach ($json as $key => $value) 
+	    	{ 
+	        	$obj->$key = $value; 
+	    	}
+	    	return $obj;
+    	}else{    		
+    		return null;
+    	} 
 	}
 
 }
@@ -64,15 +68,19 @@ class Color {
 	const WHITE = 0;
 	const BLACK = 1;
 	const RED = 2;
+	const BLUE = 3;
 	
 	public static function getColorName($color) {		
 		switch ($color) {
 		    case Color::WHITE:
-		        return "50FFFFFF";
+		        return "FFFFFFFF";
 		    case Color::BLACK:
-		        return "50000014";
+		        return "FF000000";
 		    case Color::RED:
-		        return "501400FF";
+		        return "FF0000FF";
+		    case Color::BLUE:
+		        return "FFFF0000";
+		        break;
 		    default:
 		    	return "";
 		}		
