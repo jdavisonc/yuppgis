@@ -69,17 +69,26 @@ class Color {
 		switch ($color) {
 		    case Color::WHITE:
 		        return "50FFFFFF";
-		        break;
 		    case Color::BLACK:
 		        return "50000014";
-		        break;
 		    case Color::RED:
 		        return "501400FF";
-		        break;
 		    default:
 		    	return "";
-		    	break; 
 		}		
+	}
+	
+	public static function fromColorName($name) {
+		switch (strtoupper($name)) {
+		    case "50FFFFFF":
+		        return Color::WHITE;
+		    case "50000014":
+		        return Color::BLACK;
+		    case "501400FF":
+		        return Color::RED;
+		    default:
+		    	return "";
+		}
 	}
 	
 }
