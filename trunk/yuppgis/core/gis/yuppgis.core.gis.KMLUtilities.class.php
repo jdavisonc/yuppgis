@@ -31,8 +31,7 @@ class KMLUtilities{
 
 		return $kml;
 	}
-
-
+	
 	private static function ElementToKml($element, $layer){
 
 		$kml = '';
@@ -68,22 +67,11 @@ class KMLUtilities{
 			<className>'.get_class($element).'</className>
 			<layerId>'.$layer->getId().'</layerId>
 			<elementId>'.$element->getId().'</elementId>
-			<gisType>'.GISDatatypes::LINESTRING.'</gisType>';
-						
-			if($element->getLinea() != null){
-				//TODO:Propiedades del borde todavia no puedo mostrar, da error.
-				/*if($element->getLinea()->hasAttribute('uiproperty')){
-						$lineStringUip = $element->getLinea()->getUIProperty();
-						if(get_class($lineStringUip) == "Border"){									
-							$kml.= '<Style>
-							    		<LineStyle>									    		 
-							      		<color>'.$lineStringUip->getColorName().'</color>	
-							      		<width>'.$lineStringUip->getWidth().'</width>								      
-							    		</LineStyle>
-						  			</Style>';
-						}								
-					}*/
-				
+			<gisType>'.GISDatatypes::LINESTRING.'</gisType>';						
+			if($element->getLinea() != null){				
+				if($element->getLinea()->hasAttribute('uiproperty')){
+						$kml.= KMLUtilities::UIPropertyToKml(GISDatatypes::LINESTRING, $element->getLinea()->getUIProperty());												
+				}				
 			$kml.=	'<LineString>
 				<coordinates>';			
 				foreach ($element->getLinea()->getPoints() as $point){
@@ -104,17 +92,9 @@ class KMLUtilities{
 							<className>'.get_class($element).'</className>
 							<layerId>'.$layer->getId().'</layerId>
 							<elementId>'.$element->getId().'</elementId>
-							<gisType>'.GISDatatypes::POLYGON.'</gisType>';
-					
+							<gisType>'.GISDatatypes::POLYGON.'</gisType>';					
 							if($element->getZonas()->hasAttribute('uiproperty')){
-								$polygonUip = $element->getZonas()->getUIProperty();
-								if(get_class($polygonUip) == "Background"){									
-									$kml.= '<Style>
-									    		<PolyStyle>									    		 
-									      		<color>'.$polygonUip->getColorName().'</color>									      
-									    		</PolyStyle>
-								  			</Style>';
-								}								
+								$kml.= KMLUtilities::UIPropertyToKml(GISDatatypes::POLYGON, $element->getZonas()->getUIProperty());																
 							}		
 					$kml .= '<Polygon><outerBoundaryIs>
         						<LinearRing>
@@ -147,17 +127,59 @@ class KMLUtilities{
 
 		return $kml;
 	}
-
-
-	/* kml.events.register(\'mousedown\', kml, function(evt) {
-
-	var popup = new OpenLayers.Popup.FramedCloud(null,new OpenLayers.LonLat(-56.181944, -34.883611),null,
-	"<div style=\'background-color:red; width:150;height:100\'>hi</div>",
-	null,true,null);
-	map_'.$id.'.addPopup(popup);
-	OpenLayers.Event.stop(evt);
-		
-	});*/
+	
+	
+	private static function UIPropertyToKml($gisDatatypes, $uip)
+	{	
+		switch (get_class($uip)) {
+		    case "Background":{
+		       	switch ($gisDatatypes){
+		       		case GISDatatypes::POLYGON:
+		       			return '<Style>
+						    		<PolyStyle>									    		 
+						      			<color>'.Color::getColorName($uip->getColor()).'</color>									      
+						    		</PolyStyle>
+				  				</Style>';		       			
+		       			break;
+	       			case GISDatatypes::LINESTRING:
+	       				return '';		       			
+	       				break;
+	       			case GISDatatypes::POINT:
+	       				return '';		       			
+	       				break;
+		       		default:
+		       			return '';
+		       			break;	
+		       	}
+		        break;
+		    }		        
+		    case "Border":{
+		    	switch ($gisDatatypes){
+		    		case GISDatatypes::POLYGON:
+	       					return '';		       			
+	       					break;
+			    	case GISDatatypes::LINESTRING:
+			       			return '<Style>
+							    		<LineStyle>									    		 
+							      		<color>'.Color::getColorName($uip->getColor()).'</color>							      		
+							      		<width>'.$uip->getWidth().'</width>								      
+							    		</LineStyle>
+						  			</Style>';		       			
+			       			break;			       	
+	       			case GISDatatypes::POINT:
+	       					return '';		       			
+	       					break;
+			    	default:
+			    			return '';
+			           		break;
+		    	}
+		    	break;
+		    }
+		    default:
+		    	return '';
+		    	break; 
+		}
+	}
 }
 
 
