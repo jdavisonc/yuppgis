@@ -143,7 +143,7 @@ $p2->setLinea($lineString);
 
 /*Seteo Border a LineString */
 $borde = new Border();
-$borde->setColor(Color::WHITE);
+$borde->setColor(Color::BLUE);
 $borde->setWidth(4);
 $lineString->setUIProperty($borde);
 $p2->save();
