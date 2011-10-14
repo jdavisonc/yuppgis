@@ -88,12 +88,14 @@ class Color {
 	
 	public static function fromColorName($name) {
 		switch (strtoupper($name)) {
-		    case "50FFFFFF":
+		    case "FFFFFFFF":
 		        return Color::WHITE;
-		    case "50000014":
+		    case "FF000000":
 		        return Color::BLACK;
-		    case "501400FF":
+		    case "FF0000FF":
 		        return Color::RED;
+		    case "FFFF0000";
+		    	return Color::BLUE;
 		    default:
 		    	return "";
 		}
