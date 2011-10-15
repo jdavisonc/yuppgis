@@ -155,9 +155,16 @@
 							vector.push(kml);
 
 						});
+						
+
+						vlayer = new OpenLayers.Layer.Vector("Editing");
+						map.addControl(new OpenLayers.Control.EditingToolbar(vlayer));
+						
 						map.addLayers(vector);
-						map.addControl(new OpenLayers.Control.EditingToolbar(vector));
-						map.addControl(new OpenLayers.Control.MousePosition({displayProjection: map.baseLayer.projection}));
+						map.addLayers([vlayer]);
+						
+						
+						//map.addControl(new OpenLayers.Control.MousePosition({displayProjection: map.baseLayer.projection}));
 
 
 						selectcontrol = new OpenLayers.Control.SelectFeature(vector, {
