@@ -58,8 +58,7 @@ class GISHelpers{
 		$random = uniqid();
 		
 		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$class.'_'.$mapid.'_'.$random.'">';
-		$html .= '<option value="nothing"></option>';
-
+		
 		foreach (self::AvailableFilters($class) as $option){
 			$html .= '<option value="'.$option.'">'.str_ireplace('Filter', '', $option).'</option>';
 		}
@@ -287,6 +286,72 @@ class GISHelpers{
 			);
 		
 		$html .= Helpers::ajax_link($load_params);
+		
+		return $html;
+	}
+	
+	/**
+	 * Genera el html para un combo de selección
+	 * @param nombre de la clase
+	 * @param id del elemento
+	 * @return html generado para el menú
+	 */
+	public static function DistanceFilterMenu(
+	$classfrom, $mapid, $handler = null, $fieldName='nombre', $positionfrom='ubicacion', 
+	$classto, $positionto='zonas'){
+		
+		$appName = YuppContext::getInstance()->getApp();
+		$random = uniqid();
+		
+		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$classfrom.'_'.$mapid.'_'.$random.'">';		
+		$params = new ArrayObject() ;
+		$method = 'get'.ucfirst($fieldName);
+		foreach ($classfrom::listAll($params) as $option){
+			$html .= '<option value="'.$option->getId().'">'.$option->$method().'</option>';
+		}
+				
+		$handlerCall = '';
+		if ($handler != null){
+			$handlerCall = $handler.'(data);';
+		}else{
+		 	$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';			
+		}
+
+		$html .= '</select>';
+		$html .= '<input data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" />';		
+		
+		$methodName = 'filter_'.$classfrom.'_'.$mapid.'_'.$random;
+		
+		$html .= '<a href="#" id="btnFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
+
+		$script = '<script>
+						function '.$methodName.'(){
+							var selectedOption = $("#select_'.$classfrom.'_'.$mapid.'_'.$random.'").val();
+							var text = $("#tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'").val();
+							
+							 $.ajax({
+							      url: "/yuppgis/'.$appName.'/Home/FilterDistance",
+							      data: {
+							        filterValue: selectedOption,
+							        classFrom: "'.$classfrom.'",
+							        mapId: '.$mapid.',
+							      	param: text,
+							      	positionFrom: "'.$positionfrom.'",
+							      	classTo: "'.$classto.'",
+							      	positionTo: "'.$positionto.'"
+							      },			      			      			      
+							      success: function(data){
+							      	
+							      	'.$handlerCall.'
+							      }
+							  })
+							  
+							  return false;
+						}
+				</script>		
+		';
+
+		$html .= $script;
 		
 		return $html;
 	}

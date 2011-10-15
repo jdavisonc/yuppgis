@@ -7,7 +7,7 @@
 		MapParams::ID => 1,
 		MapParams::CLICK_HANDLERS => array('customClickHandler', 'customClickHandler2'),
 		MapParams::SELECT_HANDLERS => array('customSelectHandler'),
-		MapParams::TYPE => "fruta"
+		MapParams::TYPE => "google"
 		
 	)); ?>
 </fieldset>
@@ -22,7 +22,8 @@
 <fieldset>
 	<legend>Filtros de Paciente</legend>
 	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements'); ?><br />
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?>
+	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?><br />
+	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'Paciente', 'zonas'); ?><br />
 </fieldset>
 <fieldset>
 	<legend>Resultados</legend>
