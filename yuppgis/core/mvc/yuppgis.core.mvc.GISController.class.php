@@ -108,6 +108,42 @@ class GISController extends YuppController {
 		return $this->renderString($json);
 	}
 
+	public function filterDistanceAction(){
+		$mapId = $this->params['mapId'];
+		$classFromName = $this->params['classFrom'];
+		$filterValue = $this->params['filterValue'];
+		$distance = intval($this->params['param']);
+		
+		$classToName = $this->params['classTo'];
+		$positionfrom = $this->params['positionFrom'];
+		$positionto = $this->params['positionTo'];
+	
+
+		//$result = call_user_func($className.'::'.$methodName,  $distance);
+		
+		$reference = $classFromName::get($filterValue);
+		$methodTo = 'get'.ucfirst($positionto);
+		$condition = GISCondition::DWITHIN(
+				YuppGISConventions::tableName($classToName), 
+				$positionfrom, $reference->$methodTo(), $distance);
+		
+		$result = $classToName::findBy($condition, new ArrayObject());
+		
+
+		$json = '[';
+		$count = sizeof($result);
+		for ($i = 0; $i < $count-1; $i++) {
+			$json .= JSONPO::toJSON($result[$i]).',' ;
+		}
+		if ($count > 0){
+			$json .= JSONPO::toJSON($result[$count-1]) ;
+		}
+			
+		$json .= ']';
+		header('Content-type: application/json');
+
+		return $this->renderString($json);
+	}
 
 	public function mapServerAction(){
 			
