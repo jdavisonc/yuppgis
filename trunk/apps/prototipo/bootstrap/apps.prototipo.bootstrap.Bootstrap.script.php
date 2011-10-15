@@ -57,6 +57,10 @@ foreach ($pacientes as $paciente){
 	$paciente->delete();
 }
 
+$medicos = Medico::listAll($params);
+foreach ($medicos as $medico){
+	$medico->delete();
+}
 
 
 /**/
