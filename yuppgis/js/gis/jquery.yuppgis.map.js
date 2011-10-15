@@ -155,15 +155,15 @@
 							vector.push(kml);
 
 						});
-						
+
 
 						vlayer = new OpenLayers.Layer.Vector("Editing");
 						map.addControl(new OpenLayers.Control.EditingToolbar(vlayer));
-						
+
 						map.addLayers(vector);
 						map.addLayers([vlayer]);
-						
-						
+
+
 						//map.addControl(new OpenLayers.Control.MousePosition({displayProjection: map.baseLayer.projection}));
 
 
@@ -327,7 +327,7 @@
 		this.getHandlers = function () {
 			return _handlers;
 		}
-		
+
 		this.getVisibleLayers = function(){
 			var layers = [];
 			for (var i=0;i< map.layers.length;i++){
@@ -390,22 +390,22 @@
 			}
 
 		}
-		
+
 		this.getVisualizationState = function(){
-						
+
 			var mapId = mapOptions.id;
-			
+
 			var model = {
-				checkboxes: [],				
-				textboxes: [],
-				selects: [],
-				log: '(no previous log)',
-				map: {
-					layers: [],
-					elements: []
-				} 			
+					checkboxes: [],				
+					textboxes: [],
+					selects: [],
+					log: '(no previous log)',
+					map: {
+						layers: [],
+						elements: []
+					} 			
 			};
-			
+
 			$('input[type=checkbox][data-attr-mapid=' + mapId + ']:checked').each(function(){ 
 				model.checkboxes.push(this.id); 
 			});
@@ -419,31 +419,31 @@
 			if(logDiv){
 				model.log = logDiv.text()
 			}			
-			
+
 			$('select[data-attr-mapid=' + mapId + ']').each(function(){ 
 				model.selects.push({
 					id: this.id,
 					value: this.value
 				});				
 			});			
-			
+
 			for (var i=0;i< map.layers.length;i++){
 				var layer = map.layers[i]; 
 				if(layer.visibility){
 					model.map.layers.push(layer.name);
 				}
-				
+
 			}
-						
+
 			log('State obtained');
-			
+
 			return model;
 		}
-		
+
 		this.loadVisualizationState = function(state){
-		
+
 			var mapId = mapOptions.id;
-			
+
 			/*clear*/
 			$('input[type=checkbox][data-attr-mapid=' + mapId + ']').each(function(){this.checked = false;});			
 			$('input[type=text][data-attr-mapid=' + mapId + ']').each(function(){this.text = '';});
@@ -452,26 +452,26 @@
 				logDiv.text('');
 			}
 			$('select[data-attr-mapid=' + mapId + ']').each(function(){ $(this).val('')});			
-			
+
 			/*set*/
 			$.each(state.checkboxes, function(i, item){ $('#'+item).attr('checked', 'checked'); });
 			$.each(state.textboxes, function(i, item){ $('#'+item.id).val(item.text); });
 			$.each(state.selects, function(i, item){ $('#'+item.id).val(item.value); });
-			
+
 			for (var i=0;i< map.layers.length;i++){
 				map.layers[i].setVisibility(false);
 			}			
-			
+
 			for(var d = 0; d<state.map.layers.length; d++){
 				var layer = map.getLayersByName(state.map.layers[d]);
 				if( layer){
 					layer[0].setVisibility(true);
 				}
-				
+
 			}	
 			//map.showFeatures(state.map.features, true);
-			
-			
+
+
 			log('State Loaded');
 		}
 
