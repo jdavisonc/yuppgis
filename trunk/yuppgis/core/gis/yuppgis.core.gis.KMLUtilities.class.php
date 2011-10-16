@@ -1,6 +1,5 @@
 <?php
 
-YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 YuppLoader::load('yuppgis.core.persistent.serialize', 'KMLGEO');
 
 class KMLUtilities{
@@ -24,6 +23,13 @@ class KMLUtilities{
 		return $kml->asXML();
 	}
 
+	/**
+	 * TODO_GIS: Hacer dinamico
+	 * 
+	 * @param unknown_type $element
+	 * @param unknown_type $layer
+	 * @param SimpleXMLElement $folder
+	 */
 	private static function ElementToKml($element, $layer, SimpleXMLElement &$folder){
 		if ($element->hasAttribute('ubicacion') && $element->getUbicacion() != null){
 			KMLGEO::toKML($element->getUbicacion(), $layer, $folder);

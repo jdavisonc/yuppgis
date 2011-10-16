@@ -7,8 +7,6 @@ interface GISWSDAL {
 	function save($ownerTableName, $attrNameAssoc, $kml);
 	
 	function delete($ownerTableName, $attrNameAssoc, $id, $logical);
-
-	function findBy();
 	
 }
 
