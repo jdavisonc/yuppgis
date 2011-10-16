@@ -58,24 +58,72 @@ class KMLGEOTest extends YuppGISTestCase {
 					</Polygon>
 				</Placemark>'; 
 	
-	function testPointFromKML() {
+	public function testPointFromKML() {
 		$result = KMLGEO::fromKML(self::KML_POINT);
 		
-		$this->assertNotNull($result != null && $result instanceof Point && $result->getUIProperty() != null, "");
+		$this->assertNotNull($result != null && $result instanceof Point && $result->getUIProperty() != null, 'De kml a punto');
 	}
 	
-	function testLineStringFromKML() {
+	public function testLineStringFromKML() {
 		$result = KMLGEO::fromKML(self::KML_LINE);
 		
-		$this->assertNotNull($result != null && $result instanceof LineString && $result->getUIProperty() != null, "");
+		$this->assertNotNull($result != null && $result instanceof LineString && $result->getUIProperty() != null, 'De kml a lineString');
 	}
 	
-	function testPolygonFromKML() {
+	public function testPolygonFromKML() {
 		$result = KMLGEO::fromKML(self::KML_POLYGON);
 		
-		$this->assertNotNull($result != null && $result instanceof Polygon && $result->getUIProperty() != null, "");
+		$this->assertNotNull($result != null && $result instanceof Polygon && $result->getUIProperty() != null, 'De kml a poligono');
 	}
 	
+	public function testPointToKML() {
+		$kml = new SimpleXMLElement('<Folder/>');
+		$layer = new DataLayer('Capa');
+		$layer->setId(1);
+		$point = new Point(-56.0000, -34.1234234);
+		$point->setId(200);
+		$point->setUIProperty(new Icon(0,0,'ffff',0,0));
+		KMLGEO::toKML($point, $layer, $kml);
+		
+		$this->assertNotNull($kml->asXML() != null, 'De punto a kml');
+	}
+	
+	public function testPointDefaultStyleToKML() {
+		$kml = new SimpleXMLElement('<Folder/>');
+		$layer = new DataLayer('Capa');
+		$layer->setIconurl('ggggggggg');
+		$layer->setId(1);
+		$point = new Point(-56.0000, -34.1234234);
+		$point->setId(200);
+		KMLGEO::toKML($point, $layer, $kml);
+		
+		$this->assertNotNull($kml->asXML() != null, 'De punto a kml');
+	}
+	
+	public function testLineStringToKML() {
+		$kml = new SimpleXMLElement('<Folder/>');
+		$layer = new DataLayer('Capa');
+		$layer->setId(1);
+		$line = new LineString(array(new Point(-56.02, -34.1234234), new Point(-56.02, -34.1234234)));
+		$line->setId(200);
+		KMLGEO::toKML($line, $layer, $kml);
+		
+		$this->assertNotNull($kml->asXML() != null, 'De lineString a kml');
+	}
+	
+	public function testPolygonToKML() {
+		$kml = new SimpleXMLElement('<Folder/>');
+		$layer = new DataLayer('Capa');
+		$layer->setId(1);
+		$points = array ( new Point(-56.17438, -34.88619), new Point(-56.181548, -34.882521), 
+				new Point(-56.181948, -34.880621), new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619));
+		$line = new LineRing($points);
+		$polygon = new Polygon($line, array($line, $line));
+		$polygon->setId(200);
+		KMLGEO::toKML($polygon, $layer, $kml);
+		
+		$this->assertNotNull($kml->asXML() != null, 'De lineString a kml');
+	}
 	
 }
 
