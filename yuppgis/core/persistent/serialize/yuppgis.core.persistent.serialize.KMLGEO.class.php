@@ -24,7 +24,7 @@ class KMLGEO {
 			} else if ($nodeName == 'Style') {
 				$uiProperty = self::styleFromKML($placemarkElement->Style); // Estilo
 			} else {
-				throw new Exception("Unsupported Tag in KML " . $nodeName);
+				throw new Exception("Tag en KML no soportada " . $nodeName);
 			}
 		}
 		
@@ -77,7 +77,7 @@ class KMLGEO {
 			} else if ($nodeName == 'LineStyle') {
 				$styles[] = new Border(0, 0, Color::fromColorName(strval($node->color)), strval($node->width));
 			} else {
-				throw new Exception("Unnsuported Tag in KML " . $nodeName);
+				throw new Exception("Tag en KML no soportada " . $nodeName);
 			}
 		}
 		return $styles[0]; // Solo retorno el primero
@@ -134,7 +134,7 @@ class KMLGEO {
 				self::polygonToKML($placemark, $geom);
 				break;
 			default:
-				throw new Exception('Unsupported Geometry');
+				throw new Exception('Geometria no soportada ' . $gisDatatype);
 		}
 		$uiProperty = $geom->getUIProperty();
 		if ($uiProperty != null) {

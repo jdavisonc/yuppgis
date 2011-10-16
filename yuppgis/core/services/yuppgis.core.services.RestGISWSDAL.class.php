@@ -1,5 +1,6 @@
 <?php
 
+YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
 
 class RestWSGISDAL implements GISWSDAL {
 	
@@ -7,6 +8,9 @@ class RestWSGISDAL implements GISWSDAL {
 	
 	function __construct( $appName) {
 		$url = YuppGISConfig::getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_URL);
+		if ($url == null || $url == '') {
+			throw new Exception('URL para YuppGIS Basico no especificada');
+		}
 	}
 	
 	public function get( $ownerTableName, $attr, $persistentClass, $id ) {
@@ -22,7 +26,7 @@ class RestWSGISDAL implements GISWSDAL {
 		
 		$response = $request->HttpRequestGet($param);
 		header('Content-Type: text/xml');
-		return $data = $response->getBody();
+		$layer = KMLUtilities::KmlToLayer($response->getBody());
 	}
 	
 	public function save($ownerTableName, $attrNameAssoc, $kml) {
@@ -36,7 +40,9 @@ class RestWSGISDAL implements GISWSDAL {
 		
 		$response = $request->HttpRequestGet($param);
 		header('Content-Type: text/xml');
-		return  $response->getStatus() == '200';
+		if ($response->getStatus() == '200') {
+			return $response->getBody(); // Trae en el body el ID del elemento
+		}
 	}
 	
 	public function delete($ownerTableName, $attrNameAssoc, $id, $logical) {
@@ -52,13 +58,6 @@ class RestWSGISDAL implements GISWSDAL {
 		$response = $request->HttpRequestGet($param);
 		header('Content-Type: text/xml');
 		return  $response->getStatus() == '200';
-		
-		
-	}
-
-	public function findBy() {
-		//TODO_GIS
-		throw new Exception("No soportado");
 	}
 	
 }

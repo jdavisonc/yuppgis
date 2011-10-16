@@ -1,5 +1,8 @@
 <?php
 
+YuppLoader::load('yuppgis.core.services', 'GISWSDAL');
+YuppLoader::load('yuppgis.core.services', 'RestGISWSDAL');
+
 class GISPMBasic extends GISPersistentManager {
 	
 	/**
@@ -9,6 +12,7 @@ class GISPMBasic extends GISPersistentManager {
 		// TODO_GIS: Deberia de tener dos instancias de dal distintas? uno comun y otro wsdal? xq esta clase no es igual que premium, 
 		//			 ya q uno es ws y otro db.
 		$this->dal = new DAL($appName);
+		// TODO_GIS: Configuracion dinamica del basico
 		$this->giswsdal = new RestGISWSDAL($appName); 
 	}
 
@@ -16,15 +20,17 @@ class GISPMBasic extends GISPersistentManager {
 	 * @see GISPersistentManager::get_gis_object()
 	 */
 	public function get_gis_object( $tableNameOwner, $attr, $persistentClass, $id ) {
-		$kml = $this->giswsdal->get($tableNameOwner, $attr, $persistentClass, $id);
-		
+		$geom = $this->giswsdal->get($tableNameOwner, $attr, $persistentClass, $id);
+		$geom->setId($id);
+		return $geom;
 	}
 
 	/**
 	 * @see GISPersistentManager::save_gis_object()
 	 */
 	protected function save_gis_object( $ownerTableName, $attrNameAssoc, PersistentObject $obj ) {
-		$this->giswsdal->save();
+		$id = $this->giswsdal->save();
+		$geom->setId($id);
 	}
 
 	/**
@@ -38,14 +44,14 @@ class GISPMBasic extends GISPersistentManager {
 	 * @see GISPersistentManager::findByGISQuery()
 	 */
 	protected function findByGISQuery(GISQuery $query) {
-		$this->giswsdal->findBy();
+		throw new Exception('Busquedas GISQuery no soportadas en YuppGIS Basico');
 	}
 
 	/**
 	 * @see GISPersistentManager::processGISCondition()
 	 */
 	protected function processGISCondition(PersistentObject $instance, GISCondition $condition, ArrayObject $params ) {
-		// TODO_GIS
+		throw new Exception('Busqueda por atributo geografico no soportado en YuppGIS Basico');
 	}
 	
 }
