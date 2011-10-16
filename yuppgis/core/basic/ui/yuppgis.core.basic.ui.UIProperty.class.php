@@ -45,9 +45,8 @@ class UIProperty {
 	    return json_encode($json);
 	} 
 	
-	public static function fromJSON($json_str) 
-	{
-    	if($json_str != null && $json_str != ""){
+	public static function fromJSON($json_str) {
+    	if($json_str != null && $json_str != "") {
 			$json = json_decode($json_str, 1);
 	    	$obj = new $json['class'];
 	    	unset($json['class']);
@@ -56,10 +55,14 @@ class UIProperty {
 	        	$obj->$key = $value; 
 	    	}
 	    	return $obj;
-    	}else{    		
+    	} else {    		
     		return null;
     	} 
 	}
+	
+	public static function getClassName() {
+        return get_called_class();
+    }
 
 }
 
