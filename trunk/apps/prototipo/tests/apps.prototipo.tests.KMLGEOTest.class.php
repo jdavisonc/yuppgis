@@ -59,19 +59,19 @@ class KMLGEOTest extends YuppGISTestCase {
 				</Placemark>'; 
 	
 	public function testPointFromKML() {
-		$result = KMLGEO::fromKML(self::KML_POINT);
+		$result = KMLGEO::fromKML(new SimpleXMLElement(self::KML_POINT));
 		
 		$this->assertNotNull($result != null && $result instanceof Point && $result->getUIProperty() != null, 'De kml a punto');
 	}
 	
 	public function testLineStringFromKML() {
-		$result = KMLGEO::fromKML(self::KML_LINE);
+		$result = KMLGEO::fromKML(new SimpleXMLElement(self::KML_LINE));
 		
 		$this->assertNotNull($result != null && $result instanceof LineString && $result->getUIProperty() != null, 'De kml a lineString');
 	}
 	
 	public function testPolygonFromKML() {
-		$result = KMLGEO::fromKML(self::KML_POLYGON);
+		$result = KMLGEO::fromKML(new SimpleXMLElement(self::KML_POLYGON));
 		
 		$this->assertNotNull($result != null && $result instanceof Polygon && $result->getUIProperty() != null, 'De kml a poligono');
 	}

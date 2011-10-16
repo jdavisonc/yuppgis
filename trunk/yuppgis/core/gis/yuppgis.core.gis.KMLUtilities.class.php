@@ -4,7 +4,7 @@ YuppLoader::load('yuppgis.core.persistent.serialize', 'KMLGEO');
 
 class KMLUtilities{
 
-	public static function LayerToKml(DataLayer $layer) {
+	public static function layerToKML(DataLayer $layer) {
 		$kml = new SimpleXMLElement('<kml/>');
 		$kml->addAttribute('xmlns', 'http://earth.google.com/kml/2.0');
 		$doc = $kml->addChild('Document');
@@ -14,11 +14,11 @@ class KMLUtilities{
 		$folder = $doc->addChild('Folder');
 		$folder->addAttribute('ID', $layer->getId());
 		$folder->addChild('name', $layer->getName());
-		$folder->addChild('visibility', 0);
+		$folder->addChild('visibility', ($layer->getVisible()) ? 1 : 0);
 		$folder->addChild('description', 'Description Here!'); //TODO_GIS
 		
 		foreach ($layer->getElements() as $element){
-			KMLUtilities::ElementToKml($element, $layer, $folder);
+			KMLUtilities::elementToKML($element, $layer, $folder);
 		}
 		return $kml->asXML();
 	}
@@ -30,18 +30,40 @@ class KMLUtilities{
 	 * @param unknown_type $layer
 	 * @param SimpleXMLElement $folder
 	 */
-	private static function ElementToKml($element, $layer, SimpleXMLElement &$folder){
+	private static function elementToKML($element, $layer, SimpleXMLElement &$folder){
 		if ($element->hasAttribute('ubicacion') && $element->getUbicacion() != null){
-			KMLGEO::toKML($element->getUbicacion(), $layer, $folder);
+			KMLGEO::toKML($element->getUbicacion(), $element, $layer, $folder);
 		}
 
 		if ($element->hasAttribute('linea') && $element->getLinea() != null){
-			KMLGEO::toKML($element->getLinea(), $layer, $folder);
+			KMLGEO::toKML($element->getLinea(), $element, $layer, $folder);
 		}
 
 		if ($element->hasAttribute('zonas') && $element->getZonas() != null){
-			KMLGEO::toKML($element->getZonas(), $layer, $folder);
+			KMLGEO::toKML($element->getZonas(), $element, $layer, $folder);
 		}
+	}
+	
+	public static function KMLToLayer($kml) {
+		$kmlElement = new SimpleXMLElement($kml);
+		$doc = $kmlElement->Document;
+		if ($doc->Folder != null) {
+			$folder = $doc->Folder;
+
+			$layer = new DataLayer();
+			$layer->setName(strval($folder->name));
+			$layer->setId(strval($folder['ID']));
+			$layer->setVisible(strval($folder->visibility));
+
+			$placemarks = $folder->Placemark;
+			if ($placemarks) {
+				foreach ($placemarks as $elem) {
+					$layer->addElement(KMLGEO::fromKML($elem));
+				}
+			}
+			return $layer;
+		}
+		return null;
 	}
 
 }
