@@ -80,12 +80,15 @@
 					url: "/yuppgis/" + appName + "/Home/getLayersAction?mapId=" + id,
 					success: function (data) {
 
+						
 						var google = new OpenLayers.Layer.Google("Google", {
 							/*
 							 * type: G_HYBRID_MAP, sphericalMercator: true
 							 */
 						});
 
+						
+						
 
 						map = new OpenLayers.Map("map_" + id, {
 
@@ -128,11 +131,17 @@
 						}						
 
 						map.zoomToMaxExtent();
+						
+
+						var styleMap = new OpenLayers.StyleMap({
+							/*"default":{fillColor: 'blue'}, 
+							"select": {fillColor: 'red'}*/
+						});
 
 						var click = new OpenLayers.Control.Click();
 						map.addControl(click);
 						click.activate();
-
+						
 
 						var vector = [];
 						$.each(data, function (i, item) {
@@ -149,44 +158,47 @@
 								}),
 								rendererOptions: {
 									zIndexing: true
-								}
+								},
+								styleMap: styleMap
 							});
 
 							vector.push(kml);
 
 						});
 
-
-						vlayer = new OpenLayers.Layer.Vector("Editing");
+						
+						vlayer = new OpenLayers.Layer.Vector("Editing", {
+								styleMap: styleMap
+						});
+						
+						vector.push(vlayer);
+						
 						map.addControl(new OpenLayers.Control.EditingToolbar(vlayer));
 
 						map.addLayers(vector);
-						map.addLayers([vlayer]);
 
+						// map.addControl(new
+						// OpenLayers.Control.MousePosition({displayProjection:
+						// map.baseLayer.projection}));
 
-						//map.addControl(new OpenLayers.Control.MousePosition({displayProjection: map.baseLayer.projection}));
-
-
+						
+						
 						selectcontrol = new OpenLayers.Control.SelectFeature(vector, {
 							onSelect: function (feature) {
 								onFeatureSelect(feature);
 								$.each(_handlers.select, function (i, item) {
-
-
 									if (eval("typeof " + item.handler) == 'function') {
 										log("Select: Llamo a " + item.handler);
 										window[item.handler](feature);
 									} else {
 										log("Select: Llamo a " + item.handler + ' (no existe)');
 									}
-
 								});
-
 							},
 							onUnselect: onFeatureUnselect,
 
-							clickout: false,
-							toggle: false,
+							clickout: true,
+							toggle: true,
 							multiple: true,
 							hover: false,
 							toggleKey: "ctrlKey",
@@ -194,12 +206,11 @@
 							multipleKey: "shiftKey",
 
 							box: true
-
-						});
-
+						});						
 
 						map.addControl(selectcontrol);
 						selectcontrol.activate();
+						
 
 						map.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
 
@@ -444,7 +455,7 @@
 
 			var mapId = mapOptions.id;
 
-			/*clear*/
+			/* clear */
 			$('input[type=checkbox][data-attr-mapid=' + mapId + ']').each(function(){this.checked = false;});			
 			$('input[type=text][data-attr-mapid=' + mapId + ']').each(function(){this.text = '';});
 			var logDiv = $('div[data-attr-mapid=' + mapId + '].logarea');
@@ -453,7 +464,7 @@
 			}
 			$('select[data-attr-mapid=' + mapId + ']').each(function(){ $(this).val('')});			
 
-			/*set*/
+			/* set */
 			$.each(state.checkboxes, function(i, item){ $('#'+item).attr('checked', 'checked'); });
 			$.each(state.textboxes, function(i, item){ $('#'+item.id).val(item.text); });
 			$.each(state.selects, function(i, item){ $('#'+item.id).val(item.value); });
@@ -469,7 +480,7 @@
 				}
 
 			}	
-			//map.showFeatures(state.map.features, true);
+			// map.showFeatures(state.map.features, true);
 
 
 			log('State Loaded');
