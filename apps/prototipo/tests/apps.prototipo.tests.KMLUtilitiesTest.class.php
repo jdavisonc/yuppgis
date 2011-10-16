@@ -11,19 +11,20 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 		$kml = '<?xml version="1.0" encoding="UTF-8"?>
 					<kml xmlns="http://earth.google.com/kml/2.0">
 						<Document>
-						<name>KML Samples</name>
+						<name>YuppGIS KML</name>
 						<open>1</open>
-						<description>Unleash your creativity with the help of these examples!</description>
-						<Folder id="'.$id.'">
+						<description>Description Here!</description>
+						<Folder ID="'.$id.'">
 						<name>'.$name.'</name>
-						<visibility>0</visibility>
-						<description>Examples of paths. Note that the tessellate tag is by default set to 0. If you want to create tessellated lines, they must be authored (or edited) directly in KML.</description>
-						<Placemark>
+						<visibility>1</visibility>
+						<description>Description Here!</description>
+						<Placemark ID="'.$elementId.'">
 						<name></name>
 						<description>Capa: layerName, Id: </description>
 						<className>Paciente</className>
 						<layerId>'.$id.'</layerId>
 						<elementId>'.$elementId.'</elementId>
+						<gisType>yuppgis_type_point</gisType>
 						<Style>
 					        <IconStyle>
 					          <scale>0.8</scale>
@@ -33,7 +34,7 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 					        </IconStyle>
 					    </Style>						
 						<Point>
-						<coordinates>'.$X.','.$Y.'</coordinates>
+						<coordinates>'.$X.','.$Y.',0.</coordinates>
 						</Point>
 						</Placemark>
 						</Folder>
@@ -43,23 +44,30 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 	}
 		
 	public function testLayerToKml(){
-								
 		$layer =  new DataLayer('layerName', 'nombre');
-		
 		$paciente = new Paciente();
 		$paciente->setNombre('Roberto');
 		$paciente->setUbicacion(new Point(10, 10));
-				
 		$layer->addElement($paciente);
-		//$layer->save();
 		
 		$kml = $this->getKml($layer->getId(), $layer->getName(), $paciente->getUbicacion()->getX(), $paciente->getUbicacion()->getY(), $paciente->getId());
 		
-		$result = KMLUtilities::LayerToKml($layer);
-				
-		$this->assertXMLEquals($kml, $result, "Test layer to kml");
-		
+		$result = KMLUtilities::layerToKml($layer);
+		$this->assertXMLEquals($kml, $result, "Test layer a kml");
 	}	
+	
+	public function testKmlToLayer() {
+		$layer =  new DataLayer('layerName', 'nombre');
+		$paciente = new Paciente();
+		$paciente->setNombre('Roberto');
+		$paciente->setUbicacion(new Point(10, 10));
+		$layer->addElement($paciente);
+		
+		$kml = $this->getKml($layer->getId(), $layer->getName(), $paciente->getUbicacion()->getX(), $paciente->getUbicacion()->getY(), $paciente->getId());
+		
+		$result = KMLUtilities::KMLToLayer($kml);
+		$this->assert($result != null && count($result->getElements()) == 1, "Test kml a layer");
+	}
 	
 }
 

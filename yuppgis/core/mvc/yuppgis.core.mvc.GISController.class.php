@@ -17,7 +17,7 @@ class GISController extends YuppController {
 		$layerId = $this->params['layerId'];
 		$layer = DataLayer::get($layerId);
 
-		return $this->renderString( KMLUtilities::LayerToKml($layer));
+		return $this->renderString( KMLUtilities::layerToKml($layer));
 	}
 	
 	public function saveVisualizationAction(){

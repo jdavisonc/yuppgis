@@ -26,7 +26,7 @@ class RestWSGISDAL implements GISWSDAL {
 		
 		$response = $request->HttpRequestGet($param);
 		header('Content-Type: text/xml');
-		$layer = KMLUtilities::KmlToLayer($response->getBody());
+		$layer = KMLUtilities::KMLToLayer($response->getBody());
 	}
 	
 	public function save($ownerTableName, $attrNameAssoc, $kml) {

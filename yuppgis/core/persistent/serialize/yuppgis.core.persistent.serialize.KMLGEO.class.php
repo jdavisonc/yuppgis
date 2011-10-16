@@ -6,11 +6,10 @@ class KMLGEO {
 	 * From KML
 	 ************/
 	
-	public static function fromKML($placemark) {
+	public static function fromKML(SimpleXMLElement $placemarkElement) {
 		$geometry = null;
 		$uiProperty = null;
-		$placemarkElement = new SimpleXMLElement($placemark);
-		$id = strval($placemarkElement["ID"]); // Ver de usar atributo ID para guardar el ID
+		$id = strval($placemarkElement['ID']); // Ver de usar atributo ID para guardar el ID
 		
 		foreach ($placemarkElement->children() as $nodeName => $node) {
 			if ($nodeName == 'Point') {
@@ -23,8 +22,6 @@ class KMLGEO {
 				$geometry = self::lineRingFromKML($node);
 			} else if ($nodeName == 'Style') {
 				$uiProperty = self::styleFromKML($placemarkElement->Style); // Estilo
-			} else {
-				throw new Exception("Tag en KML no soportada " . $nodeName);
 			}
 		}
 		
@@ -88,33 +85,33 @@ class KMLGEO {
 	 * To KML
 	 ************/
 	
-	public static function toKML(Geometry $geom, $layer, SimpleXMLElement &$parent) {
+	public static function toKML(Geometry $geom, $owner, DataLayer $layer, SimpleXMLElement &$parent) {
 		if ($geom instanceof GeometryCollection) {
-			return self::collectionToKML($geom, $layer, $parent);
+			return self::collectionToKML($geom, $owner, $layer, $parent);
 		} else {
-			return self::singleToKML($geom, $layer, $parent);
+			return self::singleToKML($geom, $owner, $layer, $parent);
 		}
 	}
 	
-	private static function collectionToKML($geom, $layer, SimpleXMLElement &$parent) {
+	private static function collectionToKML($geom, $owner, DataLayer $layer, SimpleXMLElement &$parent) {
 		$kml = '';
 		foreach ($geom->getCollection() as $singleGeom) {
 			$singleGeom->setUIProperty($geom->getUIProperty()); // se asigna el estilo de la coleccion
-			$kml .= self::singleToKML($singleGeom, $layer, $parent);
+			$kml .= self::singleToKML($singleGeom, $owner, $layer, $parent);
 		}
 		return $kml;
 	}
 	
-	private static function singleToKML(Geometry $geom, $layer, SimpleXMLElement &$parent) {
+	private static function singleToKML(Geometry $geom, $owner, DataLayer $layer, SimpleXMLElement &$parent) {
 		$gisDatatype = GISDatatypes::getTypeOf($geom);
 		
 		$placemark = $parent->addChild('Placemark');
-		$placemark->addAttribute('ID', $geom->getId());
-		$placemark->addChild('name', $geom->getId());
-		$placemark->addChild('description', 'Capa: '.$layer->getName().', Id: '.$geom->getId());
-		$placemark->addChild('className', get_class($geom));
+		$placemark->addAttribute('ID', $owner->getId());
+		$placemark->addChild('name', $owner->getId());
+		$placemark->addChild('description', 'Capa: '.$layer->getName().', Id: '.$owner->getId());
+		$placemark->addChild('className', get_class($owner));
 		$placemark->addChild('layerId', $layer->getId());
-		$placemark->addChild('elementId', $geom->getId());
+		$placemark->addChild('elementId', $owner->getId());
 		$placemark->addChild('gisType', $gisDatatype);
 		
 		switch ($gisDatatype) {
