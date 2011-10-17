@@ -121,13 +121,15 @@ class GISController extends YuppController {
 
 		//$result = call_user_func($className.'::'.$methodName,  $distance);
 		
-		$reference = $classFromName::get($filterValue);
+		$reference = call_user_func_array($classFromName .'::get', array($filterValue));
+		
 		$methodTo = 'get'.ucfirst($positionto);
 		$condition = GISCondition::DWITHIN(
 				YuppGISConventions::tableName($classToName), 
 				$positionfrom, $reference->$methodTo(), $distance);
 		
-		$result = $classToName::findBy($condition, new ArrayObject());
+		$result =	call_user_func_array($classToName.'::findBy', array($condition, new ArrayObject()));
+		
 		
 
 		$json = '[';
