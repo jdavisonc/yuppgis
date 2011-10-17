@@ -171,8 +171,8 @@ $layer2->save();
 
 $layer3->save();
 
-$medico = new Medico();
-$medico->setNombre('Medico Test');
+$m1 = new Medico();
+$m1->setNombre('Medico 1');
 
 $puntos = array ( new Point(-56.17438, -34.88619), new Point(-56.181548, -34.882521), new Point(-56.181948, -34.880621), new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619));
 $line = new LineString($puntos);
@@ -184,10 +184,16 @@ $relleno->setColor(Color::RED);
 $multiPolygon = new MultiPolygon(array ($polygon));
 $multiPolygon->setUIProperty($relleno);
 
-$medico->setZonas($multiPolygon);
-$medico->save();
+$m1->setZonas($multiPolygon);
+$m1->save();
 
-$layer1->addElement($medico);
+$layer1->addElement($m1);
+
+$m2 = new Medico();
+$m2->setNombre('Medico 2');
+$m2->setUbicacion(new Point(-56.17438, -34.88619));
+
+$layer1->addElement($m2);
 $layer1->save();
 
 $map->addLayer($layer1);

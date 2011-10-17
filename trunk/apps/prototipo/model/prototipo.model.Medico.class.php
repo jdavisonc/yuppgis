@@ -10,6 +10,7 @@ class Medico extends GISPersistentObject {
 
 		$this->addAttribute("nombre", Datatypes :: TEXT);
 		$this->addAttribute("zonas", GISDatatypes :: MULTIPOLYGON);
+		$this->addAttribute("ubicacion", GISDatatypes :: POINT);
 		
 		
 

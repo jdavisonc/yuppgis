@@ -112,14 +112,11 @@ class GISController extends YuppController {
 		$mapId = $this->params['mapId'];
 		$classFromName = $this->params['classFrom'];
 		$filterValue = $this->params['filterValue'];
-		$distance = intval($this->params['param']);
+		$distance = $this->params['param'];
 		
 		$classToName = $this->params['classTo'];
 		$positionfrom = $this->params['positionFrom'];
-		$positionto = $this->params['positionTo'];
-	
-
-		//$result = call_user_func($className.'::'.$methodName,  $distance);
+		$positionto = $this->params['positionTo'];		
 		
 		$reference = call_user_func_array($classFromName .'::get', array($filterValue));
 		
@@ -129,8 +126,6 @@ class GISController extends YuppController {
 				$positionfrom, $reference->$methodTo(), $distance);
 		
 		$result =	call_user_func_array($classToName.'::findBy', array($condition, new ArrayObject()));
-		
-		
 
 		$json = '[';
 		$count = sizeof($result);
