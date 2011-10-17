@@ -32,15 +32,21 @@ class KMLUtilities{
 	 */
 	private static function elementToKML($element, $layer, SimpleXMLElement &$folder){
 		if ($element->hasAttribute('ubicacion') && $element->getUbicacion() != null){
-			KMLGEO::toKML($element->getUbicacion(), $element, $layer, $folder);
+			$description = 'Capa: '.$layer->getName().', Id: '.$element->getId();
+			KMLGEO::toKML($element->getId(), $element->getUbicacion(), $description, get_class($element), 
+					$layer->getId(), new Icon(0,0,$layer->getIconurl()) ,$folder);
 		}
 
 		if ($element->hasAttribute('linea') && $element->getLinea() != null){
-			KMLGEO::toKML($element->getLinea(), $element, $layer, $folder);
+			$description = 'Capa: '.$layer->getName().', Id: '.$element->getId();
+			KMLGEO::toKML($element->getId(), $element->getLinea(), $description, get_class($element), 
+					$layer->getId(), new Icon(0,0,$layer->getIconurl()) ,$folder);
 		}
 
 		if ($element->hasAttribute('zonas') && $element->getZonas() != null){
-			KMLGEO::toKML($element->getZonas(), $element, $layer, $folder);
+			$description = 'Capa: '.$layer->getName().', Id: '.$element->getId();
+			KMLGEO::toKML($element->getId(), $element->getZonas(), $description, get_class($element), 
+					$layer->getId(), new Icon(0,0,$layer->getIconurl()) ,$folder);
 		}
 	}
 	

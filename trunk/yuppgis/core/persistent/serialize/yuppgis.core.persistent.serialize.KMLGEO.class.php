@@ -85,33 +85,33 @@ class KMLGEO {
 	 * To KML
 	 ************/
 	
-	public static function toKML(Geometry $geom, $owner, DataLayer $layer, SimpleXMLElement &$parent) {
+	public static function toKML($id, Geometry $geom, $description, $class, $layerId, $defaultStyle, SimpleXMLElement &$parent) {
 		if ($geom instanceof GeometryCollection) {
-			return self::collectionToKML($geom, $owner, $layer, $parent);
+			return self::collectionToKML($id, $geom, $description, $class, $layerId, $defaultStyle, $parent);
 		} else {
-			return self::singleToKML($geom, $owner, $layer, $parent);
+			return self::singleToKML($id, $geom, $description, $class, $layerId, $defaultStyle, $parent);
 		}
 	}
 	
-	private static function collectionToKML($geom, $owner, DataLayer $layer, SimpleXMLElement &$parent) {
+	private static function collectionToKML($id, Geometry $geom, $description, $class, $layerId, $defaultStyle, SimpleXMLElement &$parent) {
 		$kml = '';
 		foreach ($geom->getCollection() as $singleGeom) {
 			$singleGeom->setUIProperty($geom->getUIProperty()); // se asigna el estilo de la coleccion
-			$kml .= self::singleToKML($singleGeom, $owner, $layer, $parent);
+			$kml .= self::singleToKML($id, $singleGeom, $description, $class, $layerId, $defaultStyle, $parent);
 		}
 		return $kml;
 	}
 	
-	private static function singleToKML(Geometry $geom, $owner, DataLayer $layer, SimpleXMLElement &$parent) {
+	private static function singleToKML($id, Geometry $geom, $description, $class, $layerId, $defaultStyle, SimpleXMLElement &$parent) {
 		$gisDatatype = GISDatatypes::getTypeOf($geom);
 		
 		$placemark = $parent->addChild('Placemark');
-		$placemark->addAttribute('ID', $owner->getId());
-		$placemark->addChild('name', $owner->getId());
-		$placemark->addChild('description', 'Capa: '.$layer->getName().', Id: '.$owner->getId());
-		$placemark->addChild('className', get_class($owner));
-		$placemark->addChild('layerId', $layer->getId());
-		$placemark->addChild('elementId', $owner->getId());
+		$placemark->addAttribute('ID', $id);
+		$placemark->addChild('name', $id);
+		$placemark->addChild('description', $description); 
+		$placemark->addChild('className', $class);
+		$placemark->addChild('layerId', $layerId);
+		$placemark->addChild('elementId', $id);
 		$placemark->addChild('gisType', $gisDatatype);
 		
 		switch ($gisDatatype) {
@@ -136,8 +136,8 @@ class KMLGEO {
 		$uiProperty = $geom->getUIProperty();
 		if ($uiProperty != null) {
 			self::styleToKML($placemark, $gisDatatype, $uiProperty);
-		} else {
-			self::defaultStyleLayerToKML($placemark, $gisDatatype, $layer);
+		} else if ($defaultStyle != null) {
+			self::defaultStyleLayerToKML($placemark, $gisDatatype, $defaultStyle);
 		}
 	}		
 	
@@ -212,18 +212,11 @@ class KMLGEO {
 		}
 	}
 	
-	private static function defaultStyleLayerToKML(&$placemark, $gisDatatype, $layer) {
+	private static function defaultStyleLayerToKML(&$placemark, $gisDatatype, $defaultStyle) {
 		$style = $placemark->addChild('Style');
-		switch ($gisDatatype){
-			case GISDatatypes::POINT:
-				self::iconToKML($style, new Icon(0, 0, $layer->getIconurl(), 0, 0));
-				break;
-			//TODO Preguntar por los valores por defecto de la capa
-			case GISDatatypes::LINERING:
-			case GISDatatypes::LINESTRING:				
-			case GISDatatypes::POLYGON:
-			default:
-				break;
+		
+		if ($defaultStyle instanceof Icon && $gisDatatype == GISDatatypes::POINT) {
+			self::iconToKML($style, $defaultStyle);
 		}
 	}
 	
