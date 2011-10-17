@@ -45,6 +45,7 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 		
 	public function testLayerToKml(){
 		$layer =  new DataLayer('layerName', 'nombre');
+		$layer->setIconurl('/yuppgis/yuppgis/js/gis/img/marker-gold.png');
 		$paciente = new Paciente();
 		$paciente->setNombre('Roberto');
 		$paciente->setUbicacion(new Point(10, 10));

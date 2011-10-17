@@ -79,11 +79,9 @@ class KMLGEOTest extends YuppGISTestCase {
 	public function testPointToKML() {
 		$kml = new SimpleXMLElement('<Folder/>');
 		$layer = new DataLayer('Capa');
-		$layer->setId(1);
 		$point = new Point(-56.0000, -34.1234234);
-		$point->setId(200);
 		$point->setUIProperty(new Icon(0,0,'ffff',0,0));
-		KMLGEO::toKML($point, $layer, $kml);
+		KMLGEO::toKML(1, $point, 'Description', 'Paciente', 200, null, $kml);
 		
 		$this->assertNotNull($kml->asXML() != null, 'De punto a kml');
 	}
@@ -91,11 +89,10 @@ class KMLGEOTest extends YuppGISTestCase {
 	public function testPointDefaultStyleToKML() {
 		$kml = new SimpleXMLElement('<Folder/>');
 		$layer = new DataLayer('Capa');
-		$layer->setIconurl('ggggggggg');
 		$layer->setId(1);
 		$point = new Point(-56.0000, -34.1234234);
 		$point->setId(200);
-		KMLGEO::toKML($point, $layer, $kml);
+		KMLGEO::toKML(1, $point, 'Description', 'Paciente', 200, new Icon(0,0,'gg'), $kml);
 		
 		$this->assertNotNull($kml->asXML() != null, 'De punto a kml');
 	}
@@ -106,7 +103,7 @@ class KMLGEOTest extends YuppGISTestCase {
 		$layer->setId(1);
 		$line = new LineString(array(new Point(-56.02, -34.1234234), new Point(-56.02, -34.1234234)));
 		$line->setId(200);
-		KMLGEO::toKML($line, $layer, $kml);
+		KMLGEO::toKML(1, $line, 'Description', 'Paciente', 200, null, $kml);
 		
 		$this->assertNotNull($kml->asXML() != null, 'De lineString a kml');
 	}
@@ -120,7 +117,7 @@ class KMLGEOTest extends YuppGISTestCase {
 		$line = new LineRing($points);
 		$polygon = new Polygon($line, array($line, $line));
 		$polygon->setId(200);
-		KMLGEO::toKML($polygon, $layer, $kml);
+		KMLGEO::toKML(1, $polygon, 'Description', 'Paciente', 200, null, $kml);
 		
 		$this->assertNotNull($kml->asXML() != null, 'De lineString a kml');
 	}
