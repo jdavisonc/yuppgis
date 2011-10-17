@@ -167,6 +167,34 @@ class GISDAL extends DAL {
 		}
 		return $gisSelects;
 	}
+	
+	public function addGeometryColumn($tableName, $srid, $type) {
+		$query = 'SELECT AddGeometryColumn(\'public\', \'' . $tableName . '\',\'geom\',' . $srid . ',\'' . $this->gisdb->getDBGisType($type) . '\', 2)';
+		$this->gisdb->execute( $query );
+	}
+	
+	
+	public function createGISTable($tableName) {
+		
+      Logger::getInstance()->dal_log("GISDAL::createGISTable : " . $tableName);
+            
+      $q_ini = "CREATE TABLE " . $tableName . " (";
+      $q_end = ");";
+      
+      
+     $q_pks = "id ".  
+                   $this->gisdb->getAutoIncrement() . " " .
+                   " PRIMARY KEY, "; 
+      
+      $q_cols = "uiproperty " . $this->gisdb->getDBType(Datatypes::TEXT, null ) . " NULL"; // Si la clave nullable esta y si el ooleano en nullable es true, pone NULL.
+      
+      $q = $q_ini . $q_pks . $q_cols . $q_end; 
+
+      //Si hay una excepcion, va a la capa superior.
+      $this->gisdb->execute( $q );
+      
+   }
+	
 
 }
 

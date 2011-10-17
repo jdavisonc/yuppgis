@@ -12,6 +12,7 @@ class DatabasePostgreSQL {
    private $lastQuery = NULL;
    private $lastResult = NULL;
    private $queryCount; // Cantidad de consultas para un request (deberia ser singleton para poder saber)
+   private $autoIncrement = "serial";
 
    public function __construct()
    {
@@ -803,6 +804,10 @@ class DatabasePostgreSQL {
 			return 'FALSE';
 		}
    }
+   
+   public function getAutoIncrement() {
+   		return $this->autoIncrement;
+   } 
    
 }
 

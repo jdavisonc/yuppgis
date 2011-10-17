@@ -17,7 +17,11 @@ class GISDatatypes {
 	const GEOMETRYCOLLECTION = "yuppgis_type_geometrycollection";
 	
 	public static function getTypeOf(Geometry $geom) {
-		switch (get_class($geom)) {
+		return self::getTypeByName(get_class($geom));
+	}
+	
+	public static function getTypeByName($geom) {
+		switch ($geom) {
 			case Point::getClassName():
 				return self::POINT;
 			case LineString::getClassName():

@@ -12,6 +12,7 @@ class DatabaseMySQL {
    private $lastQuery = NULL;
    private $lastResult = NULL;
    private $queryCount; // Cantidad de consultas para un request (deberia ser singleton para poder saber)
+   private $autoIncrement = "AUTO_INCREMENT";
 
    public function __construct()
    {
@@ -666,6 +667,9 @@ class DatabaseMySQL {
 		}
    }
    
+	public function getAutoIncrement() {
+   		return $this->autoIncrement;
+   }
 }
 
 ?>
