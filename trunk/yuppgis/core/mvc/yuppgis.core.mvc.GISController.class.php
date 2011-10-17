@@ -87,11 +87,15 @@ class GISController extends YuppController {
 		$mapId = $this->params['mapId'];
 		$className = $this->params['className'];
 		$filterName = $this->params['filterName'];
-		$text = $this->params['param'];
+		$text = $this->params['param'];		
+		$layerId = null;
+		if(array_key_exists('layerId', $this->params)) {		
+			$layerId = $this->params['layerId'];
+		}
 		$methodName = $filterName;
 
 
-		$result = call_user_func($className.'::'.$methodName,  $text);
+		$result = call_user_func($className.'::'.$methodName,  $text, $layerId);
 
 		$json = '[';
 		$count = sizeof($result);

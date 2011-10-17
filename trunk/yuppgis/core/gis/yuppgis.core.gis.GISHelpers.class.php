@@ -46,35 +46,35 @@ class GISHelpers{
 
 		return $html;
 	}
-	
+
 	/**
 	 * Genera el html para un combo de selección
 	 * @param nombre de la clase
 	 * @param id del elemento
 	 * @return html generado para el menú
 	 */
-	public static function FiltersMenu($class, $mapid, $handler = null){
+	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null){
 		$appName = YuppContext::getInstance()->getApp();
 		$random = uniqid();
-		
+
 		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$class.'_'.$mapid.'_'.$random.'">';
-		
+
 		foreach (self::AvailableFilters($class) as $option){
 			$html .= '<option value="'.$option.'">'.str_ireplace('Filter', '', $option).'</option>';
 		}
-		
+
 		$handlerCall = '';
 		if ($handler != null){
 			$handlerCall = $handler.'(data);';
 		}else{
-		 	$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';			
+			$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';
 		}
 
 		$html .= '</select>';
-		$html .= '<input data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'" />';		
-		
+		$html .= '<input data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'" />';
+
 		$methodName = 'filter_'.$class.'_'.$mapid.'_'.$random;
-		
+
 		$html .= '<a href="#" id="btnFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
 
 		$script = '<script>
@@ -88,10 +88,16 @@ class GISHelpers{
 							        filterName: selectedOption,
 							        className: "'.$class.'",
 							        mapId: '.$mapid.',
-							      	param: text
+							      	param: text';
+
+		if($layerId != null){
+			$script .= ' 					      	,
+							      	layerId: '.$layerId.'';
+		}
+
+		$script .= '
 							      },			      			      			      
-							      success: function(data){
-							      	
+							      success: function(data){							      	
 							      	'.$handlerCall.'
 							      }
 							  })
@@ -102,7 +108,7 @@ class GISHelpers{
 		';
 
 		$html .= $script;
-		
+
 		return $html;
 	}
 
@@ -120,7 +126,7 @@ class GISHelpers{
 		$olurl = MapParams::getValueOrDefault($params, MapParams::OpenLayerJS_URL);
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
-		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);	
+		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
 		$type = MapParams::getValueOrDefault($params, MapParams::TYPE);
 		$clickhandlers = MapParams::getValueOrDefault($params, MapParams::CLICK_HANDLERS);
 		$selecthandlers = MapParams::getValueOrDefault($params, MapParams::SELECT_HANDLERS);
@@ -130,7 +136,7 @@ class GISHelpers{
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/common"));
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/jquery.yuppgis.map"));
 
-		$html =	'	
+		$html =	'
 		 
 		<script src="'.$olurl.'" type="text/javascript"></script>	
 		
@@ -152,15 +158,15 @@ class GISHelpers{
 		
 			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'", appName: "'.$appName.'"})
 		';			
-		
+
 		foreach ($clickhandlers as $clickhandler){
 			$html .= '.addClickHandler("'.$clickhandler.'")';
 		}
-		
+
 		foreach ($selecthandlers as $selecthandler){
 			$html .= '.addSelectHandler("'.$selecthandler.'")';
 		}
-		
+
 		$html .= ';</script>';
 
 		return  $html;
@@ -179,7 +185,7 @@ class GISHelpers{
 			$layerId = $layer->getId();
 			$checkboxId = 'chb_'.$id.'_'.$layerId;
 			$image = '<img src="'.$layer->getIconurl().'" >';
-			$html .= '<li style="list-style-type: none">'.$image.DisplayHelper::check($checkboxId, true, 
+			$html .= '<li style="list-style-type: none">'.$image.DisplayHelper::check($checkboxId, true,
 			array(
 					'id'=> $checkboxId, 
 					'onclick' => GISHelpers::MapLayerHandler($id, $layerId, $checkboxId),
@@ -187,28 +193,28 @@ class GISHelpers{
 					'data-attr-mapid' => $id )
 			).'<label for="'.$checkboxId.'">'.$layer->getName().'</label></li>';
 		}
-		
+
 		return $html.'</ul>';
 	}
-	
+
 	private static function MapLayerHandler($mapId, $layerId, $checkboxId){
-		
+
 		$html = 'javascript:$(\'#map_'.$mapId.'\').YuppGISMap().map.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'))';
-		
-		return $html;
-	}
-	
-	public static function Log($mapId){
-		$html = '<div data-attr-mapid="'.$mapId.'" class="logarea" style="width:550px!important;height:220px; overflow:scroll!important;" id="log_'.$mapId.'"></div>';
-		
+
 		return $html;
 	}
 
-	public static function TagLayers($params=null){		
+	public static function Log($mapId){
+		$html = '<div data-attr-mapid="'.$mapId.'" class="logarea" style="width:550px!important;height:220px; overflow:scroll!important;" id="log_'.$mapId.'"></div>';
+
+		return $html;
+	}
+
+	public static function TagLayers($params=null){
 		$myTags = array ();
 		$id = MapParams::getValueOrDefault($params, MapParams::ID);
 		$map = Map::get($id);
-		$layers = $map->getLayers();		
+		$layers = $map->getLayers();
 		$html =  '<ul>';
 		foreach ($layers as $layer){
 			$tags = $layer->getTags();
@@ -218,17 +224,17 @@ class GISHelpers{
 					$myTags[] = $tag;
 					$tagId = $tag->getId();
 					$checkboxId = 'chb_'.$id.'_'.$layerId.'_'.$tagId;
-					$html .= '<li style="list-style-type: none">'.DisplayHelper::check($checkboxId, true, 
-						array(
+					$html .= '<li style="list-style-type: none">'.DisplayHelper::check($checkboxId, true,
+					array(
 						'id'=> $checkboxId, 
 						'onclick' => GISHelpers::TagLayerHandler($id, $tagId, $checkboxId),						
-						
+
 						'data-attr-mapid' => $id
-						
-						)).'<label for="'.$checkboxId.'">'.$tag->getName().'</label></li>';	
+
+					)).'<label for="'.$checkboxId.'">'.$tag->getName().'</label></li>';
 				}
-			}			
-		}		
+			}
+		}
 		return $html.'</ul>';
 	}
 
@@ -236,20 +242,20 @@ class GISHelpers{
 		$map = Map::get($mapId);
 		$layers = $map->getLayers();
 		$html = "";
-		foreach ($layers as $layer){									
+		foreach ($layers as $layer){
 			$tags = $layer->getTags();
 			foreach ($tags as $tag){
 				if($tag->getId() == $tagId){
 					$layerId = $layer->getId();
-					$html .= '$(\'#map_'.$mapId.'\').YuppGISMap().map.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'));';		
-				}	
-			}			
-		}	
+					$html .= '$(\'#map_'.$mapId.'\').YuppGISMap().map.getLayersByName('.$layerId.')[0].setVisibility($(\'#'.$checkboxId.'\').is(\':checked\'));';
+				}
+			}
+		}
 		return $html;
 	}
-	
+
 	public static function VisualizationState($mapId){
-		
+
 		$saveMethod = '
 		<script type="text/javascript">
 		function saveVisualizationState_'.$mapId.'(){
@@ -267,12 +273,12 @@ class GISHelpers{
 		}
 		</script><br/>
 		';
-		
+
 		$html = $saveMethod;
 		$html .= '<a href="#" id="btnSaveVisualizationState_'.$mapId.'" onclick="javascript:return saveVisualizationState_'.$mapId.'()">Persistir</a>';
 		$html .= '<br />';
-		
-		$load_params = array( 
+
+		$load_params = array(
 			"app" => "prototipo", 
 			"controller" =>"Home", 
 			"action"=>"loadVisualization",		 	
@@ -283,13 +289,13 @@ class GISHelpers{
 							$('#map_".$mapId."').YuppGISMap().loadVisualizationState(state);
 						}"
 			
-			);
-		
-		$html .= Helpers::ajax_link($load_params);
-		
-		return $html;
+						);
+
+						$html .= Helpers::ajax_link($load_params);
+
+						return $html;
 	}
-	
+
 	/**
 	 * Genera el html para un combo de selección
 	 * @param nombre de la clase
@@ -297,31 +303,33 @@ class GISHelpers{
 	 * @return html generado para el menú
 	 */
 	public static function DistanceFilterMenu(
-	$classfrom, $mapid, $handler = null, $fieldName='nombre', $positionfrom='ubicacion', 
+	$classfrom, $mapid, $handler = null, $fieldName='nombre', $positionfrom='ubicacion',
 	$classto, $positionto='zonas'){
-		
+
 		$appName = YuppContext::getInstance()->getApp();
 		$random = uniqid();
-		
-		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$classfrom.'_'.$mapid.'_'.$random.'">';		
+
+		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$classfrom.'_'.$mapid.'_'.$random.'">';
 		$params = new ArrayObject() ;
 		$method = 'get'.ucfirst($fieldName);
-		foreach ($classfrom::listAll($params) as $option){
+		
+		foreach (call_user_func($classfrom.'::listAll',$params) as $option){
+		
 			$html .= '<option value="'.$option->getId().'">'.$option->$method().'</option>';
 		}
-				
+
 		$handlerCall = '';
 		if ($handler != null){
 			$handlerCall = $handler.'(data);';
 		}else{
-		 	$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';			
+			$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';
 		}
 
 		$html .= '</select>';
-		$html .= '<input data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" />';		
-		
+		$html .= '<input data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" />';
+
 		$methodName = 'filter_'.$classfrom.'_'.$mapid.'_'.$random;
-		
+
 		$html .= '<a href="#" id="btnFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
 
 		$script = '<script>
@@ -351,10 +359,10 @@ class GISHelpers{
 		';
 
 		$html .= $script;
-		
+
 		return $html;
 	}
-	
+
 }
 
 

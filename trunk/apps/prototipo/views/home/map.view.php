@@ -22,7 +22,8 @@
 <fieldset>
 	<legend>Filtros de Paciente</legend>
 	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements'); ?><br />
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?><br />	
+	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?><br />
+	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, null, 2); ?><br />		
 </fieldset>
 <fieldset>
 	<legend>Resultados</legend>
