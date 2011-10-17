@@ -57,7 +57,7 @@ class PersistentManager {
    const LAZY_LOAD_ESTRATEGY    = 2;
    
    
-   public function __construct( $load_estragegy )
+   public function __construct( $load_estragegy, $appName = null)
    {
    	  switch ($load_estragegy)
       {
@@ -76,9 +76,11 @@ class PersistentManager {
       }
       $this->po_loader->setManager( $this ); // Inversion Of Control
       
-      $ctx = YuppContext::getInstance();
-      $appName = $ctx->getApp();
-      if ($ctx->isAnotherApp()) $appName = $ctx->getRealApp();
+      if ($appName == null) {
+			$ctx = YuppContext::getInstance();
+	      	$appName = $ctx->getApp();
+	      	if ($ctx->isAnotherApp()) $appName = $ctx->getRealApp();
+      }
       
       Logger::getInstance()->pm_log("PM::__construct appName: " . $appName);
       
@@ -1380,7 +1382,7 @@ class PersistentManager {
     * 
     * Si dalForApp es NULL se usa this->dal, de lo contrario se usa esa DAL.
     */
-   private function generate( $ins, $dalForApp = NULL )
+   protected function generate( $ins, $dalForApp = NULL )
    {
       Logger::getInstance()->pm_log("PersistentManager::generate");
       
@@ -1604,30 +1606,27 @@ class PersistentManager {
 
    } // generateHasManyJoinTable
 
+   
+   
    /**
     * generateAll
     * Genera todas las tablas correspondientes al modelo previamente cargado.
     * 
     * @pre Deberia haber cargado, antes de llamar, todas las clases persistentes.
     */
-   public function generateAll()
-   {
-      Logger::getInstance()->pm_log("PersistentManager::generateAll ======");
-      
-      $yupp = new Yupp();
-      $appNames = $yupp->getAppNames();
-      
-      foreach ($appNames as $appName)
-      {
-          $dalForApp = new DAL($appName); // No puedo usar this->dal porque esta configurada para 'core'
+   public function generateAll( $appName ) {
+   		
+   		Logger::getInstance()->pm_log("PersistentManager::generateAll ======");
+        $dalForApp = $this->dal; //
         
-          // Todas las clases del primer nivel del modelo.
-          $A = ModelUtils::getSubclassesOf( 'PersistentObject', $appName ); // FIXME> no es recursiva!
-    
-          // Se utiliza luego para generar FKs.
-          $generatedPOs = array();
-    
-          foreach( $A as $clazz )
+		// Todas las clases del primer nivel del modelo.
+		$A = ModelUtils::getSubclassesOf( 'PersistentObject', $appName ); // FIXME> no es recursiva!
+		
+		// Se utiliza luego para generar FKs.
+        $generatedPOs = array();
+        $dalForApp = $this->dal;
+        
+        foreach( $A as $clazz )
           {
              $struct = MultipleTableInheritanceSupport::getMultipleTableInheritanceStructureToGenerateModel( $clazz );
     
@@ -1749,9 +1748,8 @@ class PersistentManager {
                 if ( $instConElAtributoHasOne === NULL )
                 {
                    // Para ChasOne esta generando "chasOne", y el nombre de la tabla que aparece en la tabla es "chasone".
-                   $refTableName = YuppConventions::tableName( $refClass );
-                   
-                   $fks[] = array(
+                  $refTableName = YuppConventions::tableName( $refClass );
+                  $fks[] = array(
                              'name'    => DatabaseNormalization::simpleAssoc($attr), // nom_id, $attr = nom
                              'table'   => $refTableName,
                              'refName' => 'id' // Se que esta referencia es al atributo "id".
@@ -1817,9 +1815,11 @@ class PersistentManager {
              $dalForApp->addForeignKeys($tableName, $fks);
              
           } // foreach PO
-      } // foreach app
+		
+          
    } // generateAll
    
+
    
    // para getMultipleTableInheritance que filtre la solucion.
 //   function filter_not_null( $array )
@@ -1937,6 +1937,7 @@ class PersistentManager {
       }
       */
    }
+   
    
 } // PersistentManager
 

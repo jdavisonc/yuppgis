@@ -212,6 +212,22 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 		return $res . ")";
 	}
 	
+	public function getDBGisType( $type ) {
+		switch ($type) {
+			case GISDatatypes::POINT:
+				return 'POINT';
+			case GISDatatypes::LINESTRING:
+			case GISDatatypes::LINERING:
+			case GISDatatypes::LINE:
+				return 'LINESTRING';
+			case GISDatatypes::MULTISURFACE:
+			case GISDatatypes::MULTIPOLYGON:
+				return 'MULTIPOLYGON';
+			default:
+				throw new Exception("DatabasePosgisSQL.getDBGISType: el tipo ($type) no esta definido.");
+   		}
+   }
+	
 }
 
 ?>

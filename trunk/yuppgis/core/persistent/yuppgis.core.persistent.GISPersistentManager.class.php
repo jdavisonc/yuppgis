@@ -187,6 +187,7 @@ abstract class GISPersistentManager extends PersistentManager {
 	 * 		   cumpla con la condicion.
 	 */
 	abstract protected function processGISCondition(PersistentObject $instance, GISCondition $condition, ArrayObject $params );
-   	
+	
+	 	
 }
 ?>
