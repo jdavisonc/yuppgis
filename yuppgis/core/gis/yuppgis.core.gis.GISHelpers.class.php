@@ -341,7 +341,6 @@ class GISHelpers{
 							      	positionTo: "'.$positionto.'"
 							      },			      			      			      
 							      success: function(data){
-							      	
 							      	'.$handlerCall.'
 							      }
 							  })

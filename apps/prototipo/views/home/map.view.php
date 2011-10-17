@@ -22,24 +22,28 @@
 <fieldset>
 	<legend>Filtros de Paciente</legend>
 	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements'); ?><br />
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?><br />
-	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'Paciente', 'zonas'); ?><br />
+	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?><br />	
 </fieldset>
 <fieldset>
 	<legend>Resultados</legend>
 	<div id="resultsDiv"></div>
 </fieldset>
-
 <fieldset>
 	<legend>Log</legend>
 	<?php echo  GISHelpers::Log(1); ?>
 </fieldset>
-
 <fieldset>
 	<legend>Visualizaci&oacute;n</legend>
 	<?php echo  GISHelpers::VisualizationState(1); ?>
 </fieldset>
-
+<fieldset>
+	<legend>Filtro Distancia Medico/zonas - Paciente/ubicacion</legend>	
+	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'Paciente', 'zonas'); ?><br />
+</fieldset>
+<fieldset>
+	<legend>Filtro Distancia Medico/ubicacion - Paciente/ubicacion</legend>	
+	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'Paciente', 'ubicacion'); ?><br />
+</fieldset>
 
 <script type="text/javascript">
 
