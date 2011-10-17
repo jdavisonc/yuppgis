@@ -177,10 +177,9 @@
 
 						map.addLayers(vector);
 
-						// map.addControl(new
-						// OpenLayers.Control.MousePosition({displayProjection:
-						// map.baseLayer.projection}));
-
+						map.addControl(new
+						 OpenLayers.Control.MousePosition({displayProjection:
+						 map.baseLayer.projection}));
 						
 						
 						selectcontrol = new OpenLayers.Control.SelectFeature(vector, {
