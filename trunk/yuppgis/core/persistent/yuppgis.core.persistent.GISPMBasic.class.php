@@ -19,8 +19,8 @@ class GISPMBasic extends GISPersistentManager {
 	/**
 	 * @see GISPersistentManager::get_gis_object()
 	 */
-	public function get_gis_object( $tableNameOwner, $attr, $persistentClass, $id ) {
-		$geom = $this->giswsdal->get($tableNameOwner, $attr, $persistentClass, $id);
+	public function get_gis_object( $ownerName, $attr, $persistentClass, $id ) {
+		$geom = $this->giswsdal->get($ownerName, $attr, $persistentClass, $id);
 		$geom->setId($id);
 		return $geom;
 	}
@@ -28,15 +28,15 @@ class GISPMBasic extends GISPersistentManager {
 	/**
 	 * @see GISPersistentManager::save_gis_object()
 	 */
-	protected function save_gis_object( $ownerTableName, $attrNameAssoc, PersistentObject $obj ) {
-		$id = $this->giswsdal->save();
+	protected function save_gis_object( $ownerName, $attrNameAssoc, PersistentObject $obj ) {
+		$id = $this->giswsdal->save($ownerName, $attrNameAssoc, $obj);
 		$geom->setId($id);
 	}
 
 	/**
 	 * @see GISPersistentManager::delete_gis_object()
 	 */
-	protected function delete_gis_object($owner, $attrNameAssoc, $assocObj, $logical) {
+	protected function delete_gis_object($ownerName, $attrNameAssoc, $assocObj, $logical) {
 		$this->giswsdal->delete();
 	}
 

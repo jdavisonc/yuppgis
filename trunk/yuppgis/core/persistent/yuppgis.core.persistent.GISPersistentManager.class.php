@@ -18,12 +18,12 @@ abstract class GISPersistentManager extends PersistentManager {
 	/**
 	 * Obtiene un objeto geografico desde la base de datos.
 	 * 
-	 * @param String $tableNameOwner Nombre de la tabla del dueño
+	 * @param String $ownerName Nombre del objeto dueno
 	 * @param String $attr Nombre del atributo
 	 * @param class $persistentClass Clase o instancia a obtener
 	 * @param int $id Identificador de la clase
 	 */
-	abstract public function get_gis_object( $tableNameOwner, $attr, $persistentClass, $id );
+	abstract public function get_gis_object( $ownerName, $attr, $persistentClass, $id );
 
 	/**
 	 * Se salva en cascada con el dueño y su nombre de atributo.
@@ -32,12 +32,8 @@ abstract class GISPersistentManager extends PersistentManager {
 	 */
 	public function save_cascade_owner( PersistentObject $owner, $attrNameAssoc, PersistentObject $obj, $sessId ) {
 	   	if (is_subclass_of($obj, Geometry :: getClassName())) {
-   			
    			$obj->executeBeforeSave();
-   			
-   			$ownerTableName = YuppConventions::tableName( $owner );
-   			$this->save_gis_object($ownerTableName, $attrNameAssoc, $obj);
-   			
+   			$this->save_gis_object(get_class($owner), $attrNameAssoc, $obj);
    			$obj->executeAfterSave();
    		} else {
    			parent::save_cascade_owner( $owner, $attrNameAssoc, $obj, $sessId ) ;
@@ -47,11 +43,11 @@ abstract class GISPersistentManager extends PersistentManager {
 	/**
      * Salva el objeto geografico en la base de datos.
      * 
-     * @param String $ownerTableName Tabla del propietario
+     * @param String $ownerName Nombre del objeto dueno
      * @param String $attrNameAssoc Nombre del atributo de asociacion
      * @param PersistentObject $obj Objeto geografico a persistir
      */
-	abstract protected function save_gis_object( $ownerTableName, $attrNameAssoc, PersistentObject $obj ); 
+	abstract protected function save_gis_object( $ownerName, $attrNameAssoc, PersistentObject $obj ); 
 
 	/**
 	 * Borra elementos en cascada.
@@ -88,7 +84,7 @@ abstract class GISPersistentManager extends PersistentManager {
 
    	private function delete_cascade( $owner, $attrNameAssoc, $assocObj, $logical ) {
    		if ( is_subclass_of($assocObj, Geometry::getClassName()) ) {
-   			$this->delete_gis_object($owner, $attrNameAssoc, $assocObj, $logical);
+   			$this->delete_gis_object(get_class($owner), $attrNameAssoc, $assocObj, $logical);
     	} else {
     		return $this->delete($assocObj, $assocObj->getId(), $logical) ;
     	}
@@ -97,12 +93,12 @@ abstract class GISPersistentManager extends PersistentManager {
 	/**
 	 * Elimina un elemento geografico.
 	 * 
-	 * @param String $owner Propietario
+	 * @param String $ownerName Nombre del objeto dueno
 	 * @param String $attrNameAssoc Nombre del atributo de asociacion 
 	 * @param Object $assocObj Objeto geografico asociado
 	 * @param Boolean $logical Verdadero si es una eliminacion logica
 	 */
-	abstract protected function delete_gis_object($owner, $attrNameAssoc, $assocObj, $logical);
+	abstract protected function delete_gis_object($ownerName, $attrNameAssoc, $assocObj, $logical);
 	
 	/**
 	 * Ejecuta una consulta, si es una consulta geografica se procesa con un GISQueryProcessor.

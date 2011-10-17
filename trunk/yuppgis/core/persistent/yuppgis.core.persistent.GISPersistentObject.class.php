@@ -106,7 +106,7 @@ class GISPersistentObject extends PersistentObject {
 
 	public function aGetObject( $attr, $id ) {
 		if (is_subclass_of($this->hasOne[$attr], Geometry :: getClassName())) {
-			return PersistentManagerFactory::getManager()->get_gis_object( $this->getWithTable() , $attr, $this->hasOne[$attr], $id );
+			return PersistentManagerFactory::getManager()->get_gis_object( get_class($this) , $attr, $this->hasOne[$attr], $id );
 		} else {
 			return parent::aGetObject($attr, $id);
 		}
