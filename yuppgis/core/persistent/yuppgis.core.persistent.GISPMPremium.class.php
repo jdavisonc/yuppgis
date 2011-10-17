@@ -26,13 +26,14 @@ class GISPMPremium extends GISPersistentManager {
 	/**
 	 * @see GISPersistentManager::get_gis_object()
 	 */
-	public function get_gis_object( $tableNameOwner, $attr, $persistentClass, $id ) {
+	public function get_gis_object( $ownerName, $attr, $persistentClass, $id ) {
 		Logger::getInstance()->pm_log("GISPM.get_gis_object " . $persistentClass . " " . $id);
 		
 		if ( $id === NULL ) {
 			throw new Exception("id de objeto " . $persistentClass . " no puede ser null");
 		}
 
+		$tableNameOwner = YuppConventions::tableName($ownerName);
 		$tableName = YuppGISConventions::gisTableName($tableNameOwner, $attr); 
 
 		$query = new Query();
@@ -61,9 +62,10 @@ class GISPMPremium extends GISPersistentManager {
 	/**
 	 * @see GISPersistentManager::save_gis_object()
 	 */
-	protected function save_gis_object( $ownerTableName, $attrNameAssoc, PersistentObject $obj ) {
+	protected function save_gis_object( $ownerName, $attrNameAssoc, PersistentObject $obj ) {
 	   	Logger::getInstance()->pm_log("GISPM.save_object " . get_class($obj) );
 	
+	   	$ownerTableName = YuppConventions::tableName($ownerName);
 	   	$tableName = YuppGISConventions::gisTableName($ownerTableName, $attrNameAssoc);
 		$attrGeo = WKTGEO::toText( $obj );
 	   	
@@ -80,9 +82,9 @@ class GISPMPremium extends GISPersistentManager {
 	/**
 	 * @see GISPersistentManager::delete_gis_object()
 	 */
-	protected function delete_gis_object($owner, $attrNameAssoc, $assocObj, $logical) {
+	protected function delete_gis_object($ownerName, $attrNameAssoc, $assocObj, $logical) {
 		if ( !$logical ) {
-			$tableName = YuppGISConventions::gisTableName(YuppConventions::tableName( $owner ), $attrNameAssoc);
+			$tableName = YuppGISConventions::gisTableName(YuppConventions::tableName($ownerName), $attrNameAssoc);
 			return $this->dal->deleteFromTable($tableName,  $assocObj->getId(), false);
 		}
 	}
