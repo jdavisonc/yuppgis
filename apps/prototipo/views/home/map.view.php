@@ -20,18 +20,20 @@
 	<?php echo GISHelpers::TagLayers(array(MapParams::ID => 1)); ?>
 </fieldset>
 <fieldset>
-	<legend>Filtros de Paciente</legend>
+	<legend>Filtro de Paciente - CustomHandler</legend>
 	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements'); ?><br />
+</fieldset>
+<fieldset>
+	<legend>Filtro de Paciente - Show</legend>
 	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?><br />
+</fieldset>	
+<fieldset>
+	<legend>Filtro de Paciente - Capa 2 - Show</legend>	
 	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, null, 2); ?><br />		
 </fieldset>
 <fieldset>
 	<legend>Resultados</legend>
 	<div id="resultsDiv"></div>
-</fieldset>
-<fieldset>
-	<legend>Log</legend>
-	<?php echo  GISHelpers::Log(1); ?>
 </fieldset>
 <fieldset>
 	<legend>Visualizaci&oacute;n</legend>
@@ -46,6 +48,10 @@
 	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'Paciente', 'ubicacion'); ?><br />
 </fieldset>
 
+<fieldset>
+	<legend>Log</legend>
+	<?php echo  GISHelpers::Log(1); ?>
+</fieldset>
 <script type="text/javascript">
 
 function customClickHandler(event){
