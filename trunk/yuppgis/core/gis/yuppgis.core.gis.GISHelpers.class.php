@@ -326,7 +326,8 @@ class GISHelpers{
 		}
 
 		$html .= '</select>';
-		$html .= '<input data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" />';
+		$html .= '<input onkeypress="return onlyNumbers(event)" data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" />';
+		
 
 		$methodName = 'filter_'.$classfrom.'_'.$mapid.'_'.$random;
 
