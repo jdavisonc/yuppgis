@@ -2,11 +2,11 @@
 
 interface GISWSDAL {
 	
-	function get($ownerTableName, $attr, $persistentClass, $id);
+	function get($ownerName, $attr, $persistentClass, $id);
 	
-	function save($ownerTableName, $attrNameAssoc, $kml);
+	function save($ownerName, $attr, PersistentObject $obj);
 	
-	function delete($ownerTableName, $attrNameAssoc, $id, $logical);
+	function delete($ownerName, $attr, $id, $logical);
 	
 }
 
