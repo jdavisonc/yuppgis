@@ -1938,6 +1938,14 @@ class PersistentManager {
       */
    }
    
+   public function tableExists($className) {
+   		$tableName = YuppConventions::tableName( $className );
+   		if ($this->dal->tableExists( $tableName )) {
+   			return array('tableName'=>$tableName, 'created'=>"CREADA");
+   		} else {
+   			return array('tableName'=>$tableName, 'created'=>"NO CREADA");
+   		}
+   }
    
 } // PersistentManager
 

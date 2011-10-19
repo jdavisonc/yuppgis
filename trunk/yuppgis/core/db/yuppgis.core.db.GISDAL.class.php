@@ -18,7 +18,7 @@ class GISDAL extends DAL {
 		
 		$this->init($appName);
 
-		if ( $this->gisurl !== $this->url && $this->gistype !== $this->type && $this->gisdatabase !== $this->database ) {
+		if ( $this->gisurl !== $this->url || $this->gistype !== $this->type || $this->gisdatabase !== $this->database ) {
 			
 			// Se setea el db
 			parent::__construct($appName);
@@ -195,6 +195,10 @@ class GISDAL extends DAL {
       
    }
 	
+	public function tableGISExists( $tableName ) {
+      Logger::getInstance()->dal_log("GISDAL::tableGISExists $tableName en ".$this->database.' para '.$this->appName);
+      return $this->gisdb->tableExists($tableName);
+   }
 
 }
 
