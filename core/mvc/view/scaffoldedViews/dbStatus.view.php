@@ -227,8 +227,10 @@ global $_base_dir;
               {
                 foreach ( $classInfo as $class => $info )
                 {
-                  echo '<b>'. $class .'</b> se guarda en la tabla: <b>'. 
-                       $info['tableName'] .'</b> (' . $info['created'] .')<br/>';
+                	foreach ($info as $infoTables) {
+		                  echo '<b>'. $class .'</b> se guarda en la tabla: <b>'. 
+		                       $infoTables['tableName'] .'</b> (' . $infoTables['created'] .')<br/>';
+                	}
                 }
               }
               echo '</div>';

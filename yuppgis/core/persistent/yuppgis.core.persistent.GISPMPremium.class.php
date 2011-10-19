@@ -150,10 +150,12 @@ class GISPMPremium extends GISPersistentManager {
 	    $ownertableName = YuppConventions::tableName( $owner );
 	    $tableName = YuppGISConventions::gisTableName($ownertableName, $attr);
 	    
-	    $this->dal->createGISTable($tableName);
-	    $srid = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_SRID);
-	    
-	    $this->dal->addGeometryColumn($tableName, $srid, GISDatatypes::getTypeByName($owner->getType($attr)));
+	    if (!$this->dal->tableGISExists($tableName)) {
+		    $this->dal->createGISTable($tableName);
+		    $srid = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_SRID);
+		    
+		    $this->dal->addGeometryColumn($tableName, $srid, GISDatatypes::getTypeByName($owner->getType($attr)));
+	    }
    }
    
    public function generateAll( $appName ) {
@@ -172,8 +174,8 @@ class GISPMPremium extends GISPersistentManager {
    		$class[] = 'Map';
    		$class[] = 'DataLayer';
    		$class[] = 'Tag';
-   		
    		$class[] = 'GISPersistentObject';
+   		
    		$mode = YuppGISConfig::getInstance()->getGISPropertyValue( $appName, YuppGISConfig::PROP_YUPPGIS_MODE);
    		
    		$this->generateAllByClass($class, $mode, $appName);	
@@ -194,7 +196,12 @@ class GISPMPremium extends GISPersistentManager {
    	
    		foreach( $A as $clazz )
           {
-             $struct = MultipleTableInheritanceSupport::getMultipleTableInheritanceStructureToGenerateModel( $clazz );
+          	//TODO_GIS getMultipleTableInheritanceStructureToGenerateModel no es por app
+          	if ($clazz != GISPersistentObject::getClassName()) {
+             	$struct = MultipleTableInheritanceSupport::getMultipleTableInheritanceStructureToGenerateModel( $clazz );
+          	} else {
+          		$struct = array( GISPersistentObject::getClassName() => array());
+          	}
     
              // struct es un mapeo por clave las clases que generan una tabla y valor las clases que se mapean a esa tabla.
              foreach ($struct as $class => $subclassesOnSameTable)
@@ -202,6 +209,7 @@ class GISPMPremium extends GISPersistentManager {
                 // Instancia que genera tabla
                 $c_ins = new $class(); // FIXME: supongo que ya tiene withTable, luego veo el caso que no se le ponga WT a la superclase...
                 // FIXME: como tambien tiene los atributos de las superclases y como van en otra tabla, hay que sacarlos.
+                
                 
                 // Para cara subclase que se mapea en la misma tabla
                 foreach ( $subclassesOnSameTable as $subclass )
@@ -327,7 +335,7 @@ class GISPMPremium extends GISPersistentManager {
 		                   $this->generate_gisTables($ins, $attr, $appName);
 		                }
 		                                  		
-                   } else {
+                   } else if (!$isGeometry) {
                    		$refTableName = YuppConventions::tableName( $refClass );
                    		$fks[] = array(
                              'name'    => DatabaseNormalization::simpleAssoc($attr), // nom_id, $attr = nom
@@ -374,6 +382,7 @@ class GISPMPremium extends GISPersistentManager {
                       //Logger::struct( $ins, "Instancia de $aclass" );
                    }
                    // ===============================================================================
+                   
                    //TODO_GIS ERROR: insert or update on table "data_layer_elements_gis_persistent_object" violates foreign key constraint 
                    //"fk_gis_persistent_object_ref_id_id" DETAIL: Key (ref_id)=(1) is not present in table "gis_persistent_object".
                    if ($ins->getClass() != 'DataLayer' && $attr != 'elements') {
@@ -402,7 +411,43 @@ class GISPMPremium extends GISPersistentManager {
           } // foreach PO
 	}
    
+	public function tableExists($className) {
+   		
+		//$isModePremium = YuppGISConfig::getInstance()->getGISPropertyValue( $appName, YuppGISConfig::PROP_YUPPGIS_MODE) == YuppGISConfig::MODE_PREMIUM;
+		
+		$ins = new $className();
+		$res = array();
+		if (is_subclass_of($ins, GISPersistentObject::getClassName())) {
 
+			$tableName = YuppConventions::tableName( $className );
+	   		if ($this->dal->tableExists( $tableName )) {
+	   			$res[] = array('tableName'=>$tableName, 'created'=>"CREADA");
+	   		} else {
+	   			$res[] = array('tableName'=>$tableName, 'created'=>"NO CREADA");
+	   		}
+
+	   		// FKs hasOne
+            $ho_attrs = $ins->getHasOne();
+            foreach ( $ho_attrs as $attr => $refClass ) {
+				$isGeometry = is_subclass_of($refClass , Geometry::getClassName());
+
+				if ($isGeometry /* && $isModePremium */) {
+					$GIStableName = YuppGISConventions::gisTableName($tableName, $attr);
+	    			
+					if ($this->dal->tableGISExists($GIStableName)) {
+	    				$res[] = array('tableName'=>$GIStableName, 'created'=>"CREADA");
+	    			} else {
+	    				$res[] = array('tableName'=>$GIStableName, 'created'=>"NO CREADA");
+	    			}
+				}	
+            }
+            
+            return $res;
+		   		
+		} else {
+			return parent::tableExists($className);
+		}	
+   }
 
 }
 
