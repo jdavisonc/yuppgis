@@ -54,6 +54,13 @@ class GISPMBasic extends GISPersistentManager {
 		throw new Exception('Busqueda por atributo geografico no soportado en YuppGIS Basico');
 	}
 	
+	/**
+	 * @see GISPersistentManager::generate_gisTables()
+	 */
+	protected function generate_gisTables( PersistentObject $owner, $attr, $appName) {
+		;
+	}
+	
 }
 
 ?>
