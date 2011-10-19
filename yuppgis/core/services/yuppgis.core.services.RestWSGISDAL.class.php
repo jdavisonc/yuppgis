@@ -9,10 +9,10 @@ class RestWSGISDAL implements GISWSDAL {
 	private $deleteUrl = null;
 	
 	function __construct( $appName) {
-		$url = YuppGISConfig::getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_URL);
-		$getUrl = YuppGISConfig::getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_GET_URL);
-		$saveUrl = YuppGISConfig::getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_SAVE_URL);
-		$deleteUrl = YuppGISConfig::getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_DELETE_URL);
+		$url = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_URL);
+		$getUrl = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_GET_URL);
+		$saveUrl = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_SAVE_URL);
+		$deleteUrl = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_DELETE_URL);
 		
 		$this->getUrl = ($getUrl) ? $getUrl : $url;
 		$this->saveUrl = ($saveUrl) ? $saveUrl : $url;
