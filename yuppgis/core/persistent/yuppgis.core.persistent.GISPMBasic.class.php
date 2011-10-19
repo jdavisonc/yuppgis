@@ -1,7 +1,7 @@
 <?php
 
 YuppLoader::load('yuppgis.core.services', 'GISWSDAL');
-YuppLoader::load('yuppgis.core.services', 'RestGISWSDAL');
+YuppLoader::load('yuppgis.core.services', 'RestWSGISDAL');
 
 class GISPMBasic extends GISPersistentManager {
 	
@@ -13,7 +13,7 @@ class GISPMBasic extends GISPersistentManager {
 		//			 ya q uno es ws y otro db.
 		$this->dal = new DAL($appName);
 		// TODO_GIS: Configuracion dinamica del basico
-		$this->giswsdal = new RestGISWSDAL($appName); 
+		$this->giswsdal = new RestWSGISDAL($appName); 
 	}
 
 	/**
@@ -37,7 +37,7 @@ class GISPMBasic extends GISPersistentManager {
 	 * @see GISPersistentManager::delete_gis_object()
 	 */
 	protected function delete_gis_object($ownerName, $attrNameAssoc, $assocObj, $logical) {
-		$this->giswsdal->delete();
+		$this->giswsdal->delete($ownerName, $attrNameAssoc, $assocObj, $logical);
 	}
 
 	/**
