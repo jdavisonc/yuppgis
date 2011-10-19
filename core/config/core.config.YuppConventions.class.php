@@ -101,16 +101,19 @@ class YuppConventions {
       $instConElAtributoHasMany = $ins1; // En ppio pienso que la instancia es la que tiene el atributo masMany.
       foreach ( $classes as $aclass )
       {
-         //$ins = new $aclass();
-         $ins = new $aclass(NULL, true);
-         //if ( $ins->hasManyOfThis( $ins2->getClass() ) ) // la clase no es la que tenga el atributo, debe ser en la que se declara el atributo
-         if ( $ins->attributeDeclaredOnThisClass($inst1Attr) )
-         {
-            //Logger::getInstance()->log("TIENE MANY DE " . $ins2->getClass());
-            $instConElAtributoHasMany = $ins;
-            break;
-         }
-         
+      	$class = new ReflectionClass($aclass);
+
+      	if (!($class->isAbstract())){
+      		//$ins = new $aclass();
+      		$ins = new $aclass(NULL, true);
+      		//if ( $ins->hasManyOfThis( $ins2->getClass() ) ) // la clase no es la que tenga el atributo, debe ser en la que se declara el atributo
+      		if ( $ins->attributeDeclaredOnThisClass($inst1Attr) )
+      		{
+      			//Logger::getInstance()->log("TIENE MANY DE " . $ins2->getClass());
+      			$instConElAtributoHasMany = $ins;
+      			break;
+      		}
+      	}
          //Logger::struct( $ins, "Instancia de $aclass" );
       }
       

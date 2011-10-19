@@ -4,6 +4,7 @@ YuppLoader::load('yuppgis.core.persistent', 'GISPersistentObject');
 YuppLoader::load('yuppgis.core.basic', 'Map');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 YuppLoader::load('yuppgis.core.basic', 'Geometry');
+
 YuppLoader::load('core.http', 'HTTPRequest');
 
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');

@@ -1,8 +1,9 @@
 <?php 
 
 YuppLoader::load( "yuppgis.core.persistent", "GISPersistentObject" );
+YuppLoader::load( "yuppgis.core.basic", "Observer" );
 
-class Medico extends GISPersistentObject {
+class Medico extends GISPersistentObject implements Observer {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
 		
@@ -11,8 +12,6 @@ class Medico extends GISPersistentObject {
 		$this->addAttribute("nombre", Datatypes :: TEXT);
 		$this->addAttribute("zonas", GISDatatypes :: MULTIPOLYGON);
 		$this->addAttribute("ubicacion", GISDatatypes :: POINT);
-		
-		
 
 	 	// Restricciones
 		$this->addConstraints("nombre", array(
@@ -38,6 +37,11 @@ class Medico extends GISPersistentObject {
 		return GISPersistentObject :: get($id);
 	}
 	
+	public function notify($sender, $params){
+		
+		$event = $params["method"];
+		echo $event;
+	}
 }
 
 ?>
