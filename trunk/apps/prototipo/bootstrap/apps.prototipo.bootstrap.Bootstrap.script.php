@@ -192,9 +192,17 @@ $layer1->addElement($m1);
 $m2 = new Medico();
 $m2->setNombre('Medico 2');
 $m2->setUbicacion(new Point(-56.17438, -34.88619));
+$m2->save();
+$layer1->registerObserver($m2);
+
 
 $layer1->addElement($m2);
 $layer1->save();
+
+
+
+
+
 
 $map->addLayer($layer1);
 $map->addLayer($layer2);

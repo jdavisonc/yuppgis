@@ -158,25 +158,22 @@ class MultipleTableInheritanceSupport {
       $e1 = array();
       foreach ( $e as $class => $subclasses )
       {
-         $c_ins = new $class();
-         if ( !array_key_exists($class, $e1) || $e1[$class] === NULL ) $e1[$class] = array(); // armo otro array con las subclases que no tienen withTable.
-         foreach ($subclasses as $subclass)
-         {
-            //$sc_ins = new $subclass();
-            //echo $subclass . " " . $sc_ins->getWithTable() . "<br />";
-            //if ( $sc_ins->getWithTable() === $c_ins->getWithTable() ) $e1[$class][] = $subclass; // solo si los withTable son iguales (o sea, que no lo redefine en la subclase)
-            
-            if ( PersistentManager::isMappedOnSameTable( $class, $subclass ) )
-            {
-               $e1[$class][] = $subclass;
-               
-               //Logger::getInstance()->dal_log("isMapperOnSameTable: $class , $subclass " . __FILE__ . " " . __LINE__ );
-            }
-            else
-            {
-               //Logger::getInstance()->dal_log("no isMapperOnSameTable: $class , $subclass " . __FILE__ . " " . __LINE__ );
-            }
-         }
+      	$rclass = new ReflectionClass($class);
+
+      	if (!($rclass->isAbstract())){
+      		 
+      		$c_ins = new $class();
+      		if ( !array_key_exists($class, $e1) || $e1[$class] === NULL )
+      		$e1[$class] = array(); // armo otro array con las subclases que no tienen withTable.
+
+      		foreach ($subclasses as $subclass)
+      		{
+      			if ( PersistentManager::isMappedOnSameTable( $class, $subclass ) )
+      			{
+      				$e1[$class][] = $subclass;
+      			}
+      		}
+      	}
       }
       
       //Logger::getInstance()->dal_log("clases y subclases en la misma tabla " . __FILE__ . " " . __LINE__ );
@@ -279,11 +276,15 @@ Array
          //TODO_GIS: Ver Tema de clase abstracta que hereda de PersistentObject (GISPersistentObject) 
          if ( $parent_class !== 'PersistentObject' && $parent_class !== 'GISPersistentObject' )
          {
-            // La superclase de c_ins se mapea en otra tabla, saco esos atributos...
-            $suc_ins = new $parent_class();
-            $c_ins = PersistentObject::less($c_ins, $suc_ins); // Saco los atributos de la superclase
+         	$rclass = new ReflectionClass($parent_class);
+
+         	if (!($rclass->isAbstract())){
+         		// La superclase de c_ins se mapea en otra tabla, saco esos atributos...
+         		$suc_ins = new $parent_class();
+         		$c_ins = PersistentObject::less($c_ins, $suc_ins); // Saco los atributos de la superclase
+         	}
          }
-         
+          
          $sol[] = $c_ins;
       }
       
