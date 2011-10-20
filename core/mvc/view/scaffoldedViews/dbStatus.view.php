@@ -225,9 +225,9 @@ global $_base_dir;
               }
               else
               {
-                foreach ( $classInfo as $class => $info )
+                foreach ( $classInfo as  $info )
                 {
-                	foreach ($info as $infoTables) {
+                	foreach ($info as $class => $infoTables) {
 		                  echo '<b>'. $class .'</b> se guarda en la tabla: <b>'. 
 		                       $infoTables['tableName'] .'</b> (' . $infoTables['created'] .')<br/>';
                 	}
