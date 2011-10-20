@@ -39,8 +39,7 @@ class CoreController extends YuppController {
    }
    
    // dbStatus2
-   public function dbStatusAction()
-   {
+   public function dbStatusAction()  {
       $yupp = new Yupp();
       $appNames = $yupp->getAppNames();
       $appModelClasses = array(); // [appName][class][tablename,creada o no]
@@ -74,6 +73,7 @@ class CoreController extends YuppController {
          
          $manager = PersistentManagerFactory::getManagerInstanceByAppName(null, $appName);
          
+         $idxApp = 0;
          foreach ($modelClassFileNames as $classFileName)
          {
             $fileInfo = $fn->getFileNameInfo($classFileName);
@@ -83,19 +83,25 @@ class CoreController extends YuppController {
             // Ticket: http://code.google.com/p/yupp/issues/detail?id=71
             YuppLoader::load($fileInfo['package'], $className);
             
-            $appModelClasses[$appName][$className] = $manager->tableExists( $className ); 
+            array_push($appModelClasses[$appName], $manager->tableExists( $className )); 
+			
+         	if ($allTablesCreated) {
+				foreach (array_keys($appModelClasses[$appName][$idxApp]) as $key) {
+					$allTablesCreated = $appModelClasses[$appName][$idxApp][$key]['created'] == "CREADA";
+					if (!$allTablesCreated) {
+						break;
+					}
+      			}
+			}
             
-	         $i = 0;
-	         $arrayModel = $appModelClasses[$appName][$className];
-	         
-	         while ($i < count($arrayModel) && $allTablesCreated) {
-	         	$allTablesCreated = $arrayModel[$i]['created'] == "CREADA";
-	         	$i++;
-	         }
+            $idxApp++;
          }
          
       }
       
+	  	  
+      
+	 
       $this->params['allTablesCreated'] = $allTablesCreated;
       $this->params['appModelClasses'] = $appModelClasses;
       

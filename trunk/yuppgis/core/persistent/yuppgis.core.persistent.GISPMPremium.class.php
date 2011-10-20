@@ -147,7 +147,8 @@ class GISPMPremium extends GISPersistentManager {
 
 		$ownertableName = YuppConventions::tableName( $owner );
 		$tableName = YuppGISConventions::gisTableName($ownertableName, $attr, $appName);
-		if ( !$dalForApp->tableExists( $tableName ) ) {
+		
+		if ( !$this->dal->tableExists( $tableName ) ) {
 	      
 		    if (!$this->dal->tableGISExists($tableName)) {
 			    $this->dal->createGISTable($tableName);
@@ -164,13 +165,14 @@ class GISPMPremium extends GISPersistentManager {
 		
 		$ins = new $className();
 		$res = array();
+		
 		if (is_subclass_of($ins, GISPersistentObject::getClassName())) {
 
 			$tableName = YuppConventions::tableName( $className );
 	   		if ($this->dal->tableExists( $tableName )) {
-	   			$res[] = array('tableName'=>$tableName, 'created'=>"CREADA");
+	   			$res[$className] = array('tableName'=>$tableName, 'created'=>"CREADA");
 	   		} else {
-	   			$res[] = array('tableName'=>$tableName, 'created'=>"NO CREADA");
+	   			$res[$className] = array('tableName'=>$tableName, 'created'=>"NO CREADA");
 	   		}
 
 	   		// FKs hasOne
@@ -178,13 +180,13 @@ class GISPMPremium extends GISPersistentManager {
             foreach ( $ho_attrs as $attr => $refClass ) {
 				$isGeometry = is_subclass_of($refClass , Geometry::getClassName());
 
-				if ($isGeometry /* && $isModePremium */) {
+				if ($isGeometry) {
 					$GIStableName = YuppGISConventions::gisTableName($tableName, $attr);
 	    			
 					if ($this->dal->tableGISExists($GIStableName)) {
-	    				$res[] = array('tableName'=>$GIStableName, 'created'=>"CREADA");
+	    				$res[$className . '_' . $attr] = array('tableName'=>$GIStableName, 'created'=>"CREADA");
 	    			} else {
-	    				$res[] = array('tableName'=>$GIStableName, 'created'=>"NO CREADA");
+	    				$res[$className . '_' . $attr] = array('tableName'=>$GIStableName, 'created'=>"NO CREADA");
 	    			}
 				}	
             }
