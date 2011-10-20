@@ -28,7 +28,7 @@ class RestWSGISDAL implements GISWSDAL {
 		
 		$vars = array ('id' => $id, 'ownerName' => $ownerName, 'attr' => $attr, 
 						'class' => $persistentClass, 'op' => 'get');
-		$url = $this->replaceWithVarsValue($this->url, $vars);
+		$url = $this->replaceWithVarsValue($this->getUrl, $vars);
 		
 		$response = $request->HttpRequestGet($url);
 		header('Content-Type: text/xml');
@@ -40,11 +40,13 @@ class RestWSGISDAL implements GISWSDAL {
 	}
 	
 	public function save($ownerName, $attr, PersistentObject $obj) {
+
+		
+		//$kml = KMLUtilities::layerToKML($layer)
 		$request = new  HTTPRequest();
 		
-		$vars = array ('id' => $id, 'ownerName' => $ownerName, 'attr' => $attr, 
-						'op' => 'save');
-		$url = $this->replaceWithVarsValue($this->url, $vars);
+		$vars = array ('ownerName' => $ownerName, 'attr' => $attr, 'op' => 'save');
+		$url = $this->replaceWithVarsValue($this->saveUrl, $vars);
 		
 		$response = $request->HttpRequestPost($url, array('kml' => $kml));
 		header('Content-Type: text/xml');
@@ -63,7 +65,7 @@ class RestWSGISDAL implements GISWSDAL {
 		
 		$vars = array ('id' => $id, 'ownerName' => $ownerName, 'attr' => $attr, 
 						'logical' => $logical, 'op' => 'delete');
-		$url = $this->replaceWithVarsValue($this->url, $vars);
+		$url = $this->replaceWithVarsValue($this->deleteUrl, $vars);
 		
 		$response = $request->HttpRequestGet($url);
 		header('Content-Type: text/xml');
