@@ -3,21 +3,21 @@
 YuppLoader :: load('core.db.criteria2', 'Query');
 
 abstract class GISPersistentManager extends PersistentManager {
-	
+
 	public function init_dal( $appName ) {
 		$this->init($appName);
 	}
-	
+
 	/**
 	 * Funcion que es llamada para inicializar el Persistent Manager.
-	 * 
+	 *
 	 * @param String $appName Nombre de la aplicacion en ejecucion
 	 */
 	abstract protected function init( $appName );
-	
+
 	/**
 	 * Obtiene un objeto geografico desde la base de datos.
-	 * 
+	 *
 	 * @param String $ownerName Nombre del objeto dueno
 	 * @param String $attr Nombre del atributo
 	 * @param class $persistentClass Clase o instancia a obtener
@@ -27,27 +27,27 @@ abstract class GISPersistentManager extends PersistentManager {
 
 	/**
 	 * Se salva en cascada con el dueño y su nombre de atributo.
-	 * 
+	 *
 	 * @see PersistentManager::save_cascade_owner()
 	 */
 	public function save_cascade_owner( PersistentObject $owner, $attrNameAssoc, PersistentObject $obj, $sessId ) {
-	   	if (is_subclass_of($obj, Geometry :: getClassName())) {
-   			$obj->executeBeforeSave();
-   			$this->save_gis_object(get_class($owner), $attrNameAssoc, $obj);
-   			$obj->executeAfterSave();
-   		} else {
-   			parent::save_cascade_owner( $owner, $attrNameAssoc, $obj, $sessId ) ;
-   		}
+		if (is_subclass_of($obj, Geometry :: getClassName())) {
+			$obj->executeBeforeSave();
+			$this->save_gis_object(get_class($owner), $attrNameAssoc, $obj);
+			$obj->executeAfterSave();
+		} else {
+			parent::save_cascade_owner( $owner, $attrNameAssoc, $obj, $sessId ) ;
+		}
 	}
-	
+
 	/**
-     * Salva el objeto geografico en la base de datos.
-     * 
-     * @param String $ownerName Nombre del objeto dueno
-     * @param String $attrNameAssoc Nombre del atributo de asociacion
-     * @param PersistentObject $obj Objeto geografico a persistir
-     */
-	abstract protected function save_gis_object( $ownerName, $attrNameAssoc, PersistentObject $obj ); 
+	 * Salva el objeto geografico en la base de datos.
+	 *
+	 * @param String $ownerName Nombre del objeto dueno
+	 * @param String $attrNameAssoc Nombre del atributo de asociacion
+	 * @param PersistentObject $obj Objeto geografico a persistir
+	 */
+	abstract protected function save_gis_object( $ownerName, $attrNameAssoc, PersistentObject $obj );
 
 	/**
 	 * Borra elementos en cascada.
@@ -57,52 +57,54 @@ abstract class GISPersistentManager extends PersistentManager {
 	 * @see PersistentManager::delete()
 	 */
 	public function delete( $persistentInstance, $id, $logical ) {
-	   	Logger::add( Logger::LEVEL_PM, "GISPM::delete ". __FILE__."@". __LINE__ );
-	   	 
-	   	$sassoc = $persistentInstance->getSimpleAssocValues();
-	   	foreach ( $sassoc as $attrName => $assocObj )
-	   	{
-	   		// ojo el objeto debe estar cargado (se verifica eso)
-	   		if ( $assocObj !== PersistentObject::NOT_LOADED_ASSOC &&  $persistentInstance->isOwnerOf( $attrName )) {
-	   			//TODO_GIS: control de circularidad
-	   			Logger::getInstance()->pm_log("GISPM::delete_cascade de ". $assocObj->getClass() .__LINE__);
-	   			$this->delete_cascade( $persistentInstance, $attrName, $assocObj, $logical );
-	   		}
-	   	}
-	   	
-	   	$this->dal->delete( $persistentInstance->getClass(), $id, $logical );
-	   	
-	   	// Soporte MTI
-	   	if (MultipleTableInheritanceSupport::isMTISubclassInstance( $persistentInstance )) {
-	   		// Ahora tengo que pedir las superclases y para cada una, borrar la instancia parcial
-	   		$superclasses = ModelUtils::getAllAncestorsOf($persistentInstance->getClass());
-	   		foreach ($superclasses as $mtiClass) {
-	   			$this->dal->delete( $mtiClass, $id, $logical );
-	   		}
-	   	}
-   	}
+		Logger::add( Logger::LEVEL_PM, "GISPM::delete ". __FILE__."@". __LINE__ );
 
-   	private function delete_cascade( $owner, $attrNameAssoc, $assocObj, $logical ) {
-   		if ( is_subclass_of($assocObj, Geometry::getClassName()) ) {
-   			$this->delete_gis_object(get_class($owner), $attrNameAssoc, $assocObj, $logical);
-    	} else {
-    		return $this->delete($assocObj, $assocObj->getId(), $logical) ;
-    	}
+		$sassoc = $persistentInstance->getSimpleAssocValues();
+		foreach ( $sassoc as $attrName => $assocObj )
+		{
+			// ojo el objeto debe estar cargado (se verifica eso)
+			if ( $assocObj !== PersistentObject::NOT_LOADED_ASSOC &&  $persistentInstance->isOwnerOf( $attrName )) {
+				//TODO_GIS: control de circularidad
+				Logger::getInstance()->pm_log("GISPM::delete_cascade de ". $assocObj->getClass() .__LINE__);
+				$this->delete_cascade( $persistentInstance, $attrName, $assocObj, $logical );
+			}
+		}
+	  
+		$this->dal->delete( $persistentInstance->getClass(), $id, $logical );
+	  
+		// Soporte MTI
+		if (MultipleTableInheritanceSupport::isMTISubclassInstance( $persistentInstance )) {
+			// Ahora tengo que pedir las superclases y para cada una, borrar la instancia parcial
+			$superclasses = ModelUtils::getAllAncestorsOf($persistentInstance->getClass());
+			foreach ($superclasses as $mtiClass) {
+				if ($mtiClass !== 'Observable'){
+					$this->dal->delete( $mtiClass, $id, $logical );
+				}
+			}
+		}
 	}
-	
+
+	private function delete_cascade( $owner, $attrNameAssoc, $assocObj, $logical ) {
+		if ( is_subclass_of($assocObj, Geometry::getClassName()) ) {
+			$this->delete_gis_object(get_class($owner), $attrNameAssoc, $assocObj, $logical);
+		} else {
+			return $this->delete($assocObj, $assocObj->getId(), $logical) ;
+		}
+	}
+
 	/**
 	 * Elimina un elemento geografico.
-	 * 
+	 *
 	 * @param String $ownerName Nombre del objeto dueno
-	 * @param String $attrNameAssoc Nombre del atributo de asociacion 
+	 * @param String $attrNameAssoc Nombre del atributo de asociacion
 	 * @param Object $assocObj Objeto geografico asociado
 	 * @param Boolean $logical Verdadero si es una eliminacion logica
 	 */
 	abstract protected function delete_gis_object($ownerName, $attrNameAssoc, $assocObj, $logical);
-	
+
 	/**
 	 * Ejecuta una consulta, si es una consulta geografica se procesa con un GISQueryProcessor.
-	 * 
+	 *
 	 * @see PersistentManager::findByQuery()
 	 */
 	public function findByQuery(Query $q) {
@@ -112,20 +114,20 @@ abstract class GISPersistentManager extends PersistentManager {
 			return parent::findByQuery($q);
 		}
 	}
-	
+
 	/**
 	 * Ejecuta una consulta geografica (GISQuery) y retorna su resultado.
-	 * 
+	 *
 	 * @param GISQuery $query
 	 */
 	abstract protected function findByGISQuery(GISQuery $query);
-	
-	
+
+
 	/**
 	 * Busca elementos $instance segun una condicion
-	 * 
+	 *
 	 * *TODO_GIS*: Ver de suplantar por una GISQuery y asi borrar la logica de la funcion processCondition
-	 * 
+	 *
 	 * @see PersistentManager::findBy()
 	 */
 	public function findBy( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
@@ -136,22 +138,22 @@ abstract class GISPersistentManager extends PersistentManager {
 	/**
 	 * Procesa una condicion pasada en la funcion findBy(), generando una nueva condicion a partir de la evaluacion
 	 * de las condiciones geograficas.
-	 * 
+	 *
 	 * @param PersistentObject $instance
 	 * @param Condition $condition
 	 * @param ArrayObject $params
 	 */
 	private function processCondition( PersistentObject $instance, Condition $condition, ArrayObject $params ) {
 		if ( $condition instanceof GISCondition) {
-			
+				
 			$query_res = $this->processGISCondition($instance, $condition, $params);
-			
+				
 			// Construyo resultados para crear condicion IN
 			$res = '';
 			foreach ($query_res as $value ) {
 				$res = $res . $value['id'] . ',';
 			}
-			
+				
 			$attr = $condition->getAttribute();
 			$attr_id = DatabaseNormalization::simpleAssoc($attr->attr); // Se normaliza el nombre para obtener el nombre de la columna
 			if ($res !== '') {
@@ -160,8 +162,8 @@ abstract class GISPersistentManager extends PersistentManager {
 				return Condition::IN($attr->alias, $attr_id, null);
 			}
 		} else {
-			if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR || 
-					$condition->getType() == Condition::TYPE_NOT ) {
+			if ( $condition->getType() == Condition::TYPE_AND  || $condition->getType() == Condition::TYPE_OR ||
+			$condition->getType() == Condition::TYPE_NOT ) {
 				$newCondition = new Condition();
 				$newCondition->setType($condition->getType());
 				$subconditions = $condition->getSubconditions();
@@ -174,16 +176,16 @@ abstract class GISPersistentManager extends PersistentManager {
 			}
 		}
 	}
-	
+
 	/**
 	 * Funcion que debe evaluar una GISCondition y retornar los objetos que cumplan con esta condicion.
-	 * 
+	 *
 	 * @return Debe retornar un array, cuyas entradas deben estar numeradas, y cada una de ellas debe .
-	 * 		   ser un array el cual contenga una key 'id' indicando el identificador del elemento que 
+	 * 		   ser un array el cual contenga una key 'id' indicando el identificador del elemento que
 	 * 		   cumpla con la condicion.
 	 */
 	abstract protected function processGISCondition(PersistentObject $instance, GISCondition $condition, ArrayObject $params );
-	
+
 	public function generateAll( $appName ) {
 		Logger::getInstance()->pm_log("GISPersistentManager::generateAll ======");
 
@@ -200,10 +202,10 @@ abstract class GISPersistentManager extends PersistentManager {
 		$class[] = 'DataLayer';
 		$class[] = 'Tag';
 		$class[] = 'GISPersistentObject';
-		 
+			
 		$this->generateAllByClass($class, $appName);
 	}
-	
+
 	/**
 	 *
 	 * @see PersistentManager::generateAll()
@@ -234,13 +236,13 @@ abstract class GISPersistentManager extends PersistentManager {
 				foreach ( $subclassesOnSameTable as $subclass )
 				{
 					$sc_ins = new $subclass(); // Para setear los atributos.
-					 
+
 					$props = $sc_ins->getAttributeTypes();
 					$hone  = $sc_ins->getHasOne();
 					$hmany = $sc_ins->getHasMany();
-					 
+
 					// FIXME: si el artibuto no es de una subclase parece que tambien pone nullable true...
-					 
+
 					// Agrega constraint nullable true, para que los atributos de las subclases
 					// puedan ser nulos en la tabla, para que funcione bien el mapeo de herencia de una tabla.
 					//Logger::getInstance()->pm_log( "Para cada attr de: $subclass " . __FILE__ . " " . __LINE__);
@@ -263,16 +265,16 @@ abstract class GISPersistentManager extends PersistentManager {
 							$sc_ins->addConstraints($attr, array(Constraint::nullable(true)));
 						}
 					}
-					 
+
 					//Logger::getInstance()->pm_log( "Termina con las constraints ======= " . __FILE__ . " " . __LINE__);
-					 
+
 					// Se toma luego de modificar las restricciones
 					$constraints = $sc_ins->getConstraints();
-					 
+
 					foreach( $props as $name => $type ) $c_ins->addAttribute($name, $type);
 					foreach( $hone  as $name => $type ) $c_ins->addHasOne($name, $type);
 					foreach( $hmany as $name => $type ) $c_ins->addHasMany($name, $type);
-					 
+
 					// Agrego las constraints al final porque puedo referenciar atributos que todavia no fueron agregados.
 					foreach( $constraints as $attr => $constraintList ) $c_ins->addConstraints($attr, $constraintList);
 				}
@@ -313,7 +315,7 @@ abstract class GISPersistentManager extends PersistentManager {
 		{
 			$tableName = YuppConventions::tableName( $ins );
 			$fks = array();
-			 
+
 			// FKs hasOne
 			$ho_attrs = $ins->getHasOne();
 			foreach ( $ho_attrs as $attr => $refClass )
@@ -342,7 +344,7 @@ abstract class GISPersistentManager extends PersistentManager {
 				if ( $instConElAtributoHasOne === NULL )
 				{
 					// Para ChasOne esta generando "chasOne", y el nombre de la tabla que aparece en la tabla es "chasone".
-					 
+
 					// TODO_GIS _ si tiene habilitado modo premium??
 					$isGeometry = is_subclass_of($refClass , Geometry::getClassName());
 					if ($isGeometry) {
@@ -358,10 +360,10 @@ abstract class GISPersistentManager extends PersistentManager {
 					}
 				}
 			}
-			 
+
 			// FKs tablas intermedias HasMany
 			$hasMany = $ins->getHasMany();
-			 
+
 			foreach ( $hasMany as $attr => $assocClassName )
 			{
 				//Logger::getInstance()->pm_log("AssocClassName: $assocClassName, attr: $attr");
@@ -370,9 +372,9 @@ abstract class GISPersistentManager extends PersistentManager {
 				{
 					$hm_fks = array();
 					$hasManyTableName = YuppConventions::relTableName( $ins, $attr, new $assocClassName() );
-					 
+
 					// "owner_id", "ref_id" son FKs.
-					 
+
 					// ===============================================================================
 					// El nombre de la tabla owner para la FK debe ser el de la clase
 					// donde se declara el attr hasMany,
@@ -380,7 +382,7 @@ abstract class GISPersistentManager extends PersistentManager {
 					$classes = ModelUtils::getAllAncestorsOf( $ins->getClass() );
 
 					//Logger::struct( $classes, "Superclases de " . $ins1->getClass() );
-					 
+
 					$instConElAtributoHasMany = $ins; // En ppio pienso que la instancia es la que tiene el atributo masMany.
 					foreach ( $classes as $aclass )
 					{
@@ -395,7 +397,7 @@ abstract class GISPersistentManager extends PersistentManager {
 						//Logger::struct( $ins, "Instancia de $aclass" );
 					}
 					// ===============================================================================
-					 
+
 					//TODO_GIS ERROR: insert or update on table "data_layer_elements_gis_persistent_object" violates foreign key constraint
 					//"fk_gis_persistent_object_ref_id_id" DETAIL: Key (ref_id)=(1) is not present in table "gis_persistent_object".
 					if ($ins->getClass() != 'DataLayer' && $attr != 'elements') {
@@ -417,13 +419,13 @@ abstract class GISPersistentManager extends PersistentManager {
 					$dalForApp->addForeignKeys($hasManyTableName, $hm_fks);
 				}
 			} // foreach hasMany
-			 
+
 			// Genera FKs
 			$dalForApp->addForeignKeys($tableName, $fks);
-			 
+
 		} // foreach PO
 	}
-	
+
 	/**
 	 * TODO_GIS
 	 * @param unknown_type $owner
@@ -432,6 +434,6 @@ abstract class GISPersistentManager extends PersistentManager {
 	 */
 	protected abstract function generate_gisTables( PersistentObject $owner, $attr, $appName);
 
-	 	
+	 
 }
 ?>

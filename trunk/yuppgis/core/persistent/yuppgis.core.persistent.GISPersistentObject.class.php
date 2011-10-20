@@ -18,20 +18,20 @@ YuppLoader :: load('yuppgis.core.basic', 'MultiPoint');
 YuppLoader :: load('yuppgis.core.basic', 'MultiCurve');
 YuppLoader :: load('yuppgis.core.basic', 'MultiLineString');
 YuppLoader :: load('yuppgis.core.basic', 'MultiPolygon');
-
+YuppLoader::load('yuppgis.core.basic', 'Observable');
 
 
 // Se importan dependencias de persistencia
 YuppLoader :: load('yuppgis.core.config', 'YuppGISConventions');
 
-class GISPersistentObject extends PersistentObject {
-	
+class GISPersistentObject extends Observable {
+
 	public function __construct($args = array (), $isSimpleInstance = false) {
-		
+
 		$this->setWithTable('gis_persistent_object');
-		
+
 		$this->addAttribute('app', Datatypes::TEXT);
-		
+
 		$ctx = YuppContext::getInstance();
 		$appName = null;
 		if ($ctx->isAnotherApp()) {
@@ -40,69 +40,69 @@ class GISPersistentObject extends PersistentObject {
 			$appName = $ctx->getApp();
 		}
 		$args['app'] = $appName;
-		
+
 		parent :: __construct($args, $isSimpleInstance);
 	}
-	
+
 	public function addAttribute($name, $type) {
-		
+
 		switch($type) {
-		    case GISDatatypes::POINT:
-		        parent::addHasOne($name, Point::getClassName());
-		    	break;
-	    	case GISDatatypes::CURVE:
-		    	parent::addHasOne($name, MultiPoint::getClassName());
-		    	break;
-		    case GISDatatypes::LINESTRING:
-		    	parent::addHasOne($name, LineString::getClassName());
-		    	break;
-		    case GISDatatypes::LINE:
-		    	parent::addHasOne($name, Line::getClassName());
-		    	break;
-		    case GISDatatypes::LINERING:
-		    	parent::addHasOne($name, LineRing::getClassName());
-		    	break;
-	    	case GISDatatypes::SURFACE:
-		    	parent::addHasOne($name, Surface::getClassName());
-		    	break;
-		    case GISDatatypes::POLYGON:
-		    	parent::addHasOne($name, Polygon::getClassName());
-		    	break;
-	    	case GISDatatypes::MULTIPOINT:
-		    	parent::addHasOne($name, MultiPoint::getClassName());
-		    	break;
-	    	case GISDatatypes::MULTILINESTRING:
-		    	parent::addHasOne($name, MultiLineString::getClassName());
-		    	break;
-	    	case GISDatatypes::MULTICURVE:
-		    	parent::addHasOne($name, MultiCurve::getClassName());
-		    	break;
-	    	case GISDatatypes::MULTISURFACE:
-		    	parent::addHasOne($name, MultiSurface::getClassName());
-		    	break;
-	    	case GISDatatypes::MULTIPOLYGON:
-		    	parent::addHasOne($name, MultiPolygon::getClassName());
-		    	break;
-	    	case GISDatatypes::GEOMETRYCOLLECTION:
-		    	parent::addHasOne($name, MultiPoint::getClassName());
-		    	break;
-		    default;
-		        parent::addAttribute($name, $type);
-		    	break;
+			case GISDatatypes::POINT:
+				parent::addHasOne($name, Point::getClassName());
+				break;
+			case GISDatatypes::CURVE:
+				parent::addHasOne($name, MultiPoint::getClassName());
+				break;
+			case GISDatatypes::LINESTRING:
+				parent::addHasOne($name, LineString::getClassName());
+				break;
+			case GISDatatypes::LINE:
+				parent::addHasOne($name, Line::getClassName());
+				break;
+			case GISDatatypes::LINERING:
+				parent::addHasOne($name, LineRing::getClassName());
+				break;
+			case GISDatatypes::SURFACE:
+				parent::addHasOne($name, Surface::getClassName());
+				break;
+			case GISDatatypes::POLYGON:
+				parent::addHasOne($name, Polygon::getClassName());
+				break;
+			case GISDatatypes::MULTIPOINT:
+				parent::addHasOne($name, MultiPoint::getClassName());
+				break;
+			case GISDatatypes::MULTILINESTRING:
+				parent::addHasOne($name, MultiLineString::getClassName());
+				break;
+			case GISDatatypes::MULTICURVE:
+				parent::addHasOne($name, MultiCurve::getClassName());
+				break;
+			case GISDatatypes::MULTISURFACE:
+				parent::addHasOne($name, MultiSurface::getClassName());
+				break;
+			case GISDatatypes::MULTIPOLYGON:
+				parent::addHasOne($name, MultiPolygon::getClassName());
+				break;
+			case GISDatatypes::GEOMETRYCOLLECTION:
+				parent::addHasOne($name, MultiPoint::getClassName());
+				break;
+			default;
+			parent::addAttribute($name, $type);
+			break;
 		}
 	}
-	
 
-   public function hasGeometryAttributes()
-   {
-      $res = array();
-      foreach ($this->hasOne as $attrname => $hmclazz) {
-      	if ($hmclazz == Geometry::getClassName() || is_subclass_of($hmclazz, Geometry::getClassName())) {
-      		$res[] = $attrname;
-      	}
-      }
-      return $res;
-   }
+
+	public function hasGeometryAttributes()
+	{
+		$res = array();
+		foreach ($this->hasOne as $attrname => $hmclazz) {
+			if ($hmclazz == Geometry::getClassName() || is_subclass_of($hmclazz, Geometry::getClassName())) {
+				$res[] = $attrname;
+			}
+		}
+		return $res;
+	}
 
 	public function aGetObject( $attr, $id ) {
 		if (is_subclass_of($this->hasOne[$attr], Geometry :: getClassName())) {
@@ -111,16 +111,35 @@ class GISPersistentObject extends PersistentObject {
 			return parent::aGetObject($attr, $id);
 		}
 	}
-	
+
 	/**
 	 * Retorna nombre de clase.
 	 * Solo soportado por PHP > 5.3
 	 * @return nombre de la clase
 	 */
 	public static function getClassName() {
-        return get_called_class();
-    }
-    
+		return get_called_class();
+	}
+
+
+	public function notifyObservers($params){
+		$string = $this->getObservers();
+		$observers = explode(";", $string);
+		array_shift($observers);
+
+		foreach($observers as $observer) {
+			$arr = explode("_", $observer);
+			$classname = $arr[0];
+			$id = $arr[1];
+
+				
+			$obj = $classname::get($id);
+			$obj->notify($this, $params);
+				
+		}
+
+	}
+
 }
 
 ?>
