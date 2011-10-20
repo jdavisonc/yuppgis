@@ -79,10 +79,9 @@ class Paciente extends GISPersistentObject {
 		return $pacientes;
 	}
 
-	public function setNombre($value){
-		$this->notifyObservers(array("method" => "setNombre"));
-
+	public function setNombreWithNotify($value){
 		parent::setNombre($value);
+		$this->notifyObservers(array("method" => "setNombre"));
 	}
 
 }
