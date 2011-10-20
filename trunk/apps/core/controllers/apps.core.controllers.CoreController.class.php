@@ -72,7 +72,7 @@ class CoreController extends YuppController {
          // Toda la informacion de las clases y tablas creadas para esta app
          $appModelClasses[$appName] = array();
          
-         $dal = new DAL($appName);
+         $manager = PersistentManagerFactory::getManagerInstanceByAppName(null, $appName);
          
          foreach ($modelClassFileNames as $classFileName)
          {
@@ -83,17 +83,17 @@ class CoreController extends YuppController {
             // Ticket: http://code.google.com/p/yupp/issues/detail?id=71
             YuppLoader::load($fileInfo['package'], $className);
             
-            $tableName = YuppConventions::tableName( $className );
-            if ( $dal->tableExists( $tableName ) )
-            {
-               $appModelClasses[$appName][$className] = array('tableName'=>$tableName, 'created'=>"CREADA");
-            }
-            else
-            {
-               $appModelClasses[$appName][$className] = array('tableName'=>$tableName, 'created'=>"NO CREADA");
-               $allTablesCreated = false;
-            }
+            $appModelClasses[$appName][$className] = $manager->tableExists( $className ); 
+            
+	         $i = 0;
+	         $arrayModel = $appModelClasses[$appName][$className];
+	         
+	         while ($i < count($arrayModel) && $allTablesCreated) {
+	         	$allTablesCreated = $arrayModel[$i]['created'] == "CREADA";
+	         	$i++;
+	         }
          }
+         
       }
       
       $this->params['allTablesCreated'] = $allTablesCreated;
