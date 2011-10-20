@@ -31,32 +31,40 @@ class RestWSGISDAL implements GISWSDAL {
 		$url = $this->replaceWithVarsValue($this->getUrl, $vars);
 		
 		$response = $request->HttpRequestGet($url);
-		header('Content-Type: text/xml');
-		$layer = KMLUtilities::KMLToLayer($response->getBody());
-		if ($layer != null && !$layer->getElements()) {
-			$elements = $layer->getElements(); 
-			return $elements[0]; // Solo el primer resultado retorno
+		$elements = KMLUtilities::KMLToGeometry($response->getBody());
+		if ($elements) { 
+			return $this->elementSelector($ownerName, $attr, $persistentClass, $id, $elements); // Solo el primer resultado retorno
 		}
 	}
 	
+	/**
+	 * Funcion que segun los parametros de busqueda y el resultado ya deserealizado, elige el objeto a retornar.
+	 * @param unknown_type $ownerName
+	 * @param unknown_type $attr
+	 * @param unknown_type $persistentClass
+	 * @param unknown_type $id
+	 * @param array $elements
+	 */
+	protected function elementSelector($ownerName, $attr, $persistentClass, $id, array $elements) {
+		return $elements[0];
+	}
+	
 	public function save($ownerName, $attr, PersistentObject $obj) {
-
-		
-		//$kml = KMLUtilities::layerToKML($layer)
-		$request = new  HTTPRequest();
-		
+		$kml = KMLUtilities::GeometryToKML(0, $obj);
 		$vars = array ('ownerName' => $ownerName, 'attr' => $attr, 'op' => 'save');
 		$url = $this->replaceWithVarsValue($this->saveUrl, $vars);
 		
+		$request = new HTTPRequest();
 		$response = $request->HttpRequestPost($url, array('kml' => $kml));
-		header('Content-Type: text/xml');
 		if ($response->getStatus() == '200') {
 			$id = $response->getBody(); // Trae en el body el ID del elemento
-			if (is_int($id)) {
+			if (is_numeric($id)) {
 				return $id;
 			} else {
 				throw new Exception("Save operation failed. " . $id);
 			}
+		} else {
+			throw new Exception("Save operation failed. Service response was " . $response->getStatus(), $response->getStatus());
 		}
 	}
 	
@@ -68,7 +76,6 @@ class RestWSGISDAL implements GISWSDAL {
 		$url = $this->replaceWithVarsValue($this->deleteUrl, $vars);
 		
 		$response = $request->HttpRequestGet($url);
-		header('Content-Type: text/xml');
 		return  $response->getStatus() == '200';
 	}
 	
