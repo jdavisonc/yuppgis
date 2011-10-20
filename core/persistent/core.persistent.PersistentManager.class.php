@@ -652,7 +652,7 @@ class PersistentManager {
          foreach ($superclasses as $mtiClass)
          {
             // Solo quiero las superclases que no se hayan cargado, $persistentClass es la primera que se carga.
-            if ($mtiClass !== $classLoaded)
+            if ($mtiClass !== $classLoaded && $mtiClass !== 'Observable')
             {
                $tableName = YuppConventions::tableName( $mtiClass );
                $scAttrValues = $this->dal->get( $tableName, $attrValues['id'] ); // Se usa el mismo id para todas las instancias parciales

@@ -2,9 +2,8 @@
 
 YuppLoader::load('yuppgis.core.utils', 'ReflectionUtils');
 YuppLoader::load('core.mvc', 'DisplayHelper');
-YuppLoader::load('core.mvc', 'DisplayHelper');
 
-class GISHelpers{
+class GISHelpers {
 
 	/**
 	 * Obtiene las acciones declaradas en la clase
