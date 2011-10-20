@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 YuppLoader::load( "yuppgis.core.persistent", "GISPersistentObject" );
 YuppLoader::load( "yuppgis.core.basic", "Observer" );
@@ -6,17 +6,17 @@ YuppLoader::load( "yuppgis.core.basic", "Observer" );
 class Medico extends GISPersistentObject implements Observer {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
-		
+
 		$this->setWithTable("prototipo_medico");
 
 		$this->addAttribute("nombre", Datatypes :: TEXT);
 		$this->addAttribute("zonas", GISDatatypes :: MULTIPOLYGON);
 		$this->addAttribute("ubicacion", GISDatatypes :: POINT);
 
-	 	// Restricciones
+		// Restricciones
 		$this->addConstraints("nombre", array(
-			Constraint::nullable(false),
-			Constraint::blank(false)
+		Constraint::nullable(false),
+		Constraint::blank(false)
 		));
 
 		parent :: __construct($args, $isSimpleInstance);
@@ -26,21 +26,26 @@ class Medico extends GISPersistentObject implements Observer {
 		self :: $thisClass = __CLASS__;
 		return GISPersistentObject::listAll($params);
 	}
-	
+
 	public static function findBy(Condition $condition, ArrayObject $params) {
 		self :: $thisClass = __CLASS__;
 		return GISPersistentObject::findBy($condition, $params);
 	}
-	
+
 	public static function get($id) {
 		self :: $thisClass = __CLASS__;
 		return GISPersistentObject :: get($id);
 	}
-	
+
 	public function notify($sender, $params){
-		
+
 		$event = $params["method"];
-		echo $event;
+
+		$file = 'events.txt';
+		 
+		$event = get_class( $sender).'::'.$sender->getId().'::'.$params["method"]."\r\n";
+		
+		file_put_contents($file, $event, FILE_APPEND);
 	}
 }
 

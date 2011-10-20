@@ -6,8 +6,7 @@ abstract class Observable extends PersistentObject
 {
 		
 	public function __construct($args = array(), $isSimpleInstance = false )
-	{		
-		$this->setWithTable("observable");
+	{			
 		$this->addAttribute("observers", Datatypes::TEXT);		
 		
 		parent :: __construct($args, false);

@@ -8,6 +8,9 @@ YuppLoader::load('prototipo.model', 'Medico');
 
 /*Borro toda la data preexistente*/
 
+$file = 'events.txt';		
+file_put_contents($file, "");
+		
 $params = new ArrayObject() ;
 
 
@@ -75,7 +78,7 @@ $layer3 = new DataLayer('Viejos','','/yuppgis/yuppgis/js/gis/img/marker-gold.png
 
 
 $p1 = new Paciente();
-$p1->setNombre('Juan');
+$p1->setNombreWithNotify('Juan');
 $p1->setUbicacion(new Point(-56.181948, -34.884621));
 $p1->setLinea(new LineString(array ( new Point(-56.181948, -34.884621), new Point(-56.17438, -34.88619))));
 
@@ -153,7 +156,7 @@ $lineString->setUIProperty($borde);
 $p2->save();
 
 $p3 = new Paciente();
-$p3->setNombre('German');
+$p3->setNombreWithNotify('GermanS');
 $p3->setUbicacion(new Point(-56.181164, -34.882741));
 $p3->setLinea(new LineString(array ( new Point(-56.181164, -34.882741), new Point(-56.17438, -34.88619))));
 
@@ -195,6 +198,9 @@ $m2->setUbicacion(new Point(-56.17438, -34.88619));
 $m2->save();
 $layer1->registerObserver($m2);
 $p3->registerObserver($m2);
+$p3->save();
+
+$p3->setNombreWithNotify('German');
 $p3->save();
 
 $layer1->addElement($m2);

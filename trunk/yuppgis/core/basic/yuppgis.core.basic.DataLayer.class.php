@@ -75,9 +75,9 @@ class DataLayer extends Observable {
 		foreach($observers as $observer) {
 			$arr = explode("_", $observer);	
 			$classname = $arr[0];
-			$id = $arr[1];
-			
-			$obj = $classname::get($id);
+			$id = $arr[1];			
+		
+			$obj = call_user_func_array($classname.'::get',array($id));
 			$obj->notify($this, $params);
 		}
 

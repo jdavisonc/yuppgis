@@ -133,7 +133,7 @@ class GISPersistentObject extends Observable {
 			$id = $arr[1];
 
 				
-			$obj = $classname::get($id);
+			$obj = call_user_func_array($classname.'::get',array($id));
 			$obj->notify($this, $params);
 				
 		}
