@@ -30,14 +30,14 @@ class GISPMBasic extends GISPersistentManager {
 	 */
 	protected function save_gis_object( $ownerName, $attrNameAssoc, PersistentObject $obj ) {
 		$id = $this->giswsdal->save($ownerName, $attrNameAssoc, $obj);
-		$geom->setId($id);
+		$obj->setId($id);
 	}
 
 	/**
 	 * @see GISPersistentManager::delete_gis_object()
 	 */
 	protected function delete_gis_object($ownerName, $attrNameAssoc, $assocObj, $logical) {
-		$this->giswsdal->delete($ownerName, $attrNameAssoc, $assocObj, $logical);
+		$this->giswsdal->delete($ownerName, $attrNameAssoc, $assocObj->getId(), $logical);
 	}
 
 	/**

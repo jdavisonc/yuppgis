@@ -153,17 +153,17 @@ class GISController extends YuppController {
 		if ($hasPermission){
 			$url = 'http://localhost/cgi-bin/mapserv?';
 			$url .=
-		  'MAP='.$this->params['MAP'].
-		  '&LAYERS='. $this->params['LAYERS'].
-		  '&FORMAT='. $this->params['FORMAT'].
-		  '&SERVICE='. $this->params['SERVICE'].
-		  '&VERSION='. $this->params['VERSION'].
-		  '&REQUEST='. $this->params['REQUEST'].
-		  '&STYLES='. $this->params['STYLES'].
-		  '&SRS='. $this->params['SRS'].
-		  '&BBOX='. $this->params['BBOX'].
-		  '&WIDTH='. $this->params['WIDTH'].
-		  '&HEIGHT='. $this->params['HEIGHT'];
+				  'MAP='.$this->params['MAP'].
+				  '&LAYERS='. $this->params['LAYERS'].
+				  '&FORMAT='. $this->params['FORMAT'].
+				  '&SERVICE='. $this->params['SERVICE'].
+				  '&VERSION='. $this->params['VERSION'].
+				  '&REQUEST='. $this->params['REQUEST'].
+				  '&STYLES='. $this->params['STYLES'].
+				  '&SRS='. $this->params['SRS'].
+				  '&BBOX='. $this->params['BBOX'].
+				  '&WIDTH='. $this->params['WIDTH'].
+				  '&HEIGHT='. $this->params['HEIGHT'];
 
 			$request = new  HTTPRequest();
 
