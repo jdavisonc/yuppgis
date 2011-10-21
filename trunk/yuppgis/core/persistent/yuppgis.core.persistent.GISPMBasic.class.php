@@ -1,7 +1,7 @@
 <?php
 
 YuppLoader::load('yuppgis.core.services', 'GISWSDAL');
-YuppLoader::load('yuppgis.core.services', 'RestWSGISDAL');
+YuppLoader::load('yuppgis.core.services', 'RestGISWSDAL');
 
 class GISPMBasic extends GISPersistentManager {
 	
@@ -13,7 +13,7 @@ class GISPMBasic extends GISPersistentManager {
 		//			 ya q uno es ws y otro db.
 		$this->dal = new DAL($appName);
 		// TODO_GIS: Configuracion dinamica del basico
-		$this->giswsdal = new RestWSGISDAL($appName); 
+		$this->giswsdal = new RestGISWSDAL($appName); 
 	}
 
 	/**
