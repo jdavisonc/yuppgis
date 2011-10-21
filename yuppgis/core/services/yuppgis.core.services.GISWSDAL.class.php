@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * TODO_GIS
+ * @author harley
+ *
+ */
 interface GISWSDAL {
 	
 	function get($ownerName, $attr, $persistentClass, $id);

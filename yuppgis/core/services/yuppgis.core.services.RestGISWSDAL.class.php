@@ -2,7 +2,7 @@
 
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
 
-class RestWSGISDAL implements GISWSDAL {
+class RestGISWSDAL implements GISWSDAL {
 	
 	private $getUrl = null;
 	private $saveUrl = null;
