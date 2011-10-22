@@ -4,17 +4,13 @@ YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 
 class Map  extends PersistentObject {
 
-
-	function __construct($name = ''){
+	function __construct($args = array('name' => ''), $isSimpleInstance = false){
 		
 		$this->setWithTable("map");
-		
 		$this->addAttribute("name", Datatypes::TEXT);
 		$this->addAttribute("visualization_json", Datatypes::TEXT);
 		$this->addHasMany("layers", "DataLayer");
 		
-		
-		$args = array('name' =>$name);
 		parent :: __construct($args, false);				
 	}
 

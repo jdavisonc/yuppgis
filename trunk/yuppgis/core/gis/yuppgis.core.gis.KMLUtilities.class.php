@@ -31,22 +31,15 @@ class KMLUtilities{
 	 * @param SimpleXMLElement $folder
 	 */
 	private static function elementToKML($element, $layer, SimpleXMLElement &$folder){
-		if ($element->hasAttribute('ubicacion') && $element->getUbicacion() != null){
+		
+		foreach ($layer->getAttributes() as $attribute) {
 			$description = 'Capa: '.$layer->getName().', Id: '.$element->getId();
-			KMLGEO::toKML($element->getId(), $element->getUbicacion(), $description, get_class($element), 
-					$layer->getId(), new Icon(0,0,$layer->getIconurl()) ,$folder);
-		}
-
-		if ($element->hasAttribute('linea') && $element->getLinea() != null){
-			$description = 'Capa: '.$layer->getName().', Id: '.$element->getId();
-			KMLGEO::toKML($element->getId(), $element->getLinea(), $description, get_class($element), 
-					$layer->getId(), new Icon(0,0,$layer->getIconurl()) ,$folder);
-		}
-
-		if ($element->hasAttribute('zonas') && $element->getZonas() != null){
-			$description = 'Capa: '.$layer->getName().', Id: '.$element->getId();
-			KMLGEO::toKML($element->getId(), $element->getZonas(), $description, get_class($element), 
-					$layer->getId(), new Icon(0,0,$layer->getIconurl()) ,$folder);
+			$getAttribute = 'get' . $attribute;
+			$geo = $element->$getAttribute();
+			if ($geo) {
+				KMLGEO::toKML($element->getId(), $geo, $description, get_class($element), 
+						$layer->getId(), new Icon(0,0,$layer->getIconUrl()) ,$folder);
+			}
 		}
 	}
 	
@@ -57,11 +50,8 @@ class KMLUtilities{
 		$doc->addChild('name', 'YuppGIS KML'); //TODO_GIS
 		$doc->addChild('open', 1);
 		$doc->addChild('description', 'Description Here!'); //TODO_GIS
-		$folder = $doc->addChild('Folder');
-		$folder->addChild('name', '');
-		$folder->addChild('description', 'Description Here!'); //TODO_GIS
 		
-		KMLGEO::toKML($id, $geom, null, null, null, null, $folder);
+		KMLGEO::toKML($id, $geom, null, null, null, null, $doc);
 				
 		return $kml->asXML();
 	}

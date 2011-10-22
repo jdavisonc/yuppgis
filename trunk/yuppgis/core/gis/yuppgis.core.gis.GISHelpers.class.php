@@ -206,7 +206,7 @@ class GISHelpers {
 		foreach ($layers as $layer){
 			$layerId = $layer->getId();
 			$checkboxId = 'chb_'.$id.'_'.$layerId;
-			$image = '<img src="'.$layer->getIconurl().'" >';
+			$image = '<img src="'.$layer->getIconUrl().'" >';
 			$html .= '<li style="list-style-type: none">'.$image.DisplayHelper::check($checkboxId, true,
 			array(
 					'id'=> $checkboxId, 

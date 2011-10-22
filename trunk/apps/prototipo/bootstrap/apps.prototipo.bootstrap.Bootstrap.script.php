@@ -69,12 +69,30 @@ foreach ($medicos as $medico){
 /**/
 
 
-$map = new Map('MapaPrototipo');
+$map = new Map(array('name' => 'MapaPrototipo'));
 
 
-$layer1 = new DataLayer('Sanos','','/yuppgis/yuppgis/js/gis/img/marker-green.png',true);
-$layer2 = new DataLayer('Enfermos','','/yuppgis/yuppgis/js/gis/img/marker-blue.png',true);
-$layer3 = new DataLayer('Viejos','','/yuppgis/yuppgis/js/gis/img/marker-gold.png',true);
+$layer1 = new DataLayer();
+$layer1->setName('Sanos');
+$layer1->setClassType('Paciente');
+$layer1->setAttributes(array('ubicacion'));
+$layer1->setIconUrl('/yuppgis/yuppgis/js/gis/img/marker-green.png');
+
+$layer2 = new DataLayer();
+$layer2->setName('Enfermos');
+$layer2->setClassType('Paciente');
+$layer2->setAttributes(array('ubicacion','linea'));
+$layer2->setIconUrl('/yuppgis/yuppgis/js/gis/img/marker-blue.png');
+
+$layer3 = new DataLayer();
+$layer3->setName('Viejos');
+$layer3->setClassType('Paciente');
+$layer3->setAttributes(array('ubicacion'));
+
+$layer4 = new DataLayer();
+$layer4->setName('Medicos');
+$layer4->setClassType('Medico');
+$layer4->setAttributes(array('zonas'));
 
 
 $p1 = new Paciente();
@@ -190,7 +208,7 @@ $multiPolygon->setUIProperty($relleno);
 $m1->setZonas($multiPolygon);
 $m1->save();
 
-$layer1->addElement($m1);
+$layer4->addElement($m1);
 
 $m2 = new Medico();
 $m2->setNombre('Medico 2');
@@ -203,8 +221,8 @@ $p3->save();
 $p3->setNombreWithNotify('German');
 $p3->save();
 
-$layer1->addElement($m2);
-$layer1->save();
+$layer4->addElement($m2);
+$layer4->save();
 
 
 
@@ -214,6 +232,7 @@ $layer1->save();
 $map->addLayer($layer1);
 $map->addLayer($layer2);
 $map->addLayer($layer3);
+$map->addLayer($layer4);
 
 $map->save();
 ?>

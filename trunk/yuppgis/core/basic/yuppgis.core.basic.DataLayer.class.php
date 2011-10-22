@@ -4,34 +4,67 @@ YuppLoader::load('yuppgis.core.basic', 'Observable');
 
 class DataLayer extends Observable {
 
+	private $geoAttributes = null;
+	
 	/**
-	 *
-	 * Enter description here ...
-	 * @param unknown_type $id
+	 * TODO_GIS
 	 * @param unknown_type $name
-	 * @param unknown_type $indexAttribute
+	 * @param unknown_type $type
+	 * @param unknown_type $attributes
+	 * @param unknown_type $iconurl
+	 * @param unknown_type $visible
 	 */
-
-	function __construct($name = '', $indexAttribute='id', $iconurl='/yuppgis/yuppgis/js/gis/img/marker-gold.png', $visible=true){
+	function __construct($args = array( 'iconUrl' => '/yuppgis/yuppgis/js/gis/img/marker-gold.png', 
+										'visible' => true ), 
+						 $isSimpleInstance = false) {
 
 		$this->setWithTable("data_layer");
 
 		$this->addAttribute("name", Datatypes::TEXT);
-		$this->addAttribute("indexAttribute", Datatypes::TEXT);
-
+		$this->addAttribute("classType", Datatypes::TEXT);
+		$this->addAttribute("attributes", Datatypes::TEXT);
 		$this->addHasMany("elements", "GISPersistentObject");
 		$this->addHasMany("tags", "Tag");
-		$this->addAttribute("iconurl", Datatypes::TEXT);
+		$this->addAttribute("iconUrl", Datatypes::TEXT);
 		$this->addAttribute("visible", Datatypes::BOOLEAN);
+		
+		if (array_key_exists('attributes', $args)) {
+			$this->geoAttributes = $args['attributes'];
+			unset($args['attributes']);
+		}
 
-		$args = array('name' =>$name, 'indexAttribute' => $indexAttribute, 'iconurl' => $iconurl, 'visible' => $visible );
-		parent :: __construct($args, false);
+		parent :: __construct($args, $isSimpleInstance);
+	}
+	
+	public function preValidate() {
+		if (!$this->geoAttributes) {
+			if ($this->getClassType()) {
+				$classType = $this->getClassType();
+				$instance = new $classType();
+				$this->geoAttributes = $instance->hasGeometryAttributes();
+			}
+		}
+		$this->aSet('attributes', implode(',', $this->geoAttributes));
+	}
+	
+	function getAttributes() {
+		if (!$this->geoAttributes) {
+			$this->geoAttributes = explode(',', $this->aGet('attributes'));
+		}
+		return $this->geoAttributes;
+	}
+	
+	function setAttributes(array $attributes) {
+		$this->geoAttributes = $attributes;
 	}
 
 	function addElement($element){
-		$this->addToElements($element);
-		
-		$this->notifyObservers(array("method" => "addElement", "object" => $element, "observable" => $this));
+		if (get_class($element) == $this->getClassType() || is_subclass_of($element, $this->getClassType())) {
+			$this->addToElements($element);
+			$this->notifyObservers(array("method" => "addElement", "object" => $element, "observable" => $this));
+		} else {
+			throw new Exception("El tipo de elemento no es correcto.");
+		}
 	}
 
 	function removeElement($element){
