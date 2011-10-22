@@ -70,6 +70,17 @@ class GISQueryTest extends YuppGISTestCase {
 		$this->assert(count($result) == 9 && $result[0]['distancia'] !== null, 'Distancia de de puntos caminando ' . $result[0]['distancia']);
 	}
 	
+	function testGISQueryDistance2() {
+		$q = new GISQuery();
+		$q->addFunction(GISFunction::DISTANCE('p', 'ubicacion', 't','ubicacion' ,'distancia'));
+		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(Paciente::getClassName(), 't');
+		$pm = PersistentManagerFactory::getManager();
+		$result = $pm->findByQuery($q);
+		
+		$this->assert(count($result) == 81 && $result[0]['distancia'] !== null, 'Distancia de de puntos caminando ' . $result[0]['distancia']);
+	}
+	
 	function testGISQueryArea() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::AREA('p', 'ubicacion', 'area'));

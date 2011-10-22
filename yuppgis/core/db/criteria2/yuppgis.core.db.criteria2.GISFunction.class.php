@@ -71,7 +71,7 @@ class GISFunction extends SelectItem {
 	}
 	
 	public static function DISTANCE( $alias, $attr, $alias2, $attr2, $selectItemAlias = null ) {
-		return self::createGISFunction(self::GIS_FUNCTION_DISTANCE, $alias, $attr, $alias2, $attr2, $selectItemAlias );
+		return self::createGISFunction(self::GIS_FUNCTION_DISTANCE, $alias, $attr, $alias2, $attr2, null, $selectItemAlias );
 	}
 	
 	public static function DISTANCE_TO( $alias, $attr, Geometry $value, $selectItemAlias = null ) {

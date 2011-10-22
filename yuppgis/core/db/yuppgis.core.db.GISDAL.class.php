@@ -119,8 +119,8 @@ class GISDAL extends DAL {
 				$i = 1;
 				foreach ($gisSelects as $gs) {
 					$geom = WKTGEO::fromText($row[$gs]);
-					$idKey = 'id' . $i;
-					$idUI = 'uiproperty' . $i;
+					$idKey = 'gisid' . $i;
+					$idUI = 'gisuiproperty' . $i;
 					if (array_key_exists($idKey, $row)) {
 						$geom->setId($row[$idKey]);
 						unset($row[$idKey]);
