@@ -28,18 +28,18 @@ class GISHelpers {
 		if (!(is_subclass_of($class, 'PersistentObject' ))){
 			throw new Exception('La clase debe ser subclase de PersistentObject', 0);
 		}
-		
+
 		$ins = new $class(array(), true);
 		$simpleAttr = $ins->getSimpleAssocAttrNames();
 		$manyAttr = $ins->getManyAssocAttrNames();
-		
+
 		$attrs = $ins->getAttributeTypes();
-		
+
 		$fields = array();
 		foreach (array_keys($attrs) as $attr){
 			if (!(in_array($attr, YuppGISConventions::getReservedWords())) &&
 			!(in_array($attr, $simpleAttr)) &&
-			!(in_array($attr, $manyAttr)) 
+			!(in_array($attr, $manyAttr))
 			){
 				$fields[] = $attr;
 			}
@@ -75,14 +75,19 @@ class GISHelpers {
 	 * @param id del elemento
 	 * @return html generado para el menú
 	 */
-	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null){
+	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null, $multiple = false){
 		$appName = YuppContext::getInstance()->getApp();
-		$random = uniqid();
 
-		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$class.'_'.$mapid.'_'.$random.'">';
+		$groupId = $class.'_'.$mapid.'_'.uniqid();
+		$selectId = 'select_'.$groupId;
+		$tbId = 'tbFiltersMenu_'.$groupId;
+		$methodName = 'filter_'.$groupId;
+		$btnId = 'btnFiltersMenu_'.$groupId;
+
+		$selectHtml = '<select class="conditionselect" data-attr-mapid="'.$mapid.'" id="'.$selectId.'">';
 
 		foreach (self::AvailableFilters($class) as $option){
-			$html .= '<option value="'.$option.'">'.$option.'</option>';
+			$selectHtml .= '<option value="'.$option.'">'.$option.'</option>';
 		}
 
 		$handlerCall = '';
@@ -92,25 +97,25 @@ class GISHelpers {
 			$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';
 		}
 
-		$html .= '</select>';
-		$html .= '<input data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'" />';
+		$selectHtml .= '</select>';
 
-		$methodName = 'filter_'.$class.'_'.$mapid.'_'.$random;
+		$inputHtml = '<input class="conditiontext" data-attr-mapid="'.$mapid.'" type="text" id="'.$tbId.'" />';
 
-		$html .= '<a href="#" id="btnFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
+		$submitHtml = '<br /><a href="#" id="'.$btnId.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
 
 		$script = '<script>
 						function '.$methodName.'(){
-							var selectedOption = $("#select_'.$class.'_'.$mapid.'_'.$random.'").val();
-							var text = $("#tbFiltersMenu_'.$class.'_'.$mapid.'_'.$random.'").val();
+							var selectedOption = $("#'.$selectId.'").val();
+							var text = $("#'.$tbId.'").val();
 							
 							 $.ajax({
 							      url: "/yuppgis/'.$appName.'/Home/Filter",
-							      data: {
-							        filterName: selectedOption,
-							        className: "'.$class.'",
-							        mapId: '.$mapid.',
-							      	param: text';
+							      data: {';
+
+		$script .= '
+									query: JSON.stringify(getMultipleConditionJson($("#'.$btnId.'"))),				
+									className: "'.$class.'",
+							        mapId: '.$mapid;
 
 		if($layerId != null){
 			$script .= ' 					      	,
@@ -129,9 +134,13 @@ class GISHelpers {
 				</script>		
 		';
 
-		$html .= $script;
+		$addConditionHtml = '';
+		if ($multiple){
+			$addConditionHtml = '<span class="addcondition" onclick="javascript:return addNewCondition(this);">+</span>';
+		}
 
-		return $html;
+		return  '<span class="conditionfilter"><span class="newcondition"'.$selectHtml.$inputHtml.$addConditionHtml.'</span><br />'.$submitHtml.$script.'</span>';
+
 	}
 
 	/*Mapa*/
@@ -157,6 +166,7 @@ class GISHelpers {
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/common"));
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/jquery.yuppgis.map"));
+		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/multiplecondition"));
 
 		$html =	'
 		 
@@ -329,9 +339,10 @@ class GISHelpers {
 	$classto, $positionto='zonas'){
 
 		$appName = YuppContext::getInstance()->getApp();
-		$random = uniqid();
+		$groupId = $classfrom.'_'.$mapid.'_'.uniqid();
 
-		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$classfrom.'_'.$mapid.'_'.$random.'">';
+		$selectId = 'select_'.$groupId;
+		$html = '<select data-attr-mapid="'.$mapid.'" id="'.$selectId.'">';
 		$params = new ArrayObject() ;
 		$method = 'get'.ucfirst($fieldName);
 
@@ -347,18 +358,19 @@ class GISHelpers {
 			$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';
 		}
 
+		$tbId = 'tbFiltersMenu_'.$groupId;
 		$html .= '</select>';
-		$html .= '<input onkeypress="return onlyNumbers(event)" data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" />';
+		$html .= '<input onkeypress="return onlyNumbers(event)" data-attr-mapid="'.$mapid.'" type="text" id="'.$tbId.'" />';
 
+		$methodName = 'filter_'.$groupId;
 
-		$methodName = 'filter_'.$classfrom.'_'.$mapid.'_'.$random;
-
-		$html .= '<a href="#" id="btnFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
+		$btnId = 'btnFiltersMenu_'.$groupId;
+		$html .= '<a href="#" id="'.$btnId.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
 
 		$script = '<script>
 						function '.$methodName.'(){
-							var selectedOption = $("#select_'.$classfrom.'_'.$mapid.'_'.$random.'").val();
-							var text = $("#tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'").val();
+							var selectedOption = $("#'.$selectId.'").val();
+							var text = $("#'.$tbId.'").val();
 							
 							 $.ajax({
 							      url: "/yuppgis/'.$appName.'/Home/FilterDistance",
