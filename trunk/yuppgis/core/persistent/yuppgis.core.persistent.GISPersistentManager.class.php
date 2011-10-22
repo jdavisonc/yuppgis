@@ -281,7 +281,9 @@ abstract class GISPersistentManager extends PersistentManager {
 
 				//TODO GIS_ revisar si copiar y pasar al Premium
 				$parent_class = get_parent_class($c_ins);
-				if ( $parent_class !== 'PersistentObject' &&  $parent_class !== GISPersistentObject::getClassName() ) // Si la instancia no es de primer nivel
+				if ( $parent_class !== 'PersistentObject' 
+					&&  $parent_class !== GISPersistentObject::getClassName() 
+					&&  $parent_class !== 'Observable') // Si la instancia no es de primer nivel
 				{
 					// La superclase de c_ins se mapea en otra tabla, saco esos atributos...
 					$suc_ins = new $parent_class();
@@ -300,7 +302,9 @@ abstract class GISPersistentManager extends PersistentManager {
 					$this->generate( $c_ins, $dalForApp );
 
 					// Para luego generar FKs.
-					$generatedPOs[] = $c_ins;
+					$generatedPOs[] = array(true, $c_ins);
+				} else {
+					$generatedPOs[] = array(false, $c_ins);
 				}
 			} // foreach ($struct as $class => $subclassesOnSameTable)
 		} // foreach( $A as $clazz )
@@ -311,118 +315,127 @@ abstract class GISPersistentManager extends PersistentManager {
 
 		//Logger::struct( $generatedPOs, "GENERATED OBJS" );
 
-		foreach ($generatedPOs as $ins)
+		foreach ($generatedPOs as $value)
 		{
+			
+			$ins = $value[1];
+			$generateFK = $value[0];
+			
 			$tableName = YuppConventions::tableName( $ins );
 			$fks = array();
-
+			
 			// FKs hasOne
 			$ho_attrs = $ins->getHasOne();
 			foreach ( $ho_attrs as $attr => $refClass )
 			{
-				// Problema: pasa lo mismo que pasaba en YuppConventions.relTableName, esta tratando
-				// de inyectar la FK en la tabla incorrecta porque la instancia es de una superclase
-				// de la clase donde se declara la relacion HasOne, entonces hay que verificar si una
-				// subclase no tiene ya el atributo hasOne declarado, para asegurarse que es de la
-				// instancia actual y no intentar generar la FK si no lo es.
-
-				$instConElAtributoHasOne = NULL;
-				$subclasses = ModelUtils::getAllAncestorsOf( $ins->getClass() );
-
-				foreach ( $subclasses as $aclass )
-				{
-					$ains = new $aclass();
-					if ( $ains->hasOneOfThis( $refClass ) )
+				
+				$isGeometry = is_subclass_of($refClass , Geometry::getClassName());
+				
+				if ($generateFK) {
+					// Problema: pasa lo mismo que pasaba en YuppConventions.relTableName, esta tratando
+					// de inyectar la FK en la tabla incorrecta porque la instancia es de una superclase
+					// de la clase donde se declara la relacion HasOne, entonces hay que verificar si una
+					// subclase no tiene ya el atributo hasOne declarado, para asegurarse que es de la
+					// instancia actual y no intentar generar la FK si no lo es.
+	
+					$instConElAtributoHasOne = NULL;
+					$subclasses = ModelUtils::getAllAncestorsOf( $ins->getClass() );
+	
+					foreach ( $subclasses as $aclass )
 					{
-						//Logger::getInstance()->log( $ains->getClass() . " TIENE UNO DE: $refClass" );
-						$instConElAtributoHasOne = $ains; // EL ATRIBUTO ES DE OTRA INSTANCIA!
-						break;
-					}
-				}
-
-				// Si el atributo de FK hasOne es de la instancia actual, se genera:
-				if ( $instConElAtributoHasOne === NULL )
-				{
-					// Para ChasOne esta generando "chasOne", y el nombre de la tabla que aparece en la tabla es "chasone".
-
-					// TODO_GIS _ si tiene habilitado modo premium??
-					$isGeometry = is_subclass_of($refClass , Geometry::getClassName());
-					if ($isGeometry) {
-						$this->generate_gisTables($ins, $attr, $appName);
-
-					} else if (!$isGeometry) {
-						$refTableName = YuppConventions::tableName( $refClass );
-						$fks[] = array(
-                             'name'    => DatabaseNormalization::simpleAssoc($attr), // nom_id, $attr = nom
-                             'table'   => $refTableName,
-                             'refName' => 'id' // Se que esta referencia es al atributo "id".
-						);
-					}
-				}
-			}
-
-			// FKs tablas intermedias HasMany
-			$hasMany = $ins->getHasMany();
-
-			foreach ( $hasMany as $attr => $assocClassName )
-			{
-				//Logger::getInstance()->pm_log("AssocClassName: $assocClassName, attr: $attr");
-
-				if ( $ins->isOwnerOf( $attr ) ) // VERIFY, FIXME, TODO: Toma la asuncion de que el belongsTo es por clase. Podria generar un problema si tengo dos atributos de la misma clase pero pertenezco a uno y no al otro porque el modelo es asi.
-				{
-					$hm_fks = array();
-					$hasManyTableName = YuppConventions::relTableName( $ins, $attr, new $assocClassName() );
-
-					// "owner_id", "ref_id" son FKs.
-
-					// ===============================================================================
-					// El nombre de la tabla owner para la FK debe ser el de la clase
-					// donde se declara el attr hasMany,
-					// no para el ultimo de la estructura de MTI (como pasaba antes).
-					$classes = ModelUtils::getAllAncestorsOf( $ins->getClass() );
-
-					//Logger::struct( $classes, "Superclases de " . $ins1->getClass() );
-
-					$instConElAtributoHasMany = $ins; // En ppio pienso que la instancia es la que tiene el atributo masMany.
-					foreach ( $classes as $aclass )
-					{
-						$_ins = new $aclass();
-						if ( $_ins->hasManyOfThis( $assocClassName ) )
+						$ains = new $aclass();
+						if ( $ains->hasOneOfThis( $refClass ) )
 						{
-							//Logger::getInstance()->log("TIENE MANY DE " . $ins2->getClass());
-							$instConElAtributoHasMany = $_ins;
+							//Logger::getInstance()->log( $ains->getClass() . " TIENE UNO DE: $refClass" );
+							$instConElAtributoHasOne = $ains; // EL ATRIBUTO ES DE OTRA INSTANCIA!
 							break;
 						}
-
-						//Logger::struct( $ins, "Instancia de $aclass" );
 					}
-					// ===============================================================================
-
-					//TODO_GIS ERROR: insert or update on table "data_layer_elements_gis_persistent_object" violates foreign key constraint
-					//"fk_gis_persistent_object_ref_id_id" DETAIL: Key (ref_id)=(1) is not present in table "gis_persistent_object".
-					if ($ins->getClass() != 'DataLayer' && $attr != 'elements') {
-
-						$hm_fks[] = array(
-	                             'name'    => "owner_id",
-	                             'table'   => YuppConventions::tableName( $instConElAtributoHasMany->getClass() ), // FIXME: Genera link a gs (tabla de G1) aunque el atributo sea declarado en cs (tabla de C1). Esto puede generar problemas al cargar (NO PASA NADA AL CARGAR, ANDA FENOMENO!), aunque la instancia es la misma, deberia hacer la referencia a la tabla correspondiente a la instancia que declara el atributo, solo por consistencia y correctitud.
-	                             'refName' => 'id' // Se que esta referencia es al atributo "id".
-						);
-
-						$hm_fks[] = array(
-	                             'name'    => "ref_id",
-	                             'table'   => YuppConventions::tableName( $assocClassName ),
-	                             'refName' => 'id' // Se que esta referencia es al atributo "id".
-						);
+	
+					// Si el atributo de FK hasOne es de la instancia actual, se genera:
+					if ( $instConElAtributoHasOne === NULL && !$isGeometry) {
+						// Para ChasOne esta generando "chasOne", y el nombre de la tabla que aparece en la tabla es "chasone".	
+						$refTableName = YuppConventions::tableName( $refClass );
+						$fks[] = array(
+							'name'    => DatabaseNormalization::simpleAssoc($attr), // nom_id, $attr = nom
+							'table'   => $refTableName,
+							'refName' => 'id' // Se que esta referencia es al atributo "id".
+						);						
 					}
-
-					// Genera FKs
-					$dalForApp->addForeignKeys($hasManyTableName, $hm_fks);
 				}
-			} // foreach hasMany
-
-			// Genera FKs
-			$dalForApp->addForeignKeys($tableName, $fks);
-
+				
+				// TODO_GIS _ si tiene habilitado modo premium??
+				if ($isGeometry) {
+					$this->generate_gisTables($ins, $attr, $appName);
+				}
+			
+			}
+			
+			if ($generateFK) {	
+				
+				// FKs tablas intermedias HasMany
+				$hasMany = $ins->getHasMany();
+	
+				foreach ( $hasMany as $attr => $assocClassName )
+				{
+					//Logger::getInstance()->pm_log("AssocClassName: $assocClassName, attr: $attr");
+	
+					if ( $ins->isOwnerOf( $attr ) ) // VERIFY, FIXME, TODO: Toma la asuncion de que el belongsTo es por clase. Podria generar un problema si tengo dos atributos de la misma clase pero pertenezco a uno y no al otro porque el modelo es asi.
+					{
+						$hm_fks = array();
+						$hasManyTableName = YuppConventions::relTableName( $ins, $attr, new $assocClassName() );
+	
+						// "owner_id", "ref_id" son FKs.
+	
+						// ===============================================================================
+						// El nombre de la tabla owner para la FK debe ser el de la clase
+						// donde se declara el attr hasMany,
+						// no para el ultimo de la estructura de MTI (como pasaba antes).
+						$classes = ModelUtils::getAllAncestorsOf( $ins->getClass() );
+	
+						//Logger::struct( $classes, "Superclases de " . $ins1->getClass() );
+	
+						$instConElAtributoHasMany = $ins; // En ppio pienso que la instancia es la que tiene el atributo masMany.
+						foreach ( $classes as $aclass )
+						{
+							$_ins = new $aclass();
+							if ( $_ins->hasManyOfThis( $assocClassName ) )
+							{
+								//Logger::getInstance()->log("TIENE MANY DE " . $ins2->getClass());
+								$instConElAtributoHasMany = $_ins;
+								break;
+							}
+	
+							//Logger::struct( $ins, "Instancia de $aclass" );
+						}
+						// ===============================================================================
+	
+						//TODO_GIS ERROR: insert or update on table "data_layer_elements_gis_persistent_object" violates foreign key constraint
+						//"fk_gis_persistent_object_ref_id_id" DETAIL: Key (ref_id)=(1) is not present in table "gis_persistent_object".
+						if ($ins->getClass() != 'DataLayer' && $attr != 'elements') {
+	
+							$hm_fks[] = array(
+		                             'name'    => "owner_id",
+		                             'table'   => YuppConventions::tableName( $instConElAtributoHasMany->getClass() ), // FIXME: Genera link a gs (tabla de G1) aunque el atributo sea declarado en cs (tabla de C1). Esto puede generar problemas al cargar (NO PASA NADA AL CARGAR, ANDA FENOMENO!), aunque la instancia es la misma, deberia hacer la referencia a la tabla correspondiente a la instancia que declara el atributo, solo por consistencia y correctitud.
+		                             'refName' => 'id' // Se que esta referencia es al atributo "id".
+							);
+	
+							$hm_fks[] = array(
+		                             'name'    => "ref_id",
+		                             'table'   => YuppConventions::tableName( $assocClassName ),
+		                             'refName' => 'id' // Se que esta referencia es al atributo "id".
+							);
+						}
+	
+						// Genera FKs
+						$dalForApp->addForeignKeys($hasManyTableName, $hm_fks);
+					}
+				} // foreach hasMany
+	
+				// Genera FKs
+				$dalForApp->addForeignKeys($tableName, $fks);
+			}
+			
 		} // foreach PO
 	}
 
