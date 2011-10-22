@@ -28,7 +28,7 @@ class DataLayer extends Observable {
 		$this->addAttribute("iconUrl", Datatypes::TEXT);
 		$this->addAttribute("visible", Datatypes::BOOLEAN);
 		
-		if (array_key_exists('attributes', $args)) {
+		if ($args && array_key_exists('attributes', $args)) {
 			$this->geoAttributes = $args['attributes'];
 			unset($args['attributes']);
 		}
@@ -42,9 +42,11 @@ class DataLayer extends Observable {
 				$classType = $this->getClassType();
 				$instance = new $classType();
 				$this->geoAttributes = $instance->hasGeometryAttributes();
+				$this->aSet('attributes', implode(',', $this->geoAttributes));
 			}
+		} else {
+			$this->aSet('attributes', implode(',', $this->geoAttributes));
 		}
-		$this->aSet('attributes', implode(',', $this->geoAttributes));
 	}
 	
 	function getAttributes() {

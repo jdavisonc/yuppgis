@@ -44,10 +44,13 @@ foreach ($hospitales as $hospital){
 	$hospital->delete();
 }
 
-$map = new Map('MapaHospitales');
+$map = new Map(array('name' => 'MapaHospitales'));
 
 
-$layer1 = new DataLayer('Hospitales','','/yuppgis/yuppgis/js/gis/img/marker-green.png',true);
+$layer1 = new DataLayer();
+$layer1->setName('Hospitales');
+$layer1->setClassType('Hospital');
+$layer1->setIconUrl('/yuppgis/yuppgis/js/gis/img/marker-green.png');
 
 
 $h1 = new Hospital();
