@@ -6,6 +6,7 @@ YuppLoader::load('yuppgis.core.basic', 'Tag');
 YuppLoader::load('prototipo.model', 'Paciente');
 YuppLoader::load('prototipo.model', 'Medico');
 
+
 /*Borro toda la data preexistente*/
 
 $file = 'events.txt';		
@@ -71,29 +72,25 @@ foreach ($medicos as $medico){
 
 $map = new Map(array('name' => 'MapaPrototipo'));
 
-
-$layer1 = new DataLayer();
+$layer1 = new DataLayer(array('iconUrl' => '/images/aed-2.png'));
 $layer1->setName('Sanos');
 $layer1->setClassType('Paciente');
 $layer1->setAttributes(array('ubicacion'));
-$layer1->setIconUrl('/yuppgis/yuppgis/js/gis/img/marker-green.png');
 
-$layer2 = new DataLayer();
+$layer2 = new DataLayer(array('iconUrl' => '/images/firstaid.png'));
 $layer2->setName('Enfermos');
 $layer2->setClassType('Paciente');
 $layer2->setAttributes(array('ubicacion','linea'));
-$layer2->setIconUrl('/yuppgis/yuppgis/js/gis/img/marker-blue.png');
 
-$layer3 = new DataLayer();
+$layer3 = new DataLayer(array('iconUrl' => '/images/hospital-building.png'));
 $layer3->setName('Viejos');
 $layer3->setClassType('Paciente');
 $layer3->setAttributes(array('ubicacion'));
 
-$layer4 = new DataLayer();
+$layer4 = new DataLayer(array('iconUrl' => '/images/medicine.png'));
 $layer4->setName('Medicos');
 $layer4->setClassType('Medico');
-$layer4->setAttributes(array('zonas'));
-
+$layer4->setAttributes(array('zonas', 'ubicacion'));
 
 $p1 = new Paciente();
 $p1->setNombreWithNotify('Juan');
@@ -210,11 +207,21 @@ $m1->save();
 
 $layer4->addElement($m1);
 
+
+/*Seteo icono a Medico*/
+$icono = new Icon();
+$icono->setUrl('/images/medicine.png');
+$icono->setHeight(4);
+$icono->setWidth(5);
+
 $m2 = new Medico();
 $m2->setNombre('Medico 2');
-$m2->setUbicacion(new Point(-56.17438, -34.88619));
+$ubicacion = new Point(-56.17438, -34.88619);
+$ubicacion->setUIProperty($icono);
+$m2->setUbicacion($ubicacion);
 $m2->save();
 $layer1->registerObserver($m2);
+
 $p3->registerObserver($m2);
 $p3->save();
 
@@ -223,11 +230,6 @@ $p3->save();
 
 $layer4->addElement($m2);
 $layer4->save();
-
-
-
-
-
 
 $map->addLayer($layer1);
 $map->addLayer($layer2);

@@ -14,7 +14,7 @@ class DataLayer extends Observable {
 	 * @param unknown_type $iconurl
 	 * @param unknown_type $visible
 	 */
-	function __construct($args = array( 'iconUrl' => '/yuppgis/yuppgis/js/gis/img/marker-gold.png', 
+	function __construct($args = array( 'iconUrl' => '', 
 										'visible' => true ), 
 						 $isSimpleInstance = false) {
 
@@ -27,6 +27,19 @@ class DataLayer extends Observable {
 		$this->addHasMany("tags", "Tag");
 		$this->addAttribute("iconUrl", Datatypes::TEXT);
 		$this->addAttribute("visible", Datatypes::BOOLEAN);
+		
+		if ($args && array_key_exists('iconUrl', $args)){
+			if($args[ "iconUrl" ] == ''){
+				$args[ "iconUrl" ] ='/yuppgis/yuppgis/js/gis/img/marker-gold.png';
+			}else{		
+				global $_base_dir;	
+				$url = $args[ "iconUrl" ];
+				$args[ "iconUrl" ] = $_base_dir. '/apps/'.YuppContext::getInstance()->getApp().$url;			
+			}
+		}else if($args){
+			$args[ "iconUrl" ] ='/yuppgis/yuppgis/js/gis/img/marker-gold.png';
+		}
+		
 		
 		if ($args && array_key_exists('attributes', $args)) {
 			$this->geoAttributes = $args['attributes'];
@@ -59,7 +72,7 @@ class DataLayer extends Observable {
 	function setAttributes(array $attributes) {
 		$this->geoAttributes = $attributes;
 	}
-
+		
 	function addElement($element){
 		if (get_class($element) == $this->getClassType() || is_subclass_of($element, $this->getClassType())) {
 			$this->addToElements($element);
