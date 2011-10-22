@@ -11,7 +11,7 @@ class Map  extends PersistentObject {
 		$this->addAttribute("visualization_json", Datatypes::TEXT);
 		$this->addHasMany("layers", "DataLayer");
 		
-		parent :: __construct($args, false);				
+		parent :: __construct($args, $isSimpleInstance);				
 	}
 
 	/**
