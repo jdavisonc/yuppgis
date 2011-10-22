@@ -12,8 +12,18 @@ class GISPMBasic extends GISPersistentManager {
 		// TODO_GIS: Deberia de tener dos instancias de dal distintas? uno comun y otro wsdal? xq esta clase no es igual que premium, 
 		//			 ya q uno es ws y otro db.
 		$this->dal = new DAL($appName);
-		// TODO_GIS: Configuracion dinamica del basico
-		$this->giswsdal = new RestGISWSDAL($appName); 
+		
+		$giswsdal_class = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_BASIC_GISWSDAL_CLASS);
+		if ($giswsdal_class) {
+			$pos = strrpos($giswsdal_class, ".");
+			$namespace = substr($giswsdal_class, 0, $pos);
+			$class = substr($giswsdal_class, $pos+1);
+			
+			YuppLoader::load($namespace, $class);
+			$this->giswsdal = new $class();
+		} else {
+			$this->giswsdal = new RestGISWSDAL($appName);
+		}		
 	}
 
 	/**

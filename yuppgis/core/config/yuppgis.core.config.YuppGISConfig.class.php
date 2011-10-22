@@ -7,6 +7,7 @@ class YuppGISConfig {
 	const PROP_GISDB = 'gisdb';
 	const PROP_GOOGLE_MAPS_KEY = 'google_maps_key';
 	const PROP_YUPPGIS_MODE = "yuppgis_mode";
+	const PROP_BASIC_GISWSDAL_CLASS = 'basic_giswsdal_class';
 	const PROP_BASIC_URL = 'basic_url';
 	const PROP_BASIC_GET_URL = 'basic_get_url';
 	const PROP_BASIC_SAVE_URL = 'basic_save_url';
@@ -50,6 +51,7 @@ class YuppGISConfig {
 		$this->default_values[self::PROP_BASIC_GET_URL] = null;
 		$this->default_values[self::PROP_BASIC_SAVE_URL] = null;
 		$this->default_values[self::PROP_BASIC_DELETE_URL] = null;
+		$this->default_values[self::PROP_BASIC_GISWSDAL_CLASS] = null;
 	}
 	
 	public static function generatePath( $appName ) {
@@ -96,6 +98,7 @@ class YuppGISConfig {
 		$this->app_gis_properties[$appName][self::PROP_BASIC_GET_URL] = $this->getValue(${self::PROP_BASIC_GET_URL}, self::PROP_BASIC_GET_URL);
 		$this->app_gis_properties[$appName][self::PROP_BASIC_SAVE_URL] = $this->getValue(${self::PROP_BASIC_SAVE_URL}, self::PROP_BASIC_SAVE_URL);
 		$this->app_gis_properties[$appName][self::PROP_BASIC_DELETE_URL] = $this->getValue(${self::PROP_BASIC_DELETE_URL}, self::PROP_BASIC_DELETE_URL);
+		$this->app_gis_properties[$appName][self::PROP_BASIC_GISWSDAL_CLASS] = $this->getValue(${self::PROP_BASIC_GISWSDAL_CLASS}, self::PROP_BASIC_GISWSDAL_CLASS);
 	}
 	
 	/**
