@@ -23,7 +23,30 @@ class GISHelpers {
 	 */
 	public static function AvailableFilters($class){
 
-		return ReflectionUtils::ReflectMethods($class, 'Filter', true);
+		//return ReflectionUtils::ReflectMethods($class, 'Filter', true);
+
+		if (!(is_subclass_of($class, 'PersistentObject' ))){
+			throw new Exception('La clase debe ser subclase de PersistentObject', 0);
+		}
+		
+		$ins = new $class(array(), true);
+		$simpleAttr = $ins->getSimpleAssocAttrNames();
+		$manyAttr = $ins->getManyAssocAttrNames();
+		
+		$attrs = $ins->getAttributeTypes();
+		
+		$fields = array();
+		foreach (array_keys($attrs) as $attr){
+			if (!(in_array($attr, YuppGISConventions::getReservedWords())) &&
+			!(in_array($attr, $simpleAttr)) &&
+			!(in_array($attr, $manyAttr)) 
+			){
+				$fields[] = $attr;
+			}
+		}
+
+		return $fields;
+
 	}
 
 
@@ -59,7 +82,7 @@ class GISHelpers {
 		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$class.'_'.$mapid.'_'.$random.'">';
 
 		foreach (self::AvailableFilters($class) as $option){
-			$html .= '<option value="'.$option.'">'.str_ireplace('Filter', '', $option).'</option>';
+			$html .= '<option value="'.$option.'">'.$option.'</option>';
 		}
 
 		$handlerCall = '';
@@ -311,9 +334,9 @@ class GISHelpers {
 		$html = '<select data-attr-mapid="'.$mapid.'" id="select_'.$classfrom.'_'.$mapid.'_'.$random.'">';
 		$params = new ArrayObject() ;
 		$method = 'get'.ucfirst($fieldName);
-		
+
 		foreach (call_user_func($classfrom.'::listAll',$params) as $option){
-		
+
 			$html .= '<option value="'.$option->getId().'">'.$option->$method().'</option>';
 		}
 
@@ -326,7 +349,7 @@ class GISHelpers {
 
 		$html .= '</select>';
 		$html .= '<input onkeypress="return onlyNumbers(event)" data-attr-mapid="'.$mapid.'" type="text" id="tbFiltersMenu_'.$classfrom.'_'.$mapid.'_'.$random.'" />';
-		
+
 
 		$methodName = 'filter_'.$classfrom.'_'.$mapid.'_'.$random;
 

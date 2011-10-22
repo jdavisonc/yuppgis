@@ -48,28 +48,6 @@ class Paciente extends GISPersistentObject {
 		return GISPersistentObject :: get($id);
 	}
 
-	/*Filtros*/
-
-	public static function nameFilter($param, $layerId=null){
-		$result = array ();
-
-		$cond = Condition::ILIKE(YuppGISConventions::tableName(Paciente::getClassName()), 'nombre', '%'.$param.'%');
-		$pacientes = Paciente::findBy($cond, new ArrayObject());
-
-		if($layerId != null){
-			$elements = DataLayer::get($layerId)->getElements();
-			foreach ($elements as $p){
-				if(in_array($p, $pacientes)){
-					$result[] = $p;
-				}
-			}
-		}else{
-			$result = $pacientes;
-		}
-
-		return $result;
-	}
-
 	public static function positionFilter($param){
 		//TODO Mandar y usar región
 		$cond = GISCondition::ISCONTAINED(YuppGISConventions::tableName(Paciente::getClassName()),'ubicacion', new Point(10, 10));
