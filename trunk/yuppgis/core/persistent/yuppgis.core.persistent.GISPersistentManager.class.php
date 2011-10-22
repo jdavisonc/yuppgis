@@ -343,6 +343,9 @@ abstract class GISPersistentManager extends PersistentManager {
 	
 					foreach ( $subclasses as $aclass )
 					{
+						if ($aclass == 'Observable') {
+							continue; //se ignora la clase abstracta Observable
+						}
 						$ains = new $aclass();
 						if ( $ains->hasOneOfThis( $refClass ) )
 						{
@@ -398,6 +401,9 @@ abstract class GISPersistentManager extends PersistentManager {
 						$instConElAtributoHasMany = $ins; // En ppio pienso que la instancia es la que tiene el atributo masMany.
 						foreach ( $classes as $aclass )
 						{
+							$refl = new ReflectionClass( $aclass );
+							if ($refl->isAbstract()) continue;
+							
 							$_ins = new $aclass();
 							if ( $_ins->hasManyOfThis( $assocClassName ) )
 							{

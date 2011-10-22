@@ -180,6 +180,9 @@ class PersistentObject {
 		if ( $this->getType( $attr ) === NULL ) return false;
 
 		$_super = get_parent_class( $this );
+		
+		$refl = new ReflectionClass( $_super );
+		if ($refl->isAbstract()) return true;
 
 		// Si la instancia tiene el atributo y el padre es PO, el atributo se declaro en ella.
 		if ( $_super === 'PersistenObject' ) return true;
