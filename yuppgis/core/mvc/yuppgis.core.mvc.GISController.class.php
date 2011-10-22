@@ -93,10 +93,8 @@ class GISController extends YuppController {
 		if(array_key_exists('layerId', $this->params)) {		
 			$layerId = $this->params['layerId'];
 		}
-		$methodName = $filterName;
-
-
-		$result = call_user_func($className.'::'.$methodName,  $text, $layerId);
+		
+		$result = self::filter($className, $filterName,  $text, $layerId);
 
 		$json = '[';
 		$count = sizeof($result);
@@ -111,6 +109,27 @@ class GISController extends YuppController {
 		header('Content-type: application/json');
 
 		return $this->renderString($json);
+	}
+	
+
+	private static function filter($class, $field, $param, $layerId = null){
+		$result = array ();
+
+		$cond = Condition::ILIKE(YuppGISConventions::tableName(call_user_func_array($class.'::getClassName',array())), $field, '%'.$param.'%');
+		$values = call_user_func_array($class.'::findBy', array($cond, new ArrayObject()));
+
+		if($layerId != null){
+			$elements = DataLayer::get($layerId)->getElements();
+			foreach ($elements as $p){
+				if(in_array($p, $values)){
+					$result[] = $p;
+				}
+			}
+		}else{
+			$result = $values;
+		}
+
+		return $result;
 	}
 
 	public function filterDistanceAction(){
