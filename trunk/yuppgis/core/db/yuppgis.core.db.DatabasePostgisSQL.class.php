@@ -123,8 +123,8 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 	
 	private function selectGisToSelect($alias, $i) {
 		$res = '';
-		$res .= $alias . "." . "id as id" . $i ." , ";
-		$res .= $alias . "." . "uiproperty as uiproperty" . $i ." , ";;
+		$res .= $alias . "." . "id as gisid" . $i ." , ";
+		$res .= $alias . "." . "uiproperty as gisuiproperty" . $i ." , ";;
 		$res .= $this->asText($alias . "." . "geom");
 		return $res;
 	}
