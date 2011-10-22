@@ -12,8 +12,6 @@ class Paciente extends GISPersistentObject {
 		$this->addAttribute("ubicacion", GISDatatypes :: POINT);
 		$this->addAttribute("linea", GISDatatypes ::LINESTRING);
 
-
-
 		// Restricciones
 		$this->addConstraints("nombre", array(
 		Constraint::nullable(false),

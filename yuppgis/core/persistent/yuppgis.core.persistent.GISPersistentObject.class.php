@@ -20,7 +20,6 @@ YuppLoader :: load('yuppgis.core.basic', 'MultiLineString');
 YuppLoader :: load('yuppgis.core.basic', 'MultiPolygon');
 YuppLoader::load('yuppgis.core.basic', 'Observable');
 
-
 // Se importan dependencias de persistencia
 YuppLoader :: load('yuppgis.core.config', 'YuppGISConventions');
 

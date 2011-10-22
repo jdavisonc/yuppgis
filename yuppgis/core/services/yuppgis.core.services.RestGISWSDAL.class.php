@@ -34,11 +34,14 @@ class RestGISWSDAL implements GISWSDAL {
 		$elements = KMLUtilities::KMLToGeometry($response->getBody());
 		if ($elements) { 
 			return $this->elementSelector($ownerName, $attr, $persistentClass, $id, $elements); // Solo el primer resultado retorno
+		} else {
+			return null;
 		}
 	}
 	
 	/**
 	 * Funcion que segun los parametros de busqueda y el resultado ya deserealizado, elige el objeto a retornar.
+	 * 
 	 * @param unknown_type $ownerName
 	 * @param unknown_type $attr
 	 * @param unknown_type $persistentClass
@@ -61,10 +64,11 @@ class RestGISWSDAL implements GISWSDAL {
 			if (is_numeric($id)) {
 				return $id;
 			} else {
-				throw new Exception("Save operation failed. " . $id);
+				throw new Exception("Operacion de persistencia de objeto geografico fallo. " . $id);
 			}
 		} else {
-			throw new Exception("Save operation failed. Service response was " . $response->getStatus(), $response->getStatus());
+			throw new Exception("Operacion de persistencia de objeto geografico fallo. Respuesta de servicio " 
+							. $response->getStatus(), $response->getStatus());
 		}
 	}
 	
@@ -76,7 +80,7 @@ class RestGISWSDAL implements GISWSDAL {
 		$url = $this->replaceWithVarsValue($this->deleteUrl, $vars);
 		
 		$response = $request->HttpRequestGet($url);
-		return  $response->getStatus() == '200';
+		return $response->getStatus() == '200';
 	}
 	
 	private function replaceWithVarsValue($url, array $vars) {
