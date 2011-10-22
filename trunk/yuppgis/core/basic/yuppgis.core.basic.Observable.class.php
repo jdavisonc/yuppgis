@@ -9,7 +9,7 @@ abstract class Observable extends PersistentObject
 	{			
 		$this->addAttribute("observers", Datatypes::TEXT);		
 		
-		parent :: __construct($args, false);
+		parent :: __construct($args, $isSimpleInstance);
 	}
 	
 	public function registerObserver(Observer $observer)
