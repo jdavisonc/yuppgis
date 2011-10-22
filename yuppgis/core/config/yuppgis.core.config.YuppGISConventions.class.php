@@ -7,7 +7,7 @@ class YuppGISConventions extends YuppConventions {
 	}
 	
 	public static function getReservedWords(){
-		return array("observers", "app", "class", "deleted");
+		return array("observers", "app", "class", "deleted", "id");
 	}
 }
 

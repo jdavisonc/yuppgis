@@ -114,8 +114,26 @@ class GISController extends YuppController {
 
 	private static function filter($class, $field, $param, $layerId = null){
 		$result = array ();
-
-		$cond = Condition::ILIKE(YuppGISConventions::tableName(call_user_func_array($class.'::getClassName',array())), $field, '%'.$param.'%');
+		 
+		$ins = new $class(array(), true);
+		$type = $ins->getType($field);
+		
+		
+		
+		switch ($type){
+			case Datatypes::INT_NUMBER:
+				$condparam = intval($param);
+				$condMethod = '::EEQ';				
+				break;
+			case Datatypes::TEXT:
+				$condparam = '%'.$param.'%';
+				$condMethod = '::ILIKE';				
+				break;
+		}
+		
+		$cond = call_user_func_array('Condition'.$condMethod, array(YuppGISConventions::tableName(call_user_func_array($class.'::getClassName',array())), $field, $condparam));
+		
+		
 		$values = call_user_func_array($class.'::findBy', array($cond, new ArrayObject()));
 
 		if($layerId != null){
@@ -165,6 +183,16 @@ class GISController extends YuppController {
 
 		return $this->renderString($json);
 	}
+	
+	/*
+	private static function positionFilter(){
+		//TODO Mandar y usar región
+		$cond = GISCondition::ISCONTAINED(YuppGISConventions::tableName(Paciente::getClassName()),'ubicacion', new Point(10, 10));
+
+		$pacientes = Paciente::findBy($cond, new ArrayObject());
+
+		return $pacientes;
+	}*/
 
 	public function mapServerAction(){
 			
