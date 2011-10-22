@@ -20,14 +20,14 @@ class GISController extends YuppController {
 
 		return $this->renderString( KMLUtilities::layerToKml($layer));
 	}
-	
+
 	public function saveVisualizationAction(){
-		
+
 		$mapId = $this->params['mapId'];
 		$json = $this->params['json'];
-		
+
 		header('Content-type: application/json');
-		
+
 		try{
 			$map = Map::get($mapId);
 			$map->setVisualization_json($json);
@@ -39,12 +39,12 @@ class GISController extends YuppController {
 			return $this->renderString('{res: false, msg: "'.$err->getMessage().'"}');
 		}
 	}
-	
+
 	public function loadVisualizationAction(){
 		$map = Map::get($this->params['mapId']);
-		
+
 		header('Content-type: application/json');
-		
+
 		return $this->renderString($map->getVisualization_json());
 	}
 
@@ -88,12 +88,12 @@ class GISController extends YuppController {
 		$mapId = $this->params['mapId'];
 		$className = $this->params['className'];
 		$filterName = $this->params['filterName'];
-		$text = $this->params['param'];		
+		$text = $this->params['param'];
 		$layerId = null;
-		if(array_key_exists('layerId', $this->params)) {		
+		if(array_key_exists('layerId', $this->params)) {
 			$layerId = $this->params['layerId'];
 		}
-		
+
 		$result = self::filter($className, $filterName,  $text, $layerId);
 
 		$json = '[';
@@ -110,30 +110,30 @@ class GISController extends YuppController {
 
 		return $this->renderString($json);
 	}
-	
+
 
 	private static function filter($class, $field, $param, $layerId = null){
 		$result = array ();
-		 
+			
 		$ins = new $class(array(), true);
 		$type = $ins->getType($field);
-		
-		
-		
+
+
+
 		switch ($type){
 			case Datatypes::INT_NUMBER:
 				$condparam = intval($param);
-				$condMethod = '::EEQ';				
+				$condMethod = '::EEQ';
 				break;
 			case Datatypes::TEXT:
 				$condparam = '%'.$param.'%';
-				$condMethod = '::ILIKE';				
+				$condMethod = '::ILIKE';
 				break;
 		}
-		
+
 		$cond = call_user_func_array('Condition'.$condMethod, array(YuppGISConventions::tableName(call_user_func_array($class.'::getClassName',array())), $field, $condparam));
-		
-		
+
+
 		$values = call_user_func_array($class.'::findBy', array($cond, new ArrayObject()));
 
 		if($layerId != null){
@@ -155,20 +155,27 @@ class GISController extends YuppController {
 		$classFromName = $this->params['classFrom'];
 		$filterValue = $this->params['filterValue'];
 		$distance = $this->params['param'];
-		
+
 		$classToName = $this->params['classTo'];
 		$positionfrom = $this->params['positionFrom'];
-		$positionto = $this->params['positionTo'];		
-		
-		$reference = call_user_func_array($classFromName .'::get', array($filterValue));
-		
-		$methodTo = 'get'.ucfirst($positionto);
-		$condition = GISCondition::DWITHIN(
-				YuppGISConventions::tableName($classToName), 
-				$positionfrom, $reference->$methodTo(), $distance);
-		
-		$result =	call_user_func_array($classToName.'::findBy', array($condition, new ArrayObject()));
+		$positionto = $this->params['positionTo'];
 
+		$reference = call_user_func_array($classFromName .'::get', array($filterValue));
+
+
+
+		$methodTo = 'get'.ucfirst($positionto);
+		$valuesTo = $reference->$methodTo();
+		$result =	array();
+		if ($valuesTo != null){
+			$condition = GISCondition::DWITHIN(
+			YuppGISConventions::tableName($classToName),
+			$positionfrom, $valuesTo, $distance);
+
+			$result =	call_user_func_array($classToName.'::findBy', array($condition, new ArrayObject()));
+		}
+			
+		
 		$json = '[';
 		$count = sizeof($result);
 		for ($i = 0; $i < $count-1; $i++) {
@@ -183,16 +190,6 @@ class GISController extends YuppController {
 
 		return $this->renderString($json);
 	}
-	
-	/*
-	private static function positionFilter(){
-		//TODO Mandar y usar región
-		$cond = GISCondition::ISCONTAINED(YuppGISConventions::tableName(Paciente::getClassName()),'ubicacion', new Point(10, 10));
-
-		$pacientes = Paciente::findBy($cond, new ArrayObject());
-
-		return $pacientes;
-	}*/
 
 	public function mapServerAction(){
 			
@@ -222,12 +219,12 @@ class GISController extends YuppController {
 			$im = imagecreatetruecolor(120, 20);
 			$text_color = imagecolorallocate($im, 233, 14, 91);
 			imagestring($im, 1, 5, 5, 'Sin permiso...', $text_color);
-				
+
 			header('Content-Type: image/png');
-				
+
 			imagepng($im);
 			imagedestroy($im);
-				
+
 			return $this->renderString('');
 		}
 	}
