@@ -87,14 +87,15 @@ class GISController extends YuppController {
 	public function filterAction(){
 		$mapId = $this->params['mapId'];
 		$className = $this->params['className'];
-		$filterName = $this->params['filterName'];
-		$text = $this->params['param'];
+
 		$layerId = null;
 		if(array_key_exists('layerId', $this->params)) {
 			$layerId = $this->params['layerId'];
 		}
 
-		$result = self::filter($className, $filterName,  $text, $layerId);
+		$query = $this->params['query'];
+
+		$result = self::filter($className, $query, $layerId);
 
 		$json = '[';
 		$count = sizeof($result);
@@ -111,30 +112,28 @@ class GISController extends YuppController {
 		return $this->renderString($json);
 	}
 
-
-	private static function filter($class, $field, $param, $layerId = null){
+	private static function filter($class, $query, $layerId = null){
 		$result = array ();
 			
-		$ins = new $class(array(), true);
-		$type = $ins->getType($field);
+		$model = json_decode($query);
 
+		$baseCondition = $model->conditions[0];
+		$finalCondition = self::getSingleGISCondition($class, $baseCondition);
 
+		array_shift($model->conditions);
 
-		switch ($type){
-			case Datatypes::INT_NUMBER:
-				$condparam = intval($param);
-				$condMethod = '::EEQ';
-				break;
-			case Datatypes::TEXT:
-				$condparam = '%'.$param.'%';
-				$condMethod = '::ILIKE';
-				break;
+		if (sizeof($model->conditions)> 0){
+			
+			foreach ($model->conditions as $condition){
+			
+				$prevCond = $finalCondition;
+				$finalCondition = call_user_func_array('Condition::_'.strtoupper($condition->condition), array());
+				$finalCondition->add($prevCond);
+				$finalCondition->add(self::getSingleGISCondition($class, $condition));
+			}
 		}
 
-		$cond = call_user_func_array('Condition'.$condMethod, array(YuppGISConventions::tableName(call_user_func_array($class.'::getClassName',array())), $field, $condparam));
-
-
-		$values = call_user_func_array($class.'::findBy', array($cond, new ArrayObject()));
+		$values = call_user_func_array($class.'::findBy', array($finalCondition, new ArrayObject()));
 
 		if($layerId != null){
 			$elements = DataLayer::get($layerId)->getElements();
@@ -147,7 +146,32 @@ class GISController extends YuppController {
 			$result = $values;
 		}
 
+
 		return $result;
+	}
+
+	private static function getSingleGISCondition($class, $condition){
+		$field = $condition->field;
+		$param = $condition->text;
+
+		$ins = new $class(array(), true);
+		$type = $ins->getType($field);
+
+		switch ($type){
+			case Datatypes::INT_NUMBER:
+				$condparam = intval($param);
+				$condMethod = '::EEQ';
+				break;
+			case Datatypes::TEXT:
+				$condparam = '%'.$param.'%';
+				$condMethod = '::ILIKE';
+				break;
+		}
+
+		$cond = call_user_func_array('Condition'.$condMethod,
+		array(YuppGISConventions::tableName(call_user_func_array($class.'::getClassName',array())), $field, $condparam));
+
+		return $cond;
 	}
 
 	public function filterDistanceAction(){
@@ -175,7 +199,7 @@ class GISController extends YuppController {
 			$result =	call_user_func_array($classToName.'::findBy', array($condition, new ArrayObject()));
 		}
 			
-		
+
 		$json = '[';
 		$count = sizeof($result);
 		for ($i = 0; $i < $count-1; $i++) {

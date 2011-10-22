@@ -21,7 +21,7 @@
 </fieldset>
 <fieldset>
 	<legend>Filtro de Paciente - CustomHandler</legend>
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements'); ?><br />
+	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements', null, true); ?><br />
 </fieldset>
 <fieldset>
 	<legend>Filtro de Paciente - Show</legend>
