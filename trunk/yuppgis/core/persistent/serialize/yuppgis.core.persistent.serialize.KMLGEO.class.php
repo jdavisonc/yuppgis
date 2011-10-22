@@ -68,7 +68,7 @@ class KMLGEO {
 		$styles = array();
 		foreach ($style->children() as $nodeName => $node) {
 			if ($nodeName == 'IconStyle') {
-				$styles[] = new Icon(0, 0, strval($node->href), 0, 0);
+				$styles[] = new Icon(0, 0, strval($node->href), strval($node->$width), strval($node->$height));
 			} else if ($nodeName == 'PolyStyle') {
 				$styles[] = new Background(0, 0, Color::fromColorName(strval($node->color)));
 			} else if ($nodeName == 'LineStyle') {
@@ -225,6 +225,8 @@ class KMLGEO {
 		$iconStyle->addChild('scale', 0.8);
 		$icon = $iconStyle->addChild('Icon');
 		$icon->addChild('href', $uiproperty->getUrl());
+		$icon->addChild('width', $uiproperty->getWidth());
+		$icon->addChild('height', $uiproperty->getHeight());
 	}
 	
 	private static function borderToKML(&$style, $uiproperty) {

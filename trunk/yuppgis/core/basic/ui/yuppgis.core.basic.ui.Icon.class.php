@@ -1,6 +1,5 @@
 <?php
-
-class Icon extends UIProperty {
+class Icon extends UIProperty {	
 	
 	protected $url;
 	protected $width;
@@ -17,8 +16,9 @@ class Icon extends UIProperty {
 		return $this->url;
 	}
 	
-	public function setUrl($url) {
-		$this->url = $url;
+	public function setUrl($url) {	
+		global $_base_dir;	
+		$this->url = $_base_dir. '/apps/'.YuppContext::getInstance()->getApp().$url;
 	}
 	
 	public function getWidth() {

@@ -68,20 +68,20 @@ class UIProperty {
 
 class Color {
 	
-	const WHITE = 'FFFFFFFF';
-	const BLACK = 'FF000000';
-	const RED = 'FF0000FF';
-	const BLUE = 'FFFF0000';
+	const WHITE = '50FFFFFF';
+	const BLACK = '50000000';
+	const RED = '500000FF';
+	const BLUE = '50FF0000';
 		
 	public static function fromColorName($name) {
 		switch (strtoupper($name)) {
-		    case "FFFFFFFF":
+		    case "50FFFFFF":
 		        return Color::WHITE;
-		    case "FF000000":
+		    case "50000000":
 		        return Color::BLACK;
-		    case "FF0000FF":
+		    case "500000FF":
 		        return Color::RED;
-		    case "FFFF0000";
+		    case "50FF0000";
 		    	return Color::BLUE;
 		    default:
 		    	return "";
