@@ -2,7 +2,7 @@
 
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 
-class Map  extends PersistentObject {
+class Map extends PersistentObject {
 
 	function __construct($args = array('name' => ''), $isSimpleInstance = false){
 		

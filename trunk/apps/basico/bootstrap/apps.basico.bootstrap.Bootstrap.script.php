@@ -50,8 +50,6 @@ $map = new Map(array('name' => 'MapaHospitales'));
 $layer1 = new DataLayer();
 $layer1->setName('Hospitales');
 $layer1->setClassType('Hospital');
-$layer1->setIconUrl('/yuppgis/yuppgis/js/gis/img/marker-green.png');
-
 
 $h1 = new Hospital();
 $h1->setNombre('Hospital Maciel');

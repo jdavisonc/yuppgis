@@ -216,7 +216,9 @@ class GISHelpers {
 		foreach ($layers as $layer){
 			$layerId = $layer->getId();
 			$checkboxId = 'chb_'.$id.'_'.$layerId;
-			$image = '<img src="'.$layer->getIconUrl().'" >';
+			if ($layer->getDefaultUIProperty() instanceof Icon) {
+				$image = '<img src="'.$layer->getDefaultUIProperty()->getUrl().'" >';
+			}
 			$html .= '<li style="list-style-type: none">'.$image.DisplayHelper::check($checkboxId, true,
 			array(
 					'id'=> $checkboxId, 

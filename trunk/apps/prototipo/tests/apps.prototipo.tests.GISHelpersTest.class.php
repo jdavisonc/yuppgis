@@ -17,7 +17,7 @@ class GISHelpersTest extends YuppGISTestCase {
 		$result = GISHelpers::AvailableFilters("Paciente");
 		$count = count($result);
 		
-		$this->assert($count == 2, 'Test filtros disponibles:'.$count);		
+		$this->assert($count == 1, 'Test filtros disponibles:'.$count);		
 		
 	}
 }

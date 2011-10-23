@@ -20,7 +20,7 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 						<description>Description Here!</description>
 						<Placemark ID="'.$elementId.'">
 						<name></name>
-						<description>Capa: layerName, Id: </description>
+						<description>Capa: Test, Id:</description>
 						<className>Paciente</className>
 						<layerId>'.$id.'</layerId>
 						<elementId>'.$elementId.'</elementId>
@@ -30,6 +30,8 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 					          <scale>0.8</scale>
 					          <Icon>
 					            <href>/yuppgis/yuppgis/js/gis/img/marker-gold.png</href>
+					            <width>0</width>
+					          	<height>0</height>
 					          </Icon>
 					        </IconStyle>
 					    </Style>						
@@ -44,8 +46,12 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 	}
 		
 	public function testLayerToKml(){
-		$layer =  new DataLayer('layerName', 'nombre');
-		$layer->setIconurl('/yuppgis/yuppgis/js/gis/img/marker-gold.png');
+		$layer =  new DataLayer();
+		$layer->setName('Test');
+		$layer->setClassType('Paciente');
+		$layer->setAttributes(array('ubicacion'));
+		$layer->setDefaultUIProperty(new Icon());
+		
 		$paciente = new Paciente();
 		$paciente->setNombre('Roberto');
 		$paciente->setUbicacion(new Point(10, 10));
@@ -58,7 +64,12 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 	}	
 	
 	public function testKmlToLayer() {
-		$layer =  new DataLayer('layerName', 'nombre');
+		$layer =  new DataLayer();
+		$layer->setName('Test');
+		$layer->setClassType('Paciente');
+		$layer->setAttributes(array('ubicacion'));
+		$layer->setDefaultUIProperty(new Icon());
+		
 		$paciente = new Paciente();
 		$paciente->setNombre('Roberto');
 		$paciente->setUbicacion(new Point(10, 10));

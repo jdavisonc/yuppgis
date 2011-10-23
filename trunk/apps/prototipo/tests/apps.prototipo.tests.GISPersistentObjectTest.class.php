@@ -72,7 +72,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	}
 	
 	function testGetPacienteFromDBWithId() {
-		$p = Paciente::get(54);
+		$p = Paciente::get(1);
 		$ubi = $p->getUbicacion();
 		$this->assert($ubi !== null, 'Se obtuvo correctamente el paciente con ID=1');
 	}

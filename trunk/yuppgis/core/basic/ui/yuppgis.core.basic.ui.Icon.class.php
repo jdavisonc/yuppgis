@@ -1,12 +1,19 @@
 <?php
-class Icon extends UIProperty {	
+
+class Icon extends UIProperty {
+	
+	const DEFAULT_ICON = '/yuppgis/yuppgis/js/gis/img/marker-gold.png';
 	
 	protected $url;
 	protected $width;
 	protected $height;
 	
 	public function __construct($alpha = 0, $zIndex = 0, $url = '', $width = 0, $height = 0) {
-		$this->url = $url;
+		if ($url) {
+			$this->url = $this->getRealPath($url);
+		} else {
+			$this->url = self::DEFAULT_ICON;
+		}
 		$this->width = $width;
 		$this->height = $height;
 		parent::__construct($alpha, $zIndex);
@@ -17,8 +24,7 @@ class Icon extends UIProperty {
 	}
 	
 	public function setUrl($url) {	
-		global $_base_dir;	
-		$this->url = $_base_dir. '/apps/'.YuppContext::getInstance()->getApp().$url;
+		$this->url = $this->getRealPath($url);
 	}
 	
 	public function getWidth() {
@@ -35,6 +41,11 @@ class Icon extends UIProperty {
 	
 	public function setHeight($height) {
 		$this->height = $height;
+	}
+	
+	private function getRealPath($url) {
+		global $_base_dir;	
+		return $_base_dir . '/apps/' . YuppContext::getInstance()->getApp() . $url;
 	}
 	
 }

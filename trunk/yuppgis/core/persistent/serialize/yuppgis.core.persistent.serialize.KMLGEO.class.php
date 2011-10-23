@@ -68,7 +68,7 @@ class KMLGEO {
 		$styles = array();
 		foreach ($style->children() as $nodeName => $node) {
 			if ($nodeName == 'IconStyle') {
-				$styles[] = new Icon(0, 0, strval($node->href), strval($node->$width), strval($node->$height));
+				$styles[] = new Icon(0, 0, strval($node->href), strval($node->width), strval($node->height));
 			} else if ($nodeName == 'PolyStyle') {
 				$styles[] = new Background(0, 0, Color::fromColorName(strval($node->color)));
 			} else if ($nodeName == 'LineStyle') {

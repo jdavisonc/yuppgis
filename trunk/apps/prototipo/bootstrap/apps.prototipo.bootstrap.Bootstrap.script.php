@@ -22,15 +22,9 @@ foreach ($maps as $map){
 	//$layers = DataLayer::listAll($params);
 	$layers =$map->getLayers();
 	foreach ($layers as $layer){
-		
-
 		$map->removeLayer($layer);
-
 		$map->save();
-		
 	}
-
-
 	$map->delete();
 }
 
@@ -45,9 +39,7 @@ foreach ($layers as $layer){
 	foreach ($tags as $tag){
 		$layer->removeTag($tag);
 	}
-
 	$layer->save();
-
 	$layer->delete();
 }
 
@@ -72,25 +64,29 @@ foreach ($medicos as $medico){
 
 $map = new Map(array('name' => 'MapaPrototipo'));
 
-$layer1 = new DataLayer(array('iconUrl' => '/images/aed-2.png'));
+$layer1 = new DataLayer();
 $layer1->setName('Sanos');
 $layer1->setClassType('Paciente');
 $layer1->setAttributes(array('ubicacion'));
+$layer1->setDefaultUIProperty(new Icon(0, 0, '/images/aed-2.png'));
 
-$layer2 = new DataLayer(array('iconUrl' => '/images/firstaid.png'));
+$layer2 = new DataLayer();
 $layer2->setName('Enfermos');
 $layer2->setClassType('Paciente');
 $layer2->setAttributes(array('ubicacion','linea'));
+$layer2->setDefaultUIProperty(new Icon(0, 0, '/images/firstaid.png'));
 
-$layer3 = new DataLayer(array('iconUrl' => '/images/hospital-building.png'));
+$layer3 = new DataLayer();
 $layer3->setName('Viejos');
 $layer3->setClassType('Paciente');
 $layer3->setAttributes(array('ubicacion'));
+$layer3->setDefaultUIProperty(new Icon(0, 0, '/images/hospital-building.png'));
 
-$layer4 = new DataLayer(array('iconUrl' => '/images/medicine.png'));
+$layer4 = new DataLayer();
 $layer4->setName('Medicos');
 $layer4->setClassType('Medico');
 $layer4->setAttributes(array('zonas', 'ubicacion'));
+$layer4->setDefaultUIProperty(new Icon(0, 0, '/images/medicine.png'));
 
 $p1 = new Paciente();
 $p1->setNombreWithNotify('Juan');
