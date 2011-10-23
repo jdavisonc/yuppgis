@@ -78,7 +78,6 @@ class KMLGEOTest extends YuppGISTestCase {
 	
 	public function testPointToKML() {
 		$kml = new SimpleXMLElement('<Folder/>');
-		$layer = new DataLayer('Capa');
 		$point = new Point(-56.0000, -34.1234234);
 		$point->setUIProperty(new Icon(0,0,'ffff',0,0));
 		KMLGEO::toKML(1, $point, 'Description', 'Paciente', 200, null, $kml);
@@ -88,8 +87,6 @@ class KMLGEOTest extends YuppGISTestCase {
 	
 	public function testPointDefaultStyleToKML() {
 		$kml = new SimpleXMLElement('<Folder/>');
-		$layer = new DataLayer('Capa');
-		$layer->setId(1);
 		$point = new Point(-56.0000, -34.1234234);
 		$point->setId(200);
 		KMLGEO::toKML(1, $point, 'Description', 'Paciente', 200, new Icon(0,0,'gg'), $kml);
@@ -99,8 +96,6 @@ class KMLGEOTest extends YuppGISTestCase {
 	
 	public function testLineStringToKML() {
 		$kml = new SimpleXMLElement('<Folder/>');
-		$layer = new DataLayer('Capa');
-		$layer->setId(1);
 		$line = new LineString(array(new Point(-56.02, -34.1234234), new Point(-56.02, -34.1234234)));
 		$line->setId(200);
 		KMLGEO::toKML(1, $line, 'Description', 'Paciente', 200, null, $kml);
@@ -110,8 +105,6 @@ class KMLGEOTest extends YuppGISTestCase {
 	
 	public function testPolygonToKML() {
 		$kml = new SimpleXMLElement('<Folder/>');
-		$layer = new DataLayer('Capa');
-		$layer->setId(1);
 		$points = array ( new Point(-56.17438, -34.88619), new Point(-56.181548, -34.882521), 
 				new Point(-56.181948, -34.880621), new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619));
 		$line = new LineRing($points);

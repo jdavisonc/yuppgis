@@ -30,7 +30,7 @@ class KMLUtilities{
 	 * @param unknown_type $layer
 	 * @param SimpleXMLElement $folder
 	 */
-	private static function elementToKML($element, $layer, SimpleXMLElement &$folder){
+	private static function elementToKML($element, DataLayer $layer, SimpleXMLElement &$folder){
 		
 		foreach ($layer->getAttributes() as $attribute) {
 			$description = 'Capa: '.$layer->getName().', Id: '.$element->getId();
@@ -38,7 +38,7 @@ class KMLUtilities{
 			$geo = $element->$getAttribute();
 			if ($geo) {
 				KMLGEO::toKML($element->getId(), $geo, $description, get_class($element), 
-						$layer->getId(), new Icon(0,0,$layer->getIconUrl()) ,$folder);
+						$layer->getId(), $layer->getDefaultUIProperty() ,$folder);
 			}
 		}
 	}

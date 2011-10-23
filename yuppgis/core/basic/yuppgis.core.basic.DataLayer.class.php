@@ -1,52 +1,51 @@
 <?php
+
 YuppLoader::load('yuppgis.core.basic', 'Tag');
 YuppLoader::load('yuppgis.core.basic', 'Observable');
+YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 
+/**
+ * Capa de datos que contendra elementos para luego ser mostrados en un mapa.
+ * 
+ * @author Jorge Davison
+ * @author German Schnyder 
+ * @author Emilia Rosa
+ * @author Martin Taruselli
+ */
 class DataLayer extends Observable {
 
 	private $geoAttributes = null;
-	
-	/**
-	 * TODO_GIS
-	 * @param unknown_type $name
-	 * @param unknown_type $type
-	 * @param unknown_type $attributes
-	 * @param unknown_type $iconurl
-	 * @param unknown_type $visible
-	 */
-	function __construct($args = array( 'iconUrl' => '', 
-										'visible' => true ), 
-						 $isSimpleInstance = false) {
+	private $uiPropertyObject = null;
+
+	function __construct($args = array( 'visible' => true ), $isSimpleInstance = false) {
 
 		$this->setWithTable("data_layer");
 
 		$this->addAttribute("name", Datatypes::TEXT);
 		$this->addAttribute("classType", Datatypes::TEXT);
 		$this->addAttribute("attributes", Datatypes::TEXT);
+		$this->addAttribute("defaultUIProperty", Datatypes::TEXT);
+		$this->addAttribute("visible", Datatypes::BOOLEAN);
 		$this->addHasMany("elements", "GISPersistentObject");
 		$this->addHasMany("tags", "Tag");
-		$this->addAttribute("iconUrl", Datatypes::TEXT);
-		$this->addAttribute("visible", Datatypes::BOOLEAN);
 		
-		if ($args && array_key_exists('iconUrl', $args)){
-			if($args[ "iconUrl" ] == ''){
-				$args[ "iconUrl" ] ='/yuppgis/yuppgis/js/gis/img/marker-gold.png';
-			}else{		
-				global $_base_dir;	
-				$url = $args[ "iconUrl" ];
-				$args[ "iconUrl" ] = $_base_dir. '/apps/'.YuppContext::getInstance()->getApp().$url;			
-			}
-		}else if($args){
-			$args[ "iconUrl" ] ='/yuppgis/yuppgis/js/gis/img/marker-gold.png';
-		}
-		
-		
-		if ($args && array_key_exists('attributes', $args)) {
+		if ($args && !is_string($args) && array_key_exists('attributes', $args)) {
 			$this->geoAttributes = $args['attributes'];
 			unset($args['attributes']);
 		}
 
 		parent :: __construct($args, $isSimpleInstance);
+	}
+	
+	public function getDefaultUIProperty() {
+		if ($this->uiPropertyObject == null && $this->aGet('defaultUIProperty')) {
+			$this->uiPropertyObject = UIProperty::fromJSON($this->aGet('defaultUIProperty'));
+		}
+		return $this->uiPropertyObject;
+	}
+	
+	public function setDefaultUIProperty($uiProperty) {
+		$this->uiPropertyObject = $uiProperty;
 	}
 	
 	public function preValidate() {
@@ -60,6 +59,10 @@ class DataLayer extends Observable {
 		} else {
 			$this->aSet('attributes', implode(',', $this->geoAttributes));
 		}
+		if (!$this->uiPropertyObject) {
+			$this->uiPropertyObject = new Icon();
+		}
+		$this->aSet('defaultUIProperty', UIProperty::toJSON($this->uiPropertyObject));
 	}
 	
 	function getAttributes() {

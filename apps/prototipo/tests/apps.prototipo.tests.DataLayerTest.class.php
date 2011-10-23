@@ -6,17 +6,10 @@ YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 
 class DataLayerTest extends YuppGISTestCase {
 	
-	public function testInitialize() {
-		$name = 'Prueba';
-		$layer = new DataLayer($name,'nombre');
-		$layer->setElements(array());		
-		$count = count($layer->getElements());		
-		$this->assert($count == 0, 'Test inicializar capa:'.$count);		
-	}
-	
 	public function testAddElements() {
-		$name = 'Prueba';
-		$layer = new DataLayer($name,'nombre');
+		$layer = new DataLayer();
+		$layer->setName('Prueba');
+		$layer->setClassType('Paciente');
 		
 		$p1 = new Paciente();
 		$p1->setNombre('chocolate');		
@@ -35,8 +28,9 @@ class DataLayerTest extends YuppGISTestCase {
 	}
 	
 	public function testRemoveElements() {		
-		$name = 'Prueba';
-		$layer = new DataLayer($name,'nombre');
+		$layer = new DataLayer();
+		$layer->setName('Prueba');
+		$layer->setClassType('Paciente');
 		
 		$p1 = new Paciente();
 		$p1->setNombre('chocolate');
@@ -73,8 +67,9 @@ class DataLayerTest extends YuppGISTestCase {
 	}
 
 	public  function testAddTag(){
-		$name = 'AddTag';
-		$layer = new DataLayer($name,'AddTag');
+		$layer = new DataLayer();
+		$layer->setName('AddTag');
+		$layer->setClassType('Paciente');
 		
 		$firstTag = new Tag();
 		$firstTag->setName('First Tag');
@@ -102,8 +97,9 @@ class DataLayerTest extends YuppGISTestCase {
 	}
 	
 	public function testRemoveTag(){
-		$name = 'RemoveTag';
-		$layer = new DataLayer($name,'RemoveTag');
+		$layer = new DataLayer();
+		$layer->setName('RemoveTag');
+		$layer->setClassType('Paciente');
 		
 		$firstTag = new Tag();
 		$firstTag->setName('First Tag');
