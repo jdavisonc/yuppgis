@@ -33,13 +33,7 @@ class JSONPO {
          $value = $po->aGet($attr);
          if (is_bool($value)) (($value)?$value='true':$value='false'); // Si no esta esto, aparece 1 para true y nada para false.
          
-         $json .= '"'. $attr .'" : ';
-         
-         if (substr($value,0,1) == '{' && substr($value,-1) == '}') {
-         	$json .= $value; 
-         } else {
-         	$json .= '"'. $value .'"'; // TODO: si es numero, no poner comillas
-         }
+         $json .= '"'. $attr .'" : "'. addslashes($value) .'"'; // TODO: si es numero, no poner comillas
          
          if ($i<$n) $json .= ", ";  
          $i++;
