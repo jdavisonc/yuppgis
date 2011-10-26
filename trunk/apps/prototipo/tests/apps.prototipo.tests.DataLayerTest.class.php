@@ -9,13 +9,13 @@ class DataLayerTest extends YuppGISTestCase {
 	public function testAddElements() {
 		$layer = new DataLayer();
 		$layer->setName('Prueba');
-		$layer->setClassType('Paciente');
+		$layer->setClassType('PPaciente');
 		
-		$p1 = new Paciente();
+		$p1 = new PPaciente();
 		$p1->setNombre('chocolate');		
-		$p2 = new Paciente();
+		$p2 = new PPaciente();
 		$p2->setNombre('crema');
-		$p3 = new Paciente();
+		$p3 = new PPaciente();
 		$p3->setNombre('limon');
 				
 		$layer->addElement($p1);
@@ -30,17 +30,17 @@ class DataLayerTest extends YuppGISTestCase {
 	public function testRemoveElements() {		
 		$layer = new DataLayer();
 		$layer->setName('Prueba');
-		$layer->setClassType('Paciente');
+		$layer->setClassType('PPaciente');
 		
-		$p1 = new Paciente();
+		$p1 = new PPaciente();
 		$p1->setNombre('chocolate');
 		$p1->setUbicacion(new Point(10, 10));
 						
-		$p2 = new Paciente();		
+		$p2 = new PPaciente();		
 		$p2->setNombre('crema');
 		$p2->setUbicacion(new Point( 10, 10));	
 				
-		$p3 = new Paciente();
+		$p3 = new PPaciente();
 		$p3->setNombre('limon');
 		$p3->setUbicacion(new Point(10, 10));				
 		
@@ -69,7 +69,7 @@ class DataLayerTest extends YuppGISTestCase {
 	public  function testAddTag(){
 		$layer = new DataLayer();
 		$layer->setName('AddTag');
-		$layer->setClassType('Paciente');
+		$layer->setClassType('PPaciente');
 		
 		$firstTag = new Tag();
 		$firstTag->setName('First Tag');
@@ -99,7 +99,7 @@ class DataLayerTest extends YuppGISTestCase {
 	public function testRemoveTag(){
 		$layer = new DataLayer();
 		$layer->setName('RemoveTag');
-		$layer->setClassType('Paciente');
+		$layer->setClassType('PPaciente');
 		
 		$firstTag = new Tag();
 		$firstTag->setName('First Tag');

@@ -3,7 +3,7 @@
 YuppLoader::load('yuppgis.core.basic', 'Map');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 YuppLoader::load('yuppgis.core.basic', 'Tag');
-YuppLoader::load('prototipo.model', 'Paciente');
+YuppLoader::load('prototipo.model', 'PPaciente');
 YuppLoader::load('prototipo.model', 'Medico');
 
 
@@ -48,7 +48,7 @@ foreach ($tags as $tag){
 	$tag->delete();
 }
 
-$pacientes = Paciente::listAll($params);
+$pacientes = PPaciente::listAll($params);
 foreach ($pacientes as $paciente){
 	$paciente->delete();
 }
@@ -66,19 +66,19 @@ $map = new Map(array('name' => 'MapaPrototipo'));
 
 $layer1 = new DataLayer();
 $layer1->setName('Sanos');
-$layer1->setClassType('Paciente');
+$layer1->setClassType('PPaciente');
 $layer1->setAttributes(array('ubicacion'));
 $layer1->setDefaultUIProperty(new Icon(0, 0, '/images/aed-2.png'));
 
 $layer2 = new DataLayer();
 $layer2->setName('Enfermos');
-$layer2->setClassType('Paciente');
+$layer2->setClassType('PPaciente');
 $layer2->setAttributes(array('ubicacion','linea'));
 $layer2->setDefaultUIProperty(new Icon(0, 0, '/images/firstaid.png'));
 
 $layer3 = new DataLayer();
 $layer3->setName('Viejos');
-$layer3->setClassType('Paciente');
+$layer3->setClassType('PPaciente');
 $layer3->setAttributes(array('ubicacion'));
 $layer3->setDefaultUIProperty(new Icon(0, 0, '/images/hospital-building.png'));
 
@@ -88,18 +88,18 @@ $layer4->setClassType('Medico');
 $layer4->setAttributes(array('zonas', 'ubicacion'));
 $layer4->setDefaultUIProperty(new Icon(0, 0, '/images/medicine.png'));
 
-$p1 = new Paciente();
+$p1 = new PPaciente();
 $p1->setNombreWithNotify('Juan');
 $p1->setUbicacion(new Point(-56.181948, -34.884621));
 $p1->setLinea(new LineString(array ( new Point(-56.181948, -34.884621), new Point(-56.17438, -34.88619))));
 
 
-$p2 = new Paciente();
+$p2 = new PPaciente();
 $p2->setNombre('Jose');
 $p2->setUbicacion(new Point( -56.181448, -34.883641));
 $p2->setLinea(new LineString(array ( new Point(-56.181948, -34.884621), new Point(-56.17438, -34.88619))));
 
-$p3 = new Paciente();
+$p3 = new PPaciente();
 $p3->setNombre('Maria');
 $p3->setUbicacion(new Point(-56.181764, -34.884255));
 $p3->setLinea(new LineString(array ( new Point(-56.181948, -34.884621), new Point(-56.17438, -34.88619))));
@@ -116,17 +116,17 @@ $layer1->addTag($t1);
 $layer1->save();
 
 
-$p1 = new Paciente();
+$p1 = new PPaciente();
 $p1->setNombre('Roberto');
 $p1->setUbicacion(new Point(-56.181948, -34.883821));
 $p1->setLinea(new LineString(array ( new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619))));
 
-$p2 = new Paciente();
+$p2 = new PPaciente();
 $p2->setNombre('Emilia');
 $p2->setUbicacion(new Point( 585055, 6242602));
 //$p2->setLinea(new LineString(array ( new Point(585055, 6242602), new Point(-56.17438, -34.88619))));
 
-$p3 = new Paciente();
+$p3 = new PPaciente();
 $p3->setNombre('Eliana');
 $p3->setUbicacion(new Point(-56.181264, -34.883341));
 $p3->setLinea(new LineString(array ( new Point(-56.181264, -34.883341), new Point(-56.17438, -34.88619))));
@@ -148,12 +148,12 @@ $layer2->addTag($t4);
 
 $layer2->save();
 
-$p1 = new Paciente();
+$p1 = new PPaciente();
 $p1->setNombre('Martin');
 $p1->setUbicacion(new Point(-56.181548, -34.882521));
 $p1->setLinea(new LineString(array ( new Point(-56.181548, -34.882521), new Point(-56.17438, -34.88619))));
 
-$p2 = new Paciente();
+$p2 = new PPaciente();
 $p2->setNombre('Jorge');
 $p2->setUbicacion(new Point( -56.181354, -34.882631));
 $lineString = new LineString(array ( new Point(-56.17438, -34.88549), new Point(-56.18159, -34.88566)));
@@ -166,7 +166,7 @@ $borde->setWidth(4);
 $lineString->setUIProperty($borde);
 $p2->save();
 
-$p3 = new Paciente();
+$p3 = new PPaciente();
 $p3->setNombreWithNotify('GermanS');
 $p3->setUbicacion(new Point(-56.181164, -34.882741));
 $p3->setLinea(new LineString(array ( new Point(-56.181164, -34.882741), new Point(-56.17438, -34.88619))));

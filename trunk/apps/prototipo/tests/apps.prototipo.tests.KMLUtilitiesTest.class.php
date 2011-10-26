@@ -2,7 +2,7 @@
 
 YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
-YuppLoader::load('prototipo.model', 'Paciente');
+YuppLoader::load('prototipo.model', 'PPaciente');
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
 
 class KMLUtilitiesTest extends YuppGISTestCase {
@@ -21,7 +21,7 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 						<Placemark ID="'.$elementId.'">
 						<name></name>
 						<description>Capa: Test, Id:</description>
-						<className>Paciente</className>
+						<className>PPaciente</className>
 						<layerId>'.$id.'</layerId>
 						<elementId>'.$elementId.'</elementId>
 						<gisType>yuppgis_type_point</gisType>
@@ -48,11 +48,11 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 	public function testLayerToKml(){
 		$layer =  new DataLayer();
 		$layer->setName('Test');
-		$layer->setClassType('Paciente');
+		$layer->setClassType('PPaciente');
 		$layer->setAttributes(array('ubicacion'));
 		$layer->setDefaultUIProperty(new Icon());
 		
-		$paciente = new Paciente();
+		$paciente = new PPaciente();
 		$paciente->setNombre('Roberto');
 		$paciente->setUbicacion(new Point(10, 10));
 		$layer->addElement($paciente);
@@ -66,11 +66,11 @@ class KMLUtilitiesTest extends YuppGISTestCase {
 	public function testKmlToLayer() {
 		$layer =  new DataLayer();
 		$layer->setName('Test');
-		$layer->setClassType('Paciente');
+		$layer->setClassType('PPaciente');
 		$layer->setAttributes(array('ubicacion'));
 		$layer->setDefaultUIProperty(new Icon());
 		
-		$paciente = new Paciente();
+		$paciente = new PPaciente();
 		$paciente->setNombre('Roberto');
 		$paciente->setUbicacion(new Point(10, 10));
 		$layer->addElement($paciente);

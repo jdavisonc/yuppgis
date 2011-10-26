@@ -1,4 +1,4 @@
-<?php YuppLoader::load('prototipo.model', 'Paciente'); ?>
+<?php YuppLoader::load('prototipo.model', 'PPaciente'); ?>
 <?php echo Helpers::css(array('app'=>'prototipo', 'name' => 'main')) ; ?>
 
 <fieldset>
@@ -21,15 +21,15 @@
 </fieldset>
 <fieldset>
 	<legend>Filtro de Paciente - CustomHandler</legend>
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, 'listFilteredElements', null, true); ?><br />
+	<?php echo  GISHelpers::FiltersMenu('PPaciente', 1, 'listFilteredElements', null, true); ?><br />
 </fieldset>
 <fieldset>
 	<legend>Filtro de Paciente - Show</legend>
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1); ?><br />
+	<?php echo  GISHelpers::FiltersMenu('PPaciente', 1); ?><br />
 </fieldset>	
 <fieldset>
 	<legend>Filtro de Paciente - Capa 2 - Show</legend>	
-	<?php echo  GISHelpers::FiltersMenu('Paciente', 1, null, 2); ?><br />		
+	<?php echo  GISHelpers::FiltersMenu('PPaciente', 1, null, 2); ?><br />		
 </fieldset>
 <fieldset>
 	<legend>Resultados</legend>
@@ -41,11 +41,11 @@
 </fieldset>
 <fieldset>
 	<legend>Filtro Distancia Medico/zonas - Paciente/ubicacion</legend>	
-	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'Paciente', 'zonas'); ?><br />
+	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'PPaciente', 'zonas'); ?><br />
 </fieldset>
 <fieldset>
 	<legend>Filtro Distancia Medico/ubicacion - Paciente/ubicacion</legend>	
-	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'Paciente', 'ubicacion'); ?><br />
+	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'PPaciente', 'ubicacion'); ?><br />
 </fieldset>
 
 <fieldset>

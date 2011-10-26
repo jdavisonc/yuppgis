@@ -12,6 +12,11 @@ class Estudio extends GISPersistentObject {
 		$this->addAttribute("nombre", Datatypes::TEXT);
 		$this->addAttribute("fecha", Datatypes::DATETIME);
 		$this->addAttribute("resultado", Datatypes::TEXT);
+		
+		$this->addConstraints("codigo", array(
+			Constraint::nullable(false),
+			Constraint::blank(false)
+		));
 
 		parent :: __construct($args, $isSimpleInstance);
 	}
