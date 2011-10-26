@@ -13,6 +13,11 @@ class Medicacion extends GISPersistentObject {
 		$this->addAttribute("texto", Datatypes::TEXT);
 		$this->addAttribute("inicio", Datatypes::DATETIME);
 		$this->addAttribute("fin", Datatypes::DATETIME);
+		
+		$this->addConstraints("codigo", array(
+			Constraint::nullable(false),
+			Constraint::blank(false)
+		));
 
 		parent :: __construct($args, $isSimpleInstance);
 	}

@@ -6,7 +6,7 @@ class GISQueryTest extends YuppGISTestCase {
 	
 	function testSimpleGISQueryWithoutSelect() {
 		$q = new GISQuery();
-		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 'p');
 		$q->setCondition(Condition::EQ('p', 'nombre', 'Juan'));
 		
 		$pm = PersistentManagerFactory::getManager();
@@ -18,7 +18,7 @@ class GISQueryTest extends YuppGISTestCase {
 	function testSimpleGISQueryWithoutCondition() {
 		$q = new GISQuery();
 		$q->addProjection('p', 'ubicacion', 'ubicacion_de_p');
-		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 'p');
 		
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
@@ -34,7 +34,7 @@ class GISQueryTest extends YuppGISTestCase {
 			->add(Condition::EQ('p', 'nombre', 'Juan'))
 			->add(GISCondition::EQGEO('p', 'ubicacion', new Point(-56.181948, -34.884621)))
 			);
-		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 'p');
 		
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
@@ -50,8 +50,8 @@ class GISQueryTest extends YuppGISTestCase {
 		$q->setCondition(Condition::_AND()
 			->add(GISCondition::EQGEOA('p', 'ubicacion', 't', 'ubicacion'))
 			);
-		$q->addFrom(Paciente::getClassName(), 'p');
-		$q->addFrom(Paciente::getClassName(), 't');
+		$q->addFrom(PPaciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 't');
 		
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
@@ -62,7 +62,7 @@ class GISQueryTest extends YuppGISTestCase {
 	function testGISQueryDistance() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::DISTANCE_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'distancia'));
-		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 'p');
 		  
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
@@ -73,8 +73,8 @@ class GISQueryTest extends YuppGISTestCase {
 	function testGISQueryDistance2() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::DISTANCE('p', 'ubicacion', 't','ubicacion' ,'distancia'));
-		$q->addFrom(Paciente::getClassName(), 'p');
-		$q->addFrom(Paciente::getClassName(), 't');
+		$q->addFrom(PPaciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 't');
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
 		
@@ -84,7 +84,7 @@ class GISQueryTest extends YuppGISTestCase {
 	function testGISQueryArea() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::AREA('p', 'ubicacion', 'area'));
-		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 'p');
 		  
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
@@ -95,7 +95,7 @@ class GISQueryTest extends YuppGISTestCase {
 	function testGISQueryIntersection() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::INTERSECTION_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'intersection'));
-		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 'p');
 		  
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
@@ -106,7 +106,7 @@ class GISQueryTest extends YuppGISTestCase {
 	function testGISQueryUnion() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::UNION_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'union'));
-		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 'p');
 		  
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);
@@ -117,7 +117,7 @@ class GISQueryTest extends YuppGISTestCase {
 	function testGISQueryDifference() {
 		$q = new GISQuery();
 		$q->addFunction(GISFunction::DIFFERENCE_TO('p', 'ubicacion', new Point(-56.181548, -34.884121), 'difference'));
-		$q->addFrom(Paciente::getClassName(), 'p');
+		$q->addFrom(PPaciente::getClassName(), 'p');
 		  
 		$pm = PersistentManagerFactory::getManager();
 		$result = $pm->findByQuery($q);

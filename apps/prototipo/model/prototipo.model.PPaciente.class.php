@@ -2,14 +2,21 @@
 
 YuppLoader::load( "yuppgis.core.persistent", "GISPersistentObject" );
 
-class EMail extends GISPersistentObject {
+class PPaciente extends GISPersistentObject {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
 
-		$this->setWithTable("email");
+		$this->setWithTable("prototipo_paciente");
 
-		$this->addAttribute("email", Datatypes::TEXT);
-		$this->addAttribute("tipo", Datatypes::TEXT);
+		$this->addAttribute("nombre", Datatypes :: TEXT);
+		$this->addAttribute("ubicacion", GISDatatypes :: POINT);
+		$this->addAttribute("linea", GISDatatypes ::LINESTRING);
+
+		// Restricciones
+		$this->addConstraints("nombre", array(
+		Constraint::nullable(false),
+		Constraint::blank(false)
+		));
 
 		parent :: __construct($args, $isSimpleInstance);
 	}
@@ -24,11 +31,26 @@ class EMail extends GISPersistentObject {
 		return GISPersistentObject::findBy($condition, $params);
 	}
 
+	/*Acciones*/
+
+	public static function averageAgeAction(){
+
+	}
+
+	public static function maleAction(){
+
+	}
+
 	public static function get($id) {
 		self :: $thisClass = __CLASS__;
 		return GISPersistentObject :: get($id);
 	}
-	
+
+	public function setNombreWithNotify($value){
+		parent::setNombre($value);
+		$this->notifyObservers(array("method" => "setNombre"));
+	}
+
 }
 
 ?>

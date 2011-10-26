@@ -1,7 +1,7 @@
 <?php
 
 YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
-YuppLoader::load('prototipo.model', 'Paciente');
+YuppLoader::load('prototipo.model', 'PPaciente');
 YuppLoader::load('prototipo.model', 'Street');
 YuppLoader::load('prototipo.model', 'Medico');
 YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
@@ -21,7 +21,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	 * Prueba para probar configuracion de Punto
 	 */
 	public function testAssignPointToPatient() {
-		$paciente = new Paciente();
+		$paciente = new PPaciente();
 		$paciente->setUbicacion(new Point(23, 32));
 
 		$point = $paciente->getUbicacion();
@@ -34,13 +34,13 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$point = new Point(23, 32);
 		$point->setUIProperty(new Icon(0,0,'opa',10,10));
 
-		$paciente = new Paciente();
+		$paciente = new PPaciente();
 		$paciente->setNombre('Ernestino');
 		$paciente->setUbicacion($point);
 		$paciente->save();
 		$paciente->getUbicacion();
 		$this->assert($paciente != null && $paciente->getUbicacion()->getId() != null, 
-			'Test de persistencia de Paciente (id = '.$paciente->getId().') con Punto (id = '.$point->getId().
+			'Test de persistencia de PPaciente (id = '.$paciente->getId().') con Punto (id = '.$point->getId().
 			', X = '.$point->getX().', Y = '.$point->getY().') ');
 		
 		$this->paciente = $paciente;
@@ -54,7 +54,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$this->paciente->save();
 		
 		$this->assert($this->paciente != null && $point->getId() != null, 
-			'Test de actualizacion de Paciente (id = '.$this->paciente->getId().') con Punto (id = '.$point->getId().
+			'Test de actualizacion de PPaciente (id = '.$this->paciente->getId().') con Punto (id = '.$point->getId().
 			', X = '.$point->getX().', Y = '.$point->getY().') ');
 	}
 	
@@ -64,15 +64,15 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		
 		$deleted = false;
 		try {
-			$paciente = Paciente::get($id);
+			$paciente = PPaciente::get($id);
 		} catch (Exception $e) {
 			$deleted = true;
 		}
-		$this->assert($deleted, 'Test de borrado de Paciente');
+		$this->assert($deleted, 'Test de borrado de PPaciente');
 	}
 	
 	function testGetPacienteFromDBWithId() {
-		$p = Paciente::get(1);
+		$p = PPaciente::get(1);
 		$ubi = $p->getUbicacion();
 		$this->assert($ubi !== null, 'Se obtuvo correctamente el paciente con ID=1');
 	}
