@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <app>
   <name>casodeestudio</name>
-  <description></description>
+  <description>Sistema de control de enfermedades.</description>
   <version>0.1</version>
   <langs>es</langs>
   <code></code>
@@ -10,7 +10,7 @@
   <docs></docs>
   <update></update>
   <entry_point>
-    <controller>home</controller>
+    <controller>map</controller>
     <action>index</action>
   </entry_point>
 </app>
