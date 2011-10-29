@@ -10,21 +10,42 @@ YuppLoader::load('casodeestudio.model', 'Estado');
 /**** borrado ****/
 $params = new ArrayObject() ;
 
-$pacientes = Paciente::listAll($params);
-foreach ($pacientes as $paciente){
-	$paciente->delete();
+$maps = Map::listAll($params);
+foreach ($maps as $map){
+
+	//$layers = DataLayer::listAll($params);
+	$layers =$map->getLayers();
+	foreach ($layers as $layer){
+		$map->removeLayer($layer);
+		$map->save();
+	}
+	$map->delete();
 }
 
 $layers = DataLayer::listAll($params);
 foreach ($layers as $layer){
+	$elements = $layer->getElements();
+	foreach ($elements as $element){
+		$layer->removeElement($element);
+
+	}
+	$tags = $layer->getTags();
+	foreach ($tags as $tag){
+		$layer->removeTag($tag);
+	}
+	$layer->save();
 	$layer->delete();
 }
 
-$maps = Map::listAll($params);
-foreach ($maps as $map){
-	$map->delete();
+$tags = Tag::listAll($params);
+foreach ($tags as $tag){
+	$tag->delete();
 }
 
+$pacientes = Paciente::listAll($params);
+foreach ($pacientes as $paciente){
+	$paciente->delete();
+}
 /****  creacion ****/
 
 $map = new Map(array('name' => 'MapaDeEnfermedades'));
@@ -91,7 +112,7 @@ $p1->setDireccion("");
 $p1->setBarrio("Villa Muñoz");
 $p1->setCiudad("Montevideo");
 $p1->setDepartamento("Montevideo");
-$p1->setUbicacion(new Point(-56.181948, -34.884621));
+$p1->setUbicacion(new Point(-56.149921, -34.899518));
 
 // Asociasiones
 /*
@@ -115,7 +136,7 @@ $p2->setDireccion("");
 $p2->setBarrio("Villa Muñoz");
 $p2->setCiudad("Montevideo");
 $p2->setDepartamento("Montevideo");
-$p2->setUbicacion(new Point( -56.181448, -34.883641));
+$p2->setUbicacion(new Point(-56.171122, -34.893182));
 
 // Asociasiones
 /*
@@ -147,9 +168,40 @@ $p3->addToProcedimientos();
 $p3->addToMedicaciones();
 $p3->addToEstudios();*/
 
+
+$p4 = new Paciente();
+
+$p4->setNombre("Pedro");
+$p4->setApellido("Lopez");
+$p4->setSexo("M");
+//$p4->setFechaNacimiento();
+$p4->setTelefono("2 258 45 55");
+$p4->setEmail("plopez@gmail.com");
+
+$p4->setCi("1.256.345-7");
+
+$p4->setDireccion("");
+$p4->setBarrio("Villa Muñoz");
+$p4->setCiudad("Montevideo");
+$p4->setDepartamento("Montevideo");
+$p4->setUbicacion(new Point(-56.181764, -34.884255));
+
+// Asociasiones
+/*
+$p3->addToProcedimientos();
+$p3->addToMedicaciones();
+$p3->addToEstudios();*/
+
+
 $asma->addElement($p1);
 $obesidad->addElement($p2);
 $diabetes->addElement($p3);
+$obesidad->addElement($p4);
+
+$p1->setAsma(Estado::CONTROLADO);
+$p2->setObesidad(Estado::ADVERTENCIA);
+$p3->setDiabetes(Estado::NO_CONTROLADO);
+$p4->setObesidad(Estado::NO_CONTROLADO);
 
 
 // Se guardan
