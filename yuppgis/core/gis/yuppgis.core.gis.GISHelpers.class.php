@@ -77,7 +77,8 @@ class GISHelpers {
 	 */
 	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null, $multiple = false){
 		$appName = YuppContext::getInstance()->getApp();
-
+		$controllerName = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GIS_CONTROLLER);
+		
 		$groupId = $class.'_'.$mapid.'_'.uniqid();
 		$selectId = 'select_'.$groupId;
 		$tbId = 'tbFiltersMenu_'.$groupId;
@@ -109,7 +110,7 @@ class GISHelpers {
 							var text = $("#'.$tbId.'").val();
 							
 							 $.ajax({
-							      url: "/yuppgis/'.$appName.'/Home/Filter",
+							      url: "/yuppgis/'.$appName.'/'.$controllerName.'/Filter",
 							      data: {';
 
 		$script .= '
@@ -153,6 +154,7 @@ class GISHelpers {
 	public static function Map($params=null){
 
 		$appName = YuppContext::getInstance()->getApp();
+		$controllerName = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GIS_CONTROLLER);
 		$id = MapParams::getValueOrDefault($params, MapParams::ID);
 		$olurl = MapParams::getValueOrDefault($params, MapParams::OpenLayerJS_URL);
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
@@ -188,7 +190,7 @@ class GISHelpers {
 		
 		<script type="text/javascript">
 		
-			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'", appName: "'.$appName.'"})
+			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'", appName: "'.$appName.'", controllerName: "'.$controllerName.'"})
 		';			
 
 		foreach ($clickhandlers as $clickhandler){
@@ -289,13 +291,15 @@ class GISHelpers {
 	}
 
 	public static function VisualizationState($mapId){
-
+		$appName = YuppContext::getInstance()->getApp();
+		$controllerName = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GIS_CONTROLLER);
+		
 		$saveMethod = '
 		<script type="text/javascript">
 		function saveVisualizationState_'.$mapId.'(){
 						
 			 $.ajax({
-			      url: "/yuppgis/prototipo/Home/saveVisualization",
+			      url: "/yuppgis/'.$appName.'/'.$controllerName.'/saveVisualization",
 			      type: "POST",
 			      data: {			        
 			        mapId: '.$mapId.',
@@ -313,8 +317,8 @@ class GISHelpers {
 		$html .= '<br />';
 
 		$load_params = array(
-			"app" => "prototipo", 
-			"controller" =>"Home", 
+			"app" => $appName, 
+			"controller" => $controllerName, 
 			"action"=>"loadVisualization",		 	
 			"mapId" => $mapId,			 
 			"body" => "Restaurar",
@@ -341,6 +345,7 @@ class GISHelpers {
 	$classto, $positionto='zonas'){
 
 		$appName = YuppContext::getInstance()->getApp();
+		$controllerName = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GIS_CONTROLLER);
 		$groupId = $classfrom.'_'.$mapid.'_'.uniqid();
 
 		$selectId = 'select_'.$groupId;
@@ -375,7 +380,7 @@ class GISHelpers {
 							var text = $("#'.$tbId.'").val();
 							
 							 $.ajax({
-							      url: "/yuppgis/'.$appName.'/Home/FilterDistance",
+							      url: "/yuppgis/'.$appName.'/'.$controllerName.'/FilterDistance",
 							      data: {
 							        filterValue: selectedOption,
 							        classFrom: "'.$classfrom.'",
