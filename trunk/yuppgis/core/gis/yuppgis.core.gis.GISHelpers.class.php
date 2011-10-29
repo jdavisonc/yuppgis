@@ -76,8 +76,9 @@ class GISHelpers {
 	 * @return html generado para el menú
 	 */
 	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null, $multiple = false){
-		$appName = YuppContext::getInstance()->getApp();
-		$controllerName = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GIS_CONTROLLER);
+		$ctx = YuppContext::getInstance();
+		$appName = $ctx->getApp();
+		$controllerName = strtolower($ctx->getController());
 		
 		$groupId = $class.'_'.$mapid.'_'.uniqid();
 		$selectId = 'select_'.$groupId;
@@ -153,8 +154,10 @@ class GISHelpers {
 	 */
 	public static function Map($params=null){
 
-		$appName = YuppContext::getInstance()->getApp();
-		$controllerName = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GIS_CONTROLLER);
+		$ctx = YuppContext::getInstance();
+		$appName = $ctx->getApp();
+		$controllerName = strtolower($ctx->getController());
+		
 		$id = MapParams::getValueOrDefault($params, MapParams::ID);
 		$olurl = MapParams::getValueOrDefault($params, MapParams::OpenLayerJS_URL);
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
@@ -291,8 +294,9 @@ class GISHelpers {
 	}
 
 	public static function VisualizationState($mapId){
-		$appName = YuppContext::getInstance()->getApp();
-		$controllerName = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GIS_CONTROLLER);
+		$ctx = YuppContext::getInstance();
+		$appName = $ctx->getApp();
+		$controllerName = strtolower($ctx->getController());
 		
 		$saveMethod = '
 		<script type="text/javascript">
@@ -344,8 +348,10 @@ class GISHelpers {
 	$classfrom, $mapid, $handler = null, $fieldName='nombre', $positionfrom='ubicacion',
 	$classto, $positionto='zonas'){
 
-		$appName = YuppContext::getInstance()->getApp();
-		$controllerName = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GIS_CONTROLLER);
+		$ctx = YuppContext::getInstance();
+		$appName = $ctx->getApp();
+		$controllerName = strtolower($ctx->getController());
+		
 		$groupId = $classfrom.'_'.$mapid.'_'.uniqid();
 
 		$selectId = 'select_'.$groupId;

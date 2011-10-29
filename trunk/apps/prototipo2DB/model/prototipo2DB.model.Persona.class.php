@@ -9,6 +9,7 @@ class Persona extends GISPersistentObject {
 		$this->setWithTable("prototipo2DB_persona");
 		$this->addAttribute("nombre", Datatypes :: TEXT);
 		$this->addAttribute("posicion", GISDatatypes :: POINT);
+		$this->addAttribute("posicion2", GISDatatypes :: POINT);
 		
 		// Restricciones
 		$this->addConstraints("nombre", array(

@@ -12,13 +12,11 @@ class YuppGISConfig {
 	const PROP_BASIC_GET_URL = 'basic_get_url';
 	const PROP_BASIC_SAVE_URL = 'basic_save_url';
 	const PROP_BASIC_DELETE_URL = 'basic_delete_url';
-	const PROP_GIS_CONTROLLER = 'gis_controller';
 		
 	// Valores por defecto
 	const DEFAULT_SRID = 32721;
 	const DEFAULT_GISDB = null;
 	const DEFAULT_GOOGLE_MAPS_KEY = 'ABQIAAAA9a4X6TFheB81m4gfqmoVHRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTQ99cJQVFQa1QeiRqp7S_AHD65MQ'; // localhost
-	const DEFAULT_GIS_CONTROLLER = 'Home';
 	
 	const MODE_BASIC = 'basic';
 	const MODE_PREMIUM = 'premium'; 
@@ -54,7 +52,6 @@ class YuppGISConfig {
 		$this->default_values[self::PROP_BASIC_SAVE_URL] = null;
 		$this->default_values[self::PROP_BASIC_DELETE_URL] = null;
 		$this->default_values[self::PROP_BASIC_GISWSDAL_CLASS] = null;
-		$this->default_values[self::PROP_GIS_CONTROLLER] = self::DEFAULT_GIS_CONTROLLER;
 	}
 	
 	public static function generatePath( $appName ) {
@@ -102,7 +99,6 @@ class YuppGISConfig {
 		$this->app_gis_properties[$appName][self::PROP_BASIC_SAVE_URL] = $this->getValue(${self::PROP_BASIC_SAVE_URL}, self::PROP_BASIC_SAVE_URL);
 		$this->app_gis_properties[$appName][self::PROP_BASIC_DELETE_URL] = $this->getValue(${self::PROP_BASIC_DELETE_URL}, self::PROP_BASIC_DELETE_URL);
 		$this->app_gis_properties[$appName][self::PROP_BASIC_GISWSDAL_CLASS] = $this->getValue(${self::PROP_BASIC_GISWSDAL_CLASS}, self::PROP_BASIC_GISWSDAL_CLASS);
-		$this->app_gis_properties[$appName][self::PROP_GIS_CONTROLLER] = $this->getValue(${self::PROP_GIS_CONTROLLER}, self::PROP_GIS_CONTROLLER);
 	}
 	
 	/**

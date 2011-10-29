@@ -16,6 +16,6 @@ $gisdb = array( YuppConfig::MODE_DEV  => array(
 );
 
 $yuppgis_mode = YuppGISConfig::MODE_PREMIUM;
-$gis_controller = 'Map';
+$gis_controller = 'map';
 
 ?>
