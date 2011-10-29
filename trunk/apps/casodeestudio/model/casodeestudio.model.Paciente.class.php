@@ -4,6 +4,9 @@ YuppLoader::load( "yuppgis.core.persistent", "GISPersistentObject" );
 YuppLoader::load('casodeestudio.model', 'Enfermedad');
 YuppLoader::load('casodeestudio.model', 'Estado');
 YuppLoader::load('casodeestudio.model', 'Estudio');
+YuppLoader::load('casodeestudio.model', 'Procedimiento');
+YuppLoader::load('casodeestudio.model', 'Medicacion');
+
 
 class Paciente extends GISPersistentObject {
 
