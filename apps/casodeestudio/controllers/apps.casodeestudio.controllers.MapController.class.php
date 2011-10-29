@@ -19,11 +19,12 @@ class MapController extends GISController {
 		$layer = DataLayer::get($layerId);
 		
 		$layerName = $layer->getName(); // Nombre de la enfermedad
-		$methodName = 'get'. Enfermedad::fromName($layerName);
+		$enfermedad = Enfermedad::fromName($layerName);
+		$methodName = 'get'. ucfirst(Enfermedad::fromName($layerName));
 		
 		// Ya se sabe que van a ser del tipo 'Paciente' y se va a mostrar ubicacion.
 		foreach ($layer->getElements() as $paciente) {
-			$this->setIconoEstado($methodName, $paciente->$methodName(), $paciente->getUbicacion());
+			$this->setIconoEstado($enfermedad, $paciente->$methodName(), $paciente->getUbicacion());
 		}
 
 		return $this->renderString( KMLUtilities::layerToKml($layer));
@@ -31,7 +32,12 @@ class MapController extends GISController {
 	
 	public function setIconoEstado($enfermedad, $estado, $point) {
 		$icon = $point->getUIProperty();
-		$icon->setUrl('/images/'.$enfermedad.'-'.$estado.'.png');
+		$url = '/images/'.$enfermedad.'-'.$estado.'.png';
+		if ($icon) {
+			$icon->setUrl($url);
+		} else {
+			$point->setUIProperty(new Icon(0,0,$url));
+		}
 	}
 	
 
