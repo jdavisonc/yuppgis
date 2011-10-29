@@ -1,6 +1,8 @@
 <?php
 
 YuppLoader::load( "yuppgis.core.persistent", "GISPersistentObject" );
+YuppLoader::load('casodeestudio.model', 'Enfermedad');
+YuppLoader::load('casodeestudio.model', 'Estado');
 
 class Paciente extends GISPersistentObject {
 
@@ -26,6 +28,18 @@ class Paciente extends GISPersistentObject {
 		$this->addAttribute("ciudad", Datatypes::TEXT);
 		$this->addAttribute("departamento", Datatypes::TEXT);
 		$this->addAttribute("ubicacion", GISDatatypes::POINT);
+		
+		// Enfermedades
+		$this->addAttribute(Enfermedad::ASMA, Datatypes::TEXT);
+		$this->addAttribute(Enfermedad::DIABETES, Datatypes::TEXT);
+		$this->addAttribute(Enfermedad::HIPERTENCION, Datatypes::TEXT);
+		$this->addAttribute(Enfermedad::INSUFICIENCIA_RENAL, Datatypes::TEXT);
+		$this->addAttribute(Enfermedad::OBESIDAD, Datatypes::TEXT);
+		
+		// Asociasiones
+		$this->addHasMany("procedimientos", Procedimiento::getClassName());
+		$this->addHasMany("medicaciones", Medicacion::getClassName());
+		$this->addHasMany("estudios", Estudio::getClassName());
 
 		$this->addConstraints("ci", array(
 			Constraint::nullable(false),
@@ -36,6 +50,21 @@ class Paciente extends GISPersistentObject {
 		));
 		$this->addConstraints("sexo", array(
 			Constraint::inList(array('M', 'F'))
+		));
+		$this->addConstraints(Enfermedad::ASMA, array(
+			Constraint::inList(Estado::getEstados())
+		));
+		$this->addConstraints(Enfermedad::DIABETES, array(
+			Constraint::inList(Estado::getEstados())
+		));
+		$this->addConstraints(Enfermedad::HIPERTENCION, array(
+			Constraint::inList(Estado::getEstados())
+		));
+		$this->addConstraints(Enfermedad::INSUFICIENCIA_RENAL, array(
+			Constraint::inList(Estado::getEstados())
+		));
+		$this->addConstraints(Enfermedad::OBESIDAD, array(
+			Constraint::inList(Estado::getEstados())
 		));
 
 		parent :: __construct($args, $isSimpleInstance);
