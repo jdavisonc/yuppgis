@@ -23,6 +23,21 @@ class Enfermedad {
 		}
 	}
 	
+	public static function fromName($name) {
+			switch ($name) {
+			case "Diabetes":
+				return self::DIABETES;
+			case "Asma":
+				return self::ASMA;
+			case "Obesidad":
+				return self::OBESIDAD;
+			case "Hipertencion Arterial":
+				return self::HIPERTENCION;
+			case "Insuficiencia Renal":
+				return self::INSUFICIENCIA_RENAL;
+		}
+	}
+	
 }
 
 ?>
