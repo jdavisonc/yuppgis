@@ -3,7 +3,7 @@
 YuppLoader::load( "yuppgis.core.persistent", "GISPersistentObject" );
 YuppLoader::load( "yuppgis.core.basic", "Observer" );
 
-class Medico extends GISPersistentObject implements Observer {
+class MMedico extends GISPersistentObject implements Observer {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
 

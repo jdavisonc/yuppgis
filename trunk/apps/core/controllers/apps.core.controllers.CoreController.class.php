@@ -78,23 +78,27 @@ class CoreController extends YuppController {
          {
             $fileInfo = $fn->getFileNameInfo($classFileName);
             $className = $fileInfo['name'];
-            
+
             // Para incluir las clases (por si no estan incluidas)
             // Ticket: http://code.google.com/p/yupp/issues/detail?id=71
             YuppLoader::load($fileInfo['package'], $className);
+            $ins = new $className();
             
-            array_push($appModelClasses[$appName], $manager->tableExists( $className )); 
-			
-         	if ($allTablesCreated) {
-				foreach (array_keys($appModelClasses[$appName][$idxApp]) as $key) {
-					$allTablesCreated = $appModelClasses[$appName][$idxApp][$key]['created'] == "CREADA";
-					if (!$allTablesCreated) {
-						break;
-					}
-      			}
-			}
+            if (is_subclass_of($ins, 'PersistentObject')) {
             
-            $idxApp++;
+	            array_push($appModelClasses[$appName], $manager->tableExists( $className )); 
+				
+	         	if ($allTablesCreated) {
+					foreach (array_keys($appModelClasses[$appName][$idxApp]) as $key) {
+						$allTablesCreated = $appModelClasses[$appName][$idxApp][$key]['created'] == "CREADA";
+						if (!$allTablesCreated) {
+							break;
+						}
+	      			}
+				}
+	            
+	            $idxApp++;
+            }
          }
          
       }

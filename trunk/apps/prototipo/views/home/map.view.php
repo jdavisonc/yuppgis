@@ -41,11 +41,11 @@
 </fieldset>
 <fieldset>
 	<legend>Filtro Distancia Medico/zonas - Paciente/ubicacion</legend>	
-	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'PPaciente', 'zonas'); ?><br />
+	<?php echo  GISHelpers::DistanceFilterMenu('MMedico', 1, null, 'nombre','ubicacion', 'PPaciente', 'zonas'); ?><br />
 </fieldset>
 <fieldset>
 	<legend>Filtro Distancia Medico/ubicacion - Paciente/ubicacion</legend>	
-	<?php echo  GISHelpers::DistanceFilterMenu('Medico', 1, null, 'nombre','ubicacion', 'PPaciente', 'ubicacion'); ?><br />
+	<?php echo  GISHelpers::DistanceFilterMenu('MMedico', 1, null, 'nombre','ubicacion', 'PPaciente', 'ubicacion'); ?><br />
 </fieldset>
 
 <fieldset>

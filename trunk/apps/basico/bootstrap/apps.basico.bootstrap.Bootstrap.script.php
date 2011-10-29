@@ -3,7 +3,7 @@
 YuppLoader::load('yuppgis.core.basic', 'Map');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 YuppLoader::load('yuppgis.core.basic', 'Tag');
-YuppLoader::load('basico.model', 'Hospital');
+YuppLoader::load('basico.model', 'HHospital');
 
 /*Borro toda la data preexistente*/
 
@@ -39,7 +39,7 @@ foreach ($tags as $tag){
 	$tag->delete();
 }
 
-$hospitales = Hospital::listAll($params);
+$hospitales = HHospital::listAll($params);
 foreach ($hospitales as $hospital){
 	$hospital->delete();
 }
@@ -49,10 +49,10 @@ $map = new Map(array('name' => 'MapaHospitales'));
 
 $layer1 = new DataLayer();
 $layer1->setName('Hospitales');
-$layer1->setClassType('Hospital');
+$layer1->setClassType('HHospital');
 
-$h1 = new Hospital();
-$h1->setNombre('Hospital Maciel');
+$h1 = new HHospital();
+$h1->setNombre('HHospital Maciel');
 $p = new Point(10, 10);
 $p->setId(1); // Primer resultado
 $h1->setUbicacion($p);

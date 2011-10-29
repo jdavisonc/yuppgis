@@ -2,7 +2,7 @@
 
 YuppLoader::load('yuppgis.core.mvc', 'GISController');
 YuppLoader::load('prototipo.model', 'PPaciente');
-YuppLoader::load('prototipo.model', 'Medico');
+YuppLoader::load('prototipo.model', 'MMedico');
 
 class HomeController extends GISController {
 
