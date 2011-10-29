@@ -1,7 +1,7 @@
 <?php YuppLoader::load('casodeestudio.model', 'Paciente'); ?>
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'main')) ; ?>
+<?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min')) ; ?>
 
-<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
     <style type="text/css">
       body {
         padding-top: 60px;
