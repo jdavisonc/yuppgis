@@ -2,33 +2,38 @@
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'main')) ; ?>
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min')) ; ?>
 
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-      }
-    </style>
+<style>
+body {
+	padding-top: 60px;
+}
+</style>
 
-
-    <div class="topbar">
-      <div class="topbar-inner">
-        <div class="container-fluid">
-          <a class="brand" href="#">Salud Digital</a>
-          <ul class="nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-          <p class="pull-right">Logged in as <a href="#">username</a></p>
-        </div>
-      </div>
-    </div>
+	<div class="topbar">
+		<div class="topbar-inner">
+			<div class="container-fluid">
+				<a class="brand" href="#">Salud Digital</a>
+				<ul class="nav">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+				<p class="pull-right">
+					Logged in as <a href="#">username</a>
+				</p>
+			</div>
+		</div>
+	</div>
 
     <div class="container-fluid">
       <div class="sidebar">
         <div class="well">
           <h5>Sidebar</h5>
           <ul>
-            <li><a href="#">Link</a></li>
+            <li><?php echo Helpers::link( array(
+								"app"        => "casodeestudio",
+                                "controller" => "paciente",
+                                "action"     => "add",
+                                "body"       => "Agregar Paciente") ); ?></li>
             <li><a href="#">Link</a></li>
             <li><a href="#">Link</a></li>
             <li><a href="#">Link</a></li>
