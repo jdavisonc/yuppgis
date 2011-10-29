@@ -3,7 +3,7 @@
 YuppLoader::load('yuppgis.core.testing', 'YuppGISTestCase');
 YuppLoader::load('prototipo.model', 'PPaciente');
 YuppLoader::load('prototipo.model', 'Street');
-YuppLoader::load('prototipo.model', 'Medico');
+YuppLoader::load('prototipo.model', 'MMedico');
 YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 YuppLoader::load('yuppgis.core.basic.ui', 'Icon');
 
@@ -107,8 +107,8 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	}
 	
 	function testSaveMedico() {
-		$s = new Medico();
-		$s->setNombre('Medico Test');
+		$s = new MMedico();
+		$s->setNombre('MMedico Test');
 		
 		$puntos = array ( new Point(23, 32), new Point(32, 82), new Point(83, 99), new Point(99, 108), new Point(23, 32));
 		$line = new LineString($puntos);
@@ -123,7 +123,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 	
 	function testGetMedico() {
 		$id = $this->medico->getId();
-		$p = Medico::get($id);
+		$p = MMedico::get($id);
 		$line = $p->getZonas();
 		$this->assert($p !== null, 'Se obtuvo correctamente el medico con ID = '. $id);
 
@@ -134,7 +134,7 @@ class GISPersistentObjectTest extends YuppGISTestCase {
 		$this->medico->delete();
 		
 		//TODO
-		$this->assert(0 == 0, 'Test de borrado de Medico');
+		$this->assert(0 == 0, 'Test de borrado de MMedico');
 	}
 }
 

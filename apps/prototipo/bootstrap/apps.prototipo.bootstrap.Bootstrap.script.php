@@ -4,7 +4,7 @@ YuppLoader::load('yuppgis.core.basic', 'Map');
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 YuppLoader::load('yuppgis.core.basic', 'Tag');
 YuppLoader::load('prototipo.model', 'PPaciente');
-YuppLoader::load('prototipo.model', 'Medico');
+YuppLoader::load('prototipo.model', 'MMedico');
 
 
 /*Borro toda la data preexistente*/
@@ -53,7 +53,7 @@ foreach ($pacientes as $paciente){
 	$paciente->delete();
 }
 
-$medicos = Medico::listAll($params);
+$medicos = MMedico::listAll($params);
 foreach ($medicos as $medico){
 	$medico->delete();
 }
@@ -84,7 +84,7 @@ $layer3->setDefaultUIProperty(new Icon(0, 0, '/images/hospital-building.png'));
 
 $layer4 = new DataLayer();
 $layer4->setName('Medicos');
-$layer4->setClassType('Medico');
+$layer4->setClassType('MMedico');
 $layer4->setAttributes(array('zonas', 'ubicacion'));
 $layer4->setDefaultUIProperty(new Icon(0, 0, '/images/medicine.png'));
 
@@ -185,8 +185,8 @@ $layer2->save();
 
 $layer3->save();
 
-$m1 = new Medico();
-$m1->setNombre('Medico 1');
+$m1 = new MMedico();
+$m1->setNombre('MMedico 1');
 
 $puntos = array ( new Point(-56.17438, -34.88619), new Point(-56.181548, -34.882521), new Point(-56.181948, -34.880621), new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619));
 $line = new LineString($puntos);
@@ -204,14 +204,14 @@ $m1->save();
 $layer4->addElement($m1);
 
 
-/*Seteo icono a Medico*/
+/*Seteo icono a MMedico*/
 $icono = new Icon();
 $icono->setUrl('/images/medicine.png');
 $icono->setHeight(4);
 $icono->setWidth(5);
 
-$m2 = new Medico();
-$m2->setNombre('Medico 2');
+$m2 = new MMedico();
+$m2->setNombre('MMedico 2');
 $ubicacion = new Point(-56.17438, -34.88619);
 $ubicacion->setUIProperty($icono);
 $m2->setUbicacion($ubicacion);

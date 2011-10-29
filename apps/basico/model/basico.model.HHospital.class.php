@@ -2,7 +2,7 @@
 
 YuppLoader::load( 'yuppgis.core.persistent', 'GISPersistentObject' );
 
-class Hospital extends GISPersistentObject {
+class HHospital extends GISPersistentObject {
 	
 	function __construct($args = array (), $isSimpleInstance = false) {
 		

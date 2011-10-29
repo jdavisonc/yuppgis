@@ -1,7 +1,7 @@
 <?php
 
 YuppLoader::load('yuppgis.core.mvc', 'GISController');
-YuppLoader::load('basico.model', 'Hospital');
+YuppLoader::load('basico.model', 'HHospital');
 
 class HomeController extends GISController {
 
