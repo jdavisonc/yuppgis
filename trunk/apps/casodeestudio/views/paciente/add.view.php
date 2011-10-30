@@ -45,7 +45,6 @@ body {
 			  </div>
 			  <div class="row">
 			    <div class="span12">
-
 		          	<form>
 		          		<fieldset>
 							<div class="clearfix">
