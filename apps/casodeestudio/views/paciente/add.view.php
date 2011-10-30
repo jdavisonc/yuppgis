@@ -90,7 +90,9 @@ body {
 					             <?php echo DisplayHelper::text('email', ''); ?>
 					           </div>
 					        </div>
-							
+							<div class="actions">
+								<input type="submit" class="btn primary" value="Crear">&nbsp;<button type="reset" class="btn">Cancel</button>
+							</div>
 		          		</fieldset>
 		          	</form>
 		        </div>
