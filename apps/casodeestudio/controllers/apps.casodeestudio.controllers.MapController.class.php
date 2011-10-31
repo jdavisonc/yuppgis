@@ -40,6 +40,22 @@ class MapController extends GISController {
 		}
 	}
 	
+	public function detailsAction() {
+		$element = Paciente::get($this->params['elementId']); 
+		$q = new GISQuery();
+		$q->addProjection('p', 'nombre');
+		$q->addProjection('p', 'apellido');
+		$q->addProjection('p', 'ubicacion', 'u');
+		$q->setCondition(
+			GISCondition::EQGEO('p', 'ubicacion', $element->getUbicacion())
+			);
+		$q->addFrom(Paciente::getClassName(), 'p');
+		
+		$pm = PersistentManagerFactory::getManager();
+		$this->params['attrs'] = $pm->findByQuery($q); // Se envian datos adicionales para desplegar el template
+		
+		return parent::detailsAction();
+	}
 
 }
 

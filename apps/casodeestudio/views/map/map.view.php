@@ -11,10 +11,30 @@ body {
 	<div class="topbar">
 		<div class="topbar-inner">
 			<div class="container-fluid">
-				<a class="brand" href="#">Salud Digital</a>
+				<?php echo Helpers::link( array(
+								"app"        => "casodeestudio",
+                                "controller" => "map",
+                                "action"     => "map",
+                                "body"       => "Salud Digital",
+								"attrs"		 => array ("class"=>"brand")) ); ?>
+								<!-- logo -->
+				<?php echo h('img', array(
+                  'app'=>'casodeestudio', 
+                  'src'=>'app_64.png', 
+                  'w'=>'32', 
+                  'h'=>'32', 
+                  'text'=>'logo' )); ?>
 				<ul class="nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#about">About</a></li>
+					<li class="active"><?php echo Helpers::link( array(
+								"app"        => "casodeestudio",
+                                "controller" => "map",
+                                "action"     => "map",
+                                "body"       => "Home") ); ?></li>
+					<li><?php echo Helpers::link( array(
+								"app"        => "casodeestudio",
+                                "controller" => "paciente",
+                                "action"     => "add",
+                                "body"       => "Paciente") ); ?></li>
 					<li><a href="#contact">Contact</a></li>
 				</ul>
 				<p class="pull-right">
@@ -27,17 +47,10 @@ body {
     <div class="container-fluid">
       <div class="sidebar">
         <div class="well">
-          <h5>Sidebar</h5>
-          <ul>
-            <li><?php echo Helpers::link( array(
-								"app"        => "casodeestudio",
-                                "controller" => "paciente",
-                                "action"     => "add",
-                                "body"       => "Agregar Paciente") ); ?></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-          </ul>
+          <h5>Enfermedades</h5>
+          <div class="maplayers">
+          	<?php echo GISHelpers::MapLayers(array(MapParams::ID => 1)); ?>
+          </div>
         </div>
       </div>
       <div class="content">

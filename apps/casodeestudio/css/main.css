@@ -1,3 +1,9 @@
 @CHARSET "UTF-8";
 
+.maplayers {
+	text-align: left;
+}
 
+.maplayers ul {
+	margin: 0px;
+}

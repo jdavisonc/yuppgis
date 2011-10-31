@@ -54,35 +54,35 @@ $diabetes = new DataLayer();
 $diabetes->setName(Enfermedad::getName(Enfermedad::DIABETES));
 $diabetes->setClassType('Paciente');
 $diabetes->setAttributes(array('ubicacion'));
-$diabetes->setDefaultUIProperty(new Icon(0, 0, '/images/aed-2.png'));
+$diabetes->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::DIABETES.'.png'));
 $diabetes->save();
 
 $hipertencion = new DataLayer();
 $hipertencion->setName(Enfermedad::getName(Enfermedad::HIPERTENCION));
 $hipertencion->setClassType('Paciente');
 $hipertencion->setAttributes(array('ubicacion'));
-$hipertencion->setDefaultUIProperty(new Icon(0, 0, '/images/aed-2.png'));
+$hipertencion->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::HIPERTENCION.'.png'));
 $hipertencion->save();
 
 $obesidad = new DataLayer();
 $obesidad->setName(Enfermedad::getName(Enfermedad::OBESIDAD));
 $obesidad->setClassType('Paciente');
 $obesidad->setAttributes(array('ubicacion'));
-$obesidad->setDefaultUIProperty(new Icon(0, 0, '/images/aed-2.png'));
+$obesidad->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::OBESIDAD.'.png'));
 $obesidad->save();
 
 $asma = new DataLayer();
 $asma->setName(Enfermedad::getName(Enfermedad::ASMA));
 $asma->setClassType('Paciente');
 $asma->setAttributes(array('ubicacion'));
-$asma->setDefaultUIProperty(new Icon(0, 0, '/images/aed-2.png'));
+$asma->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::ASMA.'.png'));
 $asma->save();
 
 $insuficiencia = new DataLayer();
 $insuficiencia->setName(Enfermedad::getName(Enfermedad::INSUFICIENCIA_RENAL));
 $insuficiencia->setClassType('Paciente');
 $insuficiencia->setAttributes(array('ubicacion'));
-$insuficiencia->setDefaultUIProperty(new Icon(0, 0, '/images/aed-2.png'));
+$insuficiencia->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::INSUFICIENCIA_RENAL.'.png'));
 $insuficiencia->save();
 
 $map->addLayer($diabetes);

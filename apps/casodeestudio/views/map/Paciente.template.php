@@ -1,25 +1,12 @@
+<?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min')) ; ?>
 
- <?php  
- 
-	$element = Paciente::get($elementId); 
-	$q = new GISQuery();
-	$q->addProjection('p', 'nombre');
-	$q->addProjection('p', 'apellido');
-	$q->addProjection('p', 'ubicacion', 'u');
-	$q->setCondition(
-		GISCondition::EQGEO('p', 'ubicacion', $element->getUbicacion())
-		);
-	$q->addFrom(Paciente::getClassName(), 'p');
-	
-	$pm = PersistentManagerFactory::getManager();
-	$result = $pm->findByQuery($q); 
-?>
- 
- Integrantes: 
- 
+<h4>Integrantes</h4>
+<div style="width: 160px; font-size: 9px">
+<table class="zebra-striped">
   <?php 
-    echo "<br>";
-  	foreach ($result as $p) {
-  		echo $p['nombre'] . " - "	. $p['apellido'] . "<br>";
+  	foreach ($attrs as $p) {
+  		echo '<tr><td>'.$p['nombre']." ".$p['apellido']."</td></tr>";
   	}
-  	 ?> 
+  	 ?>
+</table> 
+</div>
