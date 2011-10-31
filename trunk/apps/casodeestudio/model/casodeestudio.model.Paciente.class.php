@@ -78,6 +78,11 @@ class Paciente extends GISPersistentObject {
 		self :: $thisClass = __CLASS__;
 		return GISPersistentObject::listAll($params);
 	}
+	
+	public static function count() {
+		self :: $thisClass = __CLASS__;
+		return GISPersistentObject::count();
+	}
 
 	public static function findBy(Condition $condition, ArrayObject $params) {
 		self :: $thisClass = __CLASS__;

@@ -39,8 +39,8 @@ body {
 					<li class="active"><?php echo Helpers::link( array(
 								"app"        => "casodeestudio",
                                 "controller" => "paciente",
-                                "action"     => "add",
-                                "body"       => "Paciente") ); ?></li>
+                                "action"     => "list",
+                                "body"       => "Pacientes") ); ?></li>
 					<li><a href="#contact">Contact</a></li>
 				</ul>
 				<p class="pull-right">
