@@ -36,6 +36,17 @@ class PacienteController extends GISController {
 		}
 		return ;
 	}
+	
+	public function listAction() {
+		$this->params['list']  = Paciente::listAll($this->params);
+		return ;
+	}
+	
+	public function infoAction() {
+		$id = $this->params['id'];
+		$this->params['paciente'] = Paciente::get($id);
+		return ;
+	}
 
 }
 

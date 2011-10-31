@@ -1,6 +1,15 @@
-<?php YuppLoader::load('casodeestudio.model', 'Paciente'); ?>
-<?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'main')) ; ?>
-<?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min')) ; ?>
+<?php
+
+YuppLoader::load('casodeestudio.model', 'Paciente');
+$m = Model::getInstance();
+$paciente = $m->get('paciente');
+
+echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min'));
+echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-docs'));
+echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-prettify'));
+echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'main'));
+
+?>
 
 <style>
 body {
@@ -17,7 +26,7 @@ body {
                                 "action"     => "map",
                                 "body"       => "Salud Digital",
 								"attrs"		 => array ("class"=>"brand")) ); ?>
-								<!-- logo -->
+				<!-- logo -->
 				<?php echo h('img', array(
                   'app'=>'casodeestudio', 
                   'src'=>'app_64.png', 
@@ -25,12 +34,12 @@ body {
                   'h'=>'32', 
                   'text'=>'logo' )); ?>
 				<ul class="nav">
-					<li class="active"><?php echo Helpers::link( array(
+					<li><?php echo Helpers::link( array(
 								"app"        => "casodeestudio",
                                 "controller" => "map",
                                 "action"     => "map",
                                 "body"       => "Home") ); ?></li>
-					<li><?php echo Helpers::link( array(
+					<li class="active"><?php echo Helpers::link( array(
 								"app"        => "casodeestudio",
                                 "controller" => "paciente",
                                 "action"     => "list",
@@ -46,26 +55,28 @@ body {
 
     <div class="container-fluid">
       <div class="sidebar">
-        <div class="well">
-          <h5>Enfermedades</h5>
-          <div class="maplayers">
-          	<?php echo GISHelpers::MapLayers(array(MapParams::ID => 1)); ?>
-          </div>
-        </div>
+         <div align="right">
+          <?php echo h('img', array(
+                  'app'=>'casodeestudio', 
+                  'src'=>'app_64.png', 
+                  'w'=>'64', 
+                  'h'=>'64', 
+                  'text'=>'logo' )); ?>
+         </div>
       </div>
       <div class="content">
-        <!-- Main hero unit for a primary marketing message or call to action -->
-        <div class="hero-unit">
-          <p>
-          	<?php echo GISHelpers::Map(array(
-				MapParams::ID => 1,
-				MapParams::HEIGHT => 400,
-				MapParams::WIDTH => 850,
-				MapParams::TYPE => "google"
-				
-			)); ?>
-          </p>
-        </div>
+			  <div class="page-header">
+			    <h3>Paciente</h3>
+			  </div>
+			  <div class="row">
+			    <div class="span16">
+			    	<div class="row show-grid">
+					    <div class="span-one-third">Nombre</div>
+						<div class="span-two-thirds"><?php echo $paciente->getNombre(); ?></div>
+					</div>
+		        </div>
+		     </div>
+		  
 
         <footer>
           <p>&copy; YuppGIS 2011</p>

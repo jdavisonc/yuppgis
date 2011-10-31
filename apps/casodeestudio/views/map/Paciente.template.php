@@ -5,7 +5,7 @@
 <table class="zebra-striped">
   <?php 
   	foreach ($attrs as $p) {
-  		echo '<tr><td>'.$p['nombre']." ".$p['apellido']."</td></tr>";
+  		echo '<tr><td></td><td>'.$p['nombre']." ".$p['apellido']."</td></tr>";
   	}
   	 ?>
 </table> 
