@@ -10,6 +10,11 @@ class Estado {
 		return array(self::CONTROLADO, self::NO_CONTROLADO, self::ADVERTENCIA, '');
 	}
 	
+	public static function getEstadosView() {
+		return array(self::CONTROLADO => self::CONTROLADO, self::NO_CONTROLADO => self::NO_CONTROLADO, 
+				self::ADVERTENCIA => self::ADVERTENCIA, '' => '');
+	}
+	
 }
 
 ?>

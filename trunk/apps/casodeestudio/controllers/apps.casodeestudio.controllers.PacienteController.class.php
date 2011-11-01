@@ -47,6 +47,75 @@ class PacienteController extends GISController {
 		$this->params['paciente'] = Paciente::get($id);
 		return ;
 	}
+	
+	public function editEnfAction() {
+		$id = $this->params['id'];
+		$paciente = Paciente::get($id);
+		
+		if (isset($this->params['edited'])) {
+			$paciente->aSet(Enfermedad::ASMA, $this->params[Enfermedad::ASMA]);
+			$paciente->aSet(Enfermedad::DIABETES, $this->params[Enfermedad::DIABETES]);
+			$paciente->aSet(Enfermedad::HIPERTENCION, $this->params[Enfermedad::HIPERTENCION]);
+			$paciente->aSet(Enfermedad::INSUFICIENCIA_RENAL, $this->params[Enfermedad::INSUFICIENCIA_RENAL]);
+			$paciente->aSet(Enfermedad::OBESIDAD, $this->params[Enfermedad::OBESIDAD]);
+			
+			// se editan las enfermedades como capas
+			$this->editEnfermedades($paciente);
+			
+			if ($paciente->save()) {
+				return $this->redirect(array ("action" => "info", "params" => array("id" => $id)));
+			} else {
+				$this->params['error'] = $p;
+			}
+		} else {
+			$this->params['paciente'] = $paciente;
+		}
+		return ;
+	}
+	
+	/**
+	 * Se sabe el ID por el orden en que inserto el bootstrap las enfermedades
+	 * @param unknown_type $paciente
+	 */
+	private function editEnfermedades($paciente) {
+		if ($paciente->aGet(Enfermedad::ASMA)) {
+			$this->addToEnfermedad(1, $paciente);
+		} else {
+			$this->deleteOfEnfermedad(1, $paciente);
+		}
+		if ($paciente->aGet(Enfermedad::DIABETES)) {
+			$this->addToEnfermedad(2, $paciente);
+		} else {
+			$this->deleteOfEnfermedad(2, $paciente);
+		}
+		if ($paciente->aGet(Enfermedad::HIPERTENCION)) {
+			$this->addToEnfermedad(3, $paciente);
+		} else {
+			$this->deleteOfEnfermedad(3, $paciente);
+		}
+		if ($paciente->aGet(Enfermedad::HIPERTENCION)) {
+			$this->addToEnfermedad(4, $paciente);
+		} else {
+			$this->deleteOfEnfermedad(4, $paciente);
+		}
+		if ($paciente->aGet(Enfermedad::OBESIDAD)) {
+			$this->addToEnfermedad(5, $paciente);
+		} else {
+			$this->deleteOfEnfermedad(5, $paciente);
+		}
+	}
+	
+	private function addToEnfermedad($id, $paciente) {
+		$dl = DataLayer::get($id);
+		$dl->addElement($paciente);
+		$dl->save();
+	}
+	
+	private function deleteOfEnfermedad($id, $paciente) {
+		$dl = DataLayer::get($id);
+		$dl->removeElement($paciente);
+		$dl->save();
+	}
 
 }
 
