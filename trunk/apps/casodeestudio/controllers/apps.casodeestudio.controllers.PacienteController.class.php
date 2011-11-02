@@ -53,14 +53,18 @@ class PacienteController extends GISController {
 		$paciente = Paciente::get($id);
 		
 		if (isset($this->params['edited'])) {
-			$paciente->aSet(Enfermedad::ASMA, $this->params[Enfermedad::ASMA]);
-			$paciente->aSet(Enfermedad::DIABETES, $this->params[Enfermedad::DIABETES]);
-			$paciente->aSet(Enfermedad::HIPERTENCION, $this->params[Enfermedad::HIPERTENCION]);
-			$paciente->aSet(Enfermedad::INSUFICIENCIA_RENAL, $this->params[Enfermedad::INSUFICIENCIA_RENAL]);
-			$paciente->aSet(Enfermedad::OBESIDAD, $this->params[Enfermedad::OBESIDAD]);
 			
-			// se editan las enfermedades como capas
-			$this->editEnfermedades($paciente);
+			$asma = $this->params[Enfermedad::ASMA];
+			$diabetes = $this->params[Enfermedad::DIABETES];
+			$hipertencion = $this->params[Enfermedad::HIPERTENCION];
+			$insuficiencia_renal = $this->params[Enfermedad::INSUFICIENCIA_RENAL];
+			$obesidad = $this->params[Enfermedad::OBESIDAD];
+			
+			$this->changeEnfermedadOnPaciente($paciente, $asma, Enfermedad::ASMA);
+			$this->changeEnfermedadOnPaciente($paciente, $diabetes, Enfermedad::DIABETES);
+			$this->changeEnfermedadOnPaciente($paciente, $hipertencion, Enfermedad::HIPERTENCION);
+			$this->changeEnfermedadOnPaciente($paciente, $insuficiencia_renal, Enfermedad::INSUFICIENCIA_RENAL);
+			$this->changeEnfermedadOnPaciente($paciente, $obesidad, Enfermedad::OBESIDAD);
 			
 			if ($paciente->save()) {
 				return $this->redirect(array ("action" => "info", "params" => array("id" => $id)));
@@ -73,45 +77,27 @@ class PacienteController extends GISController {
 		return ;
 	}
 	
-	/**
-	 * Se sabe el ID por el orden en que inserto el bootstrap las enfermedades
-	 * @param unknown_type $paciente
-	 */
-	private function editEnfermedades($paciente) {
-		if ($paciente->aGet(Enfermedad::ASMA)) {
-			$this->addToEnfermedad(1, $paciente);
-		} else {
-			$this->deleteOfEnfermedad(1, $paciente);
-		}
-		if ($paciente->aGet(Enfermedad::DIABETES)) {
-			$this->addToEnfermedad(2, $paciente);
-		} else {
-			$this->deleteOfEnfermedad(2, $paciente);
-		}
-		if ($paciente->aGet(Enfermedad::HIPERTENCION)) {
-			$this->addToEnfermedad(3, $paciente);
-		} else {
-			$this->deleteOfEnfermedad(3, $paciente);
-		}
-		if ($paciente->aGet(Enfermedad::HIPERTENCION)) {
-			$this->addToEnfermedad(4, $paciente);
-		} else {
-			$this->deleteOfEnfermedad(4, $paciente);
-		}
-		if ($paciente->aGet(Enfermedad::OBESIDAD)) {
-			$this->addToEnfermedad(5, $paciente);
-		} else {
-			$this->deleteOfEnfermedad(5, $paciente);
+
+	private function changeEnfermedadOnPaciente($paciente, $nuevoValor, $enfermedad) {
+		if ($paciente->aGet($enfermedad) != $nuevoValor) {
+			$paciente->aSet($enfermedad, $nuevoValor);
+			if ($nuevoValor != '') { // Falta verificar que ya no este en esa capa
+				$this->addToEnfermedad($enfermedad, $paciente);
+			} else {
+				$this->deleteOfEnfermedad($enfermedad, $paciente);
+			}
 		}
 	}
 	
-	private function addToEnfermedad($id, $paciente) {
+	private function addToEnfermedad($enfermedad, $paciente) {
+		$id = Enfermedad::getLayerIdForEnfermedad($enfermedad);
 		$dl = DataLayer::get($id);
 		$dl->addElement($paciente);
 		$dl->save();
 	}
 	
-	private function deleteOfEnfermedad($id, $paciente) {
+	private function deleteOfEnfermedad($enfermedad, $paciente) {
+		$id = Enfermedad::getLayerIdForEnfermedad($enfermedad);
 		$dl = DataLayer::get($id);
 		$dl->removeElement($paciente);
 		$dl->save();
