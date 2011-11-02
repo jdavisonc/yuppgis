@@ -43,6 +43,7 @@ class MapController extends GISController {
 	public function detailsAction() {
 		$element = Paciente::get($this->params['elementId']); 
 		$q = new GISQuery();
+		$q->addProjection('p', 'id');
 		$q->addProjection('p', 'nombre');
 		$q->addProjection('p', 'apellido');
 		$q->addProjection('p', 'ubicacion', 'u');

@@ -2,11 +2,11 @@
 
 class Enfermedad {
 	
+	const ASMA = 'asma';
 	const DIABETES = 'diabetes';
 	const HIPERTENCION = 'hipertencion';
-	const OBESIDAD = 'obesidad';
-	const ASMA = 'asma';
 	const INSUFICIENCIA_RENAL = 'insuficiencia_renal';
+	const OBESIDAD = 'obesidad';
 	
 	public static function getName($enfermedad) {
 		switch ($enfermedad) {
@@ -24,7 +24,7 @@ class Enfermedad {
 	}
 	
 	public static function fromName($name) {
-			switch ($name) {
+		switch ($name) {
 			case "Diabetes":
 				return self::DIABETES;
 			case "Asma":
@@ -38,6 +38,18 @@ class Enfermedad {
 		}
 	}
 	
+	public static function getEnfermedades() {
+		return array(self::ASMA, self::DIABETES, self::HIPERTENCION, self::INSUFICIENCIA_RENAL, self::OBESIDAD);
+	}
+	
+	public static function getLayerIdForEnfermedad($enfermedad) {
+		$finded = array_keys(self::getEnfermedades(), $enfermedad);
+		if ($finded) {
+			return $finded[0] + 1; // Mas uno porque el indice comienza en 0
+		} else {
+			throw new Exception("No se encontro enfermedad");
+		}
+	}
 }
 
 ?>

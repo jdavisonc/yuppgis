@@ -55,50 +55,17 @@ foreach ($medicos as $medico){
 /****  creacion ****/
 
 $map = new Map(array('name' => 'MapaDeEnfermedades'));
-
-$asma = new DataLayer();
-$asma->setName(Enfermedad::getName(Enfermedad::ASMA));
-$asma->setClassType('Paciente');
-$asma->setAttributes(array('ubicacion'));
-$asma->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::ASMA.'.png'));
-$asma->save();
-
-$diabetes = new DataLayer();
-$diabetes->setName(Enfermedad::getName(Enfermedad::DIABETES));
-$diabetes->setClassType('Paciente');
-$diabetes->setAttributes(array('ubicacion'));
-$diabetes->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::DIABETES.'.png'));
-$diabetes->save();
-
-$hipertencion = new DataLayer();
-$hipertencion->setName(Enfermedad::getName(Enfermedad::HIPERTENCION));
-$hipertencion->setClassType('Paciente');
-$hipertencion->setAttributes(array('ubicacion'));
-$hipertencion->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::HIPERTENCION.'.png'));
-$hipertencion->save();
-
-$insuficiencia = new DataLayer();
-$insuficiencia->setName(Enfermedad::getName(Enfermedad::INSUFICIENCIA_RENAL));
-$insuficiencia->setClassType('Paciente');
-$insuficiencia->setAttributes(array('ubicacion'));
-$insuficiencia->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::INSUFICIENCIA_RENAL.'.png'));
-$insuficiencia->save();
-
-$obesidad = new DataLayer();
-$obesidad->setName(Enfermedad::getName(Enfermedad::OBESIDAD));
-$obesidad->setClassType('Paciente');
-$obesidad->setAttributes(array('ubicacion'));
-$obesidad->setDefaultUIProperty(new Icon(0, 0, '/images/'.Enfermedad::OBESIDAD.'.png'));
-$obesidad->save();
-
-$map->addLayer($diabetes);
-$map->addLayer($hipertencion);
-$map->addLayer($obesidad);
-$map->addLayer($asma);
-$map->addLayer($insuficiencia);
-
-
-
+$capasEnfermedades = array();
+foreach (Enfermedad::getEnfermedades() as $enfermedad) {
+	$dlenf = new DataLayer();
+	$dlenf->setName(Enfermedad::getName($enfermedad));
+	$dlenf->setClassType('Paciente');
+	$dlenf->setAttributes(array('ubicacion'));
+	$dlenf->setDefaultUIProperty(new Icon(0, 0, '/images/'.$enfermedad.'.png'));
+	$dlenf->save();
+	$map->addLayer($dlenf);
+	$capasEnfermedades[] = $dlenf;
+}
 
 /****  Pacientes ***/
 
@@ -199,15 +166,15 @@ $p3->addToMedicaciones();
 $p3->addToEstudios();*/
 
 
-$asma->addElement($p1);
-$obesidad->addElement($p2);
-$diabetes->addElement($p3);
-$obesidad->addElement($p4);
+$capasEnfermedades[0]->addElement($p1);
+$capasEnfermedades[4]->addElement($p2);
+$capasEnfermedades[1]->addElement($p3);
+$capasEnfermedades[2]->addElement($p4);
 
-$p1->setAsma(Estado::CONTROLADO);
-$p2->setObesidad(Estado::ADVERTENCIA);
-$p3->setDiabetes(Estado::NO_CONTROLADO);
-$p4->setObesidad(Estado::NO_CONTROLADO);
+$p1->aSet(Enfermedad::ASMA, Estado::CONTROLADO);
+$p2->aSet(Enfermedad::OBESIDAD, Estado::ADVERTENCIA);
+$p3->aSet(Enfermedad::DIABETES, Estado::NO_CONTROLADO);
+$p4->aSet(Enfermedad::HIPERTENCION, Estado::NO_CONTROLADO);
 
 /*** Medicos ***/
 
@@ -249,11 +216,6 @@ $polygon->setUIProperty($relleno);
 
 $m2->setZona($polygon);
 $m2->save();
-
-
-
-
-
 
 // Se guardan
 

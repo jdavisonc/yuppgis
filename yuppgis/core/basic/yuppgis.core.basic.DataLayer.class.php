@@ -59,10 +59,12 @@ class DataLayer extends Observable {
 		} else {
 			$this->aSet('attributes', implode(',', $this->geoAttributes));
 		}
-		if (!$this->uiPropertyObject) {
-			$this->uiPropertyObject = new Icon();
+		if (!$this->uiPropertyObject && !$this->aGet('defaultUIProperty')) {
+			$this->aSet('defaultUIProperty', UIProperty::toJSON(new Icon()));
+		} else if ($this->uiPropertyObject) {
+			$this->aSet('defaultUIProperty', UIProperty::toJSON($this->uiPropertyObject));
 		}
-		$this->aSet('defaultUIProperty', UIProperty::toJSON($this->uiPropertyObject));
+		
 	}
 	
 	function getAttributes() {
