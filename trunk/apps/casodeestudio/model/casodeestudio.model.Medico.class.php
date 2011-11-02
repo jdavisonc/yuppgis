@@ -6,7 +6,7 @@ class Medico extends GISPersistentObject {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
 
-		$this->setWithTable("paciente");
+		$this->setWithTable("medico");
 
 		// Datos Personales
 		$this->addAttribute("nombre", Datatypes::TEXT);
@@ -14,6 +14,9 @@ class Medico extends GISPersistentObject {
 		
 		// Ubicacion
 		$this->addAttribute("ubicacion", GISDatatypes::POINT);
+		
+		// Zona asignada
+		$this->addAttribute("zona", GISDatatypes::POLYGON);
 
 		parent :: __construct($args, $isSimpleInstance);
 	}

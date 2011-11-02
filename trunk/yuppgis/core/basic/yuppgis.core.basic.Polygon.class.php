@@ -1,7 +1,7 @@
 <?php
 class Polygon extends Surface {
 	
-	function __construct($exteriorBoundary, array $interiorsBoundary = array()) {
+	function __construct($exteriorBoundary = array(), array $interiorsBoundary = array()) {
 		//validatePolygon($exteriorBoundary, $interiorsBoundary);
 		parent :: __construct($exteriorBoundary, $interiorsBoundary);
 	}

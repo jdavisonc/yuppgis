@@ -223,6 +223,8 @@ class DatabasePostgisSQL extends DatabasePostgreSQL {
 			case GISDatatypes::MULTISURFACE:
 			case GISDatatypes::MULTIPOLYGON:
 				return 'MULTIPOLYGON';
+			case GISDatatypes::POLYGON:
+				return 'POLYGON';
 			default:
 				throw new Exception("DatabasePosgisSQL.getDBGISType: el tipo ($type) no esta definido.");
    		}

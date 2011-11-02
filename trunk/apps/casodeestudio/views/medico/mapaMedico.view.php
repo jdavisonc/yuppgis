@@ -1,4 +1,4 @@
-<?php YuppLoader::load('casodeestudio.model', 'Paciente'); ?>
+<?php YuppLoader::load('casodeestudio.model', 'Medico'); ?>
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'main')) ; ?>
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min')) ; ?>
 
@@ -50,20 +50,13 @@ body {
 	</div>
 
     <div class="container-fluid">
-      <div class="sidebar">
-        <div class="well">
-          <h5>Enfermedades</h5>
-          <div class="maplayers">
-          	<?php echo GISHelpers::MapLayers(array(MapParams::ID => 1)); ?>
-          </div>
-        </div>
-      </div>
+      
       <div class="content">
         <!-- Main hero unit for a primary marketing message or call to action -->
         <div class="hero-unit">
           <p>
           	<?php echo GISHelpers::Map(array(
-				MapParams::ID => 1,
+				MapParams::ID => 2,
 				MapParams::HEIGHT => 400,
 				MapParams::WIDTH => 850,
 				MapParams::TYPE => "google"
