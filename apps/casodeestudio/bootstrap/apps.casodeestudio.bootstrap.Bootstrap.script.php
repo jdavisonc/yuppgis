@@ -46,6 +46,12 @@ $pacientes = Paciente::listAll($params);
 foreach ($pacientes as $paciente){
 	$paciente->delete();
 }
+
+$medicos = Medico::listAll($params);
+foreach ($medicos as $medico){
+	$medico->delete();
+}
+
 /****  creacion ****/
 
 $map = new Map(array('name' => 'MapaDeEnfermedades'));
@@ -203,9 +209,45 @@ $p2->setObesidad(Estado::ADVERTENCIA);
 $p3->setDiabetes(Estado::NO_CONTROLADO);
 $p4->setObesidad(Estado::NO_CONTROLADO);
 
+/*** Medicos ***/
+
+
+$map2 = new Map(array('name' => 'MapaDeMedicos'));
+
+$capaMedicos = new DataLayer();
+$capaMedicos->setName('Medicos');
+$capaMedicos->setClassType('Medico');
+$capaMedicos->setAttributes(array('zona'));
+
+$m1 = new Medico();
+$m1->setNombre('Roberto');
+$m1->setApellido('Sanchez');
+
+$puntos = array ( new Point(-56.17438, -34.88619), new Point(-56.181548, -34.882521), new Point(-56.181948, -34.880421), new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619));
+$line = new LineString($puntos);
+$polygon = new Polygon($line);
+
+/*Seteo Background al Polygon */
+$relleno = new Background();
+$relleno->setColor(Color::RED);
+$polygon->setUIProperty($relleno);
+
+$m1->setZona($polygon);
+$m1->save();
+
+$capaMedicos->addElement($m1);
+$capaMedicos->save();
+$map2->addLayer($capaMedicos);
+
+
+$capaHospitales = new DataLayer();
+$capaHospitales->setName('Medicos');
+$capaMedicos->setClassType('Medico');
+$capaMedicos->setAttributes(array('zona'));
 
 // Se guardan
 
 $map->save();
+$map2->save();
 
 ?>
