@@ -1,4 +1,9 @@
-<?php YuppLoader::load('casodeestudio.model', 'Medico'); ?>
+<?php YuppLoader::load('casodeestudio.model', 'Medico');
+$m = Model::getInstance();
+$idMedico = $m->get('id');
+
+ ?>
+ 
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'main')) ; ?>
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min')) ; ?>
 
@@ -59,7 +64,8 @@ body {
 				MapParams::ID => 2,
 				MapParams::HEIGHT => 400,
 				MapParams::WIDTH => 850,
-				MapParams::TYPE => "google"
+				MapParams::TYPE => "google",
+				MapParams::STATE => "medicoId=" . $idMedico
 				
 			)); ?>
           </p>

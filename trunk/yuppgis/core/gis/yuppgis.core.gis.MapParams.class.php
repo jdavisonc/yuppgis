@@ -12,6 +12,7 @@ class MapParams{
 	const CLICK_HANDLERS = "clickhandlers";
 	const SELECT_HANDLERS = "selecthandlers";
 	const TYPE = "maptype";
+	const STATE = "state";
 	
 	public static function getValueOrDefault($array, $key)
 	{
@@ -38,6 +39,8 @@ class MapParams{
 					return array();
 				case MapParams::TYPE:
 					return "google";
+				case MapParams::STATE:
+					return "";
 			}
 			
 		}			
