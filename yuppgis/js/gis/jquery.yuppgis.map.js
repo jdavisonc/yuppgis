@@ -37,6 +37,7 @@
 				var id = mapOptions.id;
 				var appName = mapOptions.appName;
 				var controllerName = mapOptions.controllerName;
+				var state = mapOptions.state;
 
 				OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 					defaultHandlerOptions: {
@@ -72,12 +73,16 @@
 
 
 				});
-
-
-
-
+				
+				if (state != "") {
+					state = "&" + state;
+				}
+				
 				$.ajax({
-					url: "/yuppgis/" + appName + "/" + controllerName + "/getLayersAction?mapId=" + id,
+					
+					
+					url: "/yuppgis/" + appName + "/" + controllerName + "/getLayersAction?mapId=" + id + state,
+					
 					success: function (data) {
 
 						
@@ -145,7 +150,7 @@
 
 						var vector = [];
 						$.each(data, function (i, item) {
-							var layerurl = "/yuppgis/" + appName + "/" + controllerName + "/mapLayer?layerId=" + item.id;
+							var layerurl = "/yuppgis/" + appName + "/" + controllerName + "/mapLayer?layerId=" + item.id + state;
 							var kml = new OpenLayers.Layer.Vector(item.id, {
 								strategies: [new OpenLayers.Strategy.Fixed()],
 								protocol: new OpenLayers.Protocol.HTTP({

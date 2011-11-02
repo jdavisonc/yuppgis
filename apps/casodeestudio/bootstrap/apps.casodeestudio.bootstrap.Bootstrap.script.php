@@ -214,10 +214,7 @@ $p4->setObesidad(Estado::NO_CONTROLADO);
 
 $map2 = new Map(array('name' => 'MapaDeMedicos'));
 
-$capaMedicos = new DataLayer();
-$capaMedicos->setName('Medicos');
-$capaMedicos->setClassType('Medico');
-$capaMedicos->setAttributes(array('zona'));
+
 
 $m1 = new Medico();
 $m1->setNombre('Roberto');
@@ -235,15 +232,28 @@ $polygon->setUIProperty($relleno);
 $m1->setZona($polygon);
 $m1->save();
 
-$capaMedicos->addElement($m1);
-$capaMedicos->save();
-$map2->addLayer($capaMedicos);
+
+$m2 = new Medico();
+$m2->setNombre('Mario');
+$m2->setApellido('Pereira');
 
 
-$capaHospitales = new DataLayer();
-$capaHospitales->setName('Medicos');
-$capaMedicos->setClassType('Medico');
-$capaMedicos->setAttributes(array('zona'));
+$puntos = array ( new Point(-56.18438, -34.88619), new Point(-56.171548, -34.882521), new Point(-56.191948, -34.880421), new Point(-56.184948, -34.883821), new Point(-56.18438, -34.88619));
+$line = new LineString($puntos);
+$polygon = new Polygon($line);
+
+/*Seteo Background al Polygon */
+$relleno = new Background();
+$relleno->setColor(Color::BLUE);
+$polygon->setUIProperty($relleno);
+
+$m2->setZona($polygon);
+$m2->save();
+
+
+
+
+
 
 // Se guardan
 

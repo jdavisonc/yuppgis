@@ -166,6 +166,7 @@ class GISHelpers {
 		$type = MapParams::getValueOrDefault($params, MapParams::TYPE);
 		$clickhandlers = MapParams::getValueOrDefault($params, MapParams::CLICK_HANDLERS);
 		$selecthandlers = MapParams::getValueOrDefault($params, MapParams::SELECT_HANDLERS);
+		$state = MapParams::getValueOrDefault($params, MapParams::STATE); 
 
 		LayoutManager::getInstance()->addJSLibReference( array("name" => "jquery/jquery-1.6.1.min"));
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/OpenLayers"));
@@ -193,7 +194,7 @@ class GISHelpers {
 		
 		<script type="text/javascript">
 		
-			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'", appName: "'.$appName.'", controllerName: "'.$controllerName.'"})
+			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'", appName: "'.$appName.'", controllerName: "'.$controllerName.'" , state: "'.$state.'"})
 		';			
 
 		foreach ($clickhandlers as $clickhandler){
