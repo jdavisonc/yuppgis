@@ -123,6 +123,7 @@ class MedicoController extends GISController {
 	private function getAttrsPaciente($idPaciente ) {
 		$element = Paciente::get($idPaciente); 
 		$q = new GISQuery();
+		$q->addProjection('p', 'id');
 		$q->addProjection('p', 'nombre');
 		$q->addProjection('p', 'apellido');
 		$q->addProjection('p', 'ubicacion', 'u');

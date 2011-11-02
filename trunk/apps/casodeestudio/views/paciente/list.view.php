@@ -41,7 +41,11 @@ body {
                                 "controller" => "paciente",
                                 "action"     => "list",
                                 "body"       => "Pacientes") ); ?></li>
-					<li><a href="#contact">Contact</a></li>
+					<li><?php echo Helpers::link( array(
+								"app"        => "casodeestudio",
+                                "controller" => "medico",
+                                "action"     => "list",
+                                "body"       => "Medicos") ); ?></li>
 				</ul>
 				<p class="pull-right">
 					Logged in as <a href="#">username</a>
@@ -70,6 +74,7 @@ body {
 			    	<table class="zebra-striped">
 			    		<thead>
 			    			<tr>
+			    				<th></th>
 			    				<th>Nombre</th>
 			    				<th>Apellido</th>
 			    				<th>Sexo</th>
@@ -84,6 +89,13 @@ body {
 			    			<?php $pacientes = $m->get('list');?>
 			    			<?php foreach ($pacientes as $p) {?>
 				    			<tr>
+				    				<td>
+				    				<?php echo '<a href="'.Helpers::url( array("app" => "casodeestudio",
+												                               "controller" => "paciente",
+												                               "action"     => "info",
+			                               									   "id"         => $p->getId()) ).'">' 
+				    						. h('img', array('app'=>'casodeestudio', 'src'=>'paciente-info.png')).'</a>'; ?>
+  									</td>
 				    				<td><?php echo $p->getNombre();?></td>
 				    				<td><?php echo $p->getApellido();?></td>
 				    				<td><?php echo $p->getSexo();?></td>

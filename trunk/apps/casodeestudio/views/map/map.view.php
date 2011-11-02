@@ -40,7 +40,6 @@ body {
                                 "controller" => "medico",
                                 "action"     => "list",
                                 "body"       => "Medicos") ); ?></li>
-					<li><a href="#contact">Contact</a></li>
 				</ul>
 				<p class="pull-right">
 					Logged in as <a href="#">username</a>

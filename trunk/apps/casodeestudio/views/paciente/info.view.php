@@ -44,7 +44,11 @@ body {
                                 "controller" => "paciente",
                                 "action"     => "list",
                                 "body"       => "Pacientes") ); ?></li>
-					<li><a href="#contact">Contact</a></li>
+					<li><?php echo Helpers::link( array(
+								"app"        => "casodeestudio",
+                                "controller" => "medico",
+                                "action"     => "list",
+                                "body"       => "Medicos") ); ?></li>
 				</ul>
 				<p class="pull-right">
 					Logged in as <a href="#">username</a>
@@ -137,6 +141,9 @@ body {
                             "body"       => "Editar Enfermedades",
 							"id"         => $paciente->getId(),  
 			    			"attrs"		 => array ("class" => "btn primary")) ); ?>
+			    	<br>
+			    	<br>
+			    	<form><input type="button" value="Volver" class="btn" onclick="history.go(-1)"></form>
 		        </div>
 		     </div>
 		  

@@ -30,7 +30,7 @@ body {
                   'h'=>'32', 
                   'text'=>'logo' )); ?>
 				<ul class="nav">
-					<li class="active"><?php echo Helpers::link( array(
+					<li><?php echo Helpers::link( array(
 								"app"        => "casodeestudio",
                                 "controller" => "map",
                                 "action"     => "map",
@@ -40,12 +40,11 @@ body {
                                 "controller" => "paciente",
                                 "action"     => "list",
                                 "body"       => "Pacientes") ); ?></li>
-                    <li><?php echo Helpers::link( array(
+                    <li class="active"><?php echo Helpers::link( array(
 								"app"        => "casodeestudio",
                                 "controller" => "medico",
                                 "action"     => "list",
                                 "body"       => "Medicos") ); ?></li>
-					<li><a href="#contact">Contact</a></li>
 				</ul>
 				<p class="pull-right">
 					Logged in as <a href="#">username</a>
