@@ -55,6 +55,10 @@ body {
           <div class="maplayers">
           	<?php echo GISHelpers::MapLayers(array(MapParams::ID => 1)); ?>
           </div>
+          <h5>Filtrar por atributos</h5>
+          <div>
+          	<?php echo GISHelpers::FiltersMenu('Paciente', 1); ?>
+          </div>
         </div>
       </div>
       <div class="content">
