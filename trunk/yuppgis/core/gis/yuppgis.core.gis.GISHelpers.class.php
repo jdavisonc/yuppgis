@@ -99,11 +99,11 @@ class GISHelpers {
 			$handlerCall = '$("#map_'.$mapid.'").YuppGISMap().showFeatures(extractIds(data), true);';
 		}
 
-		$selectHtml .= '</select>';
+		$selectHtml .= '</select><br>';
 
 		$inputHtml = '<input class="conditiontext" data-attr-mapid="'.$mapid.'" type="text" id="'.$tbId.'" />';
 
-		$submitHtml = '<br /><a href="#" id="'.$btnId.'" onclick="javascript:return '.$methodName.'()">Filtrar</a>';
+		$submitHtml = '<br /><button class="btn" id="'.$btnId.'" onclick="javascript:return '.$methodName.'()">Filtrar</button>';
 
 		$script = '<script>
 						function '.$methodName.'(){
@@ -138,10 +138,10 @@ class GISHelpers {
 
 		$addConditionHtml = '';
 		if ($multiple){
-			$addConditionHtml = '<span class="addcondition" onclick="javascript:return addNewCondition(this);">+</span>';
+			$addConditionHtml = '<br><span class="addcondition" onclick="javascript:return addNewCondition(this);">+</span>';
 		}
 
-		return  '<span class="conditionfilter"><span class="newcondition"'.$selectHtml.$inputHtml.$addConditionHtml.'</span><br />'.$submitHtml.$script.'</span>';
+		return  '<span class="conditionfilter"><span class="newcondition">'.$selectHtml.$inputHtml.$addConditionHtml.'</span><br />'.$submitHtml.$script.'</span>';
 
 	}
 
