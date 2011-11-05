@@ -89,41 +89,47 @@
 							/*
 							 * type: G_HYBRID_MAP, sphericalMercator: true
 							 */
+							sphericalMercator: true
 						});
 
 						map = new OpenLayers.Map("map_" + id, {
 
-							scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
-							         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
+							/*scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
+							         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],*/
 
-							         projection: srid
+							         projection: srid,
+							         maxResolution: 156543.0339,
+							         units: 'm',
+							         maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
+							                                          20037508.34, 20037508.34)
 
 						});
 						var wms = new OpenLayers.Layer.WMS("WMS",
 								"/yuppgis/" + appName + "/" + controllerName + "/mapServer", { },
 								{				                	
-									maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
-									scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
+									//maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
+									/*scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
 									         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
 									         units: 'm',
-									         projection: srid,
+									         projection: srid,*/
 
-									         gutter: 0,
+									         /*gutter: 0,
 									         ratio: 1,
 									         wrapDateLine: true,
 									         isBaseLayer: true,
 									         singleTile: true,
 									         transitionEffect: 'resize',
-									         queryVisible: true
+									         queryVisible: true*/
 								});
 
-						if(mapOptions.type == 'google'){
-							map.addLayer(google);
-						}else{
+						//if(mapOptions.type == 'google'){
+							//map.addLayer(google);
+						//}else{
 							map.addLayer(wms);
-						}						
-
-						map.zoomToMaxExtent();
+							//map.addLayer(google);
+						//}
+						//map.zoomToMaxExtent();
+							map.zoomTo(3);
 						
 
 						var styleMap = new OpenLayers.StyleMap({
@@ -204,7 +210,8 @@
 						selectcontrol.activate();
 						
 
-						map.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
+						//map.setCenter(new OpenLayers.LonLat(-56.181944, -34.883611), 15);
+						map.setCenter(new OpenLayers.LonLat(-6251096.6093197, -4149355.4159976), 14);
 
 						instance.map = map;
 					}
