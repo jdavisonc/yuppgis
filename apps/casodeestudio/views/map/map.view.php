@@ -69,7 +69,7 @@ body {
 				MapParams::ID => 1,
 				MapParams::HEIGHT => 400,
 				MapParams::WIDTH => 850,
-				MapParams::TYPE => "google"
+				MapParams::TYPE => "mapserver"
 				
 			)); ?>
           </p>

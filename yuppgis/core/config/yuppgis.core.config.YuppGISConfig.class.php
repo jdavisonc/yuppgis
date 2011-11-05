@@ -12,6 +12,10 @@ class YuppGISConfig {
 	const PROP_BASIC_GET_URL = 'basic_get_url';
 	const PROP_BASIC_SAVE_URL = 'basic_save_url';
 	const PROP_BASIC_DELETE_URL = 'basic_delete_url';
+	const PROP_WMS_URL = 'wms_url';
+	const PROP_WMS_MAP_FILE = 'wms_map_file';
+	const PROP_WMS_LAYERS = 'wms_layers';
+	const PROP_WMS_FORMAT = 'wms_format';
 		
 	// Valores por defecto
 	const DEFAULT_SRID = 32721;
@@ -52,6 +56,10 @@ class YuppGISConfig {
 		$this->default_values[self::PROP_BASIC_SAVE_URL] = null;
 		$this->default_values[self::PROP_BASIC_DELETE_URL] = null;
 		$this->default_values[self::PROP_BASIC_GISWSDAL_CLASS] = null;
+		$this->default_values[self::PROP_WMS_URL] = null;
+		$this->default_values[self::PROP_WMS_FORMAT] = null;
+		$this->default_values[self::PROP_WMS_MAP_FILE] = null;
+		$this->default_values[self::PROP_WMS_LAYERS] = null;
 	}
 	
 	public static function generatePath( $appName ) {
@@ -99,6 +107,10 @@ class YuppGISConfig {
 		$this->app_gis_properties[$appName][self::PROP_BASIC_SAVE_URL] = $this->getValue(${self::PROP_BASIC_SAVE_URL}, self::PROP_BASIC_SAVE_URL);
 		$this->app_gis_properties[$appName][self::PROP_BASIC_DELETE_URL] = $this->getValue(${self::PROP_BASIC_DELETE_URL}, self::PROP_BASIC_DELETE_URL);
 		$this->app_gis_properties[$appName][self::PROP_BASIC_GISWSDAL_CLASS] = $this->getValue(${self::PROP_BASIC_GISWSDAL_CLASS}, self::PROP_BASIC_GISWSDAL_CLASS);
+		$this->app_gis_properties[$appName][self::PROP_WMS_URL] = $this->getValue(${self::PROP_WMS_URL}, self::PROP_WMS_URL);
+		$this->app_gis_properties[$appName][self::PROP_WMS_MAP_FILE] = $this->getValue(${self::PROP_WMS_MAP_FILE}, self::PROP_WMS_MAP_FILE);
+		$this->app_gis_properties[$appName][self::PROP_WMS_LAYERS] = $this->getValue(${self::PROP_WMS_LAYERS}, self::PROP_WMS_LAYERS);
+		$this->app_gis_properties[$appName][self::PROP_WMS_FORMAT] = $this->getValue(${self::PROP_WMS_FORMAT}, self::PROP_WMS_FORMAT);
 	}
 	
 	/**

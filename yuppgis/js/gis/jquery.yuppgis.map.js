@@ -38,6 +38,7 @@
 				var appName = mapOptions.appName;
 				var controllerName = mapOptions.controllerName;
 				var state = mapOptions.state;
+				var srid = "EPSG:" + mapOptions.srid;
 
 				OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 					defaultHandlerOptions: {
@@ -80,43 +81,32 @@
 				
 				$.ajax({
 					
-					
 					url: "/yuppgis/" + appName + "/" + controllerName + "/getLayersAction?mapId=" + id + state,
 					
 					success: function (data) {
 
-						
 						var google = new OpenLayers.Layer.Google("Google", {
 							/*
 							 * type: G_HYBRID_MAP, sphericalMercator: true
 							 */
 						});
 
-						
-						
-
 						map = new OpenLayers.Map("map_" + id, {
 
 							scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
 							         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
 
-							         projection: "EPSG:32721"
+							         projection: srid
 
 						});
 						var wms = new OpenLayers.Layer.WMS("WMS",
-								"/yuppgis/" + appName + "/" + controllerName + "/mapServer?",
-								{
-							map: '/home/yuppgis/workspace/YuppGis/yuppgis/yuppgis.map',
-							layers: 'departamento,manzanas',
-							format: 'aggpng24'
-								},
+								"/yuppgis/" + appName + "/" + controllerName + "/mapServer", { },
 								{				                	
-
 									maxExtent: new OpenLayers.Bounds(324000, 6100000, 663000, 6614430),
 									scales: [5000, 10000, 25000, 50000, 100000, 250000, 500000,
 									         1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000],
 									         units: 'm',
-									         projection: "EPSG:32721",
+									         projection: srid,
 
 									         gutter: 0,
 									         ratio: 1,
@@ -125,8 +115,6 @@
 									         singleTile: true,
 									         transitionEffect: 'resize',
 									         queryVisible: true
-
-
 								});
 
 						if(mapOptions.type == 'google'){
