@@ -6,18 +6,14 @@ YuppLoader::load('casodeestudio.model', 'Paciente');
 
 class MedicoController extends GISController {
 
-	
-	public function addAction() {
-	}
-	
 	public function listAction() {
 		$this->params['list']  = Medico::listAll($this->params);
 		return ;
 	}
 
-	public function infoAction() {
+	public function mapAction(){
+		return;
 	}
-	
 	
 	public function mapLayerAction(){
 

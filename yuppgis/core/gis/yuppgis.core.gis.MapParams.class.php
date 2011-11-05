@@ -14,6 +14,8 @@ class MapParams{
 	const TYPE = "maptype";
 	const STATE = "state";
 	const SRID = "srid";
+	const CENTER = "center";
+	const ZOOM = "zoom";
 	
 	public static function getValueOrDefault($array, $key)
 	{
@@ -45,6 +47,10 @@ class MapParams{
 					return "";
 				case MapParams::SRID:
 					return $srid;
+				case MapParams::CENTER:
+					return array("-6251096.6093197", "-4149355.4159976");
+				case MapParams::ZOOM:
+					return 3;
 			}
 			
 		}			
