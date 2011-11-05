@@ -20,8 +20,8 @@ $gis_controller = 'map';
 
 // Configuracion WMS
 $wms_url = 'http://localhost/cgi-bin/mapserv';
-$wms_map_file = '/home/yuppgis/workspace/YuppGIS/yuppgis/yuppgis.map';
-$wms_layers = 'departamento,manzanas';
+$wms_map_file = '/home/yuppgis/workspace/YuppGis/apps/casodeestudio/config/yuppgis.map';
+$wms_layers = 'departamento,manzanas,calles,espaciosLibres';
 $wms_format = 'aggpng24';
 
 ?>

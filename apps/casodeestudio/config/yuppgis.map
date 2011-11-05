@@ -19,8 +19,7 @@ MAP
                         "wms_onlineresource"  "http://localhost/cgi-bin/mapserv?"
                         "wms_srs"       "EPSG:32721 EPSG:900913"
                 END                 
-                HEADER "/home/yuppgis/workspace/YuppGis/yuppgis/template.header.html"
-                FOOTER "/home/yuppgis/workspace/YuppGis/yuppgis/template.footer.html"
+               
     END  # Web
     
     PROJECTION
@@ -48,10 +47,10 @@ MAP
     END 
     CLASS
       SIZE 3
-      COLOR 61 103 122
+      COLOR 201 223 175
     END 
     DUMP TRUE
-    TEMPLATE "/home/yuppgis/workspace/YuppGis/yuppgis/template.departamentos.html"
+    
    END
    
    LAYER
@@ -66,16 +65,69 @@ MAP
     CONNECTION "user=yuppgis password=yuppgis dbname=gis host=localhost port=5432" 
     DATA "the_geom from manzanas using unique gid"
     STATUS ON
-    TYPE LINE 
+    TYPE POLYGON 
     PROJECTION
       "init=epsg:32721"   ##recommended
     END 
     CLASS
       SIZE 3
-      COLOR 112 11 0 
+      COLOR 240 236 233
     END
     DUMP TRUE
-    TEMPLATE "/home/yuppgis/workspace/YuppGis/yuppgis/template.manzanas.html"
+    
+   END
+   
+    LAYER
+        DEBUG 5 
+    CONNECTIONTYPE POSTGIS
+    NAME "calles"
+    CONNECTION "user=yuppgis password=yuppgis dbname=gis host=localhost port=5432" 
+    DATA "the_geom from calles using unique gid"
+    LABELITEM 'nom_calle'
+    STATUS ON
+    TYPE LINE 
+    METADATA
+      "wms_title"    "calles"   ##required
+      "gml_include_items"   "all"
+      "wms_include_items"   "all"
+    END
+    PROJECTION
+      "init=epsg:32721"   ##recommended
+    END 
+    CLASS
+	    SIZE 3
+	  	COLOR 0 0 0
+    END
+    ##LABEL
+    ##	SIZE 7
+    ##END
+    DUMP TRUE
+    
+   END
+   
+   LAYER
+        DEBUG 5 
+    CONNECTIONTYPE POSTGIS
+    NAME "espaciosLibres"
+    CONNECTION "user=yuppgis password=yuppgis dbname=gis host=localhost port=5432" 
+    DATA "the_geom from espacioslibres using unique gid"
+    LABELITEM 'nom_espaci'
+    STATUS ON
+    TYPE LINE 
+    METADATA
+      "wms_title"    "espaciosLibres"   ##required
+      "gml_include_items"   "all"
+      "wms_include_items"   "all"
+    END
+    PROJECTION
+      "init=epsg:32721"   ##recommended
+    END 
+    CLASS
+      SIZE 3
+      COLOR 201 223 175
+    END 
+    DUMP TRUE
+    
    END
 
 END
