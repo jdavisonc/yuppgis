@@ -12,14 +12,10 @@ function addNewCondition(control){
 	var orig_input = $(control).parents('.conditionfilter:first').find('.conditiontext').first().html();	
 	var input = '<input class="conditiontext" data-attr-mapid="' + $(orig_input).attr('data-attr-mapid') + '" type="text"  />';
 
-	var plus = '<span class="addcondition" onclick="javascript:return addNewCondition(this);">+</span>';
-	var minus = '<span class="addcondition" onclick="javascript:return removeNewCondition(this);">-</span>';
+	var plus = '<button class="btn addcondition" onclick="javascript:return addNewCondition(this);">+</button>';
+	var minus = '<button class="btn addcondition" onclick="javascript:return removeNewCondition(this);">-</button>';
 
 	var newCondition = '<span class="newcondition"><br />' + condselect + select + input + plus + minus + '</span>';
-
-
-
-
 
 	$(control).parent('.newcondition').after(newCondition);
 

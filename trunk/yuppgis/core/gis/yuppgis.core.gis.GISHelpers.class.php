@@ -138,7 +138,7 @@ class GISHelpers {
 
 		$addConditionHtml = '';
 		if ($multiple){
-			$addConditionHtml = '<br><span class="addcondition" onclick="javascript:return addNewCondition(this);">+</span>';
+			$addConditionHtml = '<br><button class="btn addcondition" onclick="javascript:return addNewCondition(this);">+</button>';
 		}
 
 		return  '<span class="conditionfilter"><span class="newcondition">'.$selectHtml.$inputHtml.$addConditionHtml.'</span><br />'.$submitHtml.$script.'</span>';
