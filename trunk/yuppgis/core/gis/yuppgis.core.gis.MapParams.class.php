@@ -13,6 +13,7 @@ class MapParams{
 	const SELECT_HANDLERS = "selecthandlers";
 	const TYPE = "maptype";
 	const STATE = "state";
+	const SRID = "srid";
 	
 	public static function getValueOrDefault($array, $key)
 	{
@@ -21,6 +22,7 @@ class MapParams{
 		else{
 			$appName = YuppContext::getInstance()->getApp();
 			$gmaps_key = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_GOOGLE_MAPS_KEY);
+			$srid = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_SRID);
 			
 			switch ($key){
 				case MapParams::ID:
@@ -41,6 +43,8 @@ class MapParams{
 					return "google";
 				case MapParams::STATE:
 					return "";
+				case MapParams::SRID:
+					return $srid;
 			}
 			
 		}			

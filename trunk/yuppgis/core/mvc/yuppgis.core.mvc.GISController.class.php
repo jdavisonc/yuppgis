@@ -229,11 +229,17 @@ class GISController extends YuppController {
 			
 		$hasPermission = true;
 		if ($hasPermission){
-			$url = 'http://localhost/cgi-bin/mapserv?';
-			$url .=
-				  'MAP='.$this->params['MAP'].
-				  '&LAYERS='. $this->params['LAYERS'].
-				  '&FORMAT='. $this->params['FORMAT'].
+			
+			$appName = YuppContext::getInstance()->getApp();
+			$wms_url = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_WMS_URL);
+			$wms_map_file = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_WMS_MAP_FILE);
+			$wms_layers = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_WMS_LAYERS);
+			$wms_format = YuppGISConfig::getInstance()->getGISPropertyValue($appName, YuppGISConfig::PROP_WMS_FORMAT);
+			
+			$url = $wms_url . '?' .
+				  'MAP='.$wms_map_file.
+				  '&LAYERS='. $wms_layers.
+				  '&FORMAT='. $wms_format.
 				  '&SERVICE='. $this->params['SERVICE'].
 				  '&VERSION='. $this->params['VERSION'].
 				  '&REQUEST='. $this->params['REQUEST'].
