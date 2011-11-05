@@ -79,7 +79,7 @@ body {
 				MapParams::ID => 1,
 				MapParams::HEIGHT => 400,
 				MapParams::WIDTH => 850,
-				MapParams::TYPE => "google",
+				MapParams::TYPE => "mapServer",
 				MapParams::CLICK_HANDLERS => array('customClickHandler'),
 				MapParams::CENTER => array("-6251096.6093197", "-4149355.4159976"),
 				MapParams::ZOOM => 14
