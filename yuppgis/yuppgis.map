@@ -17,7 +17,7 @@ MAP
                         "wms_title"     "Test"
                         "wms_feature_info_mime_type" "text/xml"
                         "wms_onlineresource"  "http://localhost/cgi-bin/mapserv?"
-                        "wms_srs"       "EPSG:32721"
+                        "wms_srs"       "EPSG:32721 EPSG:900913"
                 END                 
                 HEADER "/home/yuppgis/workspace/YuppGis/yuppgis/template.header.html"
                 FOOTER "/home/yuppgis/workspace/YuppGis/yuppgis/template.footer.html"

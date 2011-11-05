@@ -85,7 +85,8 @@ $p1->setDireccion("");
 $p1->setBarrio("Villa Muñoz");
 $p1->setCiudad("Montevideo");
 $p1->setDepartamento("Montevideo");
-$p1->setUbicacion(new Point(-56.149921, -34.899518));
+$p1->setUbicacion(new Point(-6253638.1405101,-4148156.3101165));
+//$p1->setUbicacion(new Point(-56.149921, -34.899518));
 
 // Asociasiones
 /*
@@ -109,7 +110,8 @@ $p2->setDireccion("");
 $p2->setBarrio("Villa Muñoz");
 $p2->setCiudad("Montevideo");
 $p2->setDepartamento("Montevideo");
-$p2->setUbicacion(new Point(-56.171122, -34.893182));
+$p2->setUbicacion(new Point(-6251856.2022884,-4148299.6295445));
+//$p2->setUbicacion(new Point(-56.171122, -34.893182));
 
 // Asociasiones
 /*
@@ -133,7 +135,8 @@ $p3->setDireccion("");
 $p3->setBarrio("Villa Muñoz");
 $p3->setCiudad("Montevideo");
 $p3->setDepartamento("Montevideo");
-$p3->setUbicacion(new Point(-56.181764, -34.884255));
+$p3->setUbicacion(new Point(-6252759.1146849,-4149331.5294262));
+//$p3->setUbicacion(new Point(-56.181764, -34.884255));
 
 // Asociasiones
 /*
@@ -157,7 +160,8 @@ $p4->setDireccion("");
 $p4->setBarrio("Villa Muñoz");
 $p4->setCiudad("Montevideo");
 $p4->setDepartamento("Montevideo");
-$p4->setUbicacion(new Point(-56.181764, -34.884255));
+$p4->setUbicacion(new Point(-6253881.7835377,-4149374.5252546));
+//$p4->setUbicacion(new Point(-56.181764, -34.884255));
 
 // Asociasiones
 /*

@@ -2,6 +2,16 @@
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'main')) ; ?>
 <?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min')) ; ?>
 
+<script type="text/javascript">
+
+function customClickHandler(event){
+	var position = event.object.getLonLatFromPixel(event.xy);
+	alert("Custom click handler! " + position);
+	
+}
+
+</script>
+
 <style>
 body {
 	padding-top: 60px;
@@ -69,7 +79,8 @@ body {
 				MapParams::ID => 1,
 				MapParams::HEIGHT => 400,
 				MapParams::WIDTH => 850,
-				MapParams::TYPE => "mapserver"
+				MapParams::TYPE => "mapserver",
+				MapParams::CLICK_HANDLERS => array('customClickHandler')
 				
 			)); ?>
           </p>
