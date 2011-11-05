@@ -5,6 +5,7 @@ MAP
     EXTENT 323000 6000000 664000 6624430
     UNITS METERS
     FONTSET /usr/share/fonts/truetype/msttcorefonts/font.list
+    IMAGECOLOR 165 191 221
                 
     #
     # Start of web interface definition
@@ -46,8 +47,7 @@ MAP
       "init=epsg:32721"   ##recommended
     END 
     CLASS
-      SIZE 3
-      COLOR 201 223 175
+      COLOR 213 225 220
     END 
     DUMP TRUE
     
@@ -70,8 +70,8 @@ MAP
       "init=epsg:32721"   ##recommended
     END 
     CLASS
-      SIZE 3
-      COLOR 240 236 233
+      COLOR 244 243 240
+      OUTLINECOLOR 222 217 213
     END
     DUMP TRUE
     
@@ -96,12 +96,12 @@ MAP
     END 
     CLASS
 	 STYLE
-      COLOR 122 122 122
+      COLOR 255 255 255
       OUTLINECOLOR 0 0 0
 	END
     
     LABEL
-	  COLOR  150 150 150
+	  COLOR  0 0 0
 	  OUTLINECOLOR 255 255 255
 	  FONT "arial"
 	  TYPE truetype
@@ -124,7 +124,7 @@ END
     DATA "the_geom from espacioslibres using unique gid"
     LABELITEM 'nom_espaci'
     STATUS ON
-    TYPE LINE 
+    TYPE POLYGON
     METADATA
       "wms_title"    "espaciosLibres"   ##required
       "gml_include_items"   "all"
@@ -134,8 +134,7 @@ END
       "init=epsg:32721"   ##recommended
     END 
     CLASS
-      SIZE 3
-      COLOR 201 223 175
+      COLOR 200 222 173
     END 
     DUMP TRUE
     
