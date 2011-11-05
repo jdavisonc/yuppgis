@@ -64,7 +64,9 @@ body {
 				MapParams::HEIGHT => 400,
 				MapParams::WIDTH => 850,
 				MapParams::TYPE => "google",
-				MapParams::STATE => "medicoId=" . $idMedico
+				MapParams::STATE => "medicoId=" . $idMedico,
+				MapParams::CENTER => array("-6251096.6093197", "-4149355.4159976"),
+				MapParams::ZOOM => 13
 				
 			)); ?>
           </p>

@@ -89,7 +89,7 @@ body {
 				    					<?php echo Helpers::link( array(
                                                         "app"        => "casodeestudio",
                            								"controller" => "medico",
-                           								"action"     => "mapaMedico",
+                           								"action"     => "map",
                            								"body"       => "Ver Mapa",
 				    									"id"		 => $medico->getId(),
                                                    		"attrs"		 => array ("class" => "btn primary")) ); ?>

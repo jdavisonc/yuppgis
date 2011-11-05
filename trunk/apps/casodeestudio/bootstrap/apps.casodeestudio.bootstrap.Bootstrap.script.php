@@ -86,7 +86,6 @@ $p1->setBarrio("Villa Muñoz");
 $p1->setCiudad("Montevideo");
 $p1->setDepartamento("Montevideo");
 $p1->setUbicacion(new Point(-6253638.1405101,-4148156.3101165));
-//$p1->setUbicacion(new Point(-56.149921, -34.899518));
 
 // Asociasiones
 /*
@@ -111,7 +110,6 @@ $p2->setBarrio("Villa Muñoz");
 $p2->setCiudad("Montevideo");
 $p2->setDepartamento("Montevideo");
 $p2->setUbicacion(new Point(-6251856.2022884,-4148299.6295445));
-//$p2->setUbicacion(new Point(-56.171122, -34.893182));
 
 // Asociasiones
 /*
@@ -136,7 +134,6 @@ $p3->setBarrio("Villa Muñoz");
 $p3->setCiudad("Montevideo");
 $p3->setDepartamento("Montevideo");
 $p3->setUbicacion(new Point(-6252759.1146849,-4149331.5294262));
-//$p3->setUbicacion(new Point(-56.181764, -34.884255));
 
 // Asociasiones
 /*
@@ -160,9 +157,7 @@ $p4->setDireccion("");
 $p4->setBarrio("Villa Muñoz");
 $p4->setCiudad("Montevideo");
 $p4->setDepartamento("Montevideo");
-$p4->setUbicacion(new Point(-6253881.7835377,-4149374.5252546));
-//$p4->setUbicacion(new Point(-56.181764, -34.884255));
-
+$p4->setUbicacion(new Point(-6252759.1146849,-4149331.5294262));
 // Asociasiones
 /*
 $p3->addToProcedimientos();
@@ -191,7 +186,7 @@ $m1 = new Medico();
 $m1->setNombre('Roberto');
 $m1->setApellido('Sanchez');
 
-$puntos = array ( new Point(-56.17438, -34.88619), new Point(-56.181548, -34.882521), new Point(-56.181948, -34.880421), new Point(-56.181948, -34.883821), new Point(-56.17438, -34.88619));
+$puntos = array ( new Point(-6250169.8103519,-4149231.2058267), new Point(-6249825.8437246,-4150654.8454783), new Point(-6255128.6625612,-4150177.1140516), new Point(-6254001.2163941,-4148810.8021711), new Point(-6250169.8103519,-4149231.2058267));
 $line = new LineString($puntos);
 $polygon = new Polygon($line);
 
@@ -209,7 +204,7 @@ $m2->setNombre('Mario');
 $m2->setApellido('Pereira');
 
 
-$puntos = array ( new Point(-56.18438, -34.88619), new Point(-56.171548, -34.882521), new Point(-56.191948, -34.880421), new Point(-56.184948, -34.883821), new Point(-56.18438, -34.88619));
+$puntos = array ( new Point(-6254326.0737643,-4148419.0624012), new Point(-6251230.3741192,-4148763.0290285), new Point(-6249797.179839,-4146278.8256095), new Point(-6254230.527479,-4145743.7664116), new Point(-6254326.0737643,-4148419.0624012));
 $line = new LineString($puntos);
 $polygon = new Polygon($line);
 
