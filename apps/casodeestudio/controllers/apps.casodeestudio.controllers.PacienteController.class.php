@@ -4,8 +4,9 @@ YuppLoader::load('yuppgis.core.mvc', 'GISController');
 YuppLoader::load('casodeestudio.model', 'Paciente');
 
 class PacienteController extends GISController {
-
-	private $base_url = "http://localhost/yuppgis/geolocalizacion/geo/geolocalizar?";
+	
+	const URL_WS_CALLES = 'http://localhost/yuppgis/geolocalizacion/geo/calles?calle=';
+	const URL_WS_GEOLOCALIZACION = 'http://localhost/yuppgis/geolocalizacion/geo/geolocalizar?';
 	
 	public function addAction() {
 		if (isset($this->params['nombre'])) {
@@ -24,13 +25,14 @@ class PacienteController extends GISController {
 			$p->setCi($this->params['ci']);
 			
 			
-			
-			$p->setDireccion($this->params['direccion']);
+			$calle = $this->params['calle'];
+			$numero = $this->params['numero_puerta'];
+			$p->setDireccion($calle . ' ' . $numero);
 			$p->setBarrio($this->params['barrio']);
 			$p->setCiudad($this->params['ciudad']);
 			$p->setDepartamento($this->params['departamento']);
 			
-			$ubicacion = $this->getUbicacionPaciente("CONSTITUCION", 2374);
+			$ubicacion = $this->getUbicacionPaciente($calle, $numero);
 			$p->setUbicacion($ubicacion);
 			
 			if ($p->save()) {
@@ -39,12 +41,13 @@ class PacienteController extends GISController {
 				$this->params['error'] = $p;
 			}
 		}
+		$this->params['url_ws_calles'] = self::URL_WS_CALLES;
 		return ;
 	}
 	
 	
 	public function getUbicacionPaciente($calle, $numero) {
-		$url = $this->base_url . 'calle=' . $calle . '&numero=' . $numero;
+		$url = self::URL_WS_GEOLOCALIZACION . 'calle=' . $calle . '&numero=' . $numero;
 		
 		$request = new  HTTPRequest();
 		$response = $request->HttpRequestGet($url);
