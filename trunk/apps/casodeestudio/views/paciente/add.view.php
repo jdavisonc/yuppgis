@@ -2,6 +2,7 @@
 
 YuppLoader::load('casodeestudio.model', 'Paciente');
 $m = Model::getInstance();
+
 ?>
 
 <html>
@@ -9,6 +10,39 @@ $m = Model::getInstance();
 		<title>Salud Digital</title>
 		<?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'twitter-bootstrap.min'));?>
 		<?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'main'));?>
+		<?php echo Helpers::css(array('app'=>'casodeestudio', 'name' => 'jquery.autocomplete'));?>
+		<?php echo Helpers::js(array('name' => 'jquery/jquery-1.6.1.min'));?>
+		<?php echo Helpers::js(array('app'=>'casodeestudio', 'name' => 'jquery.autocomplete.min'));?>
+		<script type="text/javascript">
+			$().ready(function() {
+				$("#calle").autocomplete("<?php echo $m->get('url_ws_calles');?>", {
+					minChars:1,
+				    delay:400,
+				    cacheLength:100,
+				    matchContains:true,
+				    max:10,
+					selectFirst: false,
+					formatItem: function(item) {
+						return item.nombre;
+					},
+					dataType:'json',
+					formatMatch:function(item){
+				       return item.nombre;
+				    },
+				    formatResult:function(item){
+				       return item.nombre;
+				    },
+					parse:function(data) {
+	                       return $.map(data, function(item) {
+	                               return {
+	                                       data: item,
+	                                       value: item.nombre,
+	                                       result: item.nombre
+	                               }
+	                       });
+	               }});
+				});
+		</script>
 		<style>
 		body {
 			padding-top: 60px;
@@ -153,9 +187,15 @@ $m = Model::getInstance();
 								<h3>Ubicacion</h3>
 								<br />
 								<div class="clearfix">
-									<label for="direccion">Direccion</label>
+									<label for="direccion">Calle</label>
 									<div class="input">
-									<?php echo DisplayHelper::text('direccion', ''); ?>
+									<?php echo DisplayHelper::text('calle', '', array ('id' => 'calle')); ?>
+									</div>
+								</div>
+								<div class="clearfix">
+									<label for="direccion">Numero de puerta</label>
+									<div class="input">
+									<?php echo DisplayHelper::text('numero_puerta', ''); ?>
 									</div>
 								</div>
 								<div class="clearfix">
