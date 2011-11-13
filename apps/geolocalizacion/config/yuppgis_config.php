@@ -1,6 +1,6 @@
 <?php
 
-$srid = 32721;
+$srid = 900913;
 
 $yuppgis_mode = YuppGISConfig::MODE_PREMIUM;
 $gis_controller = 'geo';
