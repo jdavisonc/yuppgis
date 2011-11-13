@@ -33,6 +33,7 @@ class PacienteController extends GISController {
 			$p->setDepartamento($this->params['departamento']);
 			
 			$ubicacion = $this->getUbicacionPaciente($calle, $numero);
+			$ubicacion->setId(null);
 			$p->setUbicacion($ubicacion);
 			
 			if ($p->save()) {
@@ -47,7 +48,7 @@ class PacienteController extends GISController {
 	
 	
 	public function getUbicacionPaciente($calle, $numero) {
-		$url = self::URL_WS_GEOLOCALIZACION . 'calle=' . $calle . '&numero=' . $numero;
+		$url = self::URL_WS_GEOLOCALIZACION . 'calle=' .  rawurlencode($calle) . '&numero=' . $numero;
 		
 		$request = new  HTTPRequest();
 		$response = $request->HttpRequestGet($url);
