@@ -5,6 +5,8 @@ YuppLoader::load('casodeestudio.model', 'Paciente');
 
 class PacienteController extends GISController {
 
+	private $base_url = "http://localhost/yuppgis/geolocalizacion/geo/geolocalizar?";
+	
 	public function addAction() {
 		if (isset($this->params['nombre'])) {
 			$p = new Paciente();
@@ -21,12 +23,15 @@ class PacienteController extends GISController {
 			$p->setEmail($this->params['email']);
 			$p->setCi($this->params['ci']);
 			
+			
+			
 			$p->setDireccion($this->params['direccion']);
 			$p->setBarrio($this->params['barrio']);
 			$p->setCiudad($this->params['ciudad']);
 			$p->setDepartamento($this->params['departamento']);
-			// TODO_GIS: Make Magic
-			$p->setUbicacion(new Point(-56.149921, -34.899518));
+			
+			$ubicacion = $this->getUbicacionPaciente("CONSTITUCION", 2374);
+			$p->setUbicacion($ubicacion);
 			
 			if ($p->save()) {
 				$this->params['inserted'] = $p->getId();
@@ -35,6 +40,25 @@ class PacienteController extends GISController {
 			}
 		}
 		return ;
+	}
+	
+	
+	public function getUbicacionPaciente($calle, $numero) {
+		$url = $this->base_url . 'calle=' . $calle . '&numero=' . $numero;
+		
+		$request = new  HTTPRequest();
+		$response = $request->HttpRequestGet($url);
+		if ($response->getStatus() == 200) {
+			$element = $response->getBody();
+			if ($element != 'Resultado no encontrado') {
+				$elements = KMLUtilities::KMLToGeometry($element); 
+				return $elements[0];
+			} else {
+				//error
+			}
+		} else {
+			//error
+		}
 	}
 	
 	public function listAction() {
