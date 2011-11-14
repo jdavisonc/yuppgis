@@ -2,6 +2,14 @@
 
 YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 
+/**
+ * Clase que representa una figura Geometrica.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class Geometry extends PersistentObject {
 	
 	// propiedades de las geometrias, dimension
@@ -35,29 +43,22 @@ class Geometry extends PersistentObject {
 	}
 	
 	/**
-	 * Se serializa el atributo uiproperty a JSON
+	 * Serializa el atributo uiproperty a JSON.
+	 * 
 	 * @see PersistentObject::preValidate()
 	 */
 	public function preValidate(){
 		$this->aSet('uiproperty', UIProperty::toJSON($this->uiPropertyObject));
 	}
 	
-/**
-	 * Retorna nombre de clase.
-	 * Solo soportado por PHP > 5.3
+	/**
+	 * Retorna nombre de clase. Nota: Solo soportado por PHP > 5.3
 	 * @return nombre de la clase
 	 */
 	public static function getClassName() {
         return get_called_class();
     }
     
-    /*
-    public abstract function getFirstPoint();
-	public abstract function getLastPoint();
-	public abstract function getPoint(int $n);
-	public abstract	function numPoints(); 
-	public abstract function isSimple();
-	*/
 }
 
 ?>

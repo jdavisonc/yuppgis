@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * Clase que representa una linea con dos puntos.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class Line extends LineString {
+	
 	function __construct( $points ) {
-		
 		parent :: __construct( $points);
 	}
 	

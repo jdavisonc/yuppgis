@@ -2,10 +2,17 @@
 
 YuppLoader::load('yuppgis.core.basic', 'DataLayer');
 
+/**
+ * Clase que representa un Mapa.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class Map extends PersistentObject {
 
 	function __construct($args = array('name' => ''), $isSimpleInstance = false){
-		
 		$this->setWithTable("map");
 		$this->addAttribute("name", Datatypes::TEXT);
 		$this->addAttribute("visualization_json", Datatypes::TEXT);
@@ -14,20 +21,10 @@ class Map extends PersistentObject {
 		parent :: __construct($args, $isSimpleInstance);				
 	}
 
-	/**
-	 * 
-	 * Enter description here ...
-	 * @param unknown_type $element
-	 */
 	function addLayer($layer){		
 		$this->addToLayers($layer);
 	}
 
-	/**
-	 * 
-	 * Enter description here ...
-	 * @param unknown_type $key
-	 */
 	function removeLayer($layer){
 		$this->removeFromLayers($layer);
 	}
@@ -46,6 +43,7 @@ class Map extends PersistentObject {
 		self :: $thisClass = __CLASS__;
 		return PersistentObject :: get($id);
 	}
+	
 }
 
 ?>

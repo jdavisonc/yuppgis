@@ -1,17 +1,25 @@
 <?php
 
+/**
+ * Clase que representa una coleccion de figuras geometricas {@link Geometry}.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GeometryCollection extends Geometry {
-	
-	//protected $collection; // array de coleciones geograficas
 
 	function __construct($collection = array()) {
  		$this->addHasMany('collection', Geometry::getClassName());
 		parent :: __construct(array ('collection' => $collection));
 	}
 	
+	/**
+	 * TODO_GIS: Debe el tipo (puntos), dimension, greado de superposicion.
+	 * @see Geometry::preValidate()
+	 */
 	public function preValidate() {
-		//TODO_GIS validaciones de las propiedades
-		//Cada sub clase debe validar el tipo (puntos), dimension, greado de superposicion
 		parent::preValidate();
 	}
 	

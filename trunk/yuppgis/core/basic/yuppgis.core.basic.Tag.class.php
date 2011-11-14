@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * Clase que representa una etiqueta.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class Tag extends PersistentObject {
 
 	function __construct($args = array (), $isSimpleInstance = false) {
-		
 		$this->setWithTable("tag");
 		$this->addAttribute("name", Datatypes :: TEXT);		
 		$this->addAttribute("color", Datatypes :: TEXT);
@@ -16,6 +23,7 @@ class Tag extends PersistentObject {
 		self :: $thisClass = __CLASS__;
 		return PersistentObject::listAll($params);
 	}
+	
 }
 
 ?>

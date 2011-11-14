@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * Clase que representa una superficie.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 abstract class Surface extends Geometry {
-
 
 	function __construct($exteriorBoundary = array(), array $interiorsBoundary = array()) {
 		$this->addHasOne('exteriorBoundary', Curve::getClassName());
@@ -10,7 +17,6 @@ abstract class Surface extends Geometry {
 	}
 
 	public function preValidate() {
-		//TODO_GIS validaciones de las propiedades
 		parent::preValidate();
 	}
 
