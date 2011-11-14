@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Clase que representa un {@link UIProperty} relleno.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class Background extends UIProperty {
 	
 	protected $color;

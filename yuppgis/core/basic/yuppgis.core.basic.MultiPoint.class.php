@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Clase que representa un conjunto de puntos {@link Point}.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class MultiPoint extends GeometryCollection {
 	
 	function __construct($collection = array()) {
@@ -14,6 +22,7 @@ class MultiPoint extends GeometryCollection {
 		}
 		parent::preValidate();
 	}
+	
 }
 
 ?>

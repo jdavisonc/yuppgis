@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Clase que representa un {@link UIProperty} icono.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class Icon extends UIProperty {
 	
 	const DEFAULT_ICON = '/yuppgis/yuppgis/js/gis/img/marker-gold.png';

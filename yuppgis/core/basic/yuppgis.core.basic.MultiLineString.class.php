@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Clase que representa un conjunto de lineas {@link LineString}.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class MultiLineString extends MultiCurve {
 	
 	function __construct($collection = array()) {
@@ -14,6 +22,7 @@ class MultiLineString extends MultiCurve {
 		}
 		parent::preValidate();
 	}
+	
 }
 
 ?>

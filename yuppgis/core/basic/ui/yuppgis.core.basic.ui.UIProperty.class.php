@@ -4,6 +4,14 @@ YuppLoader::load('yuppgis.core.basic.ui', 'Icon');
 YuppLoader::load('yuppgis.core.basic.ui', 'Background');
 YuppLoader::load('yuppgis.core.basic.ui', 'Border');
 
+/**
+ * Clase que representa una propiedad de visualizacion de figuras geograficas.
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class UIProperty {
 	
 	protected $alpha;

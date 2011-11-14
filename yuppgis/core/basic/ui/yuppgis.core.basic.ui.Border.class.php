@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Clase que representa un {@link UIProperty} borde. 
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class Border extends UIProperty {
 	
 	protected $color;
