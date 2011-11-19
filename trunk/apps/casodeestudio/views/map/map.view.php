@@ -21,6 +21,13 @@
 			body {
 				padding-top: 60px;
 			}
+			input {
+				height : 30px
+			}
+			#menubar input,select {
+				width : 95%;
+				margin: 2px;
+			}
 		</style>
 	</head>
 	<body>
