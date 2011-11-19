@@ -27,3 +27,7 @@
 	min-height: 30px;
 	line-height: 30px;
 }
+
+input {
+	height : 30px
+}
