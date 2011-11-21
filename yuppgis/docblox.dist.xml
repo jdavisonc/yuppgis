@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<docblox>
+	<title><![CDATA[<b>YuppGIS</b>]]></title>
+	<parser>
+		<target>output</target>
+		<markers>
+			<item>TODO</item>
+			<item>FIXME</item>
+		</markers>
+		<extensions>
+			<extension>php</extension>
+		</extensions>
+		<visibility></visibility>
+	</parser>
+</docblox>
