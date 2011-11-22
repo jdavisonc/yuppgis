@@ -1,0 +1,691 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>&lt;b&gt;YuppGIS&lt;/b&gt;</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.tools.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+            $(document).ready(function() {
+                $(".filetree").treeview({
+                    collapsed: true,
+                    persist: "cookie"
+                });
+
+                $("#accordion").accordion({
+                    collapsible: true,
+                    autoHeight:  false,
+                    fillSpace:   true
+                });
+
+                $(".tabs").tabs();
+            });
+        </script></head><body><div xmlns="" id="content">
+<script xmlns:dbx="http://docblox-project.org/xsl/functions">
+
+      function filterElements()
+      {
+        inherited = !$('#show-inherited').hasClass('deselected');
+        public    = !$('#show-public').hasClass('deselected');
+        protected = !$('#show-protected').hasClass('deselected');
+        private   = !$('#show-private').hasClass('deselected');
+
+        $('div.public').each(function(index, val) {
+            $(val).toggle(public && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.protected').each(function(index, val) {
+            $(val).toggle(protected && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.private').each(function(index, val) {
+            $(val).toggle(private && !($(val).hasClass('inherited_from') && !inherited));
+        });
+      }
+
+      $(document).ready(function() {
+        $('a.gripper').click(function() {
+            $(this).nextAll('div.code-tabs').slideToggle();
+            $(this).children('img').toggle();
+            return false;
+        });
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').css('cursor', 'pointer');
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').click(function() {
+            $(this).parent().nextAll('div.code-tabs').slideToggle();
+            $(this).parent().prevAll('a.gripper').children('img').toggle();
+            return false;
+        });
+
+        $('div.code-tabs').hide();
+        $('a.gripper').show();
+        $('div.code-tabs:empty').prevAll('a.gripper').html('');
+
+        $('#show-public, #show-protected, #show-private, #show-inherited')
+            .css('cursor', 'pointer')
+            .click(function(){
+                $(this).toggleClass('deselected');
+                if ($(this).hasClass('deselected')) {
+                  $(this).fadeTo('fast', '0.4');
+                } else {
+                  $(this).fadeTo('fast', '1.0');
+                }
+                filterElements();
+                return false;
+            });
+        $('#show-protected, #show-private').click();
+
+        // add the sliding behaviour to the file navigation and show it
+        // it is initially hidden for non-JS users.
+        $("#file-nav-box").show().hover(function() {
+            $("#file-nav-container").slideDown(400);
+        }, function() {
+            $("#file-nav-container").slideUp(400);
+        });
+      });
+
+      
+    </script><h1 xmlns:dbx="http://docblox-project.org/xsl/functions" class="file">core/persistent/yuppgis.core.persistent.GISPMPremium.class.php</h1>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" id="file-nav-box">
+<div id="file-nav-options">
+              Show:
+              <img src="images/icons/visibility_public.png" id="show-public"><img src="images/icons/visibility_protected.png" id="show-protected"><img src="images/icons/visibility_private.png" id="show-private"><span class="attribute" id="show-inherited">inherited</span>
+</div>
+<div id="file-nav-container">
+<ul id="file-nav"><li>
+<a href="#classes"><img src="images/icons/class.png" height="14">
+                          Classes
+                      </a><ul><li><a href="#%5CGISPMPremium">\GISPMPremium</a></li></ul>
+</li></ul>
+<div style="clear: left;"></div>
+</div>
+<div id="file-nav-tab">
+              Table of Contents
+          </div>
+</div>
+<a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\GISPMPremium" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\GISPMPremium<div class="to-top"><a href="#top">jump to top</a></div>
+</h2>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
+<small class="package"><b>Package: </b>Default</small><dl class="class-info">
+<dt>Parent(s)</dt>
+<dd>
+<a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager">\GISPersistentManager</a>
+            &lt;
+            \PersistentManager</dd>
+</dl>
+<h3>Properties</h3>
+<div>
+<a id="\GISPMPremium::$gisQueryProcessor" class="anchor"></a><div class="property private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$gisQueryProcessor</span>= 'null'
+                </code><div class="description"></div>
+<div class="code-tabs">
+<strong>Default value</strong><code>null</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+<h3>Methods</h3>
+<div>
+<a id="\GISPMPremium::delete()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">delete</span><span class="nb-faded-text">(
+           $persistentInstance,  $id,  $logical
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Borra elementos en cascada.</p>
+<small>Inherited from:
+                    <a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::delete()">\GISPersistentManager::delete()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"><p><em>Precaucion</em>: Solo se implemento el borrado en cascada para asociasiones hasOne</p>
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$persistentInstance</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$id</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$logical</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>\PersistentManager::delete()
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::delete_gis_object()" class="anchor"></a><div class="method protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">delete_gis_object</span><span class="nb-faded-text">(
+          \String $ownerName, \String $attrNameAssoc, \Object $assocObj, \Boolean $logical
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description">Elimina un elemento geografico.</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$ownerName</th>
+<td>\String</td>
+<td><em><p>Nombre del objeto dueno</p></em></td>
+</tr>
+<tr>
+<th>$attrNameAssoc</th>
+<td>\String</td>
+<td><em><p>Nombre del atributo de asociacion</p></em></td>
+</tr>
+<tr>
+<th>$assocObj</th>
+<td>\Object</td>
+<td><em><p>Objeto geografico asociado</p></em></td>
+</tr>
+<tr>
+<th>$logical</th>
+<td>\Boolean</td>
+<td><em><p>Verdadero si es una eliminacion logica</p></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>
+<a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::delete_gis_object()">\GISPersistentManager::delete_gis_object()</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::findBy()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">findBy</span><span class="nb-faded-text">(
+           $instance,  $condition,  $params
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Busca elementos $instance segun una condicion</p>
+<small>Inherited from:
+                    <a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::findBy()">\GISPersistentManager::findBy()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"><p><em>TODO_GIS</em>: Ver de suplantar por una GISQuery y asi borrar la logica de la funcion processCondition</p>
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$instance</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$condition</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$params</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>\PersistentManager::findBy()
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::findByGISQuery()" class="anchor"></a><div class="method protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">findByGISQuery</span><span class="nb-faded-text">(
+          <a href="db_core_db_criteria2_yuppgis.core.db.criteria2.GISQuery.class.html#%5CGISQuery">\GISQuery</a> $query
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description">Ejecuta una consulta geografica (GISQuery) y retorna su resultado.</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$query</th>
+<td><a href="db_core_db_criteria2_yuppgis.core.db.criteria2.GISQuery.class.html#%5CGISQuery">\GISQuery</a></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>
+<a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::findByGISQuery()">\GISPersistentManager::findByGISQuery()</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::findByQuery()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">findByQuery</span><span class="nb-faded-text">(
+           $q
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Ejecuta una consulta, si es una consulta geografica se procesa con un GISQueryProcessor.</p>
+<small>Inherited from:
+                    <a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::findByQuery()">\GISPersistentManager::findByQuery()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$q</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>\PersistentManager::findByQuery()
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::generateAll()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">generateAll</span><span class="nb-faded-text">(
+           $appName
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::generateAll()">\GISPersistentManager::generateAll()</a></small>
+</div>
+<div class="code-tabs">
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$appName</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::generate_gisTables()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">generate_gisTables</span><span class="nb-faded-text">(
+          \PersistentManager $owner, \unknown_type $attr,  $appName
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description">TODO_GIS</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$owner</th>
+<td>\PersistentManager</td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$attr</th>
+<td>\unknown_type</td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$appName</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::getGISQueryProcessor()" class="anchor"></a><div class="method private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private"><span class="highlight">getGISQueryProcessor</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_core_persistent_yuppgis.core.persistent.GISQueryProcessor.class.html#%5CGISQueryProcessor">\GISQueryProcessor</a></code><div class="description"><p class="short_description">Retorna instancia de procesador de consultas geograficas</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_core_persistent_yuppgis.core.persistent.GISQueryProcessor.class.html#%5CGISQueryProcessor">\GISQueryProcessor</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::get_gis_object()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">get_gis_object</span><span class="nb-faded-text">(
+          \String $ownerName, \String $attr, \class $persistentClass, \int $id
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description">Obtiene un objeto geografico desde la base de datos.</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$ownerName</th>
+<td>\String</td>
+<td><em><p>Nombre del objeto dueno</p></em></td>
+</tr>
+<tr>
+<th>$attr</th>
+<td>\String</td>
+<td><em><p>Nombre del atributo</p></em></td>
+</tr>
+<tr>
+<th>$persistentClass</th>
+<td>\class</td>
+<td><em><p>Clase o instancia a obtener</p></em></td>
+</tr>
+<tr>
+<th>$id</th>
+<td>\int</td>
+<td><em><p>Identificador de la clase</p></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>
+<a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::get_gis_object()">\GISPersistentManager::get_gis_object()</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::init()" class="anchor"></a><div class="method protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">init</span><span class="nb-faded-text">(
+          \String $appName
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description">Funcion que es llamada para inicializar el Persistent Manager.</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$appName</th>
+<td>\String</td>
+<td><em><p>Nombre de la aplicacion en ejecucion</p></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>
+<a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::init()">\GISPersistentManager::init()</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::init_dal()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">init_dal</span><span class="nb-faded-text">(
+           $appName
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::init_dal()">\GISPersistentManager::init_dal()</a></small>
+</div>
+<div class="code-tabs">
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$appName</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::processGISCondition()" class="anchor"></a><div class="method protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">processGISCondition</span><span class="nb-faded-text">(
+           $instance,  $condition,  $params
+          )
+        </span>
+        :
+          \Debe</code><div class="description"><p class="short_description">Funcion que debe evaluar una GISCondition y retornar los objetos que cumplan con esta condicion.</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$instance</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$condition</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$params</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>\Debe</td>
+<td>retornar un array, cuyas entradas deben estar numeradas, y cada una de ellas debe . ser un array el cual contenga una key 'id' indicando el identificador del elemento que cumpla con la condicion.</td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>
+<a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::processGISCondition()">\GISPersistentManager::processGISCondition()</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::save_cascade_owner()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">save_cascade_owner</span><span class="nb-faded-text">(
+           $owner,  $attrNameAssoc,  $obj,  $sessId
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Se salva en cascada con el dueño y su nombre de atributo.</p>
+<small>Inherited from:
+                    <a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::save_cascade_owner()">\GISPersistentManager::save_cascade_owner()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$owner</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$attrNameAssoc</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$obj</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$sessId</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>\PersistentManager::save_cascade_owner()
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::save_gis_object()" class="anchor"></a><div class="method protected">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">save_gis_object</span><span class="nb-faded-text">(
+          \String $ownerName, \String $attrNameAssoc, \PersistentObject $obj
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description">Salva el objeto geografico en la base de datos.</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$ownerName</th>
+<td>\String</td>
+<td><em><p>Nombre del objeto dueno</p></em></td>
+</tr>
+<tr>
+<th>$attrNameAssoc</th>
+<td>\String</td>
+<td><em><p>Nombre del atributo de asociacion</p></em></td>
+</tr>
+<tr>
+<th>$obj</th>
+<td>\PersistentObject</td>
+<td><em><p>Objeto geografico a persistir</p></em></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>
+<a href="db_core_persistent_yuppgis.core.persistent.GISPersistentManager.class.html#%5CGISPersistentManager::save_gis_object()">\GISPersistentManager::save_gis_object()</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\GISPMPremium::tableExists()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">tableExists</span><span class="nb-faded-text">(
+           $className
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$className</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<small xmlns="" class="footer">Documentation was generated by <a href="http://docblox-project.org">DocBlox 0.16.0</a>.
+    </small></body></html>

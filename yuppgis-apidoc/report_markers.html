@@ -1,0 +1,205 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>&lt;b&gt;YuppGIS&lt;/b&gt;</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.tools.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+            $(document).ready(function() {
+                $(".filetree").treeview({
+                    collapsed: true,
+                    persist: "cookie"
+                });
+
+                $("#accordion").accordion({
+                    collapsible: true,
+                    autoHeight:  false,
+                    fillSpace:   true
+                });
+
+                $(".tabs").tabs();
+            });
+        </script></head><body><script xmlns="" type="text/javascript">
+        $(document).ready(function() {
+            $("#marker-accordion").accordion({
+                collapsible: true,
+                autoHeight:  false
+            });
+        });
+    </script><div xmlns="" id="content">
+<h1>Markers (TODO / FIXME)</h1>
+<div id="marker-accordion">
+<h3><a href="#">core/gis/yuppgis.core.gis.KMLUtilities.class.php<small>5</small></a></h3>
+<div><table>
+<tr>
+<th>Type</th>
+<th>Line</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>todo</td>
+<td>11</td>
+<td>_GIS</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>13</td>
+<td>_GIS</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>18</td>
+<td>_GIS</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>50</td>
+<td>_GIS</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>52</td>
+<td>_GIS</td>
+</tr>
+</table></div>
+<h3><a href="#">core/persistent/yuppgis.core.persistent.GISPersistentManager.class.php<small>14</small></a></h3>
+<div><table>
+<tr>
+<th>Type</th>
+<th>Line</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>todo</td>
+<td>67</td>
+<td>_GIS: control de circularidad</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>193</td>
+<td>> no es recursiva!</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>194</td>
+<td>> no es recursiva!</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>220</td>
+<td>_GIS getMultipleTableInheritanceStructureToGenerateModel no es por app</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>231</td>
+<td>supongo que ya tiene withTable, luego veo el caso que no se le ponga WT a la superclase...</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>232</td>
+<td>como tambien tiene los atributos de las superclases y como van en otra tabla, hay que sacarlos.</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>244</td>
+<td>si el artibuto no es de una subclase parece que tambien pone nullable true...</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>251</td>
+<td>esta parte seria mas facil si simplemente cuando la clase tiene la constraint</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>282</td>
+<td>GIS_ revisar si copiar y pasar al Premium</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>295</td>
+<td>esta operacion necesita instanciar una DAL por cada aplicacion.</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>301</td>
+<td>c_ins no tiene las restricciones sobre los atributos inyectados.</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>370</td>
+<td>_GIS _ si tiene habilitado modo premium??</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>419</td>
+<td>_GIS ERROR: insert or update on table "data_layer_elements_gis_persistent_object" violates foreign key constraint</td>
+</tr>
+<tr>
+<td>fixme</td>
+<td>425</td>
+<td>Genera link a gs (tabla de G1) aunque el atributo sea declarado en cs (tabla de C1). Esto puede generar problemas al cargar (NO PASA NADA AL CARGAR, ANDA FENOMENO!), aunque la instancia es la misma, deberia hacer la referencia a la tabla correspondiente a la instancia que declara el atributo, solo por consistencia y correctitud.</td>
+</tr>
+</table></div>
+<h3><a href="#">core/persistent/yuppgis.core.persistent.GISPMBasic.class.php<small>1</small></a></h3>
+<div><table>
+<tr>
+<th>Type</th>
+<th>Line</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>todo</td>
+<td>12</td>
+<td>_GIS: Deberia de tener dos instancias de dal distintas? uno comun y otro wsdal? xq esta clase no es igual que premium,</td>
+</tr>
+</table></div>
+<h3><a href="#">core/persistent/serialize/yuppgis.core.persistent.serialize.WKTGEO.class.php<small>2</small></a></h3>
+<div><table>
+<tr>
+<th>Type</th>
+<th>Line</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>todo</td>
+<td>169</td>
+<td>_GIS: Hacer</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>200</td>
+<td>_GIS</td>
+</tr>
+</table></div>
+<h3><a href="#">core/persistent/yuppgis.core.persistent.GISPMPremium.class.php<small>1</small></a></h3>
+<div><table>
+<tr>
+<th>Type</th>
+<th>Line</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>todo</td>
+<td>125</td>
+<td>_GIS: Consulta que compara un valor con valor de otra tabla geografica -> g.geom == j.geom</td>
+</tr>
+</table></div>
+<h3><a href="#">core/persistent/yuppgis.core.persistent.GISQueryProcessor.class.php<small>3</small></a></h3>
+<div><table>
+<tr>
+<th>Type</th>
+<th>Line</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>todo</td>
+<td>258</td>
+<td>_GIS: Refactor de codigo de cuando es Aggregation (linea 72)</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>515</td>
+<td>_GIS, caso de $key null y que no exista en gisResults</td>
+</tr>
+<tr>
+<td>todo</td>
+<td>589</td>
+<td>_GIS ver de mejorar el caso de que se realize From de las mismas tablas y no se realize</td>
+</tr>
+</table></div>
+</div>
+</div></body></html>
