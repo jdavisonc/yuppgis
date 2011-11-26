@@ -87,7 +87,7 @@
 			</div>
 			<div class="content">
 				<!-- Main hero unit for a primary marketing message or call to action -->
-				<div class="hero-unit">
+				<div class="well">
 					<p>
 					<?php echo GISHelpers::Map(array(
 					MapParams::ID => 1,
