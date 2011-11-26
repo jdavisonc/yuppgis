@@ -7,6 +7,8 @@ YuppLoader::load('yuppgis.core.basic.ui', 'Border');
 /**
  * Clase que representa una propiedad de visualizacion de figuras geograficas.
  * 
+ * @package yuppgis.core.basic.ui
+ * 
  * @author Jorge Davison
  * @author Martin Taruselli
  * @author Emilia Rosa

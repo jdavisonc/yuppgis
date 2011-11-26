@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Clase que define las convenciones de YuppGIS.
+ * 
+ * @package yuppgis.core.config
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class YuppGISConventions extends YuppConventions {
 
 	public static function gisTableName($tableNameOwner, $attr) {

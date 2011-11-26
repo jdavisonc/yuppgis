@@ -1,14 +1,42 @@
 <?php
 
+/**
+ * Clase que representa una condicion geografica para consultas geograficas ({@link GISQuery}).
+ * 
+ * @package yuppgis.core.db.criteria2
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISCondition extends Condition {
 	
 	private $extraValueReference;
 	
-	// Tipos de condiciones
+	/**
+	 * Condicion geografica de pertenecia, A contiene a B?
+	 */
 	const GISTYPE_CONTAINS		= "giscondition.type.contains";
+	
+	/**
+	 * Condicion geografica de pertenencia, A esta contenido en B?
+	 */
 	const GISTYPE_ISCONTAINED	= "giscondition.type.iscontained";
+	
+	/**
+	 * Condicion geografica de igualdad, A es igual a B?
+	 */
 	const GISTYPE_EQGEO			= "giscondition.type.equals";
+	
+	/**
+	 * Condicion geografica de interseccion, A intersecta a B?
+	 */
 	const GISTYPE_INTERSECTS	= "giscondition.type.intersects";
+	
+	/**
+	 * Condicion geografica de distancia, A esta a una distancia X de B?
+	 */
 	const GISTYPE_DWITHIN		= "giscondition.type.dwithin";
 	
 	public static function getClassName() {
@@ -72,26 +100,70 @@ class GISCondition extends Condition {
 		return $c;
 	}
 
+	/**
+	 * Crea una condicion de pertencia.
+	 * 
+	 * @param string $alias alias de la tabla.
+	 * @param string $attr nombre del atributo a aplicar la condicion.
+	 * @param Geometry $refValue valor con el cual va a comparar la condicion.
+	 */
 	public static function CONTAINS( $alias, $attr, $refValue ) {
 		return self::createGISConditionValue(self::GISTYPE_CONTAINS, $alias, $attr, $refValue );
 	}
 	
+	/**
+	 * Crea una condicion de pertencia.
+	 * 
+	 * @param string $alias alias de la tabla.
+	 * @param string $attr nombre del atributo a aplicar la condicion.
+	 * @param Geometry $refValue valor con el cual va a comparar la condicion.
+	 */
 	public static function ISCONTAINED( $alias, $attr, $refValue ) {
 		return self::createGISConditionValue(self::GISTYPE_ISCONTAINED, $alias, $attr, $refValue );
 	}
 	
+	/**
+	 * Crea una condicion de igualdad.
+	 * 
+	 * @param string $alias alias de la tabla.
+	 * @param string $attr nombre del atributo a aplicar la condicion.
+	 * @param Geometry $refValue valor con el cual va a comparar la condicion.
+	 */
 	public static function EQGEO( $alias, $attr, $refValue ) {
 		return self::createGISConditionValue(self::GISTYPE_EQGEO, $alias, $attr, $refValue );
 	}
 	
+	/**
+	 * Crea una condicion de igualdad.
+	 * 
+	 * @param string $alias alias de la tabla.
+	 * @param string $attr nombre del atributo a aplicar la condicion.
+	 * @param string $refAlias alias de la segunda tabla.
+	 * @param string $refAttr nombre del atributo dos a aplicar la condicion.
+	 */
 	public static function EQGEOA( $alias, $attr, $refAlias, $refAttr ) {
        return self::createGISConditionAttribute(self::GISTYPE_EQGEO, $alias, $attr, $refAlias, $refAttr );
     }
-	
+
+    /**
+	 * Crea una condicion de interseccion.
+	 * 
+	 * @param string $alias alias de la tabla.
+	 * @param string $attr nombre del atributo a aplicar la condicion.
+	 * @param Geometry $refValue valor con el cual va a comparar la condicion.
+	 */
 	public static function INTERSECTS( $alias, $attr, $refValue ) {
 		return self::createGISConditionValue(self::GISTYPE_INTERSECTS, $alias, $attr, $refValue );
 	}
 	
+    /**
+	 * Crea una condicion de distancia.
+	 * 
+	 * @param string $alias alias de la tabla.
+	 * @param string $attr nombre del atributo a aplicar la condicion.
+	 * @param Geometry $refValue valor con el cual va a comparar la condicion.
+	 * @param int $distance valor con el cual va a comparar la condicion.
+	 */
 	public static function DWITHIN( $alias, $attr, $refValue, $distance) {
 		return self::createGISConditionValueWithExtra(self::GISTYPE_DWITHIN, $alias, $attr, $refValue, $distance);
 	}

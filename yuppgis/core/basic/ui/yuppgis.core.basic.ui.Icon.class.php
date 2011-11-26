@@ -3,6 +3,8 @@
 /**
  * Clase que representa un {@link UIProperty} icono.
  * 
+ * @package yuppgis.core.basic.ui
+ * 
  * @author Jorge Davison
  * @author Martin Taruselli
  * @author Emilia Rosa

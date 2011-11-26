@@ -3,6 +3,8 @@
 /**
  * Clase que representa un conjunto de superficies {@link Surface}.
  * 
+ * @package yuppgis.core.basic
+ * 
  * @author Jorge Davison
  * @author Martin Taruselli
  * @author Emilia Rosa

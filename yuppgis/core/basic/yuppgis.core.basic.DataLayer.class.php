@@ -7,6 +7,8 @@ YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 /**
  * Capa de datos que contendra elementos para luego ser mostrados en un mapa.
  * 
+ * @package yuppgis.core.basic
+ * 
  * @author Jorge Davison
  * @author German Schnyder 
  * @author Emilia Rosa

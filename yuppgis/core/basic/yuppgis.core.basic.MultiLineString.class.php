@@ -3,6 +3,8 @@
 /**
  * Clase que representa un conjunto de lineas {@link LineString}.
  * 
+ * @package yuppgis.core.basic
+ * 
  * @author Jorge Davison
  * @author Martin Taruselli
  * @author Emilia Rosa

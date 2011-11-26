@@ -5,6 +5,8 @@ YuppLoader::load( "yuppgis.core.basic", "Observer" );
 /**
  * Clase que representa una clase observable que genera eventos.
  * 
+ * @package yuppgis.core.basic
+ * 
  * @author Jorge Davison
  * @author Martin Taruselli
  * @author Emilia Rosa

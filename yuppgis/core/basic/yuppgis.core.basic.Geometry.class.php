@@ -4,6 +4,8 @@ YuppLoader::load('yuppgis.core.basic.ui', 'UIProperty');
 
 /**
  * Clase que representa una figura Geometrica.
+ *
+ * @package yuppgis.core.basic
  * 
  * @author Jorge Davison
  * @author Martin Taruselli
