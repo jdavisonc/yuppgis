@@ -2,6 +2,8 @@
 
 /**
  * Clase que representa una coleccion de figuras geometricas {@link Geometry}.
+ *
+ * @package yuppgis.core.basic
  * 
  * @author Jorge Davison
  * @author Martin Taruselli

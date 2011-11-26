@@ -3,6 +3,8 @@
 /**
  * Clase que representa un conjunto de puntos.
  * 
+ * @package yuppgis.core.basic
+ * 
  * @author Jorge Davison
  * @author Martin Taruselli
  * @author Emilia Rosa
