@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>&lt;b&gt;YuppGIS&lt;/b&gt;</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.tools.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>YuppGIS</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.tools.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
             $(document).ready(function() {
                 $(".filetree").treeview({
                     collapsed: true,
@@ -98,19 +98,41 @@
 <a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\KMLUtilities" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\KMLUtilities<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>Default</small><dl class="class-info"></dl>
+<small class="package"><b>Package: </b>Default</small><p class="short-description">Clase que brinda operaciones para trabajar con Kml, DataLayers, geometria</p>
+<div class="long-description">
+</div>
+<dl class="class-info">
+<dt>Author</dt>
+<dd>Jorge Davison
+         
+    </dd>
+<dt>Author</dt>
+<dd>Martin Taruselli
+         
+    </dd>
+<dt>Author</dt>
+<dd>Emilia Rosa
+         
+    </dd>
+<dt>Author</dt>
+<dd>German Schnyder
+         
+    </dd>
+</dl>
 <h3>Methods</h3>
 <div>
 <a id="\KMLUtilities::GeometryToKML()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">GeometryToKML</span><span class="nb-faded-text">(
-           $id,  $geom
+          \long $id, <a href="db_core_basic_yuppgis.core.basic.Geometry.class.html#%5CGeometry">\Geometry</a> $geom
           )
         </span>
         :
           void</code><div class="description">
-<span class="attribute">static</span><p class="short_description"></p>
+<span class="attribute">static</span><p class="short_description">Funcion que retorna un kml a partir de una Geometria</p>
 </div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -119,12 +141,12 @@
 </tr></thead>
 <tr>
 <th>$id</th>
-<td></td>
+<td>\long</td>
 <td><em></em></td>
 </tr>
 <tr>
 <th>$geom</th>
-<td></td>
+<td><a href="db_core_basic_yuppgis.core.basic.Geometry.class.html#%5CGeometry">\Geometry</a></td>
 <td><em></em></td>
 </tr>
 </table>
@@ -170,44 +192,7 @@
 </div>
 <a id="\KMLUtilities::elementToKML()" class="anchor"></a><div class="method private">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private"><span class="highlight">elementToKML</span><span class="nb-faded-text">(
-          \unknown_type $element, \unknown_type $layer, <a href="http://php.net/manual/en/class.simplexmlelement.php">\SimpleXMLElement</a> $folder
-          )
-        </span>
-        :
-          void</code><div class="description">
-<span class="attribute">static</span><p class="short_description">TODO_GIS: Hacer dinamico</p>
-</div>
-<div class="code-tabs">
-<div class="long-description">
-</div>
-<strong>Parameters</strong><table class="argument-info">
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr></thead>
-<tr>
-<th>$element</th>
-<td>\unknown_type</td>
-<td><em></em></td>
-</tr>
-<tr>
-<th>$layer</th>
-<td>\unknown_type</td>
-<td><em></em></td>
-</tr>
-<tr>
-<th>$folder</th>
-<td><a href="http://php.net/manual/en/class.simplexmlelement.php">\SimpleXMLElement</a></td>
-<td><em></em></td>
-</tr>
-</table>
-</div>
-<div class="clear"></div>
-</div>
-<a id="\KMLUtilities::layerToKML()" class="anchor"></a><div class="method public">
-<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">layerToKML</span><span class="nb-faded-text">(
-           $layer
+           $element,  $layer,  $folder
           )
         </span>
         :
@@ -222,8 +207,46 @@
 <th>Description</th>
 </tr></thead>
 <tr>
+<th>$element</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
 <th>$layer</th>
 <td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$folder</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\KMLUtilities::layerToKML()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">layerToKML</span><span class="nb-faded-text">(
+          <a href="db_core_basic_yuppgis.core.basic.DataLayer.class.html#%5CDataLayer">\DataLayer</a> $layer
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">static</span><p class="short_description">Funcion  que retorna un kml a partir de una Capa, el kml resultante contiene todos los elementos del dominio que
+pertenecen a dicha capa</p>
+</div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$layer</th>
+<td><a href="db_core_basic_yuppgis.core.basic.DataLayer.class.html#%5CDataLayer">\DataLayer</a></td>
 <td><em></em></td>
 </tr>
 </table>

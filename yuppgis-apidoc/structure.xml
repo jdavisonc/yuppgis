@@ -1,176 +1,341 @@
 <?xml version="1.0"?>
-<project version="0.16.0" title="&lt;b&gt;YuppGIS&lt;/b&gt;">
-  <file path="core/config/yuppgis.core.config.YuppGISConventions.class.php" hash="835d0d890933bf4fcc23960841f2480c" package="Default">
+<project version="0.16.0" title="YuppGIS">
+  <file path="core/config/yuppgis.core.config.YuppGISConventions.class.php" hash="9818e71b3708490fece008ad91438d8d" package="yuppgis\core\config">
+    <docblock>
+      <description>Clase que define las convenciones de YuppGIS.</description>
+      <long-description>
+</long-description>
+      <tag line="3" name="package" description="yuppgis.core.config"/>
+      <tag line="3" name="author" description="Jorge Davison"/>
+      <tag line="3" name="author" description="Martin Taruselli"/>
+      <tag line="3" name="author" description="Emilia Rosa"/>
+      <tag line="3" name="author" description="German Schnyder"/>
+    </docblock>
     <parse_markers>
-      <error line="1">No DocBlock was found for File core/config/yuppgis.core.config.YuppGISConventions.class.php</error>
-      <error line="3">No DocBlock was found for Class YuppGISConventions</error>
-      <error line="5">No DocBlock was found for Method gisTableName</error>
-      <error line="9">No DocBlock was found for Method getReservedWords</error>
+      <error line="15">No DocBlock was found for Method gisTableName</error>
+      <error line="19">No DocBlock was found for Method getReservedWords</error>
     </parse_markers>
-    <class final="false" abstract="false" line="3" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\config">
       <name>YuppGISConventions</name>
       <extends>\YuppConventions</extends>
       <full_name>\YuppGISConventions</full_name>
-      <method final="false" abstract="false" static="true" visibility="public" line="5" package="Default">
+      <docblock>
+        <description>Clase que define las convenciones de YuppGIS.</description>
+        <long-description>
+</long-description>
+        <tag line="3" name="package" description="yuppgis.core.config"/>
+        <tag line="3" name="author" description="Jorge Davison"/>
+        <tag line="3" name="author" description="Martin Taruselli"/>
+        <tag line="3" name="author" description="Emilia Rosa"/>
+        <tag line="3" name="author" description="German Schnyder"/>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" line="15" package="Default">
         <name>gisTableName</name>
-        <argument line="5">
+        <argument line="15">
           <name>$tableNameOwner</name>
           <default/>
           <type/>
         </argument>
-        <argument line="5">
+        <argument line="15">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="9" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="19" package="Default">
         <name>getReservedWords</name>
       </method>
     </class>
   </file>
-  <file path="core/config/yuppgis.core.config.YuppGISConfig.class.php" hash="fe4b1fd8f9e9c7a14477ee5cb880b434" package="Default">
+  <file path="core/config/yuppgis.core.config.YuppGISConfig.class.php" hash="30e28b6e2ceb963d45be37a4058ef78b" package="yuppgis\core\config">
+    <docblock>
+      <description>Manejador de configuraciones de YuppGIS.</description>
+      <long-description>
+</long-description>
+      <tag line="3" name="package" description="yuppgis.core.config"/>
+      <tag line="3" name="author" description="Jorge Davison"/>
+      <tag line="3" name="author" description="Martin Taruselli"/>
+      <tag line="3" name="author" description="Emilia Rosa"/>
+      <tag line="3" name="author" description="German Schnyder"/>
+    </docblock>
     <parse_markers>
-      <error line="1">No DocBlock was found for File core/config/yuppgis.core.config.YuppGISConfig.class.php</error>
-      <error line="3">No DocBlock was found for Class YuppGISConfig</error>
-      <error line="6">No DocBlock was found for Constant PROP_SRID</error>
-      <error line="7">No DocBlock was found for Constant PROP_GISDB</error>
-      <error line="8">No DocBlock was found for Constant PROP_GOOGLE_MAPS_KEY</error>
-      <error line="9">No DocBlock was found for Constant PROP_YUPPGIS_MODE</error>
-      <error line="10">No DocBlock was found for Constant PROP_BASIC_GISWSDAL_CLASS</error>
-      <error line="11">No DocBlock was found for Constant PROP_BASIC_URL</error>
-      <error line="12">No DocBlock was found for Constant PROP_BASIC_GET_URL</error>
-      <error line="13">No DocBlock was found for Constant PROP_BASIC_SAVE_URL</error>
-      <error line="14">No DocBlock was found for Constant PROP_BASIC_DELETE_URL</error>
-      <error line="15">No DocBlock was found for Constant PROP_WMS_URL</error>
-      <error line="16">No DocBlock was found for Constant PROP_WMS_MAP_FILE</error>
-      <error line="17">No DocBlock was found for Constant PROP_WMS_LAYERS</error>
-      <error line="18">No DocBlock was found for Constant PROP_WMS_FORMAT</error>
-      <error line="21">No DocBlock was found for Constant DEFAULT_SRID</error>
-      <error line="22">No DocBlock was found for Constant DEFAULT_GISDB</error>
-      <error line="23">No DocBlock was found for Constant DEFAULT_GOOGLE_MAPS_KEY</error>
-      <error line="25">No DocBlock was found for Constant MODE_BASIC</error>
-      <error line="26">No DocBlock was found for Constant MODE_PREMIUM</error>
-      <error line="27">No DocBlock was found for Constant DAFAULT_BASIC_URL</error>
-      <error line="30">No DocBlock was found for Constant CONFIG_FILENAME</error>
-      <error line="31">No DocBlock was found for Constant APP_DIR</error>
-      <error line="32">No DocBlock was found for Constant CONFIG_DIR</error>
-      <error line="34">No DocBlock was found for Property $app_gis_properties</error>
-      <error line="35">No DocBlock was found for Property $default_values</error>
-      <error line="37">No DocBlock was found for Property $instance</error>
-      <error line="39">No DocBlock was found for Method getInstance</error>
-      <error line="65">No DocBlock was found for Method generatePath</error>
-      <notice line="74">Name of argument $appName does not match with function Docblock</notice>
-      <notice line="74">Name of argument $propertyName does not match with function Docblock</notice>
+      <error line="143">No DocBlock was found for Property $app_gis_properties</error>
+      <error line="144">No DocBlock was found for Property $default_values</error>
+      <error line="146">No DocBlock was found for Property $instance</error>
+      <error line="177">No DocBlock was found for Method generatePath</error>
     </parse_markers>
-    <class final="false" abstract="false" line="3" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\config">
       <name>YuppGISConfig</name>
       <extends/>
       <full_name>\YuppGISConfig</full_name>
-      <constant namespace="default" line="6" package="Default">
+      <docblock>
+        <description>Manejador de configuraciones de YuppGIS.</description>
+        <long-description>
+</long-description>
+        <tag line="3" name="package" description="yuppgis.core.config"/>
+        <tag line="3" name="author" description="Jorge Davison"/>
+        <tag line="3" name="author" description="Martin Taruselli"/>
+        <tag line="3" name="author" description="Emilia Rosa"/>
+        <tag line="3" name="author" description="German Schnyder"/>
+      </docblock>
+      <constant namespace="default" line="19" package="Default">
         <name>PROP_SRID</name>
         <value>'srid'</value>
-      </constant>
-      <constant namespace="default" line="7" package="Default">
-        <name>PROP_GISDB</name>
-        <value>'gisdb'</value>
-      </constant>
-      <constant namespace="default" line="8" package="Default">
-        <name>PROP_GOOGLE_MAPS_KEY</name>
-        <value>'google_maps_key'</value>
-      </constant>
-      <constant namespace="default" line="9" package="Default">
-        <name>PROP_YUPPGIS_MODE</name>
-        <value>"yuppgis_mode"</value>
-      </constant>
-      <constant namespace="default" line="10" package="Default">
-        <name>PROP_BASIC_GISWSDAL_CLASS</name>
-        <value>'basic_giswsdal_class'</value>
-      </constant>
-      <constant namespace="default" line="11" package="Default">
-        <name>PROP_BASIC_URL</name>
-        <value>'basic_url'</value>
-      </constant>
-      <constant namespace="default" line="12" package="Default">
-        <name>PROP_BASIC_GET_URL</name>
-        <value>'basic_get_url'</value>
-      </constant>
-      <constant namespace="default" line="13" package="Default">
-        <name>PROP_BASIC_SAVE_URL</name>
-        <value>'basic_save_url'</value>
-      </constant>
-      <constant namespace="default" line="14" package="Default">
-        <name>PROP_BASIC_DELETE_URL</name>
-        <value>'basic_delete_url'</value>
-      </constant>
-      <constant namespace="default" line="15" package="Default">
-        <name>PROP_WMS_URL</name>
-        <value>'wms_url'</value>
-      </constant>
-      <constant namespace="default" line="16" package="Default">
-        <name>PROP_WMS_MAP_FILE</name>
-        <value>'wms_map_file'</value>
-      </constant>
-      <constant namespace="default" line="17" package="Default">
-        <name>PROP_WMS_LAYERS</name>
-        <value>'wms_layers'</value>
-      </constant>
-      <constant namespace="default" line="18" package="Default">
-        <name>PROP_WMS_FORMAT</name>
-        <value>'wms_format'</value>
-      </constant>
-      <constant namespace="default" line="21" package="Default">
-        <name>DEFAULT_SRID</name>
-        <value>32721</value>
-      </constant>
-      <constant namespace="default" line="22" package="Default">
-        <name>DEFAULT_GISDB</name>
-        <value>null</value>
-      </constant>
-      <constant namespace="default" line="23" package="Default">
-        <name>DEFAULT_GOOGLE_MAPS_KEY</name>
-        <value>'ABQIAAAA9a4X6TFheB81m4gfqmoVHRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTQ99cJQVFQa1QeiRqp7S_AHD65MQ'</value>
+        <docblock>
+          <description>Propiedad que define el SRID a utilizar por YuppGIS.</description>
+          <long-description>
+</long-description>
+          <tag line="15" name="var" description="" type="\Numeric">
+            <type by_reference="false">\Numeric</type>
+          </tag>
+        </docblock>
       </constant>
       <constant namespace="default" line="25" package="Default">
-        <name>MODE_BASIC</name>
-        <value>'basic'</value>
-      </constant>
-      <constant namespace="default" line="26" package="Default">
-        <name>MODE_PREMIUM</name>
-        <value>'premium'</value>
-      </constant>
-      <constant namespace="default" line="27" package="Default">
-        <name>DAFAULT_BASIC_URL</name>
-        <value>'http://localhost/yupgis/controller?'</value>
-      </constant>
-      <constant namespace="default" line="30" package="Default">
-        <name>CONFIG_FILENAME</name>
-        <value>'yuppgis_config.php'</value>
-      </constant>
-      <constant namespace="default" line="31" package="Default">
-        <name>APP_DIR</name>
-        <value>'./apps/'</value>
+        <name>PROP_GISDB</name>
+        <value>'gisdb'</value>
+        <docblock>
+          <description>Propiedad que define la conexion a la base de datos geografica.</description>
+          <long-description>
+</long-description>
+          <tag line="21" name="var" description="YuppDB" type="\conexion">
+            <type by_reference="false">\conexion</type>
+          </tag>
+        </docblock>
       </constant>
       <constant namespace="default" line="32" package="Default">
+        <name>PROP_GOOGLE_MAPS_KEY</name>
+        <value>'google_maps_key'</value>
+        <docblock>
+          <description>Propiedad que define la llave Google Maps API a utilizar si se utiliza Google Maps.</description>
+          <long-description>&lt;p&gt;Ver: http://code.google.com/apis/maps/signup.html&lt;/p&gt;
+</long-description>
+          <tag line="27" name="var" description="" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="38" package="Default">
+        <name>PROP_YUPPGIS_MODE</name>
+        <value>"yuppgis_mode"</value>
+        <docblock>
+          <description>Propiedad que define el modo de ejecucion de YuppGIS.</description>
+          <long-description>
+</long-description>
+          <tag line="34" name="var" description="[ MODE_BASIC , MODE_PREMIUM ]" type="\enum">
+            <type by_reference="false">\enum</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="44" package="Default">
+        <name>PROP_BASIC_GISWSDAL_CLASS</name>
+        <value>'basic_giswsdal_class'</value>
+        <docblock>
+          <description>Propiedad que define el conector al repositorio en caso de que el modo de ejecucion sea MODE_BASIC.</description>
+          <long-description>
+</long-description>
+          <tag line="40" name="var" description="" type="\Class">
+            <type by_reference="false">\Class</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="50" package="Default">
+        <name>PROP_BASIC_URL</name>
+        <value>'basic_url'</value>
+        <docblock>
+          <description>Propiedad que define la URL base para conector por defecto ({@link RestGISWSDAL}), en modo MODE_BASIC.</description>
+          <long-description>
+</long-description>
+          <tag line="46" name="var" description="URL" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="56" package="Default">
+        <name>PROP_BASIC_GET_URL</name>
+        <value>'basic_get_url'</value>
+        <docblock>
+          <description>Propiedad que define la URL de obtencion de elementos para conector por defecto ({@link RestGISWSDAL}), en modo MODE_BASIC.</description>
+          <long-description>
+</long-description>
+          <tag line="52" name="var" description="URL" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="62" package="Default">
+        <name>PROP_BASIC_SAVE_URL</name>
+        <value>'basic_save_url'</value>
+        <docblock>
+          <description>Propiedad que define la URL para guardar elementos para conector por defecto ({@link RestGISWSDAL}), en modo MODE_BASIC.</description>
+          <long-description>
+</long-description>
+          <tag line="58" name="var" description="URL" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="68" package="Default">
+        <name>PROP_BASIC_DELETE_URL</name>
+        <value>'basic_delete_url'</value>
+        <docblock>
+          <description>Propiedad que define la URL para eliminacion de elementos para conector por defecto ({@link RestGISWSDAL}), en modo MODE_BASIC.</description>
+          <long-description>
+</long-description>
+          <tag line="64" name="var" description="URL" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="74" package="Default">
+        <name>PROP_WMS_URL</name>
+        <value>'wms_url'</value>
+        <docblock>
+          <description>Propiedad que define la URL del servicio WMS, en caso de utilizar mapas con capa base que no sea 'google'.</description>
+          <long-description>
+</long-description>
+          <tag line="70" name="var" description="URL" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="80" package="Default">
+        <name>PROP_WMS_MAP_FILE</name>
+        <value>'wms_map_file'</value>
+        <docblock>
+          <description>Propiedad que define archivo a utilizar por el servicio WMS, en caso de utilizar mapas con capa base que no sea 'google'.</description>
+          <long-description>
+</long-description>
+          <tag line="76" name="var" description="File" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="86" package="Default">
+        <name>PROP_WMS_LAYERS</name>
+        <value>'wms_layers'</value>
+        <docblock>
+          <description>Propiedad que define las capas a pedir al servicio WMS, en caso de utilizar mapas con capa base que no sea 'google'.</description>
+          <long-description>
+</long-description>
+          <tag line="82" name="var" description="" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="92" package="Default">
+        <name>PROP_WMS_FORMAT</name>
+        <value>'wms_format'</value>
+        <docblock>
+          <description>Propiedad que define el formato de la imagen que debe retornar el servicio WMS, en caso de utilizar mapas con capa base que no sea 'google'.</description>
+          <long-description>
+</long-description>
+          <tag line="88" name="var" description="" type="String">
+            <type by_reference="false">\String</type>
+          </tag>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="99" package="Default">
+        <name>DEFAULT_SRID</name>
+        <value>32721</value>
+        <docblock>
+          <description>Valor por defecto para la propiedad PROP_SRID.</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="104" package="Default">
+        <name>DEFAULT_GISDB</name>
+        <value>null</value>
+        <docblock>
+          <description>Valor por defecto para la propiedad PROP_GISDB.</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="109" package="Default">
+        <name>DEFAULT_GOOGLE_MAPS_KEY</name>
+        <value>'ABQIAAAA9a4X6TFheB81m4gfqmoVHRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTQ99cJQVFQa1QeiRqp7S_AHD65MQ'</value>
+        <docblock>
+          <description>Valor por defecto para la propiedad PROP_GOOGLE_MAPS_KEY, representa una llave para el servidor con nombre 'localhost'.</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="114" package="Default">
+        <name>DAFAULT_BASIC_URL</name>
+        <value>'http://localhost/yupgis/controller?'</value>
+        <docblock>
+          <description>Valor por defecto para la propiedad PROP_BASIC_URL.</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="119" package="Default">
+        <name>MODE_BASIC</name>
+        <value>'basic'</value>
+        <docblock>
+          <description>Valor posible para la propiedad PROP_YUPPGIS_MODE, representa el modo basico.</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="124" package="Default">
+        <name>MODE_PREMIUM</name>
+        <value>'premium'</value>
+        <docblock>
+          <description>Valor posible para la propiedad PROP_YUPPGIS_MODE, representa el modo premium.</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="131" package="Default">
+        <name>CONFIG_FILENAME</name>
+        <value>'yuppgis_config.php'</value>
+        <docblock>
+          <description>Nombre del archivo de configuracion que YuppGIS carga por aplicacion.</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="136" package="Default">
+        <name>APP_DIR</name>
+        <value>'./apps/'</value>
+        <docblock>
+          <description>Path de las aplicaciones.</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="141" package="Default">
         <name>CONFIG_DIR</name>
         <value>'/config/'</value>
+        <docblock>
+          <description>Path de los archivos de configuracion de las aplicaciones.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </constant>
-      <property final="false" static="false" visibility="private" line="34" package="Default">
+      <property final="false" static="false" visibility="private" line="143" package="Default">
         <name>$app_gis_properties</name>
         <default>array( )</default>
       </property>
-      <property final="false" static="false" visibility="private" line="35" package="Default">
+      <property final="false" static="false" visibility="private" line="144" package="Default">
         <name>$default_values</name>
         <default>array( )</default>
       </property>
-      <property final="false" static="true" visibility="private" line="37" package="Default">
+      <property final="false" static="true" visibility="private" line="146" package="Default">
         <name>$instance</name>
         <default>null</default>
       </property>
-      <method final="false" abstract="false" static="true" visibility="public" line="39" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="151" package="Default">
         <name>getInstance</name>
+        <docblock>
+          <description>Funcion que retorna la instancia del singleton {@link YuppGISConfig}.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="49" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="161" package="Default">
         <name>__construct</name>
         <docblock>
           <description>Se iniciliazan valores por defecto</description>
@@ -178,69 +343,73 @@
 </long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="65" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="177" package="Default">
         <name>generatePath</name>
-        <argument line="65">
+        <argument line="177">
           <name>$appName</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="74" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="187" package="Default">
         <name>getGISPropertyValue</name>
         <docblock>
-          <description>Retorna la propiedad pedida, en caso de no existir para la aplicacion, retorna su valor por defecto</description>
+          <description>Retorna la propiedad pedida, en caso de no existir para la aplicacion, retorna su valor por defecto.</description>
           <long-description>
 </long-description>
-          <tag line="69" name="param" description="" type="" variable="$propertyName"/>
-          <tag line="69" name="param" description="" type="" variable="$appName"/>
+          <tag line="181" name="param" description="Nombre de la aplicacion." type="string" variable="$appName">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="181" name="param" description="Nombre de la propiedad." type="string" variable="$propertyName">
+            <type by_reference="false">\string</type>
+          </tag>
         </docblock>
-        <argument line="74">
+        <argument line="187">
           <name>$appName</name>
           <default>null</default>
           <type/>
         </argument>
-        <argument line="74">
+        <argument line="187">
           <name>$propertyName</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="private" line="96" package="Default">
+      <method final="false" abstract="false" static="false" visibility="private" line="209" package="Default">
         <name>loadPropertiesFile</name>
         <docblock>
-          <description>Carga las propiedades segun una aplicacion y su archivo de configuracion</description>
+          <description>Carga las propiedades segun una aplicacion y su archivo de configuracion.</description>
           <long-description>
 </long-description>
-          <tag line="90" name="param" description="" type="" variable="$appName"/>
-          <tag line="90" name="param" description="" type="" variable="$appConfigFile"/>
+          <tag line="203" name="param" description="" type="" variable="$appName"/>
+          <tag line="203" name="param" description="" type="" variable="$appConfigFile"/>
         </docblock>
-        <argument line="96">
+        <argument line="209">
           <name>$appName</name>
           <default/>
           <type/>
         </argument>
-        <argument line="96">
+        <argument line="209">
           <name>$appConfigFile</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="private" line="121" package="Default">
+      <method final="false" abstract="false" static="false" visibility="private" line="234" package="Default">
         <name>getValue</name>
         <docblock>
           <description>Funcion que retorna una variable si esta existe, y sino retorna su valor por defecto</description>
           <long-description>
 </long-description>
-          <tag line="116" name="param" description="" type="" variable="$var"/>
-          <tag line="116" name="param" description="" type="" variable="$varName"/>
+          <tag line="229" name="param" description="" type="" variable="$var"/>
+          <tag line="229" name="param" description="" type="" variable="$varName"/>
         </docblock>
-        <argument line="121">
+        <argument line="234">
           <name>$var</name>
           <default/>
           <type/>
         </argument>
-        <argument line="121">
+        <argument line="234">
           <name>$varName</name>
           <default/>
           <type/>
@@ -375,91 +544,104 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/gis/yuppgis.core.gis.KMLUtilities.class.php" hash="70544f5714cc040cef7c498e2b8def13" package="Default">
+  <file path="core/gis/yuppgis.core.gis.KMLUtilities.class.php" hash="7a2cc266514c7882762887d24100bf85" package="Default">
     <markers>
-      <todo line="11">_GIS</todo>
-      <todo line="13">_GIS</todo>
-      <todo line="18">_GIS</todo>
-      <todo line="50">_GIS</todo>
-      <todo line="52">_GIS</todo>
+      <todo line="25">_GIS</todo>
+      <todo line="27">_GIS</todo>
+      <todo line="32">_GIS</todo>
+      <todo line="63">_GIS</todo>
+      <todo line="65">_GIS</todo>
     </markers>
     <parse_markers>
       <error line="1">No DocBlock was found for File core/gis/yuppgis.core.gis.KMLUtilities.class.php</error>
-      <error line="5">No DocBlock was found for Class KMLUtilities</error>
-      <error line="7">No DocBlock was found for Method layerToKML</error>
-      <error line="46">No DocBlock was found for Method GeometryToKML</error>
+      <error line="41">No DocBlock was found for Method elementToKML</error>
     </parse_markers>
-    <class final="false" abstract="false" line="5" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="Default">
       <name>KMLUtilities</name>
       <extends/>
       <full_name>\KMLUtilities</full_name>
-      <method final="false" abstract="false" static="true" visibility="public" line="7" package="Default">
+      <docblock>
+        <description>Clase que brinda operaciones para trabajar con Kml, DataLayers, geometria</description>
+        <long-description>
+</long-description>
+        <tag line="5" name="author" description="Jorge Davison"/>
+        <tag line="5" name="author" description="Martin Taruselli"/>
+        <tag line="5" name="author" description="Emilia Rosa"/>
+        <tag line="5" name="author" description="German Schnyder"/>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" line="21" package="Default">
         <name>layerToKML</name>
-        <argument line="7">
+        <docblock>
+          <description>Funcion  que retorna un kml a partir de una Capa, el kml resultante contiene todos los elementos del dominio que
+pertenecen a dicha capa</description>
+          <long-description>
+</long-description>
+          <tag line="15" name="param" description="" type="\DataLayer" variable="$layer">
+            <type by_reference="false">\DataLayer</type>
+          </tag>
+        </docblock>
+        <argument line="21">
           <name>$layer</name>
           <default/>
           <type>DataLayer</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="33" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="41" package="Default">
         <name>elementToKML</name>
-        <docblock>
-          <description>TODO_GIS: Hacer dinamico</description>
-          <long-description>
-</long-description>
-          <tag line="26" name="param" description="" type="\unknown_type" variable="$element">
-            <type by_reference="false">\unknown_type</type>
-          </tag>
-          <tag line="26" name="param" description="" type="\unknown_type" variable="$layer">
-            <type by_reference="false">\unknown_type</type>
-          </tag>
-          <tag line="26" name="param" description="" type="\SimpleXMLElement" variable="$folder">
-            <type by_reference="false">\SimpleXMLElement</type>
-          </tag>
-        </docblock>
-        <argument line="33">
+        <argument line="41">
           <name>$element</name>
           <default/>
           <type/>
         </argument>
-        <argument line="33">
+        <argument line="41">
           <name>$layer</name>
           <default/>
           <type>DataLayer</type>
         </argument>
-        <argument line="33">
+        <argument line="41">
           <name>$folder</name>
           <default/>
           <type>SimpleXMLElement</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="46" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="59" package="Default">
         <name>GeometryToKML</name>
-        <argument line="46">
+        <docblock>
+          <description>Funcion que retorna un kml a partir de una Geometria</description>
+          <long-description>
+</long-description>
+          <tag line="53" name="param" description="" type="\long" variable="$id">
+            <type by_reference="false">\long</type>
+          </tag>
+          <tag line="53" name="param" description="" type="\Geometry" variable="$geom">
+            <type by_reference="false">\Geometry</type>
+          </tag>
+        </docblock>
+        <argument line="59">
           <name>$id</name>
           <default/>
           <type/>
         </argument>
-        <argument line="46">
+        <argument line="59">
           <name>$geom</name>
           <default/>
           <type>Geometry</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="65" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="78" package="Default">
         <name>KMLToGeometry</name>
         <docblock>
           <description>Funcion que parsea un KML y retorna una lista de geometrias.</description>
           <long-description>
 </long-description>
-          <tag line="59" name="param" description="" type="string" variable="$kml">
+          <tag line="72" name="param" description="" type="string" variable="$kml">
             <type by_reference="false">\string</type>
           </tag>
-          <tag line="59" name="return" description="de geometrias" type="array">
+          <tag line="72" name="return" description="de geometrias" type="array">
             <type by_reference="false">\array</type>
           </tag>
         </docblock>
-        <argument line="65">
+        <argument line="78">
           <name>$kml</name>
           <default/>
           <type/>
@@ -823,32 +1005,25 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/ui/yuppgis.core.basic.ui.Icon.class.php" hash="b7413cb2c5c8c0a923941a2bb16d4c24" package="Default">
+  <file path="core/basic/ui/yuppgis.core.basic.ui.Icon.class.php" hash="898c67d43d311f2fcd67146a70c2f03b" package="yuppgis\core\basic\ui">
     <docblock>
       <description>Clase que representa un {@link UIProperty} icono.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic.ui"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/ui/yuppgis.core.basic.ui.Icon.class.php</error>
-      <error line="13">No DocBlock was found for Constant DEFAULT_ICON</error>
-      <error line="15">No DocBlock was found for Property $url</error>
-      <error line="16">No DocBlock was found for Property $width</error>
-      <error line="17">No DocBlock was found for Property $height</error>
-      <error line="19">No DocBlock was found for Method __construct</error>
-      <error line="30">No DocBlock was found for Method getUrl</error>
-      <error line="34">No DocBlock was found for Method setUrl</error>
-      <error line="38">No DocBlock was found for Method getWidth</error>
-      <error line="42">No DocBlock was found for Method setWidth</error>
-      <error line="46">No DocBlock was found for Method getHeight</error>
-      <error line="50">No DocBlock was found for Method setHeight</error>
-      <error line="54">No DocBlock was found for Method getRealPath</error>
+      <error line="20">No DocBlock was found for Property $url</error>
+      <error line="21">No DocBlock was found for Property $width</error>
+      <error line="22">No DocBlock was found for Property $height</error>
+      <notice line="85">Name of argument $height does not match with function Docblock</notice>
+      <error line="89">No DocBlock was found for Method getRealPath</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic\ui">
       <name>Icon</name>
       <extends>\UIProperty</extends>
       <full_name>\Icon</full_name>
@@ -856,91 +1031,156 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un {@link UIProperty} icono.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic.ui"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <constant namespace="default" line="13" package="Default">
+      <constant namespace="default" line="18" package="Default">
         <name>DEFAULT_ICON</name>
         <value>'/yuppgis/yuppgis/js/gis/img/marker-gold.png'</value>
+        <docblock>
+          <description>Icono por defecto.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </constant>
-      <property final="false" static="false" visibility="protected" line="15" package="Default">
+      <property final="false" static="false" visibility="protected" line="20" package="Default">
         <name>$url</name>
         <default/>
       </property>
-      <property final="false" static="false" visibility="protected" line="16" package="Default">
+      <property final="false" static="false" visibility="protected" line="21" package="Default">
         <name>$width</name>
         <default/>
       </property>
-      <property final="false" static="false" visibility="protected" line="17" package="Default">
+      <property final="false" static="false" visibility="protected" line="22" package="Default">
         <name>$height</name>
         <default/>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="19" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="33" package="Default">
         <name>__construct</name>
-        <argument line="19">
+        <docblock>
+          <description>Constructor.</description>
+          <long-description>
+</long-description>
+          <tag line="24" name="param" description="alpha a asignar al fondo." type="int" variable="$alpha">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="24" name="param" description="indice Z." type="int" variable="$zIndex">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="24" name="param" description="url del icono." type="string" variable="$url">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="24" name="param" description="ancho del icono." type="int" variable="$width">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="24" name="param" description="alto del icono." type="int" variable="$height">
+            <type by_reference="false">\int</type>
+          </tag>
+        </docblock>
+        <argument line="33">
           <name>$alpha</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="19">
+        <argument line="33">
           <name>$zIndex</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="19">
+        <argument line="33">
           <name>$url</name>
           <default>''</default>
           <type/>
         </argument>
-        <argument line="19">
+        <argument line="33">
           <name>$width</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="19">
+        <argument line="33">
           <name>$height</name>
           <default>0</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="30" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="47" package="Default">
         <name>getUrl</name>
+        <docblock>
+          <description>Retorna la URL del icono.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="34" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="55" package="Default">
         <name>setUrl</name>
-        <argument line="34">
+        <docblock>
+          <description>Asigna una URL de icono.</description>
+          <long-description>
+</long-description>
+          <tag line="51" name="param" description="url del icono." type="string" variable="$url">
+            <type by_reference="false">\string</type>
+          </tag>
+        </docblock>
+        <argument line="55">
           <name>$url</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="38" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="62" package="Default">
         <name>getWidth</name>
+        <docblock>
+          <description>Retorna el ancho del icono.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="42" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="70" package="Default">
         <name>setWidth</name>
-        <argument line="42">
+        <docblock>
+          <description>Asigna un ancho al icono</description>
+          <long-description>
+</long-description>
+          <tag line="66" name="param" description="ancho del icono." type="int" variable="$width">
+            <type by_reference="false">\int</type>
+          </tag>
+        </docblock>
+        <argument line="70">
           <name>$width</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="46" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="77" package="Default">
         <name>getHeight</name>
+        <docblock>
+          <description>Retorna el alto del icono.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="50" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="85" package="Default">
         <name>setHeight</name>
-        <argument line="50">
+        <docblock>
+          <description>Asigna un alto al icono</description>
+          <long-description>
+</long-description>
+          <tag line="81" name="param" description="alto del icono." type="int" variable="$width">
+            <type by_reference="false">\int</type>
+          </tag>
+        </docblock>
+        <argument line="85">
           <name>$height</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="private" line="54" package="Default">
+      <method final="false" abstract="false" static="false" visibility="private" line="89" package="Default">
         <name>getRealPath</name>
-        <argument line="54">
+        <argument line="89">
           <name>$url</name>
           <default/>
           <type/>
@@ -948,27 +1188,22 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/ui/yuppgis.core.basic.ui.Border.class.php" hash="4a0681b9235271ccd7fb13a96e937d13" package="Default">
+  <file path="core/basic/ui/yuppgis.core.basic.ui.Border.class.php" hash="7593c68abfe0e4c39ad43e7c2c0e881a" package="yuppgis\core\basic\ui">
     <docblock>
       <description>Clase que representa un {@link UIProperty} borde.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic.ui"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/ui/yuppgis.core.basic.ui.Border.class.php</error>
-      <error line="13">No DocBlock was found for Property $color</error>
-      <error line="14">No DocBlock was found for Property $width</error>
-      <error line="16">No DocBlock was found for Method __construct</error>
-      <error line="22">No DocBlock was found for Method getColor</error>
-      <error line="26">No DocBlock was found for Method setColor</error>
-      <error line="30">No DocBlock was found for Method getWidth</error>
-      <error line="34">No DocBlock was found for Method setWidth</error>
+      <error line="15">No DocBlock was found for Property $color</error>
+      <error line="16">No DocBlock was found for Property $width</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic\ui">
       <name>Border</name>
       <extends>\UIProperty</extends>
       <full_name>\Border</full_name>
@@ -976,59 +1211,103 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un {@link UIProperty} borde.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic.ui"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <property final="false" static="false" visibility="protected" line="13" package="Default">
+      <property final="false" static="false" visibility="protected" line="15" package="Default">
         <name>$color</name>
         <default/>
       </property>
-      <property final="false" static="false" visibility="protected" line="14" package="Default">
+      <property final="false" static="false" visibility="protected" line="16" package="Default">
         <name>$width</name>
         <default/>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="16" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="26" package="Default">
         <name>__construct</name>
-        <argument line="16">
+        <docblock>
+          <description>Constructor.</description>
+          <long-description>
+</long-description>
+          <tag line="18" name="param" description="alpha a asignar al fondo." type="int" variable="$alpha">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="18" name="param" description="indice Z." type="int" variable="$zIndex">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="18" name="param" description="color a asignar, por defecto negro." type="\Color" variable="$color">
+            <type by_reference="false">\Color</type>
+          </tag>
+          <tag line="18" name="param" description="ancho del borde." type="int" variable="$width">
+            <type by_reference="false">\int</type>
+          </tag>
+        </docblock>
+        <argument line="26">
           <name>$alpha</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="16">
+        <argument line="26">
           <name>$zIndex</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="16">
+        <argument line="26">
           <name>$color</name>
           <default>Color::BLACK</default>
           <type/>
         </argument>
-        <argument line="16">
+        <argument line="26">
           <name>$width</name>
           <default>0</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="22" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="35" package="Default">
         <name>getColor</name>
+        <docblock>
+          <description>Retorna el color asignado.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="26" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="43" package="Default">
         <name>setColor</name>
-        <argument line="26">
+        <docblock>
+          <description>Asigna un color.</description>
+          <long-description>
+</long-description>
+          <tag line="39" name="param" description="color a asignar." type="\Color" variable="$color">
+            <type by_reference="false">\Color</type>
+          </tag>
+        </docblock>
+        <argument line="43">
           <name>$color</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="30" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="50" package="Default">
         <name>getWidth</name>
+        <docblock>
+          <description>Retorna el ancho asignado.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="34" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="58" package="Default">
         <name>setWidth</name>
-        <argument line="34">
+        <docblock>
+          <description>Asigna un ancho al borde.</description>
+          <long-description>
+</long-description>
+          <tag line="54" name="param" description="ancho a asignar." type="int" variable="$width">
+            <type by_reference="false">\int</type>
+          </tag>
+        </docblock>
+        <argument line="58">
           <name>$width</name>
           <default/>
           <type/>
@@ -1036,27 +1315,27 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/ui/yuppgis.core.basic.ui.UIProperty.class.php" hash="d8a4ea4f04e89250ac546b1db40e4d6d" package="Default">
+  <file path="core/basic/ui/yuppgis.core.basic.ui.UIProperty.class.php" hash="5db1aab19ae237aa8cffe8fb3eb116b5" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File core/basic/ui/yuppgis.core.basic.ui.UIProperty.class.php</error>
-      <error line="17">No DocBlock was found for Property $alpha</error>
-      <error line="18">No DocBlock was found for Property $zIndex</error>
-      <error line="20">No DocBlock was found for Method __construct</error>
-      <error line="25">No DocBlock was found for Method getAlpha</error>
-      <error line="29">No DocBlock was found for Method setAlpha</error>
-      <error line="33">No DocBlock was found for Method getZIndex</error>
-      <error line="37">No DocBlock was found for Method setZIndex</error>
-      <error line="41">No DocBlock was found for Method toJSON</error>
-      <error line="56">No DocBlock was found for Method fromJSON</error>
-      <error line="71">No DocBlock was found for Method getClassName</error>
-      <error line="77">No DocBlock was found for Class Color</error>
-      <error line="79">No DocBlock was found for Constant WHITE</error>
-      <error line="80">No DocBlock was found for Constant BLACK</error>
-      <error line="81">No DocBlock was found for Constant RED</error>
-      <error line="82">No DocBlock was found for Constant BLUE</error>
-      <error line="84">No DocBlock was found for Method fromColorName</error>
+      <error line="19">No DocBlock was found for Property $alpha</error>
+      <error line="20">No DocBlock was found for Property $zIndex</error>
+      <error line="22">No DocBlock was found for Method __construct</error>
+      <error line="27">No DocBlock was found for Method getAlpha</error>
+      <error line="31">No DocBlock was found for Method setAlpha</error>
+      <error line="35">No DocBlock was found for Method getZIndex</error>
+      <error line="39">No DocBlock was found for Method setZIndex</error>
+      <error line="43">No DocBlock was found for Method toJSON</error>
+      <error line="58">No DocBlock was found for Method fromJSON</error>
+      <error line="73">No DocBlock was found for Method getClassName</error>
+      <error line="79">No DocBlock was found for Class Color</error>
+      <error line="81">No DocBlock was found for Constant WHITE</error>
+      <error line="82">No DocBlock was found for Constant BLACK</error>
+      <error line="83">No DocBlock was found for Constant RED</error>
+      <error line="84">No DocBlock was found for Constant BLUE</error>
+      <error line="86">No DocBlock was found for Method fromColorName</error>
     </parse_markers>
-    <class final="false" abstract="false" line="15" namespace="default" package="Default">
+    <class final="false" abstract="false" line="17" namespace="default" package="yuppgis\core\basic\ui">
       <name>UIProperty</name>
       <extends/>
       <full_name>\UIProperty</full_name>
@@ -1064,97 +1343,98 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa una propiedad de visualizacion de figuras geograficas.</description>
         <long-description>
 </long-description>
+        <tag line="7" name="package" description="yuppgis.core.basic.ui"/>
         <tag line="7" name="author" description="Jorge Davison"/>
         <tag line="7" name="author" description="Martin Taruselli"/>
         <tag line="7" name="author" description="Emilia Rosa"/>
         <tag line="7" name="author" description="German Schnyder"/>
       </docblock>
-      <property final="false" static="false" visibility="protected" line="17" package="Default">
+      <property final="false" static="false" visibility="protected" line="19" package="Default">
         <name>$alpha</name>
         <default/>
       </property>
-      <property final="false" static="false" visibility="protected" line="18" package="Default">
+      <property final="false" static="false" visibility="protected" line="20" package="Default">
         <name>$zIndex</name>
         <default/>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="20" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="22" package="Default">
         <name>__construct</name>
-        <argument line="20">
+        <argument line="22">
           <name>$alpha</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="20">
+        <argument line="22">
           <name>$zIndex</name>
           <default>0</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="25" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="27" package="Default">
         <name>getAlpha</name>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="29" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="31" package="Default">
         <name>setAlpha</name>
-        <argument line="29">
+        <argument line="31">
           <name>$alpha</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="33" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="35" package="Default">
         <name>getZIndex</name>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="37" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="39" package="Default">
         <name>setZIndex</name>
-        <argument line="37">
+        <argument line="39">
           <name>$zIndex</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="41" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="43" package="Default">
         <name>toJSON</name>
-        <argument line="41">
+        <argument line="43">
           <name>$uiProperty</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="56" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="58" package="Default">
         <name>fromJSON</name>
-        <argument line="56">
+        <argument line="58">
           <name>$json_str</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="71" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="73" package="Default">
         <name>getClassName</name>
       </method>
     </class>
-    <class final="false" abstract="false" line="77" namespace="default" package="Default">
+    <class final="false" abstract="false" line="79" namespace="default" package="Default">
       <name>Color</name>
       <extends/>
       <full_name>\Color</full_name>
-      <constant namespace="default" line="79" package="Default">
+      <constant namespace="default" line="81" package="Default">
         <name>WHITE</name>
         <value>'50FFFFFF'</value>
       </constant>
-      <constant namespace="default" line="80" package="Default">
+      <constant namespace="default" line="82" package="Default">
         <name>BLACK</name>
         <value>'50000000'</value>
       </constant>
-      <constant namespace="default" line="81" package="Default">
+      <constant namespace="default" line="83" package="Default">
         <name>RED</name>
         <value>'500000FF'</value>
       </constant>
-      <constant namespace="default" line="82" package="Default">
+      <constant namespace="default" line="84" package="Default">
         <name>BLUE</name>
         <value>'50FF0000'</value>
       </constant>
-      <method final="false" abstract="false" static="true" visibility="public" line="84" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="86" package="Default">
         <name>fromColorName</name>
-        <argument line="84">
+        <argument line="86">
           <name>$name</name>
           <default/>
           <type/>
@@ -1162,24 +1442,21 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/ui/yuppgis.core.basic.ui.Background.class.php" hash="ec91b1b152eed0664ca33f7c1e8e2542" package="Default">
+  <file path="core/basic/ui/yuppgis.core.basic.ui.Background.class.php" hash="5dab1404c07f993ccaf7f035c616a8e6" package="yuppgis\core\basic\ui">
     <docblock>
       <description>Clase que representa un {@link UIProperty} relleno.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic.ui"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/ui/yuppgis.core.basic.ui.Background.class.php</error>
-      <error line="13">No DocBlock was found for Property $color</error>
-      <error line="15">No DocBlock was found for Method __construct</error>
-      <error line="20">No DocBlock was found for Method getColor</error>
-      <error line="24">No DocBlock was found for Method setColor</error>
+      <error line="15">No DocBlock was found for Property $color</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic\ui">
       <name>Background</name>
       <extends>\UIProperty</extends>
       <full_name>\Background</full_name>
@@ -1187,39 +1464,67 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un {@link UIProperty} relleno.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic.ui"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <property final="false" static="false" visibility="protected" line="13" package="Default">
+      <property final="false" static="false" visibility="protected" line="15" package="Default">
         <name>$color</name>
         <default/>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="24" package="Default">
         <name>__construct</name>
-        <argument line="15">
+        <docblock>
+          <description>Constructor.</description>
+          <long-description>
+</long-description>
+          <tag line="17" name="param" description="alpha a asignar al fondo." type="int" variable="$alpha">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="17" name="param" description="indice Z." type="int" variable="$zIndex">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="17" name="param" description="color a asignar, por defecto negro." type="\Color" variable="$color">
+            <type by_reference="false">\Color</type>
+          </tag>
+        </docblock>
+        <argument line="24">
           <name>$alpha</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="15">
+        <argument line="24">
           <name>$zIndex</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="15">
+        <argument line="24">
           <name>$color</name>
           <default>Color::BLACK</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="20" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="32" package="Default">
         <name>getColor</name>
+        <docblock>
+          <description>Retorna el color asignado.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="24" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="40" package="Default">
         <name>setColor</name>
-        <argument line="24">
+        <docblock>
+          <description>Asignacion de color.</description>
+          <long-description>
+</long-description>
+          <tag line="36" name="param" description="color a asignar." type="\Color" variable="$color">
+            <type by_reference="false">\Color</type>
+          </tag>
+        </docblock>
+        <argument line="40">
           <name>$color</name>
           <default/>
           <type/>
@@ -1227,22 +1532,22 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Polygon.class.php" hash="e13919e798fe2243d42b636ecf1370c4" package="Default">
+  <file path="core/basic/yuppgis.core.basic.Polygon.class.php" hash="1cf8ad2f720f5382b9d3946fb58a9d99" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa un poligono.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.Polygon.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="17">No DocBlock was found for Method preValidate</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="19">No DocBlock was found for Method preValidate</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>Polygon</name>
       <extends>\Surface</extends>
       <full_name>\Polygon</full_name>
@@ -1250,252 +1555,20 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un poligono.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$exteriorBoundary</name>
           <default>array()</default>
           <type/>
         </argument>
-        <argument line="13">
-          <name>$interiorsBoundary</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
-        <name>preValidate</name>
-      </method>
-    </class>
-  </file>
-  <file path="core/basic/yuppgis.core.basic.DataLayer.class.php" hash="d62abe0c6453620654d954f2a49aa690" package="Default">
-    <parse_markers>
-      <error line="1">No DocBlock was found for File core/basic/yuppgis.core.basic.DataLayer.class.php</error>
-      <error line="17">No DocBlock was found for Property $geoAttributes</error>
-      <error line="18">No DocBlock was found for Property $uiPropertyObject</error>
-      <error line="20">No DocBlock was found for Method __construct</error>
-      <error line="40">No DocBlock was found for Method getDefaultUIProperty</error>
-      <error line="47">No DocBlock was found for Method setDefaultUIProperty</error>
-      <error line="51">No DocBlock was found for Method preValidate</error>
-      <error line="70">No DocBlock was found for Method getAttributes</error>
-      <error line="77">No DocBlock was found for Method setAttributes</error>
-      <error line="81">No DocBlock was found for Method addElement</error>
-      <error line="90">No DocBlock was found for Method removeElement</error>
-      <error line="96">No DocBlock was found for Method addTag</error>
-      <error line="102">No DocBlock was found for Method removeTag</error>
-      <error line="108">No DocBlock was found for Method listAll</error>
-      <error line="113">No DocBlock was found for Method findBy</error>
-      <error line="118">No DocBlock was found for Method get</error>
-      <error line="123">No DocBlock was found for Method notifyObservers</error>
-    </parse_markers>
-    <class final="false" abstract="false" line="15" namespace="default" package="Default">
-      <name>DataLayer</name>
-      <extends>\Observable</extends>
-      <full_name>\DataLayer</full_name>
-      <docblock>
-        <description>Capa de datos que contendra elementos para luego ser mostrados en un mapa.</description>
-        <long-description>
-</long-description>
-        <tag line="7" name="author" description="Jorge Davison"/>
-        <tag line="7" name="author" description="German Schnyder"/>
-        <tag line="7" name="author" description="Emilia Rosa"/>
-        <tag line="7" name="author" description="Martin Taruselli"/>
-      </docblock>
-      <property final="false" static="false" visibility="private" line="17" package="Default">
-        <name>$geoAttributes</name>
-        <default>null</default>
-      </property>
-      <property final="false" static="false" visibility="private" line="18" package="Default">
-        <name>$uiPropertyObject</name>
-        <default>null</default>
-      </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="20" package="Default">
-        <name>__construct</name>
-        <argument line="20">
-          <name>$args</name>
-          <default>array( 'visible' =&gt; true )</default>
-          <type/>
-        </argument>
-        <argument line="20">
-          <name>$isSimpleInstance</name>
-          <default>false</default>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="40" package="Default">
-        <name>getDefaultUIProperty</name>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="47" package="Default">
-        <name>setDefaultUIProperty</name>
-        <argument line="47">
-          <name>$uiProperty</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="51" package="Default">
-        <name>preValidate</name>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="70" package="Default">
-        <name>getAttributes</name>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="77" package="Default">
-        <name>setAttributes</name>
-        <argument line="77">
-          <name>$attributes</name>
-          <default/>
-          <type>array</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="81" package="Default">
-        <name>addElement</name>
-        <argument line="81">
-          <name>$element</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="90" package="Default">
-        <name>removeElement</name>
-        <argument line="90">
-          <name>$element</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="96" package="Default">
-        <name>addTag</name>
-        <argument line="96">
-          <name>$tag</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="102" package="Default">
-        <name>removeTag</name>
-        <argument line="102">
-          <name>$tag</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="108" package="Default">
-        <name>listAll</name>
-        <argument line="108">
-          <name>$params</name>
-          <default/>
-          <type>ArrayObject</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="113" package="Default">
-        <name>findBy</name>
-        <argument line="113">
-          <name>$condition</name>
-          <default/>
-          <type>Condition</type>
-        </argument>
-        <argument line="113">
-          <name>$params</name>
-          <default/>
-          <type>ArrayObject</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="118" package="Default">
-        <name>get</name>
-        <argument line="118">
-          <name>$id</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="123" package="Default">
-        <name>notifyObservers</name>
-        <argument line="123">
-          <name>$params</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-    </class>
-  </file>
-  <file path="core/basic/yuppgis.core.basic.LineString.class.php" hash="1b9a61df82f23dd252921e13a8ec39d3" package="Default">
-    <docblock>
-      <description>Clase que representa un conjunto de puntos.</description>
-      <long-description>
-</long-description>
-      <tag line="3" name="author" description="Jorge Davison"/>
-      <tag line="3" name="author" description="Martin Taruselli"/>
-      <tag line="3" name="author" description="Emilia Rosa"/>
-      <tag line="3" name="author" description="German Schnyder"/>
-    </docblock>
-    <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.LineString.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-    </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
-      <name>LineString</name>
-      <extends>\Curve</extends>
-      <full_name>\LineString</full_name>
-      <docblock>
-        <description>Clase que representa un conjunto de puntos.</description>
-        <long-description>
-</long-description>
-        <tag line="3" name="author" description="Jorge Davison"/>
-        <tag line="3" name="author" description="Martin Taruselli"/>
-        <tag line="3" name="author" description="Emilia Rosa"/>
-        <tag line="3" name="author" description="German Schnyder"/>
-      </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
-        <name>__construct</name>
-        <argument line="13">
-          <name>$points</name>
-          <default>array()</default>
-          <type/>
-        </argument>
-      </method>
-    </class>
-  </file>
-  <file path="core/basic/yuppgis.core.basic.Surface.class.php" hash="f7e32c0b48ae5b6d4e0529303e6240b0" package="Default">
-    <docblock>
-      <description>Clase que representa una superficie.</description>
-      <long-description>
-</long-description>
-      <tag line="3" name="author" description="Jorge Davison"/>
-      <tag line="3" name="author" description="Martin Taruselli"/>
-      <tag line="3" name="author" description="Emilia Rosa"/>
-      <tag line="3" name="author" description="German Schnyder"/>
-    </docblock>
-    <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.Surface.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="19">No DocBlock was found for Method preValidate</error>
-    </parse_markers>
-    <class final="false" abstract="true" line="11" namespace="default" package="Default">
-      <name>Surface</name>
-      <extends>\Geometry</extends>
-      <full_name>\Surface</full_name>
-      <docblock>
-        <description>Clase que representa una superficie.</description>
-        <long-description>
-</long-description>
-        <tag line="3" name="author" description="Jorge Davison"/>
-        <tag line="3" name="author" description="Martin Taruselli"/>
-        <tag line="3" name="author" description="Emilia Rosa"/>
-        <tag line="3" name="author" description="German Schnyder"/>
-      </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
-        <name>__construct</name>
-        <argument line="13">
-          <name>$exteriorBoundary</name>
-          <default>array()</default>
-          <type/>
-        </argument>
-        <argument line="13">
+        <argument line="15">
           <name>$interiorsBoundary</name>
           <default>array()</default>
           <type>array</type>
@@ -1506,21 +1579,257 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Point.class.php" hash="ffba1792d3445de05365ebac6dd34ad2" package="Default">
+  <file path="core/basic/yuppgis.core.basic.DataLayer.class.php" hash="5052b0ff1ae05661d23d7bc5622ba18c" package="Default">
+    <parse_markers>
+      <error line="1">No DocBlock was found for File core/basic/yuppgis.core.basic.DataLayer.class.php</error>
+      <error line="19">No DocBlock was found for Property $geoAttributes</error>
+      <error line="20">No DocBlock was found for Property $uiPropertyObject</error>
+      <error line="22">No DocBlock was found for Method __construct</error>
+      <error line="42">No DocBlock was found for Method getDefaultUIProperty</error>
+      <error line="49">No DocBlock was found for Method setDefaultUIProperty</error>
+      <error line="53">No DocBlock was found for Method preValidate</error>
+      <error line="72">No DocBlock was found for Method getAttributes</error>
+      <error line="79">No DocBlock was found for Method setAttributes</error>
+      <error line="83">No DocBlock was found for Method addElement</error>
+      <error line="92">No DocBlock was found for Method removeElement</error>
+      <error line="98">No DocBlock was found for Method addTag</error>
+      <error line="104">No DocBlock was found for Method removeTag</error>
+      <error line="110">No DocBlock was found for Method listAll</error>
+      <error line="115">No DocBlock was found for Method findBy</error>
+      <error line="120">No DocBlock was found for Method get</error>
+      <error line="125">No DocBlock was found for Method notifyObservers</error>
+    </parse_markers>
+    <class final="false" abstract="false" line="17" namespace="default" package="yuppgis\core\basic">
+      <name>DataLayer</name>
+      <extends>\Observable</extends>
+      <full_name>\DataLayer</full_name>
+      <docblock>
+        <description>Capa de datos que contendra elementos para luego ser mostrados en un mapa.</description>
+        <long-description>
+</long-description>
+        <tag line="7" name="package" description="yuppgis.core.basic"/>
+        <tag line="7" name="author" description="Jorge Davison"/>
+        <tag line="7" name="author" description="German Schnyder"/>
+        <tag line="7" name="author" description="Emilia Rosa"/>
+        <tag line="7" name="author" description="Martin Taruselli"/>
+      </docblock>
+      <property final="false" static="false" visibility="private" line="19" package="Default">
+        <name>$geoAttributes</name>
+        <default>null</default>
+      </property>
+      <property final="false" static="false" visibility="private" line="20" package="Default">
+        <name>$uiPropertyObject</name>
+        <default>null</default>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" line="22" package="Default">
+        <name>__construct</name>
+        <argument line="22">
+          <name>$args</name>
+          <default>array( 'visible' =&gt; true )</default>
+          <type/>
+        </argument>
+        <argument line="22">
+          <name>$isSimpleInstance</name>
+          <default>false</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="42" package="Default">
+        <name>getDefaultUIProperty</name>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="49" package="Default">
+        <name>setDefaultUIProperty</name>
+        <argument line="49">
+          <name>$uiProperty</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="53" package="Default">
+        <name>preValidate</name>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="72" package="Default">
+        <name>getAttributes</name>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="79" package="Default">
+        <name>setAttributes</name>
+        <argument line="79">
+          <name>$attributes</name>
+          <default/>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="83" package="Default">
+        <name>addElement</name>
+        <argument line="83">
+          <name>$element</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="92" package="Default">
+        <name>removeElement</name>
+        <argument line="92">
+          <name>$element</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="98" package="Default">
+        <name>addTag</name>
+        <argument line="98">
+          <name>$tag</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="104" package="Default">
+        <name>removeTag</name>
+        <argument line="104">
+          <name>$tag</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" line="110" package="Default">
+        <name>listAll</name>
+        <argument line="110">
+          <name>$params</name>
+          <default/>
+          <type>ArrayObject</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" line="115" package="Default">
+        <name>findBy</name>
+        <argument line="115">
+          <name>$condition</name>
+          <default/>
+          <type>Condition</type>
+        </argument>
+        <argument line="115">
+          <name>$params</name>
+          <default/>
+          <type>ArrayObject</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" line="120" package="Default">
+        <name>get</name>
+        <argument line="120">
+          <name>$id</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="125" package="Default">
+        <name>notifyObservers</name>
+        <argument line="125">
+          <name>$params</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="core/basic/yuppgis.core.basic.LineString.class.php" hash="bf75bd084e68a0739378061b618e0e16" package="yuppgis\core\basic">
     <docblock>
-      <description>Clase que representa un punto.</description>
+      <description>Clase que representa un conjunto de puntos.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.Point.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
+      <name>LineString</name>
+      <extends>\Curve</extends>
+      <full_name>\LineString</full_name>
+      <docblock>
+        <description>Clase que representa un conjunto de puntos.</description>
+        <long-description>
+</long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
+        <tag line="3" name="author" description="Jorge Davison"/>
+        <tag line="3" name="author" description="Martin Taruselli"/>
+        <tag line="3" name="author" description="Emilia Rosa"/>
+        <tag line="3" name="author" description="German Schnyder"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
+        <name>__construct</name>
+        <argument line="15">
+          <name>$points</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="core/basic/yuppgis.core.basic.Surface.class.php" hash="843bd959e51d5a02158bf8bf211f3e8a" package="yuppgis\core\basic">
+    <docblock>
+      <description>Clase que representa una superficie.</description>
+      <long-description>
+</long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
+      <tag line="3" name="author" description="Jorge Davison"/>
+      <tag line="3" name="author" description="Martin Taruselli"/>
+      <tag line="3" name="author" description="Emilia Rosa"/>
+      <tag line="3" name="author" description="German Schnyder"/>
+    </docblock>
+    <parse_markers>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="21">No DocBlock was found for Method preValidate</error>
+    </parse_markers>
+    <class final="false" abstract="true" line="13" namespace="default" package="yuppgis\core\basic">
+      <name>Surface</name>
+      <extends>\Geometry</extends>
+      <full_name>\Surface</full_name>
+      <docblock>
+        <description>Clase que representa una superficie.</description>
+        <long-description>
+</long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
+        <tag line="3" name="author" description="Jorge Davison"/>
+        <tag line="3" name="author" description="Martin Taruselli"/>
+        <tag line="3" name="author" description="Emilia Rosa"/>
+        <tag line="3" name="author" description="German Schnyder"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
+        <name>__construct</name>
+        <argument line="15">
+          <name>$exteriorBoundary</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+        <argument line="15">
+          <name>$interiorsBoundary</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" line="21" package="Default">
+        <name>preValidate</name>
+      </method>
+    </class>
+  </file>
+  <file path="core/basic/yuppgis.core.basic.Point.class.php" hash="60b9d8f830bbb2c15adf093ffc6a71c6" package="yuppgis\core\basic">
+    <docblock>
+      <description>Clase que representa un punto.</description>
+      <long-description>
+</long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
+      <tag line="3" name="author" description="Jorge Davison"/>
+      <tag line="3" name="author" description="Martin Taruselli"/>
+      <tag line="3" name="author" description="Emilia Rosa"/>
+      <tag line="3" name="author" description="German Schnyder"/>
+    </docblock>
+    <parse_markers>
+      <error line="15">No DocBlock was found for Method __construct</error>
+    </parse_markers>
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>Point</name>
       <extends>\Geometry</extends>
       <full_name>\Point</full_name>
@@ -1528,19 +1837,20 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un punto.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$x</name>
           <default>0</default>
           <type/>
         </argument>
-        <argument line="13">
+        <argument line="15">
           <name>$y</name>
           <default>0</default>
           <type/>
@@ -1548,17 +1858,17 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Geometry.class.php" hash="615d30c95171587f873ddeac94f0aa36" package="Default">
+  <file path="core/basic/yuppgis.core.basic.Geometry.class.php" hash="894292b69e4561310430b5e2936b6420" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File core/basic/yuppgis.core.basic.Geometry.class.php</error>
-      <error line="16">No DocBlock was found for Property $dimension</error>
-      <error line="18">No DocBlock was found for Property $uiPropertyObject</error>
-      <error line="20">No DocBlock was found for Method __construct</error>
-      <notice line="30">Argument $className is missing from the function Docblock</notice>
-      <error line="34">No DocBlock was found for Method getUIProperty</error>
-      <error line="41">No DocBlock was found for Method setUIProperty</error>
+      <error line="18">No DocBlock was found for Property $dimension</error>
+      <error line="20">No DocBlock was found for Property $uiPropertyObject</error>
+      <error line="22">No DocBlock was found for Method __construct</error>
+      <notice line="32">Argument $className is missing from the function Docblock</notice>
+      <error line="36">No DocBlock was found for Method getUIProperty</error>
+      <error line="43">No DocBlock was found for Method setUIProperty</error>
     </parse_markers>
-    <class final="false" abstract="false" line="13" namespace="default" package="Default">
+    <class final="false" abstract="false" line="15" namespace="default" package="yuppgis\core\basic">
       <name>Geometry</name>
       <extends>\PersistentObject</extends>
       <full_name>\Geometry</full_name>
@@ -1566,94 +1876,95 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa una figura Geometrica.</description>
         <long-description>
 </long-description>
+        <tag line="5" name="package" description="yuppgis.core.basic"/>
         <tag line="5" name="author" description="Jorge Davison"/>
         <tag line="5" name="author" description="Martin Taruselli"/>
         <tag line="5" name="author" description="Emilia Rosa"/>
         <tag line="5" name="author" description="German Schnyder"/>
       </docblock>
-      <property final="false" static="false" visibility="protected" line="16" package="Default">
+      <property final="false" static="false" visibility="protected" line="18" package="Default">
         <name>$dimension</name>
         <default/>
       </property>
-      <property final="false" static="false" visibility="protected" line="18" package="Default">
+      <property final="false" static="false" visibility="protected" line="20" package="Default">
         <name>$uiPropertyObject</name>
         <default>null</default>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" line="20" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="22" package="Default">
         <name>__construct</name>
-        <argument line="20">
+        <argument line="22">
           <name>$args</name>
           <default>array ()</default>
           <type/>
         </argument>
-        <argument line="20">
+        <argument line="22">
           <name>$isSimpleInstance</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="30" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="32" package="Default">
         <name>belonsToClass</name>
         <docblock>
           <description>Toda geometria pertenece a cualquier elemento que la contenga.</description>
           <long-description>
 </long-description>
-          <tag line="26" name="see" description="\PersistentObject::belonsToClass()" refers="\PersistentObject::belonsToClass()"/>
+          <tag line="28" name="see" description="\PersistentObject::belonsToClass()" refers="\PersistentObject::belonsToClass()"/>
         </docblock>
-        <argument line="30">
+        <argument line="32">
           <name>$className</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="34" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="36" package="Default">
         <name>getUIProperty</name>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="41" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="43" package="Default">
         <name>setUIProperty</name>
-        <argument line="41">
+        <argument line="43">
           <name>$uiProperty</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="50" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="52" package="Default">
         <name>preValidate</name>
         <docblock>
           <description>Serializa el atributo uiproperty a JSON.</description>
           <long-description>
 </long-description>
-          <tag line="45" name="see" description="\PersistentObject::preValidate()" refers="\PersistentObject::preValidate()"/>
+          <tag line="47" name="see" description="\PersistentObject::preValidate()" refers="\PersistentObject::preValidate()"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="58" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="60" package="Default">
         <name>getClassName</name>
         <docblock>
           <description>Retorna nombre de clase. Nota: Solo soportado por PHP &gt; 5.3</description>
           <long-description>
 </long-description>
-          <tag line="54" name="return" description="de la clase" type="\nombre">
+          <tag line="56" name="return" description="de la clase" type="\nombre">
             <type by_reference="false">\nombre</type>
           </tag>
         </docblock>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.GeometryCollection.class.php" hash="4df7a5e284096e48d1d249fde3fc7246" package="Default">
+  <file path="core/basic/yuppgis.core.basic.GeometryCollection.class.php" hash="e1be4f588b65d10cfcb7384b940afbac" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa una coleccion de figuras geometricas {@link Geometry}.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.GeometryCollection.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>GeometryCollection</name>
       <extends>\Geometry</extends>
       <full_name>\GeometryCollection</full_name>
@@ -1661,45 +1972,46 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa una coleccion de figuras geometricas {@link Geometry}.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$collection</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="22" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="24" package="Default">
         <name>preValidate</name>
         <docblock>
           <description>TODO_GIS: Debe el tipo (puntos), dimension, greado de superposicion.</description>
           <long-description>
 </long-description>
-          <tag line="18" name="see" description="\Geometry::preValidate()" refers="\Geometry::preValidate()"/>
+          <tag line="20" name="see" description="\Geometry::preValidate()" refers="\Geometry::preValidate()"/>
         </docblock>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Curve.class.php" hash="bf223e5aa7844c5af608422f0c56a430" package="Default">
+  <file path="core/basic/yuppgis.core.basic.Curve.class.php" hash="02f2347f76b6dd03678cd0ca8117c74d" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa una curva.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.Curve.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
     </parse_markers>
-    <class final="false" abstract="true" line="11" namespace="default" package="Default">
+    <class final="false" abstract="true" line="13" namespace="default" package="yuppgis\core\basic">
       <name>Curve</name>
       <extends>\Geometry</extends>
       <full_name>\Curve</full_name>
@@ -1707,14 +2019,15 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa una curva.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$points</name>
           <default/>
           <type/>
@@ -1722,21 +2035,21 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.LineRing.class.php" hash="0f55abe7775ec7b87c26dfa5ee62479c" package="Default">
+  <file path="core/basic/yuppgis.core.basic.LineRing.class.php" hash="95dd3168aac4571a9441b0815e12ce2d" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa un anillo.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.LineRing.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>LineRing</name>
       <extends>\LineString</extends>
       <full_name>\LineRing</full_name>
@@ -1744,14 +2057,15 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un anillo.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$points</name>
           <default>array()</default>
           <type/>
@@ -1759,22 +2073,22 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.MultiSurface.class.php" hash="57a8c636ac671d03983042ca63d22e00" package="Default">
+  <file path="core/basic/yuppgis.core.basic.MultiSurface.class.php" hash="738ccb71ef79b46a21e830ba1c05252c" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa un conjunto de superficies {@link Surface}.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.MultiSurface.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="17">No DocBlock was found for Method preValidate</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="19">No DocBlock was found for Method preValidate</error>
     </parse_markers>
-    <class final="false" abstract="true" line="11" namespace="default" package="Default">
+    <class final="false" abstract="true" line="13" namespace="default" package="yuppgis\core\basic">
       <name>MultiSurface</name>
       <extends>\GeometryCollection</extends>
       <full_name>\MultiSurface</full_name>
@@ -1782,40 +2096,41 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un conjunto de superficies {@link Surface}.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$collection</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="19" package="Default">
         <name>preValidate</name>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.MultiPoint.class.php" hash="729ca2000467a6bd3b455a947d0f6f7a" package="Default">
+  <file path="core/basic/yuppgis.core.basic.MultiPoint.class.php" hash="2ca0609fa791e1b81f33f8711cc545d1" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa un conjunto de puntos {@link Point}.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.MultiPoint.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="17">No DocBlock was found for Method preValidate</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="19">No DocBlock was found for Method preValidate</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>MultiPoint</name>
       <extends>\GeometryCollection</extends>
       <full_name>\MultiPoint</full_name>
@@ -1823,40 +2138,41 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un conjunto de puntos {@link Point}.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$collection</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="19" package="Default">
         <name>preValidate</name>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.MultiPolygon.class.php" hash="50632a269734af61001d4c5da27757b0" package="Default">
+  <file path="core/basic/yuppgis.core.basic.MultiPolygon.class.php" hash="9980c3dc1f566fdc5e95913ab7974346" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa un conjunto de poligonos {@link Polygon}.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.MultiPolygon.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="17">No DocBlock was found for Method preValidate</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="19">No DocBlock was found for Method preValidate</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>MultiPolygon</name>
       <extends>\MultiSurface</extends>
       <full_name>\MultiPolygon</full_name>
@@ -1864,35 +2180,36 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un conjunto de poligonos {@link Polygon}.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$collection</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="19" package="Default">
         <name>preValidate</name>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Map.class.php" hash="501c9c89510aef9b487498715687deba" package="Default">
+  <file path="core/basic/yuppgis.core.basic.Map.class.php" hash="0e798fa53b39ba4f48a7aad2b569370a" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File core/basic/yuppgis.core.basic.Map.class.php</error>
-      <error line="15">No DocBlock was found for Method __construct</error>
-      <error line="24">No DocBlock was found for Method addLayer</error>
-      <error line="28">No DocBlock was found for Method removeLayer</error>
-      <error line="32">No DocBlock was found for Method listAll</error>
-      <error line="37">No DocBlock was found for Method findBy</error>
-      <error line="42">No DocBlock was found for Method get</error>
+      <error line="17">No DocBlock was found for Method __construct</error>
+      <error line="26">No DocBlock was found for Method addLayer</error>
+      <error line="30">No DocBlock was found for Method removeLayer</error>
+      <error line="34">No DocBlock was found for Method listAll</error>
+      <error line="39">No DocBlock was found for Method findBy</error>
+      <error line="44">No DocBlock was found for Method get</error>
     </parse_markers>
-    <class final="false" abstract="false" line="13" namespace="default" package="Default">
+    <class final="false" abstract="false" line="15" namespace="default" package="yuppgis\core\basic">
       <name>Map</name>
       <extends>\PersistentObject</extends>
       <full_name>\Map</full_name>
@@ -1900,64 +2217,65 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un Mapa.</description>
         <long-description>
 </long-description>
+        <tag line="5" name="package" description="yuppgis.core.basic"/>
         <tag line="5" name="author" description="Jorge Davison"/>
         <tag line="5" name="author" description="Martin Taruselli"/>
         <tag line="5" name="author" description="Emilia Rosa"/>
         <tag line="5" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
         <name>__construct</name>
-        <argument line="15">
+        <argument line="17">
           <name>$args</name>
           <default>array('name' =&gt; '')</default>
           <type/>
         </argument>
-        <argument line="15">
+        <argument line="17">
           <name>$isSimpleInstance</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="24" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="26" package="Default">
         <name>addLayer</name>
-        <argument line="24">
+        <argument line="26">
           <name>$layer</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="28" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="30" package="Default">
         <name>removeLayer</name>
-        <argument line="28">
+        <argument line="30">
           <name>$layer</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="32" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="34" package="Default">
         <name>listAll</name>
-        <argument line="32">
+        <argument line="34">
           <name>$params</name>
           <default/>
           <type>ArrayObject</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="37" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="39" package="Default">
         <name>findBy</name>
-        <argument line="37">
+        <argument line="39">
           <name>$condition</name>
           <default/>
           <type>Condition</type>
         </argument>
-        <argument line="37">
+        <argument line="39">
           <name>$params</name>
           <default/>
           <type>ArrayObject</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="42" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="44" package="Default">
         <name>get</name>
-        <argument line="42">
+        <argument line="44">
           <name>$id</name>
           <default/>
           <type/>
@@ -1965,20 +2283,18 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Observer.class.php" hash="3a11f807ac3d2787631cf04b47c33171" package="Default">
+  <file path="core/basic/yuppgis.core.basic.Observer.class.php" hash="1330cf5fe31bea1a188a6aa429c64528" package="yuppgis\core\basic">
     <docblock>
       <description>Interfaz que representa un observador.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
-    <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.Observer.class.php</error>
-    </parse_markers>
-    <interface namespace="default" line="11" package="Default">
+    <interface namespace="default" line="13" package="yuppgis\core\basic">
       <name>Observer</name>
       <extends/>
       <full_name>\Observer</full_name>
@@ -1986,26 +2302,27 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Interfaz que representa un observador.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="18" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="20" package="Default">
         <name>notify</name>
         <docblock>
           <description>Notifica cuando evento sucede.</description>
           <long-description>
 </long-description>
-          <tag line="13" name="param" description="" type="" variable="$sender"/>
-          <tag line="13" name="param" description="" type="" variable="$params"/>
+          <tag line="15" name="param" description="" type="" variable="$sender"/>
+          <tag line="15" name="param" description="" type="" variable="$params"/>
         </docblock>
-        <argument line="18">
+        <argument line="20">
           <name>$sender</name>
           <default/>
           <type/>
         </argument>
-        <argument line="18">
+        <argument line="20">
           <name>$params</name>
           <default/>
           <type/>
@@ -2013,22 +2330,22 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </interface>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Line.class.php" hash="65edcb3e663eaafa00711e639dce4f45" package="Default">
+  <file path="core/basic/yuppgis.core.basic.Line.class.php" hash="e0305b43f021fa4e89c534b6591a034a" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa una linea con dos puntos.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.Line.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="17">No DocBlock was found for Method validatePoints</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="19">No DocBlock was found for Method validatePoints</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>Line</name>
       <extends>\LineString</extends>
       <full_name>\Line</full_name>
@@ -2036,22 +2353,23 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa una linea con dos puntos.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$points</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="private" line="17" package="Default">
+      <method final="false" abstract="false" static="false" visibility="private" line="19" package="Default">
         <name>validatePoints</name>
-        <argument line="17">
+        <argument line="19">
           <name>$points</name>
           <default/>
           <type/>
@@ -2059,22 +2377,22 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Tag.class.php" hash="6b39e63d602848bcac9cae1a8987e93f" package="Default">
+  <file path="core/basic/yuppgis.core.basic.Tag.class.php" hash="7719cf50b8251cc743f9b21a80b5923f" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa una etiqueta.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.Tag.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="22">No DocBlock was found for Method listAll</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="24">No DocBlock was found for Method listAll</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>Tag</name>
       <extends>\PersistentObject</extends>
       <full_name>\Tag</full_name>
@@ -2082,27 +2400,28 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa una etiqueta.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$args</name>
           <default>array ()</default>
           <type/>
         </argument>
-        <argument line="13">
+        <argument line="15">
           <name>$isSimpleInstance</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="22" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="24" package="Default">
         <name>listAll</name>
-        <argument line="22">
+        <argument line="24">
           <name>$params</name>
           <default/>
           <type>ArrayObject</type>
@@ -2110,22 +2429,22 @@ cuyo nombre comience con la palabra 'test'.</description>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.MultiLineString.class.php" hash="f32b4db8231cd1503a09cf0c9f565f99" package="Default">
+  <file path="core/basic/yuppgis.core.basic.MultiLineString.class.php" hash="b89b1acdab4559d202a99381b4c0a86e" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa un conjunto de lineas {@link LineString}.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.MultiLineString.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="17">No DocBlock was found for Method preValidate</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="19">No DocBlock was found for Method preValidate</error>
     </parse_markers>
-    <class final="false" abstract="false" line="11" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\basic">
       <name>MultiLineString</name>
       <extends>\MultiCurve</extends>
       <full_name>\MultiLineString</full_name>
@@ -2133,40 +2452,41 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un conjunto de lineas {@link LineString}.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$collection</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="19" package="Default">
         <name>preValidate</name>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.MultiCurve.class.php" hash="d5c3fbaee26509f3a6fe5b581b98b3cf" package="Default">
+  <file path="core/basic/yuppgis.core.basic.MultiCurve.class.php" hash="1d1ba98c4cbe239895937d2336d82e9c" package="yuppgis\core\basic">
     <docblock>
       <description>Clase que representa un conjunto de curvas {@link Curve}.</description>
       <long-description>
 </long-description>
+      <tag line="3" name="package" description="yuppgis.core.basic"/>
       <tag line="3" name="author" description="Jorge Davison"/>
       <tag line="3" name="author" description="Martin Taruselli"/>
       <tag line="3" name="author" description="Emilia Rosa"/>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="3">No Page-level DocBlock was found in file core/basic/yuppgis.core.basic.MultiCurve.class.php</error>
-      <error line="13">No DocBlock was found for Method __construct</error>
-      <error line="17">No DocBlock was found for Method preValidate</error>
+      <error line="15">No DocBlock was found for Method __construct</error>
+      <error line="19">No DocBlock was found for Method preValidate</error>
     </parse_markers>
-    <class final="false" abstract="true" line="11" namespace="default" package="Default">
+    <class final="false" abstract="true" line="13" namespace="default" package="yuppgis\core\basic">
       <name>MultiCurve</name>
       <extends>\GeometryCollection</extends>
       <full_name>\MultiCurve</full_name>
@@ -2174,33 +2494,34 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa un conjunto de curvas {@link Curve}.</description>
         <long-description>
 </long-description>
+        <tag line="3" name="package" description="yuppgis.core.basic"/>
         <tag line="3" name="author" description="Jorge Davison"/>
         <tag line="3" name="author" description="Martin Taruselli"/>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="13" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
         <name>__construct</name>
-        <argument line="13">
+        <argument line="15">
           <name>$collection</name>
           <default>array()</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="19" package="Default">
         <name>preValidate</name>
       </method>
     </class>
   </file>
-  <file path="core/basic/yuppgis.core.basic.Observable.class.php" hash="6a95697dceb9c7cae607f3655428225b" package="Default">
+  <file path="core/basic/yuppgis.core.basic.Observable.class.php" hash="3d24f8d6c75b563fb85c592740fbf767" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File core/basic/yuppgis.core.basic.Observable.class.php</error>
-      <error line="15">No DocBlock was found for Method __construct</error>
-      <error line="20">No DocBlock was found for Method registerObserver</error>
-      <error line="32">No DocBlock was found for Method unregisterObserver</error>
-      <error line="42">No DocBlock was found for Method notifyObservers</error>
+      <error line="17">No DocBlock was found for Method __construct</error>
+      <error line="22">No DocBlock was found for Method registerObserver</error>
+      <error line="34">No DocBlock was found for Method unregisterObserver</error>
+      <error line="44">No DocBlock was found for Method notifyObservers</error>
     </parse_markers>
-    <class final="false" abstract="true" line="13" namespace="default" package="Default">
+    <class final="false" abstract="true" line="15" namespace="default" package="yuppgis\core\basic">
       <name>Observable</name>
       <extends>\PersistentObject</extends>
       <full_name>\Observable</full_name>
@@ -2208,43 +2529,44 @@ cuyo nombre comience con la palabra 'test'.</description>
         <description>Clase que representa una clase observable que genera eventos.</description>
         <long-description>
 </long-description>
+        <tag line="5" name="package" description="yuppgis.core.basic"/>
         <tag line="5" name="author" description="Jorge Davison"/>
         <tag line="5" name="author" description="Martin Taruselli"/>
         <tag line="5" name="author" description="Emilia Rosa"/>
         <tag line="5" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="false" visibility="public" line="15" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="17" package="Default">
         <name>__construct</name>
-        <argument line="15">
+        <argument line="17">
           <name>$args</name>
           <default>array()</default>
           <type/>
         </argument>
-        <argument line="15">
+        <argument line="17">
           <name>$isSimpleInstance</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="20" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="22" package="Default">
         <name>registerObserver</name>
-        <argument line="20">
+        <argument line="22">
           <name>$observer</name>
           <default/>
           <type>Observer</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="32" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="34" package="Default">
         <name>unregisterObserver</name>
-        <argument line="32">
+        <argument line="34">
           <name>$observer</name>
           <default/>
           <type>Observer</type>
         </argument>
       </method>
-      <method final="false" abstract="true" static="false" visibility="public" line="42" package="Default">
+      <method final="false" abstract="true" static="false" visibility="public" line="44" package="Default">
         <name>notifyObservers</name>
-        <argument line="42">
+        <argument line="44">
           <name>$params</name>
           <default/>
           <type/>
@@ -3413,124 +3735,154 @@ de las condiciones geograficas.</description>
       </method>
     </class>
   </file>
-  <file path="core/persistent/serialize/yuppgis.core.persistent.serialize.WKTGEO.class.php" hash="44963ab5384a97138263972a550cbdd3" package="Default">
+  <file path="core/persistent/serialize/yuppgis.core.persistent.serialize.WKTGEO.class.php" hash="9d85bdf7a4a74b80dfb01c5f8f3ff2ad" package="Default">
+    <docblock>
+      <description>Clase que brinda funciones para el parseo de Geometrias y WKT</description>
+      <long-description>
+</long-description>
+      <tag line="3" name="author" description="Jorge Davison"/>
+      <tag line="3" name="author" description="Martin Taruselli"/>
+      <tag line="3" name="author" description="Emilia Rosa"/>
+      <tag line="3" name="author" description="German Schnyder"/>
+    </docblock>
     <markers>
-      <todo line="169">_GIS: Hacer</todo>
-      <todo line="200">_GIS</todo>
+      <todo line="219">_GIS</todo>
     </markers>
     <parse_markers>
-      <error line="1">No DocBlock was found for File core/persistent/serialize/yuppgis.core.persistent.serialize.WKTGEO.class.php</error>
-      <error line="3">No DocBlock was found for Class WKTGEO</error>
-      <error line="5">No DocBlock was found for Property $regex</error>
-      <error line="14">No DocBlock was found for Method fromText</error>
-      <error line="28">No DocBlock was found for Method fromTextByClass</error>
-      <error line="87">No DocBlock was found for Method createPolygones</error>
-      <error line="102">No DocBlock was found for Method createPoints</error>
-      <error line="115">No DocBlock was found for Method createLine</error>
-      <error line="131">No DocBlock was found for Method isLine</error>
-      <error line="135">No DocBlock was found for Method isLineRing</error>
-      <error line="144">No DocBlock was found for Method coordsToText</error>
-      <error line="148">No DocBlock was found for Method pointsToText</error>
-      <error line="157">No DocBlock was found for Method polygonToTxt</error>
-      <error line="170">No DocBlock was found for Method toText</error>
+      <error line="3">No Page-level DocBlock was found in file core/persistent/serialize/yuppgis.core.persistent.serialize.WKTGEO.class.php</error>
+      <error line="14">No DocBlock was found for Property $regex</error>
+      <error line="42">No DocBlock was found for Method fromTextByClass</error>
+      <error line="101">No DocBlock was found for Method createPolygones</error>
+      <error line="116">No DocBlock was found for Method createPoints</error>
+      <error line="129">No DocBlock was found for Method createLine</error>
+      <error line="145">No DocBlock was found for Method isLine</error>
+      <error line="149">No DocBlock was found for Method isLineRing</error>
+      <error line="158">No DocBlock was found for Method coordsToText</error>
+      <error line="162">No DocBlock was found for Method pointsToText</error>
+      <error line="171">No DocBlock was found for Method polygonToTxt</error>
     </parse_markers>
-    <class final="false" abstract="false" line="3" namespace="default" package="Default">
+    <class final="false" abstract="false" line="12" namespace="default" package="Default">
       <name>WKTGEO</name>
       <extends/>
       <full_name>\WKTGEO</full_name>
-      <property final="false" static="true" visibility="private" line="5" package="Default">
+      <docblock>
+        <description>Clase que brinda funciones para el parseo de Geometrias y WKT</description>
+        <long-description>
+</long-description>
+        <tag line="3" name="author" description="Jorge Davison"/>
+        <tag line="3" name="author" description="Martin Taruselli"/>
+        <tag line="3" name="author" description="Emilia Rosa"/>
+        <tag line="3" name="author" description="German Schnyder"/>
+      </docblock>
+      <property final="false" static="true" visibility="private" line="14" package="Default">
         <name>$regex</name>
         <default>array (
 		'class' =&gt; '/^(\w+)\((.*)\)/'</default>
       </property>
-      <method final="false" abstract="false" static="true" visibility="public" line="14" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="28" package="Default">
         <name>fromText</name>
-        <argument line="14">
+        <docblock>
+          <description>Funcion que retorna una geometria a partir de su representacion en WKT</description>
+          <long-description>
+</long-description>
+          <tag line="23" name="param" description="" type="string" variable="$text">
+            <type by_reference="false">\string</type>
+          </tag>
+        </docblock>
+        <argument line="28">
           <name>$text</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="28" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="42" package="Default">
         <name>fromTextByClass</name>
-        <argument line="28">
+        <argument line="42">
           <name>$class</name>
           <default/>
           <type/>
         </argument>
-        <argument line="28">
+        <argument line="42">
           <name>$param</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="87" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="101" package="Default">
         <name>createPolygones</name>
-        <argument line="87">
+        <argument line="101">
           <name>$lines</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="102" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="116" package="Default">
         <name>createPoints</name>
-        <argument line="102">
+        <argument line="116">
           <name>$points</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="115" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="129" package="Default">
         <name>createLine</name>
-        <argument line="115">
+        <argument line="129">
           <name>$points</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="131" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="145" package="Default">
         <name>isLine</name>
-        <argument line="131">
+        <argument line="145">
           <name>$points</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="135" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="149" package="Default">
         <name>isLineRing</name>
-        <argument line="135">
+        <argument line="149">
           <name>$points</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="144" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="158" package="Default">
         <name>coordsToText</name>
-        <argument line="144">
+        <argument line="158">
           <name>$point</name>
           <default/>
           <type>Point</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="148" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="162" package="Default">
         <name>pointsToText</name>
-        <argument line="148">
+        <argument line="162">
           <name>$points</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="157" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="171" package="Default">
         <name>polygonToTxt</name>
-        <argument line="157">
+        <argument line="171">
           <name>$polygon</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="170" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="189" package="Default">
         <name>toText</name>
-        <argument line="170">
+        <docblock>
+          <description>Retorna la representacione en WKT de una geometria</description>
+          <long-description>
+</long-description>
+          <tag line="183" name="param" description="" type="\Geometry" variable="$geo">
+            <type by_reference="false">\Geometry</type>
+          </tag>
+        </docblock>
+        <argument line="189">
           <name>$geo</name>
           <default/>
           <type>Geometry</type>
@@ -5604,289 +5956,411 @@ Funcion que obtiene la $key del resultado de la DB y los retorna en una lista st
       </method>
     </class>
   </file>
-  <file path="core/db/criteria2/yuppgis.core.db.criteria2.GISCondition.class.php" hash="4f213d7aedd8dfd2ea48b1e318b74924" package="Default">
+  <file path="core/db/criteria2/yuppgis.core.db.criteria2.GISCondition.class.php" hash="76e220907abefb0ccb3cb2f14a4a4e9e" package="yuppgis\core\db\criteria2">
+    <docblock>
+      <description>Clase que representa una condicion geografica para consultas geograficas ({@link GISQuery}).</description>
+      <long-description>
+</long-description>
+      <tag line="3" name="package" description="yuppgis.core.db.criteria2"/>
+      <tag line="3" name="author" description="Jorge Davison"/>
+      <tag line="3" name="author" description="Martin Taruselli"/>
+      <tag line="3" name="author" description="Emilia Rosa"/>
+      <tag line="3" name="author" description="German Schnyder"/>
+    </docblock>
     <parse_markers>
-      <error line="1">No DocBlock was found for File core/db/criteria2/yuppgis.core.db.criteria2.GISCondition.class.php</error>
-      <error line="3">No DocBlock was found for Class GISCondition</error>
-      <error line="5">No DocBlock was found for Property $extraValueReference</error>
-      <error line="8">No DocBlock was found for Constant GISTYPE_CONTAINS</error>
-      <error line="9">No DocBlock was found for Constant GISTYPE_ISCONTAINED</error>
-      <error line="10">No DocBlock was found for Constant GISTYPE_EQGEO</error>
-      <error line="11">No DocBlock was found for Constant GISTYPE_INTERSECTS</error>
-      <error line="12">No DocBlock was found for Constant GISTYPE_DWITHIN</error>
-      <error line="14">No DocBlock was found for Method getClassName</error>
-      <error line="18">No DocBlock was found for Method getGISTypes</error>
-      <error line="28">No DocBlock was found for Method setType</error>
-      <error line="34">No DocBlock was found for Method add</error>
-      <error line="38">No DocBlock was found for Method getSubconditions</error>
-      <error line="42">No DocBlock was found for Method setExtraValueReference</error>
-      <error line="46">No DocBlock was found for Method getExtraValueReference</error>
-      <error line="50">No DocBlock was found for Method createGISConditionValueWithExtra</error>
-      <error line="59">No DocBlock was found for Method createGISConditionValue</error>
-      <error line="67">No DocBlock was found for Method createGISConditionAttribute</error>
-      <error line="75">No DocBlock was found for Method CONTAINS</error>
-      <error line="79">No DocBlock was found for Method ISCONTAINED</error>
-      <error line="83">No DocBlock was found for Method EQGEO</error>
-      <error line="87">No DocBlock was found for Method EQGEOA</error>
-      <error line="91">No DocBlock was found for Method INTERSECTS</error>
-      <error line="95">No DocBlock was found for Method DWITHIN</error>
+      <error line="15">No DocBlock was found for Property $extraValueReference</error>
+      <error line="42">No DocBlock was found for Method getClassName</error>
+      <error line="46">No DocBlock was found for Method getGISTypes</error>
+      <error line="56">No DocBlock was found for Method setType</error>
+      <error line="62">No DocBlock was found for Method add</error>
+      <error line="66">No DocBlock was found for Method getSubconditions</error>
+      <error line="70">No DocBlock was found for Method setExtraValueReference</error>
+      <error line="74">No DocBlock was found for Method getExtraValueReference</error>
+      <error line="78">No DocBlock was found for Method createGISConditionValueWithExtra</error>
+      <error line="87">No DocBlock was found for Method createGISConditionValue</error>
+      <error line="95">No DocBlock was found for Method createGISConditionAttribute</error>
     </parse_markers>
-    <class final="false" abstract="false" line="3" namespace="default" package="Default">
+    <class final="false" abstract="false" line="13" namespace="default" package="yuppgis\core\db\criteria2">
       <name>GISCondition</name>
       <extends>\Condition</extends>
       <full_name>\GISCondition</full_name>
-      <constant namespace="default" line="8" package="Default">
+      <docblock>
+        <description>Clase que representa una condicion geografica para consultas geograficas ({@link GISQuery}).</description>
+        <long-description>
+</long-description>
+        <tag line="3" name="package" description="yuppgis.core.db.criteria2"/>
+        <tag line="3" name="author" description="Jorge Davison"/>
+        <tag line="3" name="author" description="Martin Taruselli"/>
+        <tag line="3" name="author" description="Emilia Rosa"/>
+        <tag line="3" name="author" description="German Schnyder"/>
+      </docblock>
+      <constant namespace="default" line="20" package="Default">
         <name>GISTYPE_CONTAINS</name>
         <value>"giscondition.type.contains"</value>
+        <docblock>
+          <description>Condicion geografica de pertenecia, A contiene a B?</description>
+          <long-description>
+</long-description>
+        </docblock>
       </constant>
-      <constant namespace="default" line="9" package="Default">
+      <constant namespace="default" line="25" package="Default">
         <name>GISTYPE_ISCONTAINED</name>
         <value>"giscondition.type.iscontained"</value>
+        <docblock>
+          <description>Condicion geografica de pertenencia, A esta contenido en B?</description>
+          <long-description>
+</long-description>
+        </docblock>
       </constant>
-      <constant namespace="default" line="10" package="Default">
+      <constant namespace="default" line="30" package="Default">
         <name>GISTYPE_EQGEO</name>
         <value>"giscondition.type.equals"</value>
+        <docblock>
+          <description>Condicion geografica de igualdad, A es igual a B?</description>
+          <long-description>
+</long-description>
+        </docblock>
       </constant>
-      <constant namespace="default" line="11" package="Default">
+      <constant namespace="default" line="35" package="Default">
         <name>GISTYPE_INTERSECTS</name>
         <value>"giscondition.type.intersects"</value>
+        <docblock>
+          <description>Condicion geografica de interseccion, A intersecta a B?</description>
+          <long-description>
+</long-description>
+        </docblock>
       </constant>
-      <constant namespace="default" line="12" package="Default">
+      <constant namespace="default" line="40" package="Default">
         <name>GISTYPE_DWITHIN</name>
         <value>"giscondition.type.dwithin"</value>
+        <docblock>
+          <description>Condicion geografica de distancia, A esta a una distancia X de B?</description>
+          <long-description>
+</long-description>
+        </docblock>
       </constant>
-      <property final="false" static="false" visibility="private" line="5" package="Default">
+      <property final="false" static="false" visibility="private" line="15" package="Default">
         <name>$extraValueReference</name>
         <default/>
       </property>
-      <method final="false" abstract="false" static="true" visibility="public" line="14" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="42" package="Default">
         <name>getClassName</name>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="18" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="46" package="Default">
         <name>getGISTypes</name>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="28" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="56" package="Default">
         <name>setType</name>
-        <argument line="28">
+        <argument line="56">
           <name>$type</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="34" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="62" package="Default">
         <name>add</name>
-        <argument line="34">
+        <argument line="62">
           <name>$cond</name>
           <default/>
           <type>Condition</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="38" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="66" package="Default">
         <name>getSubconditions</name>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="42" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="70" package="Default">
         <name>setExtraValueReference</name>
-        <argument line="42">
+        <argument line="70">
           <name>$extraValueReference</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="46" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="74" package="Default">
         <name>getExtraValueReference</name>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="50" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="78" package="Default">
         <name>createGISConditionValueWithExtra</name>
-        <argument line="50">
+        <argument line="78">
           <name>$type</name>
           <default/>
           <type/>
         </argument>
-        <argument line="50">
+        <argument line="78">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="50">
+        <argument line="78">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="50">
+        <argument line="78">
           <name>$refValue</name>
           <default/>
           <type/>
         </argument>
-        <argument line="50">
+        <argument line="78">
           <name>$extraValue</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="59" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="87" package="Default">
         <name>createGISConditionValue</name>
-        <argument line="59">
+        <argument line="87">
           <name>$type</name>
           <default/>
           <type/>
         </argument>
-        <argument line="59">
+        <argument line="87">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="59">
+        <argument line="87">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="59">
+        <argument line="87">
           <name>$refValue</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="67" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="95" package="Default">
         <name>createGISConditionAttribute</name>
-        <argument line="67">
+        <argument line="95">
           <name>$type</name>
           <default/>
           <type/>
         </argument>
-        <argument line="67">
+        <argument line="95">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="67">
+        <argument line="95">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="67">
+        <argument line="95">
           <name>$refAlias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="67">
+        <argument line="95">
           <name>$refAttr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="75" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="110" package="Default">
         <name>CONTAINS</name>
-        <argument line="75">
+        <docblock>
+          <description>Crea una condicion de pertencia.</description>
+          <long-description>
+</long-description>
+          <tag line="103" name="param" description="alias de la tabla." type="string" variable="$alias">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="103" name="param" description="nombre del atributo a aplicar la condicion." type="string" variable="$attr">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="103" name="param" description="valor con el cual va a comparar la condicion." type="\Geometry" variable="$refValue">
+            <type by_reference="false">\Geometry</type>
+          </tag>
+        </docblock>
+        <argument line="110">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="75">
+        <argument line="110">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="75">
+        <argument line="110">
           <name>$refValue</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="79" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="121" package="Default">
         <name>ISCONTAINED</name>
-        <argument line="79">
+        <docblock>
+          <description>Crea una condicion de pertencia.</description>
+          <long-description>
+</long-description>
+          <tag line="114" name="param" description="alias de la tabla." type="string" variable="$alias">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="114" name="param" description="nombre del atributo a aplicar la condicion." type="string" variable="$attr">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="114" name="param" description="valor con el cual va a comparar la condicion." type="\Geometry" variable="$refValue">
+            <type by_reference="false">\Geometry</type>
+          </tag>
+        </docblock>
+        <argument line="121">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="79">
+        <argument line="121">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="79">
+        <argument line="121">
           <name>$refValue</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="83" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="132" package="Default">
         <name>EQGEO</name>
-        <argument line="83">
+        <docblock>
+          <description>Crea una condicion de igualdad.</description>
+          <long-description>
+</long-description>
+          <tag line="125" name="param" description="alias de la tabla." type="string" variable="$alias">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="125" name="param" description="nombre del atributo a aplicar la condicion." type="string" variable="$attr">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="125" name="param" description="valor con el cual va a comparar la condicion." type="\Geometry" variable="$refValue">
+            <type by_reference="false">\Geometry</type>
+          </tag>
+        </docblock>
+        <argument line="132">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="83">
+        <argument line="132">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="83">
+        <argument line="132">
           <name>$refValue</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="87" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="144" package="Default">
         <name>EQGEOA</name>
-        <argument line="87">
+        <docblock>
+          <description>Crea una condicion de igualdad.</description>
+          <long-description>
+</long-description>
+          <tag line="136" name="param" description="alias de la tabla." type="string" variable="$alias">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="136" name="param" description="nombre del atributo a aplicar la condicion." type="string" variable="$attr">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="136" name="param" description="alias de la segunda tabla." type="string" variable="$refAlias">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="136" name="param" description="nombre del atributo dos a aplicar la condicion." type="string" variable="$refAttr">
+            <type by_reference="false">\string</type>
+          </tag>
+        </docblock>
+        <argument line="144">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="87">
+        <argument line="144">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="87">
+        <argument line="144">
           <name>$refAlias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="87">
+        <argument line="144">
           <name>$refAttr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="91" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="155" package="Default">
         <name>INTERSECTS</name>
-        <argument line="91">
+        <docblock>
+          <description>Crea una condicion de interseccion.</description>
+          <long-description>
+</long-description>
+          <tag line="148" name="param" description="alias de la tabla." type="string" variable="$alias">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="148" name="param" description="nombre del atributo a aplicar la condicion." type="string" variable="$attr">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="148" name="param" description="valor con el cual va a comparar la condicion." type="\Geometry" variable="$refValue">
+            <type by_reference="false">\Geometry</type>
+          </tag>
+        </docblock>
+        <argument line="155">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="91">
+        <argument line="155">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="91">
+        <argument line="155">
           <name>$refValue</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="95" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="167" package="Default">
         <name>DWITHIN</name>
-        <argument line="95">
+        <docblock>
+          <description>Crea una condicion de distancia.</description>
+          <long-description>
+</long-description>
+          <tag line="159" name="param" description="alias de la tabla." type="string" variable="$alias">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="159" name="param" description="nombre del atributo a aplicar la condicion." type="string" variable="$attr">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="159" name="param" description="valor con el cual va a comparar la condicion." type="\Geometry" variable="$refValue">
+            <type by_reference="false">\Geometry</type>
+          </tag>
+          <tag line="159" name="param" description="valor con el cual va a comparar la condicion." type="int" variable="$distance">
+            <type by_reference="false">\int</type>
+          </tag>
+        </docblock>
+        <argument line="167">
           <name>$alias</name>
           <default/>
           <type/>
         </argument>
-        <argument line="95">
+        <argument line="167">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="95">
+        <argument line="167">
           <name>$refValue</name>
           <default/>
           <type/>
         </argument>
-        <argument line="95">
+        <argument line="167">
           <name>$distance</name>
           <default/>
           <type/>
@@ -6033,6 +6507,17 @@ Funcion que obtiene la $key del resultado de la DB y los retorna en una lista st
     </class>
   </file>
   <package name="Default"/>
+  <package name="yuppgis">
+    <package name="core">
+      <package name="basic">
+        <package name="ui"/>
+      </package>
+      <package name="config"/>
+      <package name="db">
+        <package name="criteria2"/>
+      </package>
+    </package>
+  </package>
   <namespace name="default"/>
   <marker>todo</marker>
   <marker>fixme</marker>

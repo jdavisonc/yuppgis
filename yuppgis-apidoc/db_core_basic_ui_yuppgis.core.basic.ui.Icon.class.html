@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>&lt;b&gt;YuppGIS&lt;/b&gt;</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.tools.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>YuppGIS</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.tools.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
             $(document).ready(function() {
                 $(".filetree").treeview({
                     collapsed: true,
@@ -117,11 +117,15 @@
 <dd xmlns:dbx="http://docblox-project.org/xsl/functions">German Schnyder
          
     </dd>
+<dt xmlns:dbx="http://docblox-project.org/xsl/functions">Package</dt>
+<dd xmlns:dbx="http://docblox-project.org/xsl/functions">yuppgis.core.basic.ui
+         
+    </dd>
 </dl>
 <a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\Icon" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\Icon<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>Default</small><p class="short-description">Clase que representa un {@link UIProperty} icono.</p>
+<small class="package"><b>Package: </b>yuppgis\core\basic\ui</small><p class="short-description">Clase que representa un {@link UIProperty} icono.</p>
 <div class="long-description">
 </div>
 <dl class="class-info">
@@ -149,8 +153,12 @@
 <a id="\Icon::DEFAULT_ICON" class="anchor"></a><div class="constant publicC">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/constant.png" alt="Constant"> 
                 <span class="highlight">DEFAULT_ICON</span>
-                = '/yuppgis/yuppgis/js/gis/img/marker-gold.png'</code><div class="description"></div>
-<div class="code-tabs"><dl class="constant-info"></dl></div>
+                = '/yuppgis/yuppgis/js/gis/img/marker-gold.png'</code><div class="description"><p class="short-description">Icono por defecto.</p></div>
+<div class="code-tabs">
+<div class="long-description">
+</div>
+<dl class="constant-info"></dl>
+</div>
 <div class="clear"></div>
 </div>
 </div>
@@ -237,22 +245,24 @@
 <div>
 <a id="\Icon::__construct()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">__construct</span><span class="nb-faded-text">(
-           $alpha
+          \int $alpha
               =
-              0,  $zIndex
+              0, \int $zIndex
               =
-              0,  $url
+              0, \string $url
               =
-              '',  $width
+              '', \int $width
               =
-              0,  $height
+              0, \int $height
               =
               0
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
+          void</code><div class="description"><p class="short_description">Constructor.</p></div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -261,28 +271,28 @@
 </tr></thead>
 <tr>
 <th>$alpha</th>
-<td></td>
-<td><em></em></td>
+<td>\int</td>
+<td><em><p>alpha a asignar al fondo.</p></em></td>
 </tr>
 <tr>
 <th>$zIndex</th>
-<td></td>
-<td><em></em></td>
+<td>\int</td>
+<td><em><p>indice Z.</p></em></td>
 </tr>
 <tr>
 <th>$url</th>
-<td></td>
-<td><em></em></td>
+<td>\string</td>
+<td><em><p>url del icono.</p></em></td>
 </tr>
 <tr>
 <th>$width</th>
-<td></td>
-<td><em></em></td>
+<td>\int</td>
+<td><em><p>ancho del icono.</p></em></td>
 </tr>
 <tr>
 <th>$height</th>
-<td></td>
-<td><em></em></td>
+<td>\int</td>
+<td><em><p>alto del icono.</p></em></td>
 </tr>
 </table>
 </div>
@@ -349,8 +359,9 @@
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
-<div class="code-tabs"></div>
+          void</code><div class="description"><p class="short_description">Retorna el alto del icono.</p></div>
+<div class="code-tabs"><div class="long-description">
+</div></div>
 <div class="clear"></div>
 </div>
 <a id="\Icon::getRealPath()" class="anchor"></a><div class="method private">
@@ -382,8 +393,9 @@
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
-<div class="code-tabs"></div>
+          void</code><div class="description"><p class="short_description">Retorna la URL del icono.</p></div>
+<div class="code-tabs"><div class="long-description">
+</div></div>
 <div class="clear"></div>
 </div>
 <a id="\Icon::getWidth()" class="anchor"></a><div class="method public">
@@ -392,8 +404,9 @@
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
-<div class="code-tabs"></div>
+          void</code><div class="description"><p class="short_description">Retorna el ancho del icono.</p></div>
+<div class="code-tabs"><div class="long-description">
+</div></div>
 <div class="clear"></div>
 </div>
 <a id="\Icon::getZIndex()" class="anchor"></a><div class="method public inherited_from ">
@@ -443,8 +456,10 @@
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
+          void</code><div class="description"><p class="short_description">Asigna un alto al icono</p></div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -462,12 +477,14 @@
 </div>
 <a id="\Icon::setUrl()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setUrl</span><span class="nb-faded-text">(
-           $url
+          \string $url
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
+          void</code><div class="description"><p class="short_description">Asigna una URL de icono.</p></div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -476,8 +493,8 @@
 </tr></thead>
 <tr>
 <th>$url</th>
-<td></td>
-<td><em></em></td>
+<td>\string</td>
+<td><em><p>url del icono.</p></em></td>
 </tr>
 </table>
 </div>
@@ -485,12 +502,14 @@
 </div>
 <a id="\Icon::setWidth()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setWidth</span><span class="nb-faded-text">(
-           $width
+          \int $width
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
+          void</code><div class="description"><p class="short_description">Asigna un ancho al icono</p></div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -499,8 +518,8 @@
 </tr></thead>
 <tr>
 <th>$width</th>
-<td></td>
-<td><em></em></td>
+<td>\int</td>
+<td><em><p>ancho del icono.</p></em></td>
 </tr>
 </table>
 </div>
