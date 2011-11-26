@@ -60,10 +60,66 @@ $idMedico = $m->get('id');
 		</div>
 	
 		<div class="container-fluid">
-	
+			<div class="sidebar">
+				<div class="well">
+					<h5>Enfermedades</h5>
+					<div class="maplayers">
+					<?php echo GISHelpers::MapLayers(array(MapParams::ID => 2)); ?>
+					</div>
+					<h5>Estados</h5>
+					<div id="menubar">
+					
+					
+					<script type="text/javascript">
+						function mostrarPorEstado (est) {
+							$.ajax({
+							      url: "/yuppgis/casodeestudio/medico/mostrarPorEstado",
+							      data: {
+							    	  	estado: est,
+							    	  	medico: <?php echo $idMedico; ?>
+							      },			      			      			      
+							      success: function(data){							      	
+							    	  $("#map_2").YuppGISMap().showFeatures(data, true);
+							      }
+							  })
+							  
+							  return false;
+						
+						}
+					</script>
+					
+					<?php
+					
+						$html =  '';
+						foreach (Estado::getEstados() as $estado) {
+							if ($estado != '') {
+								$html .= '<div >'.DisplayHelper::radio('estadoEnfermedad', $estado,
+									array(
+										'onclick' => 'mostrarPorEstado(\''.$estado.'\')'
+									)).'<span style="margin-left: 5px">'.$estado.'</span></div>';
+							} else {
+								$html .= '<div >'.DisplayHelper::radio('estadoEnfermedad', 'todos',
+									array(
+										'onclick' => 'mostrarPorEstado(\'todos\')',
+										'checked' => ''
+									)).'<span style="margin-left: 5px">todos</span></div>';
+							}
+						}
+			
+		
+						echo $html; 
+						
+						
+						//echo GISHelpers::FiltersMenu('Paciente', 2, null, null, false); 
+						?>
+					</div>
+				</div>
+			</div>
+			
 			<div class="content">
 				<!-- Main hero unit for a primary marketing message or call to action -->
-				<div class="hero-unit">
+				<div class="well">
+					<h5>Bienvenido: <?php $med = Medico::get($idMedico); echo $med->getNombre().' '.$med->getApellido()?></h5>
 					<p>
 					<?php echo GISHelpers::Map(array(
 					MapParams::ID => 2,

@@ -55,6 +55,7 @@ foreach ($medicos as $medico){
 /****  creacion ****/
 
 $map = new Map(array('name' => 'MapaDeEnfermedades'));
+$map2 = new Map(array('name' => 'MapaDeMedicos'));
 $capasEnfermedades = array();
 foreach (Enfermedad::getEnfermedades() as $enfermedad) {
 	$dlenf = new DataLayer();
@@ -64,6 +65,7 @@ foreach (Enfermedad::getEnfermedades() as $enfermedad) {
 	$dlenf->setDefaultUIProperty(new Icon(0, 0, '/images/'.$enfermedad.'.png'));
 	$dlenf->save();
 	$map->addLayer($dlenf);
+	$map2->addLayer($dlenf);
 	$capasEnfermedades[] = $dlenf;
 }
 
@@ -178,7 +180,7 @@ $p4->aSet(Enfermedad::HIPERTENCION, Estado::NO_CONTROLADO);
 /*** Medicos ***/
 
 
-$map2 = new Map(array('name' => 'MapaDeMedicos'));
+
 
 
 
