@@ -2,8 +2,22 @@
 
 YuppLoader::load('yuppgis.core.persistent.serialize', 'KMLGEO');
 
+/**
+ * Clase que brinda operaciones para trabajar con Kml, DataLayers, geometria
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class KMLUtilities{
 
+	/**
+	 * 
+	 * Funcion  que retorna un kml a partir de una Capa, el kml resultante contiene todos los elementos del dominio que 
+	 * pertenecen a dicha capa
+	 * @param DataLayer $layer
+	 */
 	public static function layerToKML(DataLayer $layer) {
 		$kml = new SimpleXMLElement('<kml/>');
 		$kml->addAttribute('xmlns', 'http://earth.google.com/kml/2.0');
@@ -23,15 +37,8 @@ class KMLUtilities{
 		return $kml->asXML();
 	}
 
-	/**
-	 * TODO_GIS: Hacer dinamico
-	 * 
-	 * @param unknown_type $element
-	 * @param unknown_type $layer
-	 * @param SimpleXMLElement $folder
-	 */
+
 	private static function elementToKML($element, DataLayer $layer, SimpleXMLElement &$folder){
-		
 		foreach ($layer->getAttributes() as $attribute) {
 			$description = 'Capa: '.$layer->getName().', Id: '.$element->getId();
 			$getAttribute = 'get' . $attribute;
@@ -43,6 +50,12 @@ class KMLUtilities{
 		}
 	}
 	
+	/**
+	 * 
+	 * Funcion que retorna un kml a partir de una Geometria
+	 * @param long $id
+	 * @param Geometry $geom
+	 */
 	public static function GeometryToKML($id, Geometry $geom) {
 		$kml = new SimpleXMLElement('<kml/>');
 		$kml->addAttribute('xmlns', 'http://earth.google.com/kml/2.0');

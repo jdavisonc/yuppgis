@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * 
+ * Clase que brinda funciones para el parseo de Geometrias y WKT
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class WKTGEO {
 	
 	private static $regex  = array (
@@ -11,6 +20,11 @@ class WKTGEO {
 		
 	);
 	
+	/**
+	 * 
+	 * Funcion que retorna una geometria a partir de su representacion en WKT
+	 * @param string $text
+	 */
 	public static function fromText( $text ) {
 		
 		preg_match( self::$regex['geometryCollectionEmpty'], $text, $geometryEmpty );
@@ -166,7 +180,12 @@ class WKTGEO {
 		return substr($res, 0, -1);
 	}
 	
-	// TODO_GIS: Hacer
+	/**
+	 * 
+	 * Retorna la representacione en WKT de una geometria
+	 * @param Geometry $geo
+	 * 
+	 */
 	public static function toText( Geometry $geo ) {
 		$class = get_class( $geo );
 		switch ( $class ) {
