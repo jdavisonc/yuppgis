@@ -84,13 +84,13 @@ class PacienteController extends GISController {
 			
 			$asma = $this->params[Enfermedad::ASMA];
 			$diabetes = $this->params[Enfermedad::DIABETES];
-			$hipertencion = $this->params[Enfermedad::HIPERTENCION];
+			$hipertension = $this->params[Enfermedad::HIPERTENSION];
 			$insuficiencia_renal = $this->params[Enfermedad::INSUFICIENCIA_RENAL];
 			$obesidad = $this->params[Enfermedad::OBESIDAD];
 			
 			$this->changeEnfermedadOnPaciente($paciente, $asma, Enfermedad::ASMA);
 			$this->changeEnfermedadOnPaciente($paciente, $diabetes, Enfermedad::DIABETES);
-			$this->changeEnfermedadOnPaciente($paciente, $hipertencion, Enfermedad::HIPERTENCION);
+			$this->changeEnfermedadOnPaciente($paciente, $hipertension, Enfermedad::HIPERTENSION);
 			$this->changeEnfermedadOnPaciente($paciente, $insuficiencia_renal, Enfermedad::INSUFICIENCIA_RENAL);
 			$this->changeEnfermedadOnPaciente($paciente, $obesidad, Enfermedad::OBESIDAD);
 			

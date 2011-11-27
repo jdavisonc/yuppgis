@@ -36,7 +36,7 @@ class Paciente extends GISPersistentObject {
 		// Enfermedades
 		$this->addAttribute(Enfermedad::ASMA, Datatypes::TEXT);
 		$this->addAttribute(Enfermedad::DIABETES, Datatypes::TEXT);
-		$this->addAttribute(Enfermedad::HIPERTENCION, Datatypes::TEXT);
+		$this->addAttribute(Enfermedad::HIPERTENSION, Datatypes::TEXT);
 		$this->addAttribute(Enfermedad::INSUFICIENCIA_RENAL, Datatypes::TEXT);
 		$this->addAttribute(Enfermedad::OBESIDAD, Datatypes::TEXT);
 		
@@ -61,7 +61,7 @@ class Paciente extends GISPersistentObject {
 		$this->addConstraints(Enfermedad::DIABETES, array(
 			Constraint::inList(Estado::getEstados())
 		));
-		$this->addConstraints(Enfermedad::HIPERTENCION, array(
+		$this->addConstraints(Enfermedad::HIPERTENSION, array(
 			Constraint::inList(Estado::getEstados())
 		));
 		$this->addConstraints(Enfermedad::INSUFICIENCIA_RENAL, array(

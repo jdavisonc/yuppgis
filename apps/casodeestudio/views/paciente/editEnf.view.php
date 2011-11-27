@@ -107,9 +107,9 @@ $paciente = $m->get('paciente');
 						           </div>
 						        </div>
 								<div class="clearfix">
-						           <label for="nombre"><?php echo Enfermedad::getName(Enfermedad::HIPERTENCION); ?></label>
+						           <label for="nombre"><?php echo Enfermedad::getName(Enfermedad::HIPERTENSION); ?></label>
 						           <div class="input">
-						             <?php echo DisplayHelper::select(Enfermedad::HIPERTENCION, Estado::getEstadosView(), $paciente->aGet(Enfermedad::HIPERTENCION)); ?>
+						             <?php echo DisplayHelper::select(Enfermedad::HIPERTENSION, Estado::getEstadosView(), $paciente->aGet(Enfermedad::HIPERTENSION)); ?>
 						           </div>
 						        </div>
 								<div class="clearfix">
