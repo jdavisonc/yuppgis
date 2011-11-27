@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Clase que representa que un atributo selecionado en una consulta geografica (@link GISQuery), es un valor 
+ *
+ * @package yuppgis.core.db.criteria2
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class SelectValue extends SelectItem {
 	
 	private $value;

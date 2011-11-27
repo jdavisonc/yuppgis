@@ -23,6 +23,16 @@ YuppLoader::load('yuppgis.core.basic', 'Observable');
 // Se importan dependencias de persistencia
 YuppLoader :: load('yuppgis.core.config', 'YuppGISConventions');
 
+/**
+ * Clase que tiene la logica para modelar objetos con objetos geograficos 
+ * 
+ * @package yuppgis.core.persistent
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISPersistentObject extends Observable {
 
 	public function __construct($args = array (), $isSimpleInstance = false) {
@@ -43,6 +53,10 @@ class GISPersistentObject extends Observable {
 		parent :: __construct($args, $isSimpleInstance);
 	}
 
+	/**
+	 * Funcion usada para agregar un atributo a un objeto del modelo
+	 * @see PersistentObject::addAttribute()
+	 */
 	public function addAttribute($name, $type) {
 
 		switch($type) {
@@ -91,7 +105,9 @@ class GISPersistentObject extends Observable {
 		}
 	}
 
-
+	/**
+	 * Funcion que retorna los atributos que son una geometria (@link Geometry) de un objeto
+	 */
 	public function hasGeometryAttributes()
 	{
 		$res = array();
@@ -103,6 +119,10 @@ class GISPersistentObject extends Observable {
 		return $res;
 	}
 
+	/**
+	 * Retorna un objeto asociado
+	 * @see PersistentObject::aGetObject()
+	 */
 	public function aGetObject( $attr, $id ) {
 		if (is_subclass_of($this->hasOne[$attr], Geometry :: getClassName())) {
 			return PersistentManagerFactory::getManager()->get_gis_object( get_class($this) , $attr, $this->hasOne[$attr], $id );
@@ -121,6 +141,9 @@ class GISPersistentObject extends Observable {
 	}
 
 
+	/**
+	 * @see Observable::notifyObservers()
+	 */
 	public function notifyObservers($params){
 		$string = $this->getObservers();
 		$observers = explode(";", $string);

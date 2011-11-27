@@ -3,6 +3,17 @@
 YuppLoader::load('yuppgis.core.utils', 'ReflectionUtils');
 YuppLoader::load('core.mvc', 'DisplayHelper');
 
+
+/**
+ * Clase que brinda helpers para la interfaz de usuario
+ * 
+ * @package yuppgis.core.gis
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISHelpers {
 
 	/**

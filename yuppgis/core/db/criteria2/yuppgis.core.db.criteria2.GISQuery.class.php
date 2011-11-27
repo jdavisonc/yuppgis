@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * 
+ * Clase que representa un consulta geografica
+ * 
+ * @package yuppgis.core.db.criteria2
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISQuery extends Query {
 	
 	public static function getClassName() {

@@ -10,7 +10,12 @@ YuppLoader::load('yuppgis.core.utils', 'XMLUtils');
  * cuyo nombre comience con la palabra 'test'.
  * Ej: testPersistencia();
  *  
- * @author harley
+  * @package yuppgis.core.testing
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
  */
 abstract class YuppGISTestCase extends TestCase {
 	

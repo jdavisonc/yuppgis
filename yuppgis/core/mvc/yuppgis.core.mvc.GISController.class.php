@@ -10,9 +10,22 @@ YuppLoader::load('core.http', 'HTTPRequest');
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
 YuppLoader::load('core.persistent.serialize', 'JSONPO');
 
+/**
+ * Controlador base que se debe extender para usar los helpers para la parte gis (@link GISHelpers)
+ * 
+ * @package yuppgis.core.mvc
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISController extends YuppController {
 
 
+	/**
+	 * Accion que retorna el KML que representa a una capa. Ver biblioteca jquery.yuppgis.map.js,
+	 */
 	public function mapLayerAction(){
 
 		$layerId = $this->params['layerId'];
@@ -21,6 +34,9 @@ class GISController extends YuppController {
 		return $this->renderString( KMLUtilities::layerToKml($layer));
 	}
 
+	/**
+	 * Accion que persiste el estado de visualizacion de los elementos de un mapa, pasados por parametros ($json)
+	 */
 	public function saveVisualizationAction(){
 
 		$mapId = $this->params['mapId'];
@@ -40,6 +56,9 @@ class GISController extends YuppController {
 		}
 	}
 
+	/**
+	 * Accion que carga el estado de visualizacion de los elementos de un mapa
+	 */
 	public function loadVisualizationAction(){
 		$map = Map::get($this->params['mapId']);
 
@@ -48,6 +67,9 @@ class GISController extends YuppController {
 		return $this->renderString($map->getVisualization_json());
 	}
 
+	/**
+	 * Accion que retorna las capas de un mapa, representado en JSON. Ver biblioteca jquery.yuppgis.map.js,
+	 */
 	public function getLayersAction(){
 
 		$map = Map::get($this->params['mapId']);
@@ -68,6 +90,9 @@ class GISController extends YuppController {
 		return  $this->renderString($json);
 	}
 
+	/**
+	 * Accion que retorna el template correspondiente para mostrar el detalle de un elemento en el mapa. Ver biblioteca jquery.yuppgis.map.js.
+	 */
 	public function detailsAction()
 	{
 		$layerId = $this->params['layerId'];
