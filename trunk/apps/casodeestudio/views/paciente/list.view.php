@@ -84,7 +84,7 @@ $m = Model::getInstance();
 				    				<th><?php echo Enfermedad::getName(Enfermedad::ASMA); ?></th>
 				    				<th><?php echo Enfermedad::getName(Enfermedad::OBESIDAD); ?></th>
 				    				<th><?php echo Enfermedad::getName(Enfermedad::INSUFICIENCIA_RENAL); ?></th>
-				    				<th><?php echo Enfermedad::getName(Enfermedad::HIPERTENCION); ?></th>
+				    				<th><?php echo Enfermedad::getName(Enfermedad::HIPERTENSION); ?></th>
 				    			</tr>
 				    		</thead>
 				    		<tbody>
@@ -105,7 +105,7 @@ $m = Model::getInstance();
 					    				<td><?php echo $p->aGet(Enfermedad::ASMA); ?></td>
 					    				<td><?php echo $p->aGet(Enfermedad::OBESIDAD); ?></td>
 					    				<td><?php echo $p->aGet(Enfermedad::INSUFICIENCIA_RENAL); ?></td>
-					    				<td><?php echo $p->aGet(Enfermedad::HIPERTENCION); ?></td>
+					    				<td><?php echo $p->aGet(Enfermedad::HIPERTENSION); ?></td>
 					    			</tr>
 				    			<?php } ?>
 				    		</tbody>

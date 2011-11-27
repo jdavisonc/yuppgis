@@ -126,8 +126,8 @@ $paciente = $m->get('paciente');
 							<div class="span3  value"><?php echo $paciente->aGet(Enfermedad::DIABETES); ?></div>
 						</div>
 						<div class="row grid">
-						    <div class="span3 title "><?php echo Enfermedad::getName(Enfermedad::HIPERTENCION); ?></div>
-							<div class="span3  value"><?php echo $paciente->aGet(Enfermedad::HIPERTENCION); ?></div>
+						    <div class="span3 title "><?php echo Enfermedad::getName(Enfermedad::HIPERTENSION); ?></div>
+							<div class="span3  value"><?php echo $paciente->aGet(Enfermedad::HIPERTENSION); ?></div>
 							<div class="span1" ></div>
 							<div class="span3 title "><?php echo Enfermedad::getName(Enfermedad::INSUFICIENCIA_RENAL); ?></div>
 							<div class="span3  value"><?php echo $paciente->aGet(Enfermedad::INSUFICIENCIA_RENAL); ?></div>

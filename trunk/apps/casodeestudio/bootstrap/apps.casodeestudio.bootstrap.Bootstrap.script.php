@@ -175,7 +175,7 @@ $capasEnfermedades[2]->addElement($p4);
 $p1->aSet(Enfermedad::ASMA, Estado::CONTROLADO);
 $p2->aSet(Enfermedad::OBESIDAD, Estado::ADVERTENCIA);
 $p3->aSet(Enfermedad::DIABETES, Estado::NO_CONTROLADO);
-$p4->aSet(Enfermedad::HIPERTENCION, Estado::NO_CONTROLADO);
+$p4->aSet(Enfermedad::HIPERTENSION, Estado::NO_CONTROLADO);
 
 /*** Medicos ***/
 
