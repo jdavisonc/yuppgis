@@ -115,6 +115,11 @@ class MedicoController extends GISController {
 			$idElements .= $element->getId() . ',';
 		}
 		
+		if ($idElements == '') {
+			//la capa no tiene elementos
+			return array();
+		}
+		
 		$q->addProjection('p', 'id');
 		$q->addProjection('p', 'ubicacion', 'u');
 		$q->setCondition(Condition::_AND()
@@ -180,7 +185,7 @@ class MedicoController extends GISController {
 							->add(Condition::_OR()
 									->add(Condition::EQ('p', Enfermedad::ASMA, $estado))
 									->add(Condition::EQ('p', Enfermedad::DIABETES, $estado))
-									->add(Condition::EQ('p', Enfermedad::HIPERTENCION, $estado))
+									->add(Condition::EQ('p', Enfermedad::HIPERTENSION, $estado))
 									->add(Condition::EQ('p', Enfermedad::INSUFICIENCIA_RENAL, $estado))
 									->add(Condition::EQ('p', Enfermedad::OBESIDAD, $estado)));
 		} else {
