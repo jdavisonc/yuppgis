@@ -95,10 +95,57 @@
               Table of Contents
           </div>
 </div>
-<a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\KMLGEO" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\KMLGEO<div class="to-top"><a href="#top">jump to top</a></div>
+<a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><div id="file-description">
+<p xmlns:dbx="http://docblox-project.org/xsl/functions" class="short-description">Clase que brinda funciones para el parseo de Geometrias y KML</p>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" class="long-description">
+</div>
+</div>
+<dl class="file-info">
+<dt xmlns:dbx="http://docblox-project.org/xsl/functions">Author</dt>
+<dd xmlns:dbx="http://docblox-project.org/xsl/functions">Jorge Davison
+         
+    </dd>
+<dt xmlns:dbx="http://docblox-project.org/xsl/functions">Author</dt>
+<dd xmlns:dbx="http://docblox-project.org/xsl/functions">Martin Taruselli
+         
+    </dd>
+<dt xmlns:dbx="http://docblox-project.org/xsl/functions">Author</dt>
+<dd xmlns:dbx="http://docblox-project.org/xsl/functions">Emilia Rosa
+         
+    </dd>
+<dt xmlns:dbx="http://docblox-project.org/xsl/functions">Author</dt>
+<dd xmlns:dbx="http://docblox-project.org/xsl/functions">German Schnyder
+         
+    </dd>
+<dt xmlns:dbx="http://docblox-project.org/xsl/functions">Package</dt>
+<dd xmlns:dbx="http://docblox-project.org/xsl/functions">yuppgis.core.persistent.serialize
+         
+    </dd>
+</dl>
+<a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\KMLGEO" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\KMLGEO<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>Default</small><dl class="class-info"></dl>
+<small class="package"><b>Package: </b>yuppgis\core\persistent\serialize</small><p class="short-description">Clase que brinda funciones para el parseo de Geometrias y KML</p>
+<div class="long-description">
+</div>
+<dl class="class-info">
+<dt>Author</dt>
+<dd>Jorge Davison
+         
+    </dd>
+<dt>Author</dt>
+<dd>Martin Taruselli
+         
+    </dd>
+<dt>Author</dt>
+<dd>Emilia Rosa
+         
+    </dd>
+<dt>Author</dt>
+<dd>German Schnyder
+         
+    </dd>
+</dl>
 <h3>Methods</h3>
 <div>
 <a id="\KMLGEO::backgroundToKML()" class="anchor"></a><div class="method private">
@@ -308,14 +355,16 @@
 </div>
 <a id="\KMLGEO::fromKML()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">fromKML</span><span class="nb-faded-text">(
-           $placemarkElement
+          <a href="http://php.net/manual/en/class.simplexmlelement.php">\SimpleXMLElement</a> $placemarkElement
           )
         </span>
         :
           void</code><div class="description">
-<span class="attribute">static</span><p class="short_description"></p>
+<span class="attribute">static</span><p class="short_description">Retorna la Geometria que esta representada en el kml</p>
 </div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -324,8 +373,8 @@
 </tr></thead>
 <tr>
 <th>$placemarkElement</th>
-<td></td>
-<td><em></em></td>
+<td><a href="http://php.net/manual/en/class.simplexmlelement.php">\SimpleXMLElement</a></td>
+<td><em><p>kml con la informacion del placemark</p></em></td>
 </tr>
 </table>
 </div>
@@ -703,9 +752,11 @@
         </span>
         :
           void</code><div class="description">
-<span class="attribute">static</span><p class="short_description"></p>
+<span class="attribute">static</span><p class="short_description">Genera el kml para representar una geometria</p>
 </div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>

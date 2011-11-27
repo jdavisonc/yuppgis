@@ -98,7 +98,7 @@
 <a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\GISPersistentObject" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\GISPersistentObject<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>Default</small><p class="short-description">Clase que representa una clase observable que genera eventos.</p>
+<small class="package"><b>Package: </b>yuppgis\core\persistent</small><p class="short-description">Clase que tiene la logica para modelar objetos con objetos geograficos</p>
 <div class="long-description">
 </div>
 <dl class="class-info">
@@ -164,8 +164,10 @@
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
+          void</code><div class="description"><p class="short_description">Retorna un objeto asociado</p></div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -183,6 +185,12 @@
 <td><em></em></td>
 </tr>
 </table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>\PersistentObject::aGetObject()
+         
+    </dd>
+</dl>
 </div>
 <div class="clear"></div>
 </div>
@@ -192,8 +200,10 @@
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
+          void</code><div class="description"><p class="short_description">Funcion usada para agregar un atributo a un objeto del modelo</p></div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -211,6 +221,12 @@
 <td><em></em></td>
 </tr>
 </table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>\PersistentObject::addAttribute()
+         
+    </dd>
+</dl>
 </div>
 <div class="clear"></div>
 </div>
@@ -245,8 +261,9 @@
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
-<div class="code-tabs"></div>
+          void</code><div class="description"><p class="short_description">Funcion que retorna los atributos que son una geometria (@link Geometry) de un objeto</p></div>
+<div class="code-tabs"><div class="long-description">
+</div></div>
 <div class="clear"></div>
 </div>
 <a id="\GISPersistentObject::notifyObservers()" class="anchor"></a><div class="method public">
@@ -257,6 +274,8 @@
         :
           void</code><div class="description"><p class="short_description"></p></div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -269,6 +288,13 @@
 <td><em></em></td>
 </tr>
 </table>
+<strong>Details</strong><dl class="function-info">
+<dt>See</dt>
+<dd>
+<a href="db_core_basic_yuppgis.core.basic.Observable.class.html#%5CObservable::notifyObservers()">\Observable::notifyObservers()</a>
+         
+    </dd>
+</dl>
 </div>
 <div class="clear"></div>
 </div>

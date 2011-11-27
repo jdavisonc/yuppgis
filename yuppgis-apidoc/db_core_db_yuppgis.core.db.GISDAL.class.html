@@ -98,9 +98,28 @@
 <a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\GISDAL" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\GISDAL<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>Default</small><dl class="class-info">
+<small class="package"><b>Package: </b>yuppgis\core\db</small><p class="short-description">Ofrece una capa de abstracciona para ejecutar querys de alto nivel, contra el conector de base geografica</p>
+<div class="long-description">
+</div>
+<dl class="class-info">
 <dt>Parent(s)</dt>
 <dd>\DAL</dd>
+<dt>Author</dt>
+<dd>Jorge Davison
+         
+    </dd>
+<dt>Author</dt>
+<dd>Martin Taruselli
+         
+    </dd>
+<dt>Author</dt>
+<dd>Emilia Rosa
+         
+    </dd>
+<dt>Author</dt>
+<dd>German Schnyder
+         
+    </dd>
 </dl>
 <h3>Properties</h3>
 <div>
@@ -216,12 +235,14 @@
 </div>
 <a id="\GISDAL::addGeometryColumn()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">addGeometryColumn</span><span class="nb-faded-text">(
-           $tableName,  $srid,  $type
+          \string $tableName, \number $srid, \$type $type
           )
         </span>
         :
-          void</code><div class="description"><p class="short_description"></p></div>
+          void</code><div class="description"><p class="short_description">Agrega una columna geografica de nombre geom</p></div>
 <div class="code-tabs">
+<div class="long-description">
+</div>
 <strong>Parameters</strong><table class="argument-info">
 <thead><tr>
 <th>Name</th>
@@ -230,18 +251,18 @@
 </tr></thead>
 <tr>
 <th>$tableName</th>
-<td></td>
-<td><em></em></td>
+<td>\string</td>
+<td><em><p>nombre de la tabla</p></em></td>
 </tr>
 <tr>
 <th>$srid</th>
-<td></td>
-<td><em></em></td>
+<td>\number</td>
+<td><em><p>srid</p></em></td>
 </tr>
 <tr>
 <th>$type</th>
-<td></td>
-<td><em></em></td>
+<td>\$type</td>
+<td><em><p>tipo de la geometria</p></em></td>
 </tr>
 </table>
 </div>
