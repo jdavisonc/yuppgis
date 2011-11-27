@@ -20,7 +20,7 @@ class MapParams{
 	const ID = "Id";
 	
 	/**
-	 * Enter description here ...
+	 * Url para obtener mapa de google
 	 */
 	const OpenLayerJS_URL = "OLUrl";
 	
