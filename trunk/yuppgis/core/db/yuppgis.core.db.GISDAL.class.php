@@ -2,6 +2,16 @@
 
 YuppLoader :: load('yuppgis.core.config', 'YuppGISConfig');
 
+/**
+ * Ofrece una capa de abstracciona para ejecutar querys de alto nivel, contra el conector de base geografica
+ * 
+ * @package yuppgis.core.db
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISDAL extends DAL {
 
 	private $srid;
@@ -168,6 +178,13 @@ class GISDAL extends DAL {
 		return $gisSelects;
 	}
 	
+	/**
+	 * 
+	 * Agrega una columna geografica de nombre geom
+	 * @param string $tableName nombre de la tabla
+	 * @param number $srid srid
+ 	 * @param $type tipo de la geometria
+	 */
 	public function addGeometryColumn($tableName, $srid, $type) {
 		$query = 'SELECT AddGeometryColumn(\'public\', \'' . $tableName . '\',\'geom\',' . $srid . ',\'' . $this->gisdb->getDBGisType($type) . '\', 2)';
 		$this->gisdb->execute( $query );

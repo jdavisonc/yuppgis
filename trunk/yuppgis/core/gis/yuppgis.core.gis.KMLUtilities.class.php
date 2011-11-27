@@ -5,6 +5,8 @@ YuppLoader::load('yuppgis.core.persistent.serialize', 'KMLGEO');
 /**
  * Clase que brinda operaciones para trabajar con Kml, DataLayers, geometria
  * 
+ * @package yuppgis.core.gis
+ * 
  * @author Jorge Davison
  * @author Martin Taruselli
  * @author Emilia Rosa

@@ -2,6 +2,16 @@
 
 YuppLoader::load('yuppgis.core.gis', 'KMLUtilities');
 
+/**
+ * Conector Rest para un repositorio de datos geograficos
+ * 
+ * @package yuppgis.core.services
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class RestGISWSDAL implements GISWSDAL {
 	
 	private $getUrl = null;

@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Clase encargada de procesar las query geograficas (@link GISQuery)
+ * 
+ * @package yuppgis.core.persistent
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISQueryProcessor {
 
 	private $dal = null;

@@ -2,6 +2,16 @@
 
 YuppLoader::load( 'core.db', 'DatabasePostgreSQL' );
 
+/**
+ * Representa un conector a postgis
+ * 
+ * @package yuppgis.core.db
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class DatabasePostgisSQL extends DatabasePostgreSQL {
 	
 	public function evaluateAnyGISCondition( Condition $condition , $srid ) {

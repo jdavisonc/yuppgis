@@ -3,6 +3,16 @@
 YuppLoader::load('yuppgis.core.services', 'GISWSDAL');
 YuppLoader::load('yuppgis.core.services', 'RestGISWSDAL');
 
+/**
+ * Clase que contiene la logica para persitir, obtener datos y eliminar objetos geograficos a travez de un repositorio de datos geograficos
+ * 
+ * @package yuppgis.core.persistent
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISPMBasic extends GISPersistentManager {
 	
 	/**

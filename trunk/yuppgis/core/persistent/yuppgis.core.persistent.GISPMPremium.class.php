@@ -12,6 +12,16 @@ YuppLoader :: load('yuppgis.core.db.criteria2', 'SelectGIS');
 YuppLoader :: load('yuppgis.core.persistent', 'GISQueryProcessor');
 YuppLoader :: load('yuppgis.core.persistent.serialize', 'WKTGEO');
 
+/**
+ * Clase que contiene la logica para persitir, obtener datos y eliminar objetos geograficos de la base de datos
+ * 
+ * @package yuppgis.core.persistent
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISPMPremium extends GISPersistentManager {
 	
 	private $gisQueryProcessor = null;

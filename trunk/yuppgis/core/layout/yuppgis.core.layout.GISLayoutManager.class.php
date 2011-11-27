@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Clase que maneja el registro de las bibliotecas javscript referenciadas y que deben ser incluidas en el header de la vista.
+ * 
+ * @package yuppgis.core.layout
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class GISLayoutManager {
 
 	private function __construct() {}
@@ -14,6 +24,10 @@ class GISLayoutManager {
 	 
 	 
 	private $referencedJSLibs = array();
+	
+	/**
+	 * Agrega la referencia a las bibliotecas que se pasen por parametroes
+	 */
 	public function addGISJSLibReference( $params )
 	{
 		global $_base_dir;

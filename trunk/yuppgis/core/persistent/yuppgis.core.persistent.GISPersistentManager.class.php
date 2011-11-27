@@ -2,6 +2,16 @@
 
 YuppLoader :: load('core.db.criteria2', 'Query');
 
+/**
+ * Clase abstracta que define las firmas de las funciones para guardar, obtener datos y eliminar objetos geograficos
+ * 
+ * @package yuppgis.core.persistent
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 abstract class GISPersistentManager extends PersistentManager {
 
 	public function init_dal( $appName ) {

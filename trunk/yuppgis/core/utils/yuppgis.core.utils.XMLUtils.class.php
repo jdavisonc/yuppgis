@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Clase que brinda utilidades sobre XMLs
+ * 
+ * @package yuppgis.core.utils
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class XMLUtils {
 	
 	/**

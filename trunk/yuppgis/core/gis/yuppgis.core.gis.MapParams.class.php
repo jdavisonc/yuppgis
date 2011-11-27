@@ -2,21 +2,84 @@
 
 YuppLoader :: load('yuppgis.core.config', 'YuppGISConfig');
 
+/**
+ * Clase que define los parametros que se le puede pasar al constructor del helper de Mapas
+ * 
+ * @package yuppgis.core.gis
+ * 
+ * @author Jorge Davison
+ * @author Martin Taruselli
+ * @author Emilia Rosa
+ * @author German Schnyder
+ */
 class MapParams{
 	
+	/**
+	 * Parametro que represeenta el id del mapa que se va a mostrar
+	 */
 	const ID = "Id";
+	
+	/**
+	 * Enter description here ...
+	 */
 	const OpenLayerJS_URL = "OLUrl";
+	
+	/**
+	 * Ancho del mapa
+	 */
 	const WIDTH = "Width";
+	
+	/**
+	 * Alto del mapa
+	 */
 	const HEIGHT = "height";
+	
+	/**
+	 * Parametro para definir las propiedades del borde del mapa
+	 */
 	const BORDER = "border";
+	
+	/**
+	 * Parametro para asignar el manejador del evento click sobre el mapa
+	 */
 	const CLICK_HANDLERS = "clickhandlers";
+	
+	/**
+	 * Parametro para asignar el manejador del evento seleccionar sobre el mapa
+	 */
 	const SELECT_HANDLERS = "selecthandlers";
+	
+	/**
+	 * Parametro para asignar el tipo de mapa (Google map o MapServer)
+	 */
 	const TYPE = "maptype";
+	
+	/**
+	 * Parametro para conserver los parametros que se pesaron a la vista que muestra el mapa
+	 */
 	const STATE = "state";
+	
+	/**
+	 * Parametro para asignar el SRID que se usa para el mapa
+	 */
 	const SRID = "srid";
+	
+	/**
+	 * Parametro para asignar en que punto se encuentra el centro del mapa
+	 */
 	const CENTER = "center";
+	
+	/**
+	 * Parametro para asignar el zoom al mapa
+	 */
 	const ZOOM = "zoom";
 	
+	/**
+	 * Retorna el valor del parametro
+	 * 
+	 * @param array $array array con los parametros pasados a un mapa
+	 * @param strin $key nombre del parametro del cual se quiere obtener el valor
+	 */
 	public static function getValueOrDefault($array, $key)
 	{
 		if($array != null && array_key_exists ( $key , $array ))			

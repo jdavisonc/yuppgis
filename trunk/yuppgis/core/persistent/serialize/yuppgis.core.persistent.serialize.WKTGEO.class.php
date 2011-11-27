@@ -4,6 +4,8 @@
  * 
  * Clase que brinda funciones para el parseo de Geometrias y WKT
  * 
+ * @package yuppgis.core.persistent.serialize
+ * 
  * @author Jorge Davison
  * @author Martin Taruselli
  * @author Emilia Rosa
