@@ -2716,14 +2716,11 @@ pertenecen a dicha capa</description>
       </method>
     </class>
   </file>
-  <file path="core/mvc/yuppgis.core.mvc.GISController.class.php" hash="e0e7479837488cd6759f38e6135eb0e7" package="Default">
+  <file path="core/mvc/yuppgis.core.mvc.GISController.class.php" hash="9c7da51bf36df2fb27f4acb4302140f3" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File core/mvc/yuppgis.core.mvc.GISController.class.php</error>
-      <error line="122">No DocBlock was found for Method filterAction</error>
-      <error line="150">No DocBlock was found for Method filter</error>
-      <error line="188">No DocBlock was found for Method getSingleGISCondition</error>
-      <error line="212">No DocBlock was found for Method filterDistanceAction</error>
-      <error line="253">No DocBlock was found for Method mapServerAction</error>
+      <error line="153">No DocBlock was found for Method filter</error>
+      <error line="191">No DocBlock was found for Method getSingleGISCondition</error>
     </parse_markers>
     <class final="false" abstract="false" line="23" namespace="default" package="yuppgis\core\mvc">
       <name>GISController</name>
@@ -2779,45 +2776,60 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="122" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="125" package="Default">
         <name>filterAction</name>
+        <docblock>
+          <description>Accion que retorna resultado para el filtro generado por {@link GISHelper}</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="150" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="153" package="Default">
         <name>filter</name>
-        <argument line="150">
+        <argument line="153">
           <name>$class</name>
           <default/>
           <type/>
         </argument>
-        <argument line="150">
+        <argument line="153">
           <name>$query</name>
           <default/>
           <type/>
         </argument>
-        <argument line="150">
+        <argument line="153">
           <name>$layerId</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="188" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="191" package="Default">
         <name>getSingleGISCondition</name>
-        <argument line="188">
+        <argument line="191">
           <name>$class</name>
           <default/>
           <type/>
         </argument>
-        <argument line="188">
+        <argument line="191">
           <name>$condition</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="212" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="218" package="Default">
         <name>filterDistanceAction</name>
+        <docblock>
+          <description>Accion que retorna resultados para filtro de distancia en {@link GISHelpers}</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" line="253" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" line="262" package="Default">
         <name>mapServerAction</name>
+        <docblock>
+          <description>Accion que cumple la funcion de Proxy entre servidor de mapas configurado (WMS) y OpenLayers.</description>
+          <long-description>
+</long-description>
+        </docblock>
       </method>
     </class>
   </file>
@@ -3579,9 +3591,9 @@ de las condiciones geograficas.</description>
       </method>
     </class>
   </file>
-  <file path="core/persistent/serialize/yuppgis.core.persistent.serialize.KMLGEO.class.php" hash="354fedde3c6d6a9870b1fb5b8aa66432" package="yuppgis\core\persistent\serialize">
+  <file path="core/persistent/serialize/yuppgis.core.persistent.serialize.KMLGEO.class.php" hash="a700893dbeb5d40cdee5d2b43e5cca2f" package="yuppgis\core\persistent\serialize">
     <docblock>
-      <description>Clase que brinda funciones para el parseo de Geometrias y KML</description>
+      <description>Clase que brinda funciones para la serializacion de Geometrias en KML</description>
       <long-description>
 </long-description>
       <tag line="3" name="package" description="yuppgis.core.persistent.serialize"/>
@@ -3591,38 +3603,31 @@ de las condiciones geograficas.</description>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <parse_markers>
-      <error line="47">No DocBlock was found for Method pointFromKML</error>
-      <error line="52">No DocBlock was found for Method lineStringFromKML</error>
-      <error line="57">No DocBlock was found for Method coordinatesFromKML</error>
-      <error line="67">No DocBlock was found for Method lineRingFromKML</error>
-      <error line="72">No DocBlock was found for Method polygonFromKML</error>
-      <error line="81">No DocBlock was found for Method styleFromKML</error>
-      <notice line="104">Argument $id is missing from the function Docblock</notice>
-      <notice line="104">Argument $geom is missing from the function Docblock</notice>
-      <notice line="104">Argument $description is missing from the function Docblock</notice>
-      <notice line="104">Argument $class is missing from the function Docblock</notice>
-      <notice line="104">Argument $layerId is missing from the function Docblock</notice>
-      <notice line="104">Argument $defaultStyle is missing from the function Docblock</notice>
-      <notice line="104">Argument $parent is missing from the function Docblock</notice>
-      <error line="112">No DocBlock was found for Method collectionToKML</error>
-      <error line="121">No DocBlock was found for Method singleToKML</error>
-      <error line="160">No DocBlock was found for Method pointToKML</error>
-      <error line="165">No DocBlock was found for Method coordinatesToKML</error>
-      <error line="173">No DocBlock was found for Method lineStringToKML</error>
-      <error line="178">No DocBlock was found for Method lineRingToKML</error>
-      <error line="183">No DocBlock was found for Method polygonToKML</error>
-      <error line="195">No DocBlock was found for Method styleToKML</error>
-      <error line="231">No DocBlock was found for Method defaultStyleLayerToKML</error>
-      <error line="239">No DocBlock was found for Method iconToKML</error>
-      <error line="248">No DocBlock was found for Method borderToKML</error>
-      <error line="254">No DocBlock was found for Method backgroundToKML</error>
+      <error line="45">No DocBlock was found for Method pointFromKML</error>
+      <error line="50">No DocBlock was found for Method lineStringFromKML</error>
+      <error line="55">No DocBlock was found for Method coordinatesFromKML</error>
+      <error line="65">No DocBlock was found for Method lineRingFromKML</error>
+      <error line="70">No DocBlock was found for Method polygonFromKML</error>
+      <error line="79">No DocBlock was found for Method styleFromKML</error>
+      <error line="115">No DocBlock was found for Method collectionToKML</error>
+      <error line="124">No DocBlock was found for Method singleToKML</error>
+      <error line="163">No DocBlock was found for Method pointToKML</error>
+      <error line="168">No DocBlock was found for Method coordinatesToKML</error>
+      <error line="176">No DocBlock was found for Method lineStringToKML</error>
+      <error line="181">No DocBlock was found for Method lineRingToKML</error>
+      <error line="186">No DocBlock was found for Method polygonToKML</error>
+      <error line="198">No DocBlock was found for Method styleToKML</error>
+      <error line="234">No DocBlock was found for Method defaultStyleLayerToKML</error>
+      <error line="242">No DocBlock was found for Method iconToKML</error>
+      <error line="251">No DocBlock was found for Method borderToKML</error>
+      <error line="257">No DocBlock was found for Method backgroundToKML</error>
     </parse_markers>
     <class final="false" abstract="false" line="14" namespace="default" package="yuppgis\core\persistent\serialize">
       <name>KMLGEO</name>
       <extends/>
       <full_name>\KMLGEO</full_name>
       <docblock>
-        <description>Clase que brinda funciones para el parseo de Geometrias y KML</description>
+        <description>Clase que brinda funciones para la serializacion de Geometrias en KML</description>
         <long-description>
 </long-description>
         <tag line="3" name="package" description="yuppgis.core.persistent.serialize"/>
@@ -3631,324 +3636,345 @@ de las condiciones geograficas.</description>
         <tag line="3" name="author" description="Emilia Rosa"/>
         <tag line="3" name="author" description="German Schnyder"/>
       </docblock>
-      <method final="false" abstract="false" static="true" visibility="public" line="23" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="21" package="Default">
         <name>fromKML</name>
         <docblock>
-          <description>Retorna la Geometria que esta representada en el kml</description>
+          <description>Deserealiza un kml generando un objeto {@link Geometry}</description>
           <long-description>
 </long-description>
-          <tag line="19" name="param" description="kml con la informacion del placemark" type="\SimpleXMLElement" variable="$placemarkElement">
+          <tag line="16" name="param" description="objeto xml con la informacion del placemark" type="\SimpleXMLElement" variable="$placemarkElement">
             <type by_reference="false">\SimpleXMLElement</type>
           </tag>
         </docblock>
-        <argument line="23">
+        <argument line="21">
           <name>$placemarkElement</name>
           <default/>
           <type>SimpleXMLElement</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="47" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="45" package="Default">
         <name>pointFromKML</name>
-        <argument line="47">
+        <argument line="45">
           <name>$point</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="52" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="50" package="Default">
         <name>lineStringFromKML</name>
-        <argument line="52">
+        <argument line="50">
           <name>$lineString</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="57" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="55" package="Default">
         <name>coordinatesFromKML</name>
-        <argument line="57">
+        <argument line="55">
           <name>$coordinates</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="67" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="65" package="Default">
         <name>lineRingFromKML</name>
-        <argument line="67">
+        <argument line="65">
           <name>$lineRing</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="72" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="70" package="Default">
         <name>polygonFromKML</name>
-        <argument line="72">
+        <argument line="70">
           <name>$polygon</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="81" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="79" package="Default">
         <name>styleFromKML</name>
-        <argument line="81">
+        <argument line="79">
           <name>$style</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="104" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="107" package="Default">
         <name>toKML</name>
         <docblock>
-          <description>Genera el kml para representar una geometria</description>
+          <description>Genera un kml a partir de un objeto {@link Geomtry}.</description>
           <long-description>
 </long-description>
+          <tag line="96" name="param" description="identificador del kml" type="int" variable="$id">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="96" name="param" description="objeto geometria a serializar" type="\Geometry" variable="$geom">
+            <type by_reference="false">\Geometry</type>
+          </tag>
+          <tag line="96" name="param" description="descripcion del kml" type="string" variable="$description">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="96" name="param" description="nombre de la clase" type="string" variable="$class">
+            <type by_reference="false">\string</type>
+          </tag>
+          <tag line="96" name="param" description="identificador de la capa" type="int" variable="$layerId">
+            <type by_reference="false">\int</type>
+          </tag>
+          <tag line="96" name="param" description="estilo por defecto" type="\UIProperty" variable="$defaultStyle">
+            <type by_reference="false">\UIProperty</type>
+          </tag>
+          <tag line="96" name="param" description="objeto al cual se adjunta el objeto xml generado" type="\SimpleXMLElement" variable="$parent">
+            <type by_reference="false">\SimpleXMLElement</type>
+          </tag>
         </docblock>
-        <argument line="104">
+        <argument line="107">
           <name>$id</name>
           <default/>
           <type/>
         </argument>
-        <argument line="104">
+        <argument line="107">
           <name>$geom</name>
           <default/>
           <type>Geometry</type>
         </argument>
-        <argument line="104">
+        <argument line="107">
           <name>$description</name>
           <default/>
           <type/>
         </argument>
-        <argument line="104">
+        <argument line="107">
           <name>$class</name>
           <default/>
           <type/>
         </argument>
-        <argument line="104">
+        <argument line="107">
           <name>$layerId</name>
           <default/>
           <type/>
         </argument>
-        <argument line="104">
+        <argument line="107">
           <name>$defaultStyle</name>
           <default/>
           <type/>
         </argument>
-        <argument line="104">
+        <argument line="107">
           <name>$parent</name>
           <default/>
           <type>SimpleXMLElement</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="112" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="115" package="Default">
         <name>collectionToKML</name>
-        <argument line="112">
+        <argument line="115">
           <name>$id</name>
           <default/>
           <type/>
         </argument>
-        <argument line="112">
+        <argument line="115">
           <name>$geom</name>
           <default/>
           <type>Geometry</type>
         </argument>
-        <argument line="112">
+        <argument line="115">
           <name>$description</name>
           <default/>
           <type/>
         </argument>
-        <argument line="112">
+        <argument line="115">
           <name>$class</name>
           <default/>
           <type/>
         </argument>
-        <argument line="112">
+        <argument line="115">
           <name>$layerId</name>
           <default/>
           <type/>
         </argument>
-        <argument line="112">
+        <argument line="115">
           <name>$defaultStyle</name>
           <default/>
           <type/>
         </argument>
-        <argument line="112">
+        <argument line="115">
           <name>$parent</name>
           <default/>
           <type>SimpleXMLElement</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="121" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="124" package="Default">
         <name>singleToKML</name>
-        <argument line="121">
+        <argument line="124">
           <name>$id</name>
           <default/>
           <type/>
         </argument>
-        <argument line="121">
+        <argument line="124">
           <name>$geom</name>
           <default/>
           <type>Geometry</type>
         </argument>
-        <argument line="121">
+        <argument line="124">
           <name>$description</name>
           <default/>
           <type/>
         </argument>
-        <argument line="121">
+        <argument line="124">
           <name>$class</name>
           <default/>
           <type/>
         </argument>
-        <argument line="121">
+        <argument line="124">
           <name>$layerId</name>
           <default/>
           <type/>
         </argument>
-        <argument line="121">
+        <argument line="124">
           <name>$defaultStyle</name>
           <default/>
           <type/>
         </argument>
-        <argument line="121">
+        <argument line="124">
           <name>$parent</name>
           <default/>
           <type>SimpleXMLElement</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="160" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="163" package="Default">
         <name>pointToKML</name>
-        <argument line="160">
+        <argument line="163">
           <name>$placemark</name>
           <default/>
           <type/>
         </argument>
-        <argument line="160">
+        <argument line="163">
           <name>$geom</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="165" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="168" package="Default">
         <name>coordinatesToKML</name>
-        <argument line="165">
+        <argument line="168">
           <name>$geomTag</name>
           <default/>
           <type/>
         </argument>
-        <argument line="165">
+        <argument line="168">
           <name>$points</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="173" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="176" package="Default">
         <name>lineStringToKML</name>
-        <argument line="173">
+        <argument line="176">
           <name>$placemark</name>
           <default/>
           <type/>
         </argument>
-        <argument line="173">
+        <argument line="176">
           <name>$geom</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="178" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="181" package="Default">
         <name>lineRingToKML</name>
-        <argument line="178">
+        <argument line="181">
           <name>$placemark</name>
           <default/>
           <type/>
         </argument>
-        <argument line="178">
+        <argument line="181">
           <name>$geom</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="183" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="186" package="Default">
         <name>polygonToKML</name>
-        <argument line="183">
+        <argument line="186">
           <name>$placemark</name>
           <default/>
           <type/>
         </argument>
-        <argument line="183">
+        <argument line="186">
           <name>$geom</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="195" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="198" package="Default">
         <name>styleToKML</name>
-        <argument line="195">
+        <argument line="198">
           <name>$placemark</name>
           <default/>
           <type/>
         </argument>
-        <argument line="195">
+        <argument line="198">
           <name>$gisDatatype</name>
           <default/>
           <type/>
         </argument>
-        <argument line="195">
+        <argument line="198">
           <name>$uiproperty</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="231" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="234" package="Default">
         <name>defaultStyleLayerToKML</name>
-        <argument line="231">
+        <argument line="234">
           <name>$placemark</name>
           <default/>
           <type/>
         </argument>
-        <argument line="231">
+        <argument line="234">
           <name>$gisDatatype</name>
           <default/>
           <type/>
         </argument>
-        <argument line="231">
+        <argument line="234">
           <name>$defaultStyle</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="239" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="242" package="Default">
         <name>iconToKML</name>
-        <argument line="239">
+        <argument line="242">
           <name>$style</name>
           <default/>
           <type/>
         </argument>
-        <argument line="239">
+        <argument line="242">
           <name>$uiproperty</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="248" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="251" package="Default">
         <name>borderToKML</name>
-        <argument line="248">
+        <argument line="251">
           <name>$style</name>
           <default/>
           <type/>
         </argument>
-        <argument line="248">
+        <argument line="251">
           <name>$uiproperty</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="254" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="257" package="Default">
         <name>backgroundToKML</name>
-        <argument line="254">
+        <argument line="257">
           <name>$style</name>
           <default/>
           <type/>
         </argument>
-        <argument line="254">
+        <argument line="257">
           <name>$uiproperty</name>
           <default/>
           <type/>
@@ -3956,9 +3982,9 @@ de las condiciones geograficas.</description>
       </method>
     </class>
   </file>
-  <file path="core/persistent/serialize/yuppgis.core.persistent.serialize.WKTGEO.class.php" hash="7c8ab3afbda66798517834d99305434e" package="yuppgis\core\persistent\serialize">
+  <file path="core/persistent/serialize/yuppgis.core.persistent.serialize.WKTGEO.class.php" hash="dc7ed52feb83b6c7844e98ff9279fe45" package="yuppgis\core\persistent\serialize">
     <docblock>
-      <description>Clase que brinda funciones para el parseo de Geometrias y WKT</description>
+      <description>Clase que brinda funciones para la serializacion de Geometrias en WKT</description>
       <long-description>
 </long-description>
       <tag line="3" name="package" description="yuppgis.core.persistent.serialize"/>
@@ -3968,7 +3994,7 @@ de las condiciones geograficas.</description>
       <tag line="3" name="author" description="German Schnyder"/>
     </docblock>
     <markers>
-      <todo line="221">_GIS</todo>
+      <todo line="220">_GIS</todo>
     </markers>
     <parse_markers>
       <error line="16">No DocBlock was found for Property $regex</error>
@@ -3987,7 +4013,7 @@ de las condiciones geograficas.</description>
       <extends/>
       <full_name>\WKTGEO</full_name>
       <docblock>
-        <description>Clase que brinda funciones para el parseo de Geometrias y WKT</description>
+        <description>Clase que brinda funciones para la serializacion de Geometrias en WKT</description>
         <long-description>
 </long-description>
         <tag line="3" name="package" description="yuppgis.core.persistent.serialize"/>
@@ -4004,10 +4030,10 @@ de las condiciones geograficas.</description>
       <method final="false" abstract="false" static="true" visibility="public" line="30" package="Default">
         <name>fromText</name>
         <docblock>
-          <description>Funcion que retorna una geometria a partir de su representacion en WKT</description>
+          <description>Deserealiza un WKT generando un objeto {@link Geometry}</description>
           <long-description>
 </long-description>
-          <tag line="25" name="param" description="" type="string" variable="$text">
+          <tag line="25" name="param" description="texto en formato WKT" type="string" variable="$text">
             <type by_reference="false">\string</type>
           </tag>
         </docblock>
@@ -4094,17 +4120,17 @@ de las condiciones geograficas.</description>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="191" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="190" package="Default">
         <name>toText</name>
         <docblock>
-          <description>Retorna la representacione en WKT de una geometria</description>
+          <description>Serealiza un objeto {@link Geometry} en formato WKT.</description>
           <long-description>
 </long-description>
-          <tag line="185" name="param" description="" type="\Geometry" variable="$geo">
+          <tag line="185" name="param" description="objeto a serializar" type="\Geometry" variable="$geo">
             <type by_reference="false">\Geometry</type>
           </tag>
         </docblock>
-        <argument line="191">
+        <argument line="190">
           <name>$geo</name>
           <default/>
           <type>Geometry</type>

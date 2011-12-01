@@ -96,7 +96,7 @@
           </div>
 </div>
 <a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><div id="file-description">
-<p xmlns:dbx="http://docblox-project.org/xsl/functions" class="short-description">Clase que brinda funciones para el parseo de Geometrias y KML</p>
+<p xmlns:dbx="http://docblox-project.org/xsl/functions" class="short-description">Clase que brinda funciones para la serializacion de Geometrias en KML</p>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="long-description">
 </div>
 </div>
@@ -125,7 +125,7 @@
 <a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\KMLGEO" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\KMLGEO<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>yuppgis\core\persistent\serialize</small><p class="short-description">Clase que brinda funciones para el parseo de Geometrias y KML</p>
+<small class="package"><b>Package: </b>yuppgis\core\persistent\serialize</small><p class="short-description">Clase que brinda funciones para la serializacion de Geometrias en KML</p>
 <div class="long-description">
 </div>
 <dl class="class-info">
@@ -360,7 +360,7 @@
         </span>
         :
           void</code><div class="description">
-<span class="attribute">static</span><p class="short_description">Retorna la Geometria que esta representada en el kml</p>
+<span class="attribute">static</span><p class="short_description">Deserealiza un kml generando un objeto {@link Geometry}</p>
 </div>
 <div class="code-tabs">
 <div class="long-description">
@@ -374,7 +374,7 @@
 <tr>
 <th>$placemarkElement</th>
 <td><a href="http://php.net/manual/en/class.simplexmlelement.php">\SimpleXMLElement</a></td>
-<td><em><p>kml con la informacion del placemark</p></em></td>
+<td><em><p>objeto xml con la informacion del placemark</p></em></td>
 </tr>
 </table>
 </div>
@@ -747,12 +747,12 @@
 </div>
 <a id="\KMLGEO::toKML()" class="anchor"></a><div class="method public">
 <a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">toKML</span><span class="nb-faded-text">(
-           $id,  $geom,  $description,  $class,  $layerId,  $defaultStyle,  $parent
+          \int $id, <a href="db_core_basic_yuppgis.core.basic.Geometry.class.html#%5CGeometry">\Geometry</a> $geom, \string $description, \string $class, \int $layerId, <a href="db_core_basic_ui_yuppgis.core.basic.ui.UIProperty.class.html#%5CUIProperty">\UIProperty</a> $defaultStyle, <a href="http://php.net/manual/en/class.simplexmlelement.php">\SimpleXMLElement</a> $parent
           )
         </span>
         :
           void</code><div class="description">
-<span class="attribute">static</span><p class="short_description">Genera el kml para representar una geometria</p>
+<span class="attribute">static</span><p class="short_description">Genera un kml a partir de un objeto {@link Geomtry}.</p>
 </div>
 <div class="code-tabs">
 <div class="long-description">
@@ -765,38 +765,38 @@
 </tr></thead>
 <tr>
 <th>$id</th>
-<td></td>
-<td><em></em></td>
+<td>\int</td>
+<td><em><p>identificador del kml</p></em></td>
 </tr>
 <tr>
 <th>$geom</th>
-<td></td>
-<td><em></em></td>
+<td><a href="db_core_basic_yuppgis.core.basic.Geometry.class.html#%5CGeometry">\Geometry</a></td>
+<td><em><p>objeto geometria a serializar</p></em></td>
 </tr>
 <tr>
 <th>$description</th>
-<td></td>
-<td><em></em></td>
+<td>\string</td>
+<td><em><p>descripcion del kml</p></em></td>
 </tr>
 <tr>
 <th>$class</th>
-<td></td>
-<td><em></em></td>
+<td>\string</td>
+<td><em><p>nombre de la clase</p></em></td>
 </tr>
 <tr>
 <th>$layerId</th>
-<td></td>
-<td><em></em></td>
+<td>\int</td>
+<td><em><p>identificador de la capa</p></em></td>
 </tr>
 <tr>
 <th>$defaultStyle</th>
-<td></td>
-<td><em></em></td>
+<td><a href="db_core_basic_ui_yuppgis.core.basic.ui.UIProperty.class.html#%5CUIProperty">\UIProperty</a></td>
+<td><em><p>estilo por defecto</p></em></td>
 </tr>
 <tr>
 <th>$parent</th>
-<td></td>
-<td><em></em></td>
+<td><a href="http://php.net/manual/en/class.simplexmlelement.php">\SimpleXMLElement</a></td>
+<td><em><p>objeto al cual se adjunta el objeto xml generado</p></em></td>
 </tr>
 </table>
 </div>

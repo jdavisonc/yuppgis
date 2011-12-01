@@ -96,7 +96,7 @@
           </div>
 </div>
 <a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><div id="file-description">
-<p xmlns:dbx="http://docblox-project.org/xsl/functions" class="short-description">Clase que brinda funciones para el parseo de Geometrias y WKT</p>
+<p xmlns:dbx="http://docblox-project.org/xsl/functions" class="short-description">Clase que brinda funciones para la serializacion de Geometrias en WKT</p>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="long-description">
 </div>
 </div>
@@ -125,7 +125,7 @@
 <a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\WKTGEO" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\WKTGEO<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
-<small class="package"><b>Package: </b>yuppgis\core\persistent\serialize</small><p class="short-description">Clase que brinda funciones para el parseo de Geometrias y WKT</p>
+<small class="package"><b>Package: </b>yuppgis\core\persistent\serialize</small><p class="short-description">Clase que brinda funciones para la serializacion de Geometrias en WKT</p>
 <div class="long-description">
 </div>
 <dl class="class-info">
@@ -272,7 +272,7 @@
         </span>
         :
           void</code><div class="description">
-<span class="attribute">static</span><p class="short_description">Funcion que retorna una geometria a partir de su representacion en WKT</p>
+<span class="attribute">static</span><p class="short_description">Deserealiza un WKT generando un objeto {@link Geometry}</p>
 </div>
 <div class="code-tabs">
 <div class="long-description">
@@ -286,7 +286,7 @@
 <tr>
 <th>$text</th>
 <td>\string</td>
-<td><em></em></td>
+<td><em><p>texto en formato WKT</p></em></td>
 </tr>
 </table>
 </div>
@@ -429,7 +429,7 @@
         </span>
         :
           void</code><div class="description">
-<span class="attribute">static</span><p class="short_description">Retorna la representacione en WKT de una geometria</p>
+<span class="attribute">static</span><p class="short_description">Serealiza un objeto {@link Geometry} en formato WKT.</p>
 </div>
 <div class="code-tabs">
 <div class="long-description">
@@ -443,7 +443,7 @@
 <tr>
 <th>$geo</th>
 <td><a href="db_core_basic_yuppgis.core.basic.Geometry.class.html#%5CGeometry">\Geometry</a></td>
-<td><em></em></td>
+<td><em><p>objeto a serializar</p></em></td>
 </tr>
 </table>
 </div>
