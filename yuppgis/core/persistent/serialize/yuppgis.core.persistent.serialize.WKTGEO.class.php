@@ -2,7 +2,7 @@
 
 /**
  * 
- * Clase que brinda funciones para el parseo de Geometrias y WKT
+ * Clase que brinda funciones para la serializacion de Geometrias en WKT
  * 
  * @package yuppgis.core.persistent.serialize
  * 
@@ -23,9 +23,9 @@ class WKTGEO {
 	);
 	
 	/**
+	 * Deserealiza un WKT generando un objeto {@link Geometry}
 	 * 
-	 * Funcion que retorna una geometria a partir de su representacion en WKT
-	 * @param string $text
+	 * @param string $text texto en formato WKT
 	 */
 	public static function fromText( $text ) {
 		
@@ -183,10 +183,9 @@ class WKTGEO {
 	}
 	
 	/**
+	 * Serealiza un objeto {@link Geometry} en formato WKT.
 	 * 
-	 * Retorna la representacione en WKT de una geometria
-	 * @param Geometry $geo
-	 * 
+	 * @param Geometry $geo objeto a serializar
 	 */
 	public static function toText( Geometry $geo ) {
 		$class = get_class( $geo );
