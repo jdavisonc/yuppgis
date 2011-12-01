@@ -119,6 +119,9 @@ class GISController extends YuppController {
 		}
 	}
 
+	/**
+	 * Accion que retorna resultado para el filtro generado por {@link GISHelper}
+	 */
 	public function filterAction(){
 		$mapId = $this->params['mapId'];
 		$className = $this->params['className'];
@@ -209,6 +212,9 @@ class GISController extends YuppController {
 		return $cond;
 	}
 
+	/**
+	 * Accion que retorna resultados para filtro de distancia en {@link GISHelpers}
+	 */
 	public function filterDistanceAction(){
 		$mapId = $this->params['mapId'];
 		$classFromName = $this->params['classFrom'];
@@ -250,6 +256,9 @@ class GISController extends YuppController {
 		return $this->renderString($json);
 	}
 
+	/**
+	 * Accion que cumple la funcion de Proxy entre servidor de mapas configurado (WMS) y OpenLayers.
+	 */
 	public function mapServerAction(){
 			
 		$hasPermission = true;
