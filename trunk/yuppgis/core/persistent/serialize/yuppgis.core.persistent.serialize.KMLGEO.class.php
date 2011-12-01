@@ -2,7 +2,7 @@
 
 /**
  * 
- * Clase que brinda funciones para el parseo de Geometrias y KML
+ * Clase que brinda funciones para la serializacion de Geometrias en KML
  * 
  * @package yuppgis.core.persistent.serialize
  * 
@@ -13,12 +13,10 @@
  */
 class KMLGEO {
 	
-	/************
-	 * From KML
-	 ************/
 	/**
-	 * Retorna la Geometria que esta representada en el kml
-	 * @param SimpleXMLElement $placemarkElement kml con la informacion del placemark
+	 * Deserealiza un kml generando un objeto {@link Geometry}
+	 * 
+	 * @param SimpleXMLElement $placemarkElement objeto xml con la informacion del placemark
 	 */
 	public static function fromKML(SimpleXMLElement $placemarkElement) {
 		$geometry = null;
@@ -95,11 +93,16 @@ class KMLGEO {
 	}
 
 	
-	/************
-	 * To KML
-	 ************/
 	/**
-	 * Genera el kml para representar una geometria
+	 * Genera un kml a partir de un objeto {@link Geomtry}.
+	 * 
+	 * @param int $id identificador del kml
+	 * @param Geometry $geom objeto geometria a serializar
+	 * @param string $description descripcion del kml
+	 * @param string $class nombre de la clase
+	 * @param int $layerId identificador de la capa
+	 * @param UIProperty $defaultStyle estilo por defecto
+	 * @param SimpleXMLElement $parent objeto al cual se adjunta el objeto xml generado
 	 */
 	public static function toKML($id, Geometry $geom, $description, $class, $layerId, $defaultStyle, SimpleXMLElement &$parent) {
 		if ($geom instanceof GeometryCollection) {
