@@ -7,7 +7,10 @@
 		MapParams::ID => 1,
 		MapParams::CLICK_HANDLERS => array('customClickHandler', 'customClickHandler2'),
 		MapParams::SELECT_HANDLERS => array('customSelectHandler'),
-		MapParams::TYPE => "google"
+		MapParams::TYPE => "google",
+		MapParams::SPHERICAL_MERCATOR => false,
+		MapParams::CENTER => array("-56.17820", "-34.88304"),
+		MapParams::ZOOM => 15
 		
 	)); ?>
 </fieldset>
