@@ -22,7 +22,12 @@ class MapParams{
 	/**
 	 * Url para obtener mapa de google
 	 */
-	const OpenLayerJS_URL = "OLUrl";
+	const GOOGLE_MAPS_URL = "GoogleMapsUrl";
+	
+	/**
+	 * Parametro que permite habilitar el parametro 'sphericalMarcator' sobre google maps 
+	 */
+	const SPHERICAL_MERCATOR = 'SphericalMercator';
 	
 	/**
 	 * Ancho del mapa
@@ -92,8 +97,10 @@ class MapParams{
 			switch ($key){
 				case MapParams::ID:
 					return -1;
-				case MapParams::OpenLayerJS_URL:
+				case MapParams::GOOGLE_MAPS_URL:
 					return "http://maps.google.com/maps?file=api&v=2&key=". $gmaps_key;
+				case MapParams::SPHERICAL_MERCATOR:
+					return true;
 				case MapParams::WIDTH:
 					return "500px";
 				case MapParams::HEIGHT:
