@@ -12,8 +12,8 @@ MAP
     #
     WEB
       
-                IMAGEPATH "/home/yuppgis/workspace/YuppGis/yuppgis"
-                IMAGEURL "/home/yuppgis/workspace/YuppGis/yuppgis"
+                IMAGEPATH "/tmp"
+                IMAGEURL "/tmp"
                 METADATA
                         "wms_title"     "Test"
                         "wms_feature_info_mime_type" "text/xml"
