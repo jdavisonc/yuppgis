@@ -170,7 +170,8 @@ class GISHelpers {
 		$controllerName = strtolower($ctx->getController());
 		
 		$id = MapParams::getValueOrDefault($params, MapParams::ID);
-		$olurl = MapParams::getValueOrDefault($params, MapParams::OpenLayerJS_URL);
+		$googleUrl = MapParams::getValueOrDefault($params, MapParams::GOOGLE_MAPS_URL);
+		$sphericalMercator = MapParams::getValueOrDefault($params, MapParams::SPHERICAL_MERCATOR);
 		$width = MapParams::getValueOrDefault($params, MapParams::WIDTH);
 		$height = MapParams::getValueOrDefault($params, MapParams::HEIGHT);
 		$border = MapParams::getValueOrDefault($params, MapParams::BORDER);
@@ -188,9 +189,13 @@ class GISHelpers {
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/jquery.yuppgis.map"));
 		GISLayoutManager::getInstance()->addGISJSLibReference( array("name" => "gis/multiplecondition"));
 
-		$html =	'
-		 
-		<script src="'.$olurl.'" type="text/javascript"></script>	
+		$html = '';
+		
+		if ($type == 'google') {
+			$html .= '<script src="'.$googleUrl.'" type="text/javascript"></script>';
+		}
+
+		$html .=	'
 		
 		<link type="text/css" rel="stylesheet" href="/yuppgis/yuppgis/js/gis/OpenLayers.css" />
 		
@@ -208,7 +213,7 @@ class GISHelpers {
 		
 		<script type="text/javascript">
 		
-			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'", appName: "'.$appName.'", '.
+			$("#map_'.$id.'").YuppGISMap({id: '.$id.', type: "'.$type.'", sphericalMercator: '.($sphericalMercator? "true" : "false").', appName: "'.$appName.'", '.
 					'controllerName: "'.$controllerName.'" , state: "'.$state.'", srid: "'.$srid.'", center: ["'.$center[0].'", "'.$center[1].'"], zoom: "'.$zoom.'"})
 		';			
 

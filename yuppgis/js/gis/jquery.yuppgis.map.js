@@ -41,6 +41,7 @@
 				var srid = "EPSG:" + mapOptions.srid;
 				var center = mapOptions.center;
 				var zoom = mapOptions.zoom;
+				var sphericalMercator = mapOptions.sphericalMercator;
 
 				
 				OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
@@ -105,7 +106,7 @@
 						var layer;
 						if(mapOptions.type == 'google'){
 							layer = new OpenLayers.Layer.Google("Google", {
-								sphericalMercator: true
+								sphericalMercator: sphericalMercator
 							});
 						}else{
 							/*En caso de ser personalizada, la obtengo de una acción predeterminada que permite mantener el control sobre lo que se ve*/
