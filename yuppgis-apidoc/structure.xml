@@ -654,7 +654,7 @@ pertenecen a dicha capa</description>
       </method>
     </class>
   </file>
-  <file path="core/gis/yuppgis.core.gis.MapParams.class.php" hash="60de00b6fb72d16d3c052603d404d558" package="Default">
+  <file path="core/gis/yuppgis.core.gis.MapParams.class.php" hash="c8da56c205b4ade67996cdcb840b46d2" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File core/gis/yuppgis.core.gis.MapParams.class.php</error>
     </parse_markers>
@@ -682,8 +682,8 @@ pertenecen a dicha capa</description>
         </docblock>
       </constant>
       <constant namespace="default" line="25" package="Default">
-        <name>OpenLayerJS_URL</name>
-        <value>"OLUrl"</value>
+        <name>GOOGLE_MAPS_URL</name>
+        <value>"GoogleMapsUrl"</value>
         <docblock>
           <description>Url para obtener mapa de google</description>
           <long-description>
@@ -691,6 +691,15 @@ pertenecen a dicha capa</description>
         </docblock>
       </constant>
       <constant namespace="default" line="30" package="Default">
+        <name>SPHERICAL_MERCATOR</name>
+        <value>'SphericalMercator'</value>
+        <docblock>
+          <description>Parametro que permite habilitar el parametro 'sphericalMarcator' sobre google maps</description>
+          <long-description>
+</long-description>
+        </docblock>
+      </constant>
+      <constant namespace="default" line="35" package="Default">
         <name>WIDTH</name>
         <value>"Width"</value>
         <docblock>
@@ -699,7 +708,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="35" package="Default">
+      <constant namespace="default" line="40" package="Default">
         <name>HEIGHT</name>
         <value>"height"</value>
         <docblock>
@@ -708,7 +717,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="40" package="Default">
+      <constant namespace="default" line="45" package="Default">
         <name>BORDER</name>
         <value>"border"</value>
         <docblock>
@@ -717,7 +726,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="45" package="Default">
+      <constant namespace="default" line="50" package="Default">
         <name>CLICK_HANDLERS</name>
         <value>"clickhandlers"</value>
         <docblock>
@@ -726,7 +735,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="50" package="Default">
+      <constant namespace="default" line="55" package="Default">
         <name>SELECT_HANDLERS</name>
         <value>"selecthandlers"</value>
         <docblock>
@@ -735,7 +744,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="55" package="Default">
+      <constant namespace="default" line="60" package="Default">
         <name>TYPE</name>
         <value>"maptype"</value>
         <docblock>
@@ -744,7 +753,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="60" package="Default">
+      <constant namespace="default" line="65" package="Default">
         <name>STATE</name>
         <value>"state"</value>
         <docblock>
@@ -753,7 +762,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="65" package="Default">
+      <constant namespace="default" line="70" package="Default">
         <name>SRID</name>
         <value>"srid"</value>
         <docblock>
@@ -762,7 +771,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="70" package="Default">
+      <constant namespace="default" line="75" package="Default">
         <name>CENTER</name>
         <value>"center"</value>
         <docblock>
@@ -771,7 +780,7 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <constant namespace="default" line="75" package="Default">
+      <constant namespace="default" line="80" package="Default">
         <name>ZOOM</name>
         <value>"zoom"</value>
         <docblock>
@@ -780,25 +789,25 @@ pertenecen a dicha capa</description>
 </long-description>
         </docblock>
       </constant>
-      <method final="false" abstract="false" static="true" visibility="public" line="83" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="88" package="Default">
         <name>getValueOrDefault</name>
         <docblock>
           <description>Retorna el valor del parametro</description>
           <long-description>
 </long-description>
-          <tag line="77" name="param" description="array con los parametros pasados a un mapa" type="array" variable="$array">
+          <tag line="82" name="param" description="array con los parametros pasados a un mapa" type="array" variable="$array">
             <type by_reference="false">\array</type>
           </tag>
-          <tag line="77" name="param" description="nombre del parametro del cual se quiere obtener el valor" type="\strin" variable="$key">
+          <tag line="82" name="param" description="nombre del parametro del cual se quiere obtener el valor" type="\strin" variable="$key">
             <type by_reference="false">\strin</type>
           </tag>
         </docblock>
-        <argument line="83">
+        <argument line="88">
           <name>$array</name>
           <default/>
           <type/>
         </argument>
-        <argument line="83">
+        <argument line="88">
           <name>$key</name>
           <default/>
           <type/>
@@ -806,23 +815,23 @@ pertenecen a dicha capa</description>
       </method>
     </class>
   </file>
-  <file path="core/gis/yuppgis.core.gis.GISHelpers.class.php" hash="3428f9fcd2bf6fe5c91d2282ca7ce8e6" package="Default">
+  <file path="core/gis/yuppgis.core.gis.GISHelpers.class.php" hash="0ab6c299e0ca05bbad0d666f6d273083" package="Default">
     <parse_markers>
       <error line="1">No DocBlock was found for File core/gis/yuppgis.core.gis.GISHelpers.class.php</error>
       <notice line="89">Argument $handler is missing from the function Docblock</notice>
       <notice line="89">Argument $layerId is missing from the function Docblock</notice>
       <notice line="89">Argument $multiple is missing from the function Docblock</notice>
-      <error line="229">No DocBlock was found for Method MapLayers</error>
-      <error line="255">No DocBlock was found for Method MapLayerHandler</error>
-      <error line="262">No DocBlock was found for Method Log</error>
-      <error line="268">No DocBlock was found for Method TagLayers</error>
-      <error line="296">No DocBlock was found for Method TagLayerHandler</error>
-      <error line="312">No DocBlock was found for Method VisualizationState</error>
-      <notice line="364">Argument $handler is missing from the function Docblock</notice>
-      <notice line="364">Argument $fieldName is missing from the function Docblock</notice>
-      <notice line="364">Argument $positionfrom is missing from the function Docblock</notice>
-      <notice line="365">Argument $classto is missing from the function Docblock</notice>
-      <notice line="365">Argument $positionto is missing from the function Docblock</notice>
+      <error line="234">No DocBlock was found for Method MapLayers</error>
+      <error line="260">No DocBlock was found for Method MapLayerHandler</error>
+      <error line="267">No DocBlock was found for Method Log</error>
+      <error line="273">No DocBlock was found for Method TagLayers</error>
+      <error line="301">No DocBlock was found for Method TagLayerHandler</error>
+      <error line="317">No DocBlock was found for Method VisualizationState</error>
+      <notice line="369">Argument $handler is missing from the function Docblock</notice>
+      <notice line="369">Argument $fieldName is missing from the function Docblock</notice>
+      <notice line="369">Argument $positionfrom is missing from the function Docblock</notice>
+      <notice line="370">Argument $classto is missing from the function Docblock</notice>
+      <notice line="370">Argument $positionto is missing from the function Docblock</notice>
     </parse_markers>
     <class final="false" abstract="false" line="17" namespace="default" package="yuppgis\core\gis">
       <name>GISHelpers</name>
@@ -964,121 +973,121 @@ pertenecen a dicha capa</description>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="229" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="234" package="Default">
         <name>MapLayers</name>
-        <argument line="229">
+        <argument line="234">
           <name>$params</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="255" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="260" package="Default">
         <name>MapLayerHandler</name>
-        <argument line="255">
+        <argument line="260">
           <name>$mapId</name>
           <default/>
           <type/>
         </argument>
-        <argument line="255">
+        <argument line="260">
           <name>$layerId</name>
           <default/>
           <type/>
         </argument>
-        <argument line="255">
+        <argument line="260">
           <name>$checkboxId</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="262" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="267" package="Default">
         <name>Log</name>
-        <argument line="262">
+        <argument line="267">
           <name>$mapId</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="268" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="273" package="Default">
         <name>TagLayers</name>
-        <argument line="268">
+        <argument line="273">
           <name>$params</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" line="296" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" line="301" package="Default">
         <name>TagLayerHandler</name>
-        <argument line="296">
+        <argument line="301">
           <name>$mapId</name>
           <default/>
           <type/>
         </argument>
-        <argument line="296">
+        <argument line="301">
           <name>$tagId</name>
           <default/>
           <type/>
         </argument>
-        <argument line="296">
+        <argument line="301">
           <name>$checkboxId</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="312" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="317" package="Default">
         <name>VisualizationState</name>
-        <argument line="312">
+        <argument line="317">
           <name>$mapId</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" line="363" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" line="368" package="Default">
         <name>DistanceFilterMenu</name>
         <docblock>
           <description>Genera el html para un combo de selecci&#xF3;n</description>
           <long-description>
 </long-description>
-          <tag line="357" name="param" description="de la clase" type="\nombre" variable="$classfrom">
+          <tag line="362" name="param" description="de la clase" type="\nombre" variable="$classfrom">
             <type by_reference="false">\nombre</type>
           </tag>
-          <tag line="357" name="param" description="del elemento" type="\id" variable="$mapid">
+          <tag line="362" name="param" description="del elemento" type="\id" variable="$mapid">
             <type by_reference="false">\id</type>
           </tag>
-          <tag line="357" name="return" description="generado para el men&#xFA;" type="\html">
+          <tag line="362" name="return" description="generado para el men&#xFA;" type="\html">
             <type by_reference="false">\html</type>
           </tag>
         </docblock>
-        <argument line="364">
+        <argument line="369">
           <name>$classfrom</name>
           <default/>
           <type/>
         </argument>
-        <argument line="364">
+        <argument line="369">
           <name>$mapid</name>
           <default/>
           <type/>
         </argument>
-        <argument line="364">
+        <argument line="369">
           <name>$handler</name>
           <default>null</default>
           <type/>
         </argument>
-        <argument line="364">
+        <argument line="369">
           <name>$fieldName</name>
           <default>'nombre'</default>
           <type/>
         </argument>
-        <argument line="364">
+        <argument line="369">
           <name>$positionfrom</name>
           <default>'ubicacion'</default>
           <type/>
         </argument>
-        <argument line="365">
+        <argument line="370">
           <name>$classto</name>
           <default/>
           <type/>
         </argument>
-        <argument line="365">
+        <argument line="370">
           <name>$positionto</name>
           <default>'zonas'</default>
           <type/>
