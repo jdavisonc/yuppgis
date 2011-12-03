@@ -241,7 +241,7 @@ class KMLGEO {
 	
 	private static function iconToKML(&$style, $uiproperty) {
 		$iconStyle = $style->addChild('IconStyle');
-		$iconStyle->addChild('scale', 0.8);
+		$iconStyle->addChild('scale', 1);
 		$icon = $iconStyle->addChild('Icon');
 		$icon->addChild('href', $uiproperty->getUrl());
 		$icon->addChild('width', $uiproperty->getWidth());
