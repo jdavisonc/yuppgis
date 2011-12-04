@@ -1,4 +1,7 @@
-<?php YuppLoader::load('casodeestudio.model', 'Paciente'); ?>
+<?php 
+YuppLoader::load('casodeestudio.model', 'Paciente'); 
+YuppLoader::loadScript('apps.casodeestudio.i18n', 'MessageResource');
+?>
 
 <html>
 	<head>
@@ -81,7 +84,7 @@
 					</div>
 					<h5>Filtrar por atributos</h5>
 					<div id="menubar">
-					<?php echo GISHelpers::FiltersMenu('Paciente', 1, null, null, true); ?>
+					<?php echo GISHelpers::FiltersMenu('Paciente', 1, null, null, true, true); ?>
 					</div>
 				</div>
 			</div>

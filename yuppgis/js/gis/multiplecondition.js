@@ -2,9 +2,19 @@ function removeNewCondition(control){
 	$(control).parent('.newcondition').remove();
 }
 
-function addNewCondition(control){
+function addNewCondition(control, paramAND, paramOR){
 
-	var condselect = '<select class="booleanselect"><option value="and">AND</option><option value="or">OR</option></select>';
+	var labelAND ='AND';
+	var labelOR ='OR';
+	
+	if (paramAND != null) {
+		labelAND = paramAND;
+	}
+	
+	if (paramOR != null) {
+		labelOR = paramOR;
+	}
+	var condselect = '<select class="booleanselect"><option value="and">' + labelAND + '</option><option value="or">' + labelOR + '</option></select>';
 
 	var orig_select = $(control).parents('.conditionfilter:first').find('.conditionselect').first();	
 	var select = '<select class="conditionselect" data-attr-mapid="'+ orig_select.attr('data-attr-mapid') +'">' + orig_select.html() + '</select>';
