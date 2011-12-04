@@ -1,6 +1,8 @@
 <?php 
 
 YuppLoader::load('casodeestudio.model', 'Medico');
+YuppLoader::loadScript('apps.casodeestudio.i18n', 'MessageResource');
+
 $m = Model::getInstance();
 $idMedico = $m->get('id');
 
@@ -96,13 +98,13 @@ $idMedico = $m->get('id');
 								$html .= '<div >'.DisplayHelper::radio('estadoEnfermedad', $estado,
 									array(
 										'onclick' => 'mostrarPorEstado(\''.$estado.'\')'
-									)).'<span style="margin-left: 5px">'.$estado.'</span></div>';
+									)).'<span style="margin-left: 5px">'. DisplayHelper::message('label.filtroGrado.'.$estado) .'</span></div>';
 							} else {
 								$html .= '<div >'.DisplayHelper::radio('estadoEnfermedad', 'todos',
 									array(
 										'onclick' => 'mostrarPorEstado(\'todos\')',
 										'checked' => ''
-									)).'<span style="margin-left: 5px">todos</span></div>';
+									)).'<span style="margin-left: 5px">'. DisplayHelper::message('label.filtroGrado.todos') .'</span></div>';
 							}
 						}
 			
@@ -119,7 +121,7 @@ $idMedico = $m->get('id');
 			<div class="content">
 				<!-- Main hero unit for a primary marketing message or call to action -->
 				<div class="well">
-					<h5>Bienvenido: <?php $med = Medico::get($idMedico); echo $med->getNombre().' '.$med->getApellido()?></h5>
+					<h5>Bienvenido: <?php $med = Medico::get($idMedico); echo $med->getNombre().' '.$med->getApellido() ;?></h5>
 					<p>
 					<?php echo GISHelpers::Map(array(
 					MapParams::ID => 2,

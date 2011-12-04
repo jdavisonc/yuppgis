@@ -86,7 +86,7 @@ class GISHelpers {
 	 * @param id del elemento
 	 * @return html generado para el menú
 	 */
-	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null, $multiple = false){
+	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null, $multiple = false, $internationalize = false){
 		$ctx = YuppContext::getInstance();
 		$appName = $ctx->getApp();
 		$controllerName = strtolower($ctx->getController());
@@ -98,9 +98,15 @@ class GISHelpers {
 		$btnId = 'btnFiltersMenu_'.$groupId;
 
 		$selectHtml = '<select class="conditionselect" data-attr-mapid="'.$mapid.'" id="'.$selectId.'">';
+		
+		$label = YuppGISConventions::getLabelFilterAttr($appName, $class, '');
 
 		foreach (self::AvailableFilters($class) as $option){
-			$selectHtml .= '<option value="'.$option.'">'.$option.'</option>';
+			if ($internationalize) {
+				$selectHtml .= '<option value="'.$option.'">'. DisplayHelper::message($label.$option) . '</option>';
+			} else {		
+				$selectHtml .= '<option value="'.$option.'">'. $option . '</option>';
+			}
 		}
 
 		$handlerCall = '';
@@ -147,9 +153,14 @@ class GISHelpers {
 				</script>		
 		';
 
+		$labelAND = DisplayHelper::message(YuppGISConventions::getLabelFilterConditionAND($appName, ''), null, 'AND');
+		$labelOR = DisplayHelper::message(YuppGISConventions::getLabelFilterConditionOR($appName, ''), null, 'OR');
+		//$data = 'data: {labelAND: "' . $labelAND . '", labelOR: "' . $labelOR .'"}';
+		$data = 'data: {labelAND: ' . $labelAND . '}' ; //'{\'' . $labelAND . '\'}';
+		
 		$addConditionHtml = '';
 		if ($multiple){
-			$addConditionHtml = '<br><button class="btn addcondition" onclick="javascript:return addNewCondition(this);">+</button>';
+			$addConditionHtml = '<br><button class="btn addcondition" onclick="javascript:return addNewCondition(this,\'' .$labelAND. '\', \'' .$labelOR. '\');">+</button>';
 		}
 
 		return  '<span class="conditionfilter"><span class="newcondition">'.$selectHtml.$inputHtml.$addConditionHtml.'</span><br />'.$submitHtml.$script.'</span>';
