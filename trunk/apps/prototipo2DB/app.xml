@@ -10,7 +10,7 @@
   <docs></docs>
   <update></update>
   <entry_point>
-    <controller>basichome</controller>
+    <controller>PremiumHome</controller>
     <action>index</action>
   </entry_point>
 </app>
