@@ -86,7 +86,7 @@ class GISHelpers {
 	 * @param id del elemento
 	 * @return html generado para el menú
 	 */
-	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null, $multiple = false, $internationalize = false){
+	public static function FiltersMenu($class, $mapid, $handler = null, $layerId = null, $multiple = false){
 		$ctx = YuppContext::getInstance();
 		$appName = $ctx->getApp();
 		$controllerName = strtolower($ctx->getController());
@@ -102,11 +102,7 @@ class GISHelpers {
 		$label = YuppGISConventions::getLabelFilterAttr($appName, $class, '');
 
 		foreach (self::AvailableFilters($class) as $option){
-			if ($internationalize) {
-				$selectHtml .= '<option value="'.$option.'">'. DisplayHelper::message($label.$option) . '</option>';
-			} else {		
-				$selectHtml .= '<option value="'.$option.'">'. $option . '</option>';
-			}
+			$selectHtml .= '<option value="'.$option.'">'. DisplayHelper::message($label.$option, null, $option) . '</option>';
 		}
 
 		$handlerCall = '';
@@ -155,8 +151,6 @@ class GISHelpers {
 
 		$labelAND = DisplayHelper::message(YuppGISConventions::getLabelFilterConditionAND($appName, ''), null, 'AND');
 		$labelOR = DisplayHelper::message(YuppGISConventions::getLabelFilterConditionOR($appName, ''), null, 'OR');
-		//$data = 'data: {labelAND: "' . $labelAND . '", labelOR: "' . $labelOR .'"}';
-		$data = 'data: {labelAND: ' . $labelAND . '}' ; //'{\'' . $labelAND . '\'}';
 		
 		$addConditionHtml = '';
 		if ($multiple){
