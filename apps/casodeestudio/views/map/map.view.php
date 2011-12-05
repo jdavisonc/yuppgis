@@ -84,7 +84,7 @@ YuppLoader::loadScript('apps.casodeestudio.i18n', 'MessageResource');
 					</div>
 					<h5>Filtrar por atributos</h5>
 					<div id="menubar">
-					<?php echo GISHelpers::FiltersMenu('Paciente', 1, null, null, true, true); ?>
+					<?php echo GISHelpers::FiltersMenu('Paciente', 1, null, null, true); ?>
 					</div>
 				</div>
 			</div>

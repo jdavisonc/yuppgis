@@ -98,21 +98,16 @@ $idMedico = $m->get('id');
 								$html .= '<div >'.DisplayHelper::radio('estadoEnfermedad', $estado,
 									array(
 										'onclick' => 'mostrarPorEstado(\''.$estado.'\')'
-									)).'<span style="margin-left: 5px">'. DisplayHelper::message('label.filtroGrado.'.$estado) .'</span></div>';
+									)).'<span style="margin-left: 5px">'. DisplayHelper::message('label.filtroGrado.'.$estado, null, $estado) .'</span></div>';
 							} else {
 								$html .= '<div >'.DisplayHelper::radio('estadoEnfermedad', 'todos',
 									array(
 										'onclick' => 'mostrarPorEstado(\'todos\')',
 										'checked' => ''
-									)).'<span style="margin-left: 5px">'. DisplayHelper::message('label.filtroGrado.todos') .'</span></div>';
+									)).'<span style="margin-left: 5px">'. DisplayHelper::message('label.filtroGrado.todos', null, 'Todos') .'</span></div>';
 							}
 						}
-			
-		
 						echo $html; 
-						
-						
-						//echo GISHelpers::FiltersMenu('Paciente', 2, null, null, false); 
 						?>
 					</div>
 				</div>
