@@ -84,7 +84,7 @@ $p1->setEmail("jperez@gmail.com");
 $p1->setCi("3.526.125-7");
 
 $p1->setDireccion("");
-$p1->setBarrio("Villa Muñoz");
+$p1->setBarrio("Villa Munoz");
 $p1->setCiudad("Montevideo");
 $p1->setDepartamento("Montevideo");
 $p1->setUbicacion(new Point(-6253638.1405101,-4148156.3101165));
@@ -108,7 +108,7 @@ $p2->setEmail("jrodriguez@gmail.com");
 $p2->setCi("4.123.325-8");
 
 $p2->setDireccion("");
-$p2->setBarrio("Villa Muñoz");
+$p2->setBarrio("Villa Munoz");
 $p2->setCiudad("Montevideo");
 $p2->setDepartamento("Montevideo");
 $p2->setUbicacion(new Point(-6251856.2022884,-4148299.6295445));
@@ -132,7 +132,7 @@ $p3->setEmail("mlopez@gmail.com");
 $p3->setCi("4.555.625-7");
 
 $p3->setDireccion("");
-$p3->setBarrio("Villa Muñoz");
+$p3->setBarrio("Villa Munoz");
 $p3->setCiudad("Montevideo");
 $p3->setDepartamento("Montevideo");
 $p3->setUbicacion(new Point(-6252759.1146849,-4149331.5294262));
@@ -156,7 +156,7 @@ $p4->setEmail("plopez@gmail.com");
 $p4->setCi("1.256.345-7");
 
 $p4->setDireccion("");
-$p4->setBarrio("Villa Muñoz");
+$p4->setBarrio("Villa Munoz");
 $p4->setCiudad("Montevideo");
 $p4->setDepartamento("Montevideo");
 $p4->setUbicacion(new Point(-6252759.1146849,-4149331.5294262));
@@ -171,7 +171,7 @@ $p5->setApellido("Espinosa");
 $p5->setSexo("M");
 //$p4->setFechaNacimiento();
 $p5->setTelefono("2 555 555");
-$p5->setEmail("cEspinosa@mail.com");
+$p5->setEmail("cespinosa@mail.com");
 
 $p5->setCi("1.333.444-5");
 
@@ -188,7 +188,7 @@ $p6->setApellido("Gonzales");
 $p6->setSexo("F");
 //$p4->setFechaNacimiento();
 $p6->setTelefono("2 666 666");
-$p6->setEmail("alGonzales@mail.com");
+$p6->setEmail("algonzales@mail.com");
 
 $p6->setCi("1.444.555-5");
 
@@ -206,7 +206,7 @@ $p7->setApellido("Viera");
 $p7->setSexo("F");
 //$p4->setFechaNacimiento();
 $p7->setTelefono("2 777 7777");
-$p7->setEmail("mVieras@mail.com");
+$p7->setEmail("mviera@mail.com");
 
 $p7->setCi("1.555.666-7");
 
@@ -224,7 +224,7 @@ $p8->setApellido("Mendez");
 $p8->setSexo("M");
 //$p4->setFechaNacimiento();
 $p8->setTelefono("2 888 888");
-$p8->setEmail("mMendez@mail.com");
+$p8->setEmail("mmendez@mail.com");
 
 $p8->setCi("1.666.777-8");
 
@@ -242,7 +242,7 @@ $p9->setApellido("Hernandez");
 $p9->setSexo("M");
 //$p4->setFechaNacimiento();
 $p9->setTelefono("2 999 999");
-$p9->setEmail("jHernandez@mail.com");
+$p9->setEmail("jhernandez@mail.com");
 
 $p9->setCi("1.777.888-9");
 
@@ -260,7 +260,7 @@ $p10->setApellido("Damian");
 $p10->setSexo("F");
 //$p4->setFechaNacimiento();
 $p10->setTelefono("3 000 0000");
-$p10->setEmail("eDamian@mail.com");
+$p10->setEmail("edamian@mail.com");
 
 $p10->setCi("1.888.999-9");
 
@@ -278,7 +278,7 @@ $p11->setApellido("Medina");
 $p11->setSexo("M");
 //$p4->setFechaNacimiento();
 $p11->setTelefono("3 000 111");
-$p11->setEmail("rMedina@mail.com");
+$p11->setEmail("rmedina@mail.com");
 
 $p11->setCi("2.000.111-1");
 
@@ -295,7 +295,7 @@ $p12->setApellido("Rochon");
 $p12->setSexo("M");
 //$p4->setFechaNacimiento();
 $p12->setTelefono("3 111 222");
-$p12->setEmail("aRochon@mail.com");
+$p12->setEmail("arochon@mail.com");
 
 $p12->setCi("2.111.222-1");
 
@@ -313,7 +313,7 @@ $p13->setApellido("Viudez");
 $p13->setSexo("F");
 //$p4->setFechaNacimiento();
 $p13->setTelefono("3 222 333");
-$p13->setEmail("rViudez@mail.com");
+$p13->setEmail("rviudez@mail.com");
 
 $p13->setCi("2.222.333-1");
 
@@ -331,7 +331,7 @@ $p14->setApellido("Blanco");
 $p14->setSexo("F");
 //$p4->setFechaNacimiento();
 $p14->setTelefono("3 333 444");
-$p14->setEmail("pBlanco@mail.com");
+$p14->setEmail("pblanco@mail.com");
 
 $p14->setCi("2.333.444-1");
 
@@ -349,7 +349,7 @@ $p15->setApellido("Kesman");
 $p15->setSexo("M");
 //$p4->setFechaNacimiento();
 $p15->setTelefono("3 444 555");
-$p15->setEmail("dKesman@mail.com");
+$p15->setEmail("dkesman@mail.com");
 
 $p15->setCi("2.444.555-1");
 
@@ -367,7 +367,7 @@ $p16->setApellido("Alonso");
 $p16->setSexo("F");
 //$p4->setFechaNacimiento();
 $p16->setTelefono("3 555 666");
-$p16->setEmail("cAlonso@mail.com");
+$p16->setEmail("calonso@mail.com");
 
 $p16->setCi("2.555.666-1");
 
@@ -386,7 +386,7 @@ $p16->setApellido("Perez");
 $p16->setSexo("M");
 //$p4->setFechaNacimiento();
 $p16->setTelefono("3 666 777");
-$p16->setEmail("mPerez@mail.com");
+$p16->setEmail("mperez@mail.com");
 
 $p16->setCi("2.666.777-1");
 
@@ -403,7 +403,7 @@ $p17->setApellido("Rios");
 $p17->setSexo("M");
 //$p4->setFechaNacimiento();
 $p17->setTelefono("3 777 888");
-$p17->setEmail("jRios@mail.com");
+$p17->setEmail("jrios@mail.com");
 
 $p17->setCi("2.777.888-1");
 
@@ -417,11 +417,11 @@ $p17->setUbicacion(new Point(-6250829.0797205,-4153301.4775823));
 $p18 = new Paciente();
 
 $p18->setNombre("Marcela");
-$p18->setApellido("Muñoz");
+$p18->setApellido("Munoz");
 $p18->setSexo("F");
 //$p4->setFechaNacimiento();
 $p18->setTelefono("3 888 999");
-$p18->setEmail("mMuñoz@mail.com");
+$p18->setEmail("mmunoz@mail.com");
 
 $p18->setCi("2.888.999-3");
 
@@ -439,7 +439,7 @@ $p19->setApellido("Antunez");
 $p19->setSexo("M");
 //$p4->setFechaNacimiento();
 $p19->setTelefono("3 888 999");
-$p19->setEmail("cAntunez@mail.com");
+$p19->setEmail("cantunez@mail.com");
 
 $p19->setCi("2.888.999-3");
 
@@ -457,7 +457,7 @@ $p20->setApellido("Valdez");
 $p20->setSexo("M");
 //$p4->setFechaNacimiento();
 $p20->setTelefono("3 932 888");
-$p20->setEmail("jcValdez@mail.com");
+$p20->setEmail("jcvaldez@mail.com");
 
 $p20->setCi("2.785.838-6");
 
