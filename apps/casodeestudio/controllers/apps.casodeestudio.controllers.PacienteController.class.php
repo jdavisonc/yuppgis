@@ -14,32 +14,9 @@ class PacienteController extends GISController {
 			$p->setNombre($this->params['nombre']);
 			$p->setApellido($this->params['apellido']);
 			$p->setSexo($this->params['sexo']);
-			
-			$fchNacimiento = $this->params['fechaNacimiento']; 
-			if ($fchNacimiento) {
-				if(!$this->validarFecha($fchNacimiento)) {
-					$this->params['error'] = 'Fecha de Nacimiento Invalida. Debe tener el formato aaaa-mm-dd.';
-					return;
-				}
-				$p->setFechaNacimiento($fchNacimiento);
-			} else {
-				$p->setFechaNacimiento(null);
-			}
-			
-			$fchFallecimiento = $this->params['fechaFallecimiento']; 
-			if ($fchFallecimiento) {
-				if(!$this->validarFecha($fchFallecimiento)) {
-					$this->params['error'] = 'Fecha de Fallecimiento Invalida. Debe tener el formato aaaa-mm-dd.';
-					return;
-				}
-				$p->setFechaFallecimiento($fchFallecimiento);
-			} else {
-				$p->setFechaFallecimiento(null);
-			}
 			$p->setTelefono($this->params['telefono']);
 			$p->setEmail($this->params['email']);
 			$p->setCi($this->params['ci']);
-			
 			
 			$calle = $this->params['calle'];
 			$numero = $this->params['numero_puerta'];
@@ -52,6 +29,26 @@ class PacienteController extends GISController {
 				$ubicacion = $this->getUbicacionPaciente($calle, $numero);
 				$ubicacion->setId(null);
 				$p->setUbicacion($ubicacion);
+				
+				$fchNacimiento = $this->params['fechaNacimiento']; 
+				if ($fchNacimiento) {
+					if(!$this->validarFecha($fchNacimiento)) {
+						throw new Exception('Fecha de Nacimiento Invalida. Debe tener el formato aaaa-mm-dd.');
+					}
+					$p->setFechaNacimiento($fchNacimiento);
+				} else {
+					$p->setFechaNacimiento(null);
+				}
+				
+				$fchFallecimiento = $this->params['fechaFallecimiento']; 
+				if ($fchFallecimiento) {
+					if(!$this->validarFecha($fchFallecimiento)) {
+						throw new Exception('Fecha de Fallecimiento Invalida. Debe tener el formato aaaa-mm-dd.');
+					}
+					$p->setFechaFallecimiento($fchFallecimiento);
+				} else {
+					$p->setFechaFallecimiento(null);
+				}
 				
 				if ($p->save()) {
 					$this->params['inserted'] = $p->getId();
