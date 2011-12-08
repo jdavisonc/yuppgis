@@ -9,22 +9,23 @@ class GeoController extends GISController {
 		$calle = strtoupper($this->params['calle']);
 		$numero = $this->params['numero'];
 		
-		$padrones = Padron::findBy(
-			Condition::_AND()
-				->add(
-					Condition::_OR()
-						->add(Condition::EQ(Padron::getClassName(), 'calle', $calle))
-						->add(Condition::EQ(Padron::getClassName(), 'calle', 'AV '.$calle))
-						->add(Condition::EQ(Padron::getClassName(), 'calle', 'BV '.$calle)))
-				->add(Condition::EQ(Padron::getClassName(), 'numero', $numero)), 
-			new ArrayObject());
-		
-		if ($padrones) {
-			$res = $padrones[0];
-			return $this->renderString( KMLUtilities::GeometryToKML($res->getId(), $res->getUbicacion()));
-		} else {
-			return $this->renderString( "Resultado no encontrado" );
+		if ($calle && $numero) {
+			$padrones = Padron::findBy(
+				Condition::_AND()
+					->add(
+						Condition::_OR()
+							->add(Condition::EQ(Padron::getClassName(), 'calle', $calle))
+							->add(Condition::EQ(Padron::getClassName(), 'calle', 'AV '.$calle))
+							->add(Condition::EQ(Padron::getClassName(), 'calle', 'BV '.$calle)))
+					->add(Condition::EQ(Padron::getClassName(), 'numero', $numero)), 
+				new ArrayObject());
+			
+			if ($padrones) {
+				$res = $padrones[0];
+				return $this->renderString( KMLUtilities::GeometryToKML($res->getId(), $res->getUbicacion()));
+			}
 		}
+		return $this->renderString( "Resultado no encontrado" );
 	}
 	
 	public function callesAction() {
