@@ -101,9 +101,8 @@ class PacienteController extends GISController {
 			} else {
 				$this->params['error'] = $paciente;
 			}
-		} else {
-			$this->params['paciente'] = $paciente;
 		}
+		$this->params['paciente'] = $paciente;
 		return ;
 	}
 	
