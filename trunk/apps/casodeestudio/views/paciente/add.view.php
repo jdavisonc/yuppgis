@@ -125,7 +125,11 @@ $m = Model::getInstance();
 							valores y vuelve a intentarlo.
 						</p>
 						<br>
-						<?php echo DisplayHelper::errors( $error ); ?>
+						<?php if (is_string($error)){ 
+									echo '<ul><li>'.$error.'</li></ul>'; 
+							  } else { 
+							  		echo DisplayHelper::errors( $error ); 
+							  } ?>
 					</div>
 					<?php } ?>
 					<h3>Nuevo Paciente</h3>

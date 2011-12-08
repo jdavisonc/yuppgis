@@ -32,15 +32,20 @@ class PacienteController extends GISController {
 			$p->setCiudad($this->params['ciudad']);
 			$p->setDepartamento($this->params['departamento']);
 			
-			$ubicacion = $this->getUbicacionPaciente($calle, $numero);
-			$ubicacion->setId(null);
-			$p->setUbicacion($ubicacion);
-			
-			if ($p->save()) {
-				$this->params['inserted'] = $p->getId();
-			} else {
-				$this->params['error'] = $p;
+			try {
+				$ubicacion = $this->getUbicacionPaciente($calle, $numero);
+				$ubicacion->setId(null);
+				$p->setUbicacion($ubicacion);
+				
+				if ($p->save()) {
+					$this->params['inserted'] = $p->getId();
+				} else {
+					$this->params['error'] = $p;
+				}
+			} catch (Exception $e) {
+				$this->params['error'] = 'La direccion que especifico no existe.';
 			}
+			
 		}
 		$this->params['url_ws_calles'] = self::URL_WS_CALLES;
 		return ;
@@ -57,12 +62,9 @@ class PacienteController extends GISController {
 			if ($element != 'Resultado no encontrado') {
 				$elements = KMLUtilities::KMLToGeometry($element); 
 				return $elements[0];
-			} else {
-				//error
 			}
-		} else {
-			//error
 		}
+		throw new Exception('Resultado no encontrado');
 	}
 	
 	public function listAction() {
@@ -97,7 +99,7 @@ class PacienteController extends GISController {
 			if ($paciente->save()) {
 				return $this->redirect(array ("action" => "info", "params" => array("id" => $id)));
 			} else {
-				$this->params['error'] = $p;
+				$this->params['error'] = $paciente;
 			}
 		} else {
 			$this->params['paciente'] = $paciente;
