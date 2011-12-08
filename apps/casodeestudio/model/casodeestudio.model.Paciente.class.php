@@ -52,6 +52,9 @@ class Paciente extends GISPersistentObject {
 		$this->addConstraints("email", array(
 			Constraint::email()
 		));
+		$this->addConstraints("ubicacion", array(
+			Constraint::nullable(false)
+		));
 		$this->addConstraints("sexo", array(
 			Constraint::inList(array('M', 'F'))
 		));
