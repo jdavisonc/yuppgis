@@ -14,10 +14,26 @@ class PacienteController extends GISController {
 			$p->setNombre($this->params['nombre']);
 			$p->setApellido($this->params['apellido']);
 			$p->setSexo($this->params['sexo']);
-			if ($this->params['fechaNacimiento']) {
+			
+			$fchNacimiento = $this->params['fechaNacimiento']; 
+			if ($fchNacimiento) {
+				if(!$this->validarFecha($fchNacimiento)) {
+					$this->params['error'] = 'Fecha de Nacimiento Invalida. Debe tener el formato aaaa-mm-dd.';
+					return;
+				}
+				$p->setFechaNacimiento($fchNacimiento);
+			} else {
 				$p->setFechaNacimiento(null);
 			}
-			if ($this->params['fechaFallecimiento']) {
+			
+			$fchFallecimiento = $this->params['fechaFallecimiento']; 
+			if ($fchFallecimiento) {
+				if(!$this->validarFecha($fchFallecimiento)) {
+					$this->params['error'] = 'Fecha de Fallecimiento Invalida. Debe tener el formato aaaa-mm-dd.';
+					return;
+				}
+				$p->setFechaFallecimiento($fchFallecimiento);
+			} else {
 				$p->setFechaFallecimiento(null);
 			}
 			$p->setTelefono($this->params['telefono']);
@@ -51,6 +67,15 @@ class PacienteController extends GISController {
 		return ;
 	}
 	
+	private function validarFecha($date) {
+		$parts = array();
+		if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts)) {
+			if(checkdate($parts[2],$parts[3],$parts[1])) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public function getUbicacionPaciente($calle, $numero) {
 		$url = self::URL_WS_GEOLOCALIZACION . 'calle=' .  rawurlencode($calle) . '&numero=' . $numero;
