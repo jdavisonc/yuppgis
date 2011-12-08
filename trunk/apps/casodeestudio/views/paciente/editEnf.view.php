@@ -78,12 +78,10 @@ $paciente = $m->get('paciente');
 		        		$error = $m->get('error');
 		        		if (isset($inserted)) {?>
 				        <div class="alert-message success">
-						  <a class="close" href="#">×</a>
 						  <p><strong>Paciente creado!</strong> Se ha creado el paciente con id = <?php echo $inserted; ?>.</p>
 						</div>
 					<?php } else if (isset($error)) { ?>
 						<div class="alert-message block-message error">
-					        <a class="close" href="#">×</a>
 					        <p><strong>Error al crear Paciente!</strong> Cambia los siguiente valores y vuelve a intentarlo.</p><br>
 					        <?php echo DisplayHelper::errors( $error ); ?>
 					      </div>

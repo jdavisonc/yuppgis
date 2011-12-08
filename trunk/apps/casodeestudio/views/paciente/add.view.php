@@ -119,7 +119,6 @@ $m = Model::getInstance();
 					</div>
 					<?php } else if (isset($error)) { ?>
 					<div class="alert-message block-message error">
-						<a class="close" href="#">×</a>
 						<p>
 							<strong>Error al crear Paciente!</strong> Cambia los siguiente
 							valores y vuelve a intentarlo.
