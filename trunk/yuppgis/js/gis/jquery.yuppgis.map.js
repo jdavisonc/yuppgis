@@ -96,6 +96,7 @@
 						map = new OpenLayers.Map("map_" + id, {
 					         projection: srid,
 					         maxResolution: 156543.0339,
+					         numZoomLevels: 20,
 					         units: 'm',
 					         maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
 					                                          20037508.34, 20037508.34)
