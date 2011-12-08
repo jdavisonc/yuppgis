@@ -142,7 +142,7 @@ $m = Model::getInstance();
 								<div class="clearfix">
 									<label for="nombre">Nombre</label>
 									<div class="input">
-									<?php echo DisplayHelper::text('nombre', 'd'); ?>
+									<?php echo DisplayHelper::text('nombre', ''); ?>
 									</div>
 								</div>
 								<div class="clearfix">
