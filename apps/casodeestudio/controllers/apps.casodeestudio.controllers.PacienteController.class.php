@@ -109,10 +109,11 @@ class PacienteController extends GISController {
 
 	private function changeEnfermedadOnPaciente($paciente, $nuevoValor, $enfermedad) {
 		if ($paciente->aGet($enfermedad) != $nuevoValor) {
-			$paciente->aSet($enfermedad, $nuevoValor);
 			if ($nuevoValor != '') { // Falta verificar que ya no este en esa capa
+				$paciente->aSet($enfermedad, $nuevoValor);
 				$this->addToEnfermedad($enfermedad, $paciente);
 			} else {
+				$paciente->aSet($enfermedad, null);
 				$this->deleteOfEnfermedad($enfermedad, $paciente);
 			}
 		}
