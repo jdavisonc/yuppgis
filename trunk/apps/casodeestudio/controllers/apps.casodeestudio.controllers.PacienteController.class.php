@@ -56,7 +56,7 @@ class PacienteController extends GISController {
 					$this->params['error'] = $p;
 				}
 			} catch (Exception $e) {
-				$this->params['error'] = 'La direccion que especifico no existe.';
+				$this->params['error'] = $e->getMessage();
 			}
 			
 		}
@@ -86,7 +86,7 @@ class PacienteController extends GISController {
 				return $elements[0];
 			}
 		}
-		throw new Exception('Resultado no encontrado');
+		throw new Exception('La direccion que especifico no existe.');
 	}
 	
 	public function listAction() {
