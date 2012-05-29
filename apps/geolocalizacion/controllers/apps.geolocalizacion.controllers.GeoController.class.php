@@ -25,7 +25,7 @@ class GeoController extends GISController {
 				return $this->renderString( KMLUtilities::GeometryToKML($res->getId(), $res->getUbicacion()));
 			}
 		}
-		return $this->renderString( "Resultado no encontrado" );
+		return $this->renderString( "<Error>Resultado no encontrado</Error>" );
 	}
 	
 	public function callesAction() {
@@ -42,7 +42,7 @@ class GeoController extends GISController {
 		if ($result) {
 			return $this->renderString( json_encode($result) );
 		} else {
-			return $this->renderString( "Resultado no encontrado" );
+			return $this->renderString( "<Error>Resultado no encontrado</Error>" );
 		}
 	}
 	

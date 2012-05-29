@@ -171,7 +171,7 @@ class Helpers {
           // Link previo
           $paramsMap['body'] = $bodyPrev;
           $paramsMap['offset'] = $offset-$max;
-          $linkPrev = '[ '. self::link($paramsMap) . ' ] ';
+          $linkPrev = self::link($paramsMap) . ' ';
        }
        
        // pagina actual / cantidad de paginas
@@ -183,7 +183,7 @@ class Helpers {
           // Link Siguiente
           $paramsMap['body'] = $bodyNext;
           $paramsMap['offset'] = $offset+$max;
-          $linkNext = ' [ '. self::link($paramsMap).' ] ';
+          $linkNext = ' ' . self::link($paramsMap);
        }
        
        return $linkPrev . $pagerState . $linkNext;
