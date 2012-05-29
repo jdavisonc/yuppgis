@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<docblox>
+	<title>YuppGIS</title>
+	<parser>
+		<target>../yuppgis-apidoc</target>
+		<markers>
+			<item>TODO</item>
+			<item>FIXME</item>
+		</markers>
+		<extensions>
+			<extension>php</extension>
+		</extensions>
+		<visibility></visibility>
+	</parser>
+	<transformer>
+		<target>../yuppgis-apidoc</target>
+	</transformer>
+	<files>
+		<directory>yuppgis</directory>
+	</files>
+</docblox>
